@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA40344923932603006C6BE3 /* HiveEngine in Frameworks */ = {isa = PBXBuildFile; productRef = CA40344823932603006C6BE3 /* HiveEngine */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A62393156100AD1285 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A52393156100AD1285 /* ContentView.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA40344923932603006C6BE3 /* HiveEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +109,9 @@
 			dependencies = (
 			);
 			name = "Hive for iOS";
+			packageProductDependencies = (
+				CA40344823932603006C6BE3 /* HiveEngine */,
+			);
 			productName = "Hive for iOS";
 			productReference = CA7299A02393156100AD1285 /* Hive for iOS.app */;
 			productType = "com.apple.product-type.application";
@@ -135,6 +140,9 @@
 				Base,
 			);
 			mainGroup = CA7299972393156100AD1285;
+			packageReferences = (
+				CA40344723932603006C6BE3 /* XCRemoteSwiftPackageReference "hive-engine" */,
+			);
 			productRefGroup = CA7299A12393156100AD1285 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -358,6 +366,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CA40344723932603006C6BE3 /* XCRemoteSwiftPackageReference "hive-engine" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/josephroquedev/hive-engine.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CA40344823932603006C6BE3 /* HiveEngine */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA40344723932603006C6BE3 /* XCRemoteSwiftPackageReference "hive-engine" */;
+			productName = HiveEngine;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = CA7299982393156100AD1285 /* Project object */;
 }
