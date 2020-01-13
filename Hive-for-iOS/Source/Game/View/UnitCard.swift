@@ -17,8 +17,6 @@ struct UnitCard: View {
 	var body: some View {
 		ZStack {
 			Rectangle().fill(Color(UIColor(named: "BackgroundCard")!))
-
-
 		}
 	}
 }
