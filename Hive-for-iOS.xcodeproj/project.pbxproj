@@ -8,8 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		CA40344923932603006C6BE3 /* HiveEngine in Frameworks */ = {isa = PBXBuildFile; productRef = CA40344823932603006C6BE3 /* HiveEngine */; };
+		CA40344C239327A2006C6BE3 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40344B239327A2006C6BE3 /* GameViewModel.swift */; };
+		CA403450239327C7006C6BE3 /* ARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40344F239327C7006C6BE3 /* ARGameView.swift */; };
+		CA403452239327E3006C6BE3 /* UnitDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA403451239327E2006C6BE3 /* UnitDrawerView.swift */; };
+		CA40345423932862006C6BE3 /* ARGameContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40345323932862006C6BE3 /* ARGameContainer.swift */; };
+		CA40345723932C74006C6BE3 /* UnitCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40345623932C74006C6BE3 /* UnitCard.swift */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
-		CA7299A62393156100AD1285 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A52393156100AD1285 /* ContentView.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
@@ -17,9 +21,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CA40344B239327A2006C6BE3 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
+		CA40344F239327C7006C6BE3 /* ARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameView.swift; sourceTree = "<group>"; };
+		CA403451239327E2006C6BE3 /* UnitDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitDrawerView.swift; sourceTree = "<group>"; };
+		CA40345323932862006C6BE3 /* ARGameContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameContainer.swift; sourceTree = "<group>"; };
+		CA40345623932C74006C6BE3 /* UnitCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitCard.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CA7299A52393156100AD1285 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		CA7299A92393156400AD1285 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -39,10 +47,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CA40344A2393271E006C6BE3 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				CA40345523932C57006C6BE3 /* Model */,
+				CA40344E239327B7006C6BE3 /* View */,
+				CA40344D239327AF006C6BE3 /* VIewModel */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		CA40344D239327AF006C6BE3 /* VIewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CA40344B239327A2006C6BE3 /* GameViewModel.swift */,
+			);
+			path = VIewModel;
+			sourceTree = "<group>";
+		};
+		CA40344E239327B7006C6BE3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA40345323932862006C6BE3 /* ARGameContainer.swift */,
+				CA40344F239327C7006C6BE3 /* ARGameView.swift */,
+				CA403451239327E2006C6BE3 /* UnitDrawerView.swift */,
+				CA40345623932C74006C6BE3 /* UnitCard.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA40345523932C57006C6BE3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		CA7299972393156100AD1285 = {
 			isa = PBXGroup;
 			children = (
-				CA7299A22393156100AD1285 /* Hive for iOS */,
+				CA7299A22393156100AD1285 /* Hive-for-iOS */,
 				CA7299A12393156100AD1285 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -55,7 +99,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CA7299A22393156100AD1285 /* Hive for iOS */ = {
+		CA7299A22393156100AD1285 /* Hive-for-iOS */ = {
 			isa = PBXGroup;
 			children = (
 				CA7299B8239320EF00AD1285 /* Resources */,
@@ -63,7 +107,7 @@
 				CA7299B12393156400AD1285 /* Info.plist */,
 				CA7299AB2393156400AD1285 /* Preview Content */,
 			);
-			path = "Hive for iOS";
+			path = "Hive-for-iOS";
 			sourceTree = "<group>";
 		};
 		CA7299AB2393156400AD1285 /* Preview Content */ = {
@@ -77,8 +121,8 @@
 		CA7299B7239320EA00AD1285 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				CA40344A2393271E006C6BE3 /* Game */,
 				CA7299A32393156100AD1285 /* AppDelegate.swift */,
-				CA7299A52393156100AD1285 /* ContentView.swift */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -96,9 +140,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		CA72999F2393156100AD1285 /* Hive for iOS */ = {
+		CA72999F2393156100AD1285 /* Hive-for-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = CA7299B42393156400AD1285 /* Build configuration list for PBXNativeTarget "Hive for iOS" */;
+			buildConfigurationList = CA7299B42393156400AD1285 /* Build configuration list for PBXNativeTarget "Hive-for-iOS" */;
 			buildPhases = (
 				CA72999C2393156100AD1285 /* Sources */,
 				CA72999D2393156100AD1285 /* Frameworks */,
@@ -108,7 +152,7 @@
 			);
 			dependencies = (
 			);
-			name = "Hive for iOS";
+			name = "Hive-for-iOS";
 			packageProductDependencies = (
 				CA40344823932603006C6BE3 /* HiveEngine */,
 			);
@@ -131,7 +175,7 @@
 					};
 				};
 			};
-			buildConfigurationList = CA72999B2393156100AD1285 /* Build configuration list for PBXProject "Hive for iOS" */;
+			buildConfigurationList = CA72999B2393156100AD1285 /* Build configuration list for PBXProject "Hive-for-iOS" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -147,7 +191,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				CA72999F2393156100AD1285 /* Hive for iOS */,
+				CA72999F2393156100AD1285 /* Hive-for-iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -170,8 +214,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA7299A62393156100AD1285 /* ContentView.swift in Sources */,
+				CA40344C239327A2006C6BE3 /* GameViewModel.swift in Sources */,
+				CA40345423932862006C6BE3 /* ARGameContainer.swift in Sources */,
+				CA403450239327C7006C6BE3 /* ARGameView.swift in Sources */,
+				CA403452239327E3006C6BE3 /* UnitDrawerView.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,
+				CA40345723932C74006C6BE3 /* UnitCard.swift in Sources */,
 				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,6 +295,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -300,6 +349,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -309,17 +359,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Hive for iOS/Preview Content\"";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "Hive-for-iOS/Preview\\ Content";
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				ENABLE_PREVIEWS = YES;
-				INFOPLIST_FILE = "Hive for iOS/Info.plist";
+				INFOPLIST_FILE = "Hive-for-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "ca.josephroque.Hive-for-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				PRODUCT_NAME = "Hive for iOS";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -329,7 +380,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_ASSET_PATHS = "\"Hive for iOS/Preview Content\"";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "Hive-for-iOS/Preview\\ Content";
 				DEVELOPMENT_TEAM = 3UBRXR267C;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = "Hive for iOS/Info.plist";
@@ -337,9 +389,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "ca.josephroque.Hive-for-iOS";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
+				PRODUCT_NAME = "Hive-for-iOS";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -347,7 +399,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		CA72999B2393156100AD1285 /* Build configuration list for PBXProject "Hive for iOS" */ = {
+		CA72999B2393156100AD1285 /* Build configuration list for PBXProject "Hive-for-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA7299B22393156400AD1285 /* Debug */,
@@ -356,7 +408,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		CA7299B42393156400AD1285 /* Build configuration list for PBXNativeTarget "Hive for iOS" */ = {
+		CA7299B42393156400AD1285 /* Build configuration list for PBXNativeTarget "Hive-for-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				CA7299B52393156400AD1285 /* Debug */,
@@ -373,7 +425,7 @@
 			repositoryURL = "https://github.com/josephroquedev/hive-engine.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 2.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

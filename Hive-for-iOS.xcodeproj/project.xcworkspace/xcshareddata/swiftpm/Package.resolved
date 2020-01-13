@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "HiveEngine",
+        "repositoryURL": "https://github.com/josephroquedev/hive-engine.git",
+        "state": {
+          "branch": null,
+          "revision": "105b74f5099a02713ce27d385de23227346507ef",
+          "version": "2.1.0"
+        }
+      },
+      {
+        "package": "Regex",
+        "repositoryURL": "https://github.com/sharplet/Regex.git",
+        "state": {
+          "branch": null,
+          "revision": "a819aed0e9555268c29a62500fe6fb781ae7f57d",
+          "version": "2.1.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
