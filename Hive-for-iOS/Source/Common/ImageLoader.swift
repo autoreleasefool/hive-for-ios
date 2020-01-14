@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Combine
 
 enum ImageLoaderError: Error {
 	case invalidURL
@@ -17,51 +18,38 @@ enum ImageLoaderError: Error {
 	case invalidHTTPResponse(URL, Int)
 }
 
-typealias ImageLoaderResult = Result<(URL, UIImage), ImageLoaderError>
+typealias ImageLoaderFuture = Future<(URL, UIImage), ImageLoaderError>
 
 class ImageLoader {
-	typealias Completion = (ImageLoaderResult) -> Void
 
 	static let shared: ImageLoader = ImageLoader()
 
 	private let cache = NSCache<NSURL, UIImage>()
 	private let queryQueueLock = NSLock()
-	private var queryCompletionQueue: [String: [Completion]] = [:]
+	private var queryCompletionQueue: [String: [(Result<(URL, UIImage), ImageLoaderError>) -> Void]] = [:]
 
-	let queryIfCached: Bool
-
-	init(queryIfCached: Bool = false) {
-		self.queryIfCached = queryIfCached
+	@discardableResult
+	func fetch(string: String) -> Future<(URL, UIImage), ImageLoaderError> {
+		return fetch(url: URL(string: string))
 	}
 
 	@discardableResult
-	func fetch(string: String, completion: @escaping Completion) -> UIImage? {
-		return fetch(url: URL(string: string), completion: completion)
-	}
+	func fetch(url: URL?) -> Future<(URL, UIImage), ImageLoaderError> {
+		return Future { [unowned self] promise in
+			guard let url = url else {
+				promise(.failure(.invalidURL))
+				return
+			}
 
-	@discardableResult
-	func fetch(url: URL?, completion: @escaping Completion) -> UIImage? {
-		func finishRequest(_ result: ImageLoaderResult) {
-			DispatchQueue.main.async {
-				completion(result)
+			if let cachedImage = self.cached(url: url) {
+				promise(.success((url, cachedImage)))
+				return
+			}
+
+			DispatchQueue.global(qos: .background).async { [unowned self] in
+				self.performFetch(for: url, promise: promise)
 			}
 		}
-
-		guard let url = url else {
-			finishRequest(.failure(.invalidURL))
-			return nil
-		}
-
-		let cachedImage = cached(url: url)
-		if let cachedImage = cachedImage, !queryIfCached {
-			return cachedImage
-		}
-
-		DispatchQueue.global(qos: .background).async { [unowned self] in
-			self.performFetch(for: url, completion: finishRequest)
-		}
-
-		return cachedImage
 	}
 
 	func cached(string: String) -> UIImage? {
@@ -73,11 +61,11 @@ class ImageLoader {
 		return cache.object(forKey: url as NSURL)
 	}
 
-	private func performFetch(for url: URL, completion: @escaping Completion) {
+	private func performFetch(for url: URL, promise: @escaping (Result<(URL, UIImage), ImageLoaderError>) -> Void) {
 		defer { queryQueueLock.unlock() }
 		queryQueueLock.lock()
 
-		func finished(_ result: ImageLoaderResult) {
+		func finished(_ result: Result<(URL, UIImage), ImageLoaderError>) {
 			defer { queryQueueLock.unlock() }
 			queryQueueLock.lock()
 
@@ -88,12 +76,12 @@ class ImageLoader {
 		}
 
 		if var queryQueue = queryCompletionQueue[url.absoluteString] {
-			queryQueue.append(completion)
+			queryQueue.append(promise)
 			queryCompletionQueue[url.absoluteString] = queryQueue
 			return
 		}
 
-		queryCompletionQueue[url.absoluteString] = [completion]
+		queryCompletionQueue[url.absoluteString] = [promise]
 		URLSession.shared.dataTask(with: url) { [unowned self] data, response, error in
 			guard error == nil else {
 				finished(.failure(.networkingError(url, error!)))
@@ -119,7 +107,7 @@ class ImageLoader {
 		}.resume()
 	}
 
-	private func image(for data: Data, fromURL url: URL, completion: @escaping Completion) {
+	private func image(for data: Data, fromURL url: URL, completion: @escaping (Result<(URL, UIImage), ImageLoaderError>) -> Void) {
 		guard let image = UIImage(data: data) else {
 			completion(.failure(.invalidData(url)))
 			return
