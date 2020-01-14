@@ -8,24 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		CA40344923932603006C6BE3 /* HiveEngine in Frameworks */ = {isa = PBXBuildFile; productRef = CA40344823932603006C6BE3 /* HiveEngine */; };
-		CA40344C239327A2006C6BE3 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40344B239327A2006C6BE3 /* GameViewModel.swift */; };
-		CA403450239327C7006C6BE3 /* ARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40344F239327C7006C6BE3 /* ARGameView.swift */; };
-		CA403452239327E3006C6BE3 /* UnitDrawerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA403451239327E2006C6BE3 /* UnitDrawerView.swift */; };
-		CA40345423932862006C6BE3 /* ARGameContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40345323932862006C6BE3 /* ARGameContainer.swift */; };
-		CA40345723932C74006C6BE3 /* UnitCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40345623932C74006C6BE3 /* UnitCard.swift */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
+		CAC685F923CCF4D400B882D2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685F823CCF4D400B882D2 /* HomeView.swift */; };
+		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
+		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
+		CAC6860323CD1CA500B882D2 /* RoomList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860223CD1CA500B882D2 /* RoomList.swift */; };
+		CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */; };
+		CAC6860A23CD235100B882D2 /* RoomListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860923CD235100B882D2 /* RoomListViewModel.swift */; };
+		CAC6860E23CD236D00B882D2 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860D23CD236D00B882D2 /* Room.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CA40344B239327A2006C6BE3 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
-		CA40344F239327C7006C6BE3 /* ARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameView.swift; sourceTree = "<group>"; };
-		CA403451239327E2006C6BE3 /* UnitDrawerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitDrawerView.swift; sourceTree = "<group>"; };
-		CA40345323932862006C6BE3 /* ARGameContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameContainer.swift; sourceTree = "<group>"; };
-		CA40345623932C74006C6BE3 /* UnitCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitCard.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
@@ -33,6 +30,13 @@
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CAC685F823CCF4D400B882D2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
+		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
+		CAC6860223CD1CA500B882D2 /* RoomList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomList.swift; sourceTree = "<group>"; };
+		CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets+Extensions.swift"; sourceTree = "<group>"; };
+		CAC6860923CD235100B882D2 /* RoomListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewModel.swift; sourceTree = "<group>"; };
+		CAC6860D23CD236D00B882D2 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,42 +51,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CA40344A2393271E006C6BE3 /* Game */ = {
-			isa = PBXGroup;
-			children = (
-				CA40345523932C57006C6BE3 /* Model */,
-				CA40344E239327B7006C6BE3 /* View */,
-				CA40344D239327AF006C6BE3 /* VIewModel */,
-			);
-			path = Game;
-			sourceTree = "<group>";
-		};
-		CA40344D239327AF006C6BE3 /* VIewModel */ = {
-			isa = PBXGroup;
-			children = (
-				CA40344B239327A2006C6BE3 /* GameViewModel.swift */,
-			);
-			path = VIewModel;
-			sourceTree = "<group>";
-		};
-		CA40344E239327B7006C6BE3 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				CA40345323932862006C6BE3 /* ARGameContainer.swift */,
-				CA40344F239327C7006C6BE3 /* ARGameView.swift */,
-				CA403451239327E2006C6BE3 /* UnitDrawerView.swift */,
-				CA40345623932C74006C6BE3 /* UnitCard.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		CA40345523932C57006C6BE3 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		CA7299972393156100AD1285 = {
 			isa = PBXGroup;
 			children = (
@@ -121,7 +89,9 @@
 		CA7299B7239320EA00AD1285 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				CA40344A2393271E006C6BE3 /* Game */,
+				CAC6860423CD227A00B882D2 /* Extensions */,
+				CAC685FA23CCF65F00B882D2 /* Common */,
+				CAC685F723CCE9FA00B882D2 /* Sections */,
 				CA7299A32393156100AD1285 /* AppDelegate.swift */,
 			);
 			path = Source;
@@ -135,6 +105,66 @@
 				CA7299A72393156100AD1285 /* Experience.rcproject */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		CAC685F623CCE9F400B882D2 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				CAC685F823CCF4D400B882D2 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		CAC685F723CCE9FA00B882D2 /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				CAC6860123CD1C9B00B882D2 /* Rooms */,
+				CAC685F623CCE9F400B882D2 /* Home */,
+			);
+			path = Sections;
+			sourceTree = "<group>";
+		};
+		CAC685FA23CCF65F00B882D2 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				CAC685FD23CCF67300B882D2 /* Assets.swift */,
+				CAC685FF23CD18C100B882D2 /* Metrics.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		CAC6860123CD1C9B00B882D2 /* Rooms */ = {
+			isa = PBXGroup;
+			children = (
+				CAC6860B23CD235D00B882D2 /* Model */,
+				CAC6860723CD233F00B882D2 /* ViewModel */,
+				CAC6860223CD1CA500B882D2 /* RoomList.swift */,
+			);
+			path = Rooms;
+			sourceTree = "<group>";
+		};
+		CAC6860423CD227A00B882D2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CAC6860723CD233F00B882D2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CAC6860923CD235100B882D2 /* RoomListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CAC6860B23CD235D00B882D2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CAC6860D23CD236D00B882D2 /* Room.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -214,13 +244,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA40344C239327A2006C6BE3 /* GameViewModel.swift in Sources */,
-				CA40345423932862006C6BE3 /* ARGameContainer.swift in Sources */,
-				CA403450239327C7006C6BE3 /* ARGameView.swift in Sources */,
-				CA403452239327E3006C6BE3 /* UnitDrawerView.swift in Sources */,
+				CAC6860323CD1CA500B882D2 /* RoomList.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,
-				CA40345723932C74006C6BE3 /* UnitCard.swift in Sources */,
+				CAC685F923CCF4D400B882D2 /* HomeView.swift in Sources */,
+				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
+				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
+				CAC6860E23CD236D00B882D2 /* Room.swift in Sources */,
+				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
 				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,
+				CAC6860A23CD235100B882D2 /* RoomListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
