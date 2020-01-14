@@ -20,6 +20,7 @@
 		CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */; };
 		CAC6860A23CD235100B882D2 /* RoomListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860923CD235100B882D2 /* RoomListViewModel.swift */; };
 		CAC6860E23CD236D00B882D2 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860D23CD236D00B882D2 /* Room.swift */; };
+		CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861923CE615800B882D2 /* ImageLoader.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets+Extensions.swift"; sourceTree = "<group>"; };
 		CAC6860923CD235100B882D2 /* RoomListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListViewModel.swift; sourceTree = "<group>"; };
 		CAC6860D23CD236D00B882D2 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
+		CAC6861923CE615800B882D2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC685FD23CCF67300B882D2 /* Assets.swift */,
+				CAC6861923CE615800B882D2 /* ImageLoader.swift */,
 				CAC685FF23CD18C100B882D2 /* Metrics.swift */,
 			);
 			path = Common;
@@ -244,6 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */,
 				CAC6860323CD1CA500B882D2 /* RoomList.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,
 				CAC685F923CCF4D400B882D2 /* HomeView.swift in Sources */,
