@@ -26,7 +26,7 @@ struct HomeView: View {
 					Text("Play")
 						.font(.system(size: Metrics.Text.subtitle))
 						.foregroundColor(.text)
-						.padding(EdgeInsets(equal: Metrics.Spacing.standard))
+						.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
 				}
 
 				NavigationLink(
@@ -35,7 +35,7 @@ struct HomeView: View {
 					Text("Settings")
 						.font(.system(size: Metrics.Text.subtitle))
 						.foregroundColor(.text)
-						.padding(EdgeInsets(equal: Metrics.Spacing.standard))
+						.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
 				}
 
 				Spacer()
@@ -46,3 +46,11 @@ struct HomeView: View {
 		.navigationBarHidden(true)
 	}
 }
+
+#if DEBUG
+struct HomeView_Previews: PreviewProvider {
+	static var previews: some View {
+		HomeView()
+	}
+}
+#endif

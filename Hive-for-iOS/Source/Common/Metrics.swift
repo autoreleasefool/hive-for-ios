@@ -19,4 +19,8 @@ enum Metrics {
 		static let subtitle: CGFloat = 24
 		static let title: CGFloat = 32
 	}
+
+	enum Image {
+		static let listIcon: CGFloat = 32
+	}
 }

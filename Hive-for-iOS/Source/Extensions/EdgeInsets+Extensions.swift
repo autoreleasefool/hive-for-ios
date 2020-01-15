@@ -9,7 +9,7 @@
 import SwiftUI
 
 extension EdgeInsets {
-	init(equal: CGFloat) {
+	init(equalTo equal: CGFloat) {
 		self.init(top: equal, leading: equal, bottom: equal, trailing: equal)
 	}
 }

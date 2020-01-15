@@ -21,11 +21,19 @@ struct RoomList: View {
 	}
 
 	var body: some View {
-		List {
-			Text("Room #1")
+		List(Room.rooms) { room in
+			RoomView(room: room)
 		}
-		.listRowInsets(EdgeInsets())
+		.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.standard))
 		.navigationBarTitle(Text("Lobby"))
 		.navigationBarItems(trailing: newRoomButton)
 	}
 }
+
+#if DEBUG
+struct RoomList_Previews: PreviewProvider {
+	static var previews: some View {
+		RoomList()
+	}
+}
+#endif
