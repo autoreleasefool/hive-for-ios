@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0290D523CEF7B800A933F9 /* RoomDetail.swift */; };
+		CA0290D823CEF7FE00A933F9 /* RoomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0290D723CEF7FE00A933F9 /* RoomDetailViewModel.swift */; };
 		CA40344923932603006C6BE3 /* HiveEngine in Frameworks */ = {isa = PBXBuildFile; productRef = CA40344823932603006C6BE3 /* HiveEngine */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
-		CAC685F923CCF4D400B882D2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685F823CCF4D400B882D2 /* HomeView.swift */; };
+		CAC685F923CCF4D400B882D2 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685F823CCF4D400B882D2 /* Home.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
 		CAC6860323CD1CA500B882D2 /* RoomList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860223CD1CA500B882D2 /* RoomList.swift */; };
@@ -23,12 +25,14 @@
 		CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860F23CE3F3700B882D2 /* HostingController.swift */; };
 		CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861223CE440A00B882D2 /* HiveAPI.swift */; };
 		CAC6861523CE4C0C00B882D2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861423CE4C0C00B882D2 /* Player.swift */; };
-		CAC6861823CE4E6800B882D2 /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861723CE4E6800B882D2 /* RoomView.swift */; };
+		CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861723CE4E6800B882D2 /* RoomRow.swift */; };
 		CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861923CE615800B882D2 /* ImageLoader.swift */; };
 		CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CA0290D523CEF7B800A933F9 /* RoomDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetail.swift; sourceTree = "<group>"; };
+		CA0290D723CEF7FE00A933F9 /* RoomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewModel.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
@@ -36,7 +40,7 @@
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CAC685F823CCF4D400B882D2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		CAC685F823CCF4D400B882D2 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		CAC6860223CD1CA500B882D2 /* RoomList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomList.swift; sourceTree = "<group>"; };
@@ -46,7 +50,7 @@
 		CAC6860F23CE3F3700B882D2 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		CAC6861223CE440A00B882D2 /* HiveAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveAPI.swift; sourceTree = "<group>"; };
 		CAC6861423CE4C0C00B882D2 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		CAC6861723CE4E6800B882D2 /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
+		CAC6861723CE4E6800B882D2 /* RoomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRow.swift; sourceTree = "<group>"; };
 		CAC6861923CE615800B882D2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -123,7 +127,7 @@
 		CAC685F623CCE9F400B882D2 /* Home */ = {
 			isa = PBXGroup;
 			children = (
-				CAC685F823CCF4D400B882D2 /* HomeView.swift */,
+				CAC685F823CCF4D400B882D2 /* Home.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -171,6 +175,7 @@
 		CAC6860723CD233F00B882D2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				CA0290D723CEF7FE00A933F9 /* RoomDetailViewModel.swift */,
 				CAC6860923CD235100B882D2 /* RoomListViewModel.swift */,
 			);
 			path = ViewModel;
@@ -196,7 +201,8 @@
 		CAC6861623CE4E5D00B882D2 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CAC6861723CE4E6800B882D2 /* RoomView.swift */,
+				CAC6861723CE4E6800B882D2 /* RoomRow.swift */,
+				CA0290D523CEF7B800A933F9 /* RoomDetail.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -289,18 +295,20 @@
 				CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */,
 				CAC6860323CD1CA500B882D2 /* RoomList.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,
-				CAC685F923CCF4D400B882D2 /* HomeView.swift in Sources */,
+				CAC685F923CCF4D400B882D2 /* Home.swift in Sources */,
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
 				CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */,
 				CAC6861523CE4C0C00B882D2 /* Player.swift in Sources */,
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
+				CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Room.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
-				CAC6861823CE4E6800B882D2 /* RoomView.swift in Sources */,
+				CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */,
 				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,
 				CAC6860A23CD235100B882D2 /* RoomListViewModel.swift in Sources */,
+				CA0290D823CEF7FE00A933F9 /* RoomDetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

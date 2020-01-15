@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct Home: View {
 	var body: some View {
 		NavigationView {
 			VStack {
@@ -48,9 +48,9 @@ struct HomeView: View {
 }
 
 #if DEBUG
-struct HomeView_Previews: PreviewProvider {
+struct Home_Previews: PreviewProvider {
 	static var previews: some View {
-		HomeView()
+		Home()
 	}
 }
 #endif

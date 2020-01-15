@@ -39,8 +39,12 @@ struct HiveAPI {
 
 	// MARK: - Rooms
 
-	func rooms(completion: @escaping (HiveAPIResult<[Room]>) -> Void) {
-		completion(.success(Room.rooms))
+	func rooms(completion: @escaping (HiveAPIResult<[RoomPreview]>) -> Void) {
+		completion(.success(Room.roomPreviews))
+	}
+
+	func roomDetails(completion: @escaping (HiveAPIResult<Room>) -> Void) {
+		completion(.success(Room.testRoom))
 	}
 
 	// MARK: - Common

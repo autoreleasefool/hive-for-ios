@@ -21,8 +21,8 @@ struct RoomList: View {
 	}
 
 	var body: some View {
-		List(Room.rooms) { room in
-			RoomView(room: room)
+		List(Room.roomPreviews) { room in
+			RoomRow(room: room)
 		}
 		.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.standard))
 		.navigationBarTitle(Text("Lobby"))

@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct RoomView: View {
-	let room: Room
+struct RoomRow: View {
+	let room: RoomPreview
 
 	var body: some View {
 		HStack {
@@ -27,9 +27,9 @@ struct RoomView: View {
 }
 
 #if DEBUG
-struct RoomView_Previews: PreviewProvider {
+struct RoomRow_Previews: PreviewProvider {
 	static var previews: some View {
-		RoomView(room: Room.rooms[0])
+		RoomRow(room: Room.roomPreviews[0])
 	}
 }
 #endif
