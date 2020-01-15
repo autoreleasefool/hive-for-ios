@@ -44,9 +44,10 @@ private class RemoteImageFetcher: ObservableObject {
 
 struct RemoteImage: View {
 	@ObservedObject private var imageFetcher: RemoteImageFetcher
-	@State private var placeholder: UIImage?
+	private let placeholder: UIImage
 
-	init(url: URL?) {
+	init(url: URL?, placeholder: UIImage = UIImage()) {
+		self.placeholder = placeholder
 		self.imageFetcher = RemoteImageFetcher(url: url)
 	}
 
@@ -55,17 +56,12 @@ struct RemoteImage: View {
 			if imageFetcher.image != nil {
 				Image(uiImage: imageFetcher.image!)
 					.resizable()
-			} else if placeholder != nil {
-				Image(uiImage: placeholder!)
+			} else {
+				Image(uiImage: placeholder)
 					.resizable()
 			}
 		}
 		.onAppear(perform: imageFetcher.fetch)
 		.onDisappear(perform: imageFetcher.cancel)
-	}
-
-	public func setPlaceholder(image: UIImage) -> some View {
-		self.placeholder = image
-		return body
 	}
 }
