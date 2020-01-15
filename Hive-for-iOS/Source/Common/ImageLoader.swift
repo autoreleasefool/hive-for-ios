@@ -19,6 +19,7 @@ enum ImageLoaderError: Error {
 }
 
 typealias ImageLoaderFuture = Future<(URL, UIImage), ImageLoaderError>
+typealias ImageLoaderPromise = ImageLoaderFuture.Promise
 
 class ImageLoader {
 
@@ -26,15 +27,15 @@ class ImageLoader {
 
 	private let cache = NSCache<NSURL, UIImage>()
 	private let queryQueueLock = NSLock()
-	private var queryCompletionQueue: [String: [(Result<(URL, UIImage), ImageLoaderError>) -> Void]] = [:]
+	private var queryCompletionQueue: [String: [ImageLoaderPromise]] = [:]
 
 	@discardableResult
-	func fetch(string: String) -> Future<(URL, UIImage), ImageLoaderError> {
+	func fetch(string: String) -> ImageLoaderFuture {
 		return fetch(url: URL(string: string))
 	}
 
 	@discardableResult
-	func fetch(url: URL?) -> Future<(URL, UIImage), ImageLoaderError> {
+	func fetch(url: URL?) -> ImageLoaderFuture {
 		return Future { [unowned self] promise in
 			guard let url = url else {
 				promise(.failure(.invalidURL))
@@ -61,7 +62,7 @@ class ImageLoader {
 		return cache.object(forKey: url as NSURL)
 	}
 
-	private func performFetch(for url: URL, promise: @escaping (Result<(URL, UIImage), ImageLoaderError>) -> Void) {
+	private func performFetch(for url: URL, promise: @escaping ImageLoaderPromise) {
 		defer { queryQueueLock.unlock() }
 		queryQueueLock.lock()
 
@@ -107,7 +108,7 @@ class ImageLoader {
 		}.resume()
 	}
 
-	private func image(for data: Data, fromURL url: URL, completion: @escaping (Result<(URL, UIImage), ImageLoaderError>) -> Void) {
+	private func image(for data: Data, fromURL url: URL, completion: @escaping ImageLoaderPromise) {
 		guard let image = UIImage(data: data) else {
 			completion(.failure(.invalidData(url)))
 			return

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Combine
 
 enum HiveAPIError: LocalizedError {
 	case networkingError(Error)
@@ -33,63 +34,67 @@ enum HiveAPIError: LocalizedError {
 	}
 }
 
-typealias HiveAPIResult<Success> = Result<Success, HiveAPIError>
+typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
 struct HiveAPI {
 
 	// MARK: - Rooms
 
-	func rooms(completion: @escaping (HiveAPIResult<[RoomPreview]>) -> Void) {
-		completion(.success(Room.roomPreviews))
+	func rooms() -> Future<[RoomPreview], HiveAPIError> {
+		return Future { promise in
+			promise(.success(Room.roomPreviews))
+		}
 	}
 
-	func roomDetails(completion: @escaping (HiveAPIResult<Room>) -> Void) {
-		completion(.success(Room.testRoom))
+	func roomDetails(id: String) -> Future<Room, HiveAPIError> {
+		return Future { promise in
+			promise(.success(Room.testRoom))
+		}
 	}
 
 	// MARK: - Common
 
-	private func handleResponse<Result: Codable>(data: Data?, response: URLResponse?, error: Error?, completion: (HiveAPIResult<Result>) -> Void) {
+	private func handleResponse<Result: Codable>(data: Data?, response: URLResponse?, error: Error?, promise: HiveAPIPromise<Result>) {
 		guard error == nil else {
-			completion(.failure(.networkingError(error!)))
+			promise(.failure(.networkingError(error!)))
 			return
 		}
 
 		guard let response = response as? HTTPURLResponse else {
-			completion(.failure(.invalidResponse))
+			promise(.failure(.invalidResponse))
 			return
 		}
 
 		guard (200..<400).contains(response.statusCode) else {
-			completion(.failure(.invalidHTTPResponse(response.statusCode)))
+			promise(.failure(.invalidHTTPResponse(response.statusCode)))
 			return
 		}
 
 		let decoder = JSONDecoder()
 		guard let data = data, let result = try? decoder.decode(Result.self, from: data) else {
-			completion(.failure(.invalidData))
+			promise(.failure(.invalidData))
 			return
 		}
 
-		completion(.success(result))
+		promise(.success(result))
 	}
 
-	private func handleVoidResponse(data: Data?, response: URLResponse?, error: Error?, completion: (HiveAPIResult<Bool>) -> Void) {
+	private func handleVoidResponse(data: Data?, response: URLResponse?, error: Error?, promise: HiveAPIPromise<Bool>) {
 		guard error == nil else {
-			completion(.failure(.networkingError(error!)))
+			promise(.failure(.networkingError(error!)))
 			return
 		}
 
 		guard let response = response as? HTTPURLResponse else {
-			completion(.failure(.invalidResponse))
+			promise(.failure(.invalidResponse))
 			return
 		}
 
 		guard (200..<400).contains(response.statusCode) else {
-			completion(.failure(.invalidHTTPResponse(response.statusCode)))
+			promise(.failure(.invalidHTTPResponse(response.statusCode)))
 			return
 		}
 
-		completion(.success(true))
+		promise(.success(true))
 	}
 }
