@@ -9,6 +9,8 @@
 import SwiftUI
 
 struct RoomList: View {
+	@ObservedObject private var viewModel = RoomListViewModel()
+
 	var newRoomButton: some View {
 		NavigationLink(
 			destination: RoomList()
@@ -21,12 +23,19 @@ struct RoomList: View {
 	}
 
 	var body: some View {
-		List(Room.roomPreviews) { room in
-			RoomRow(room: room)
+		List {
+			ForEach(self.viewModel.rooms) { room in
+				NavigationLink(
+					destination: RoomDetail(roomId: room.id)
+				) {
+					RoomRow(room: room)
+				}
+			}
 		}
 		.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.standard))
 		.navigationBarTitle(Text("Lobby"))
 		.navigationBarItems(trailing: newRoomButton)
+		.onAppear { self.viewModel.fetchRooms() }
 	}
 }
 

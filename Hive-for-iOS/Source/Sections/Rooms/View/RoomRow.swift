@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RoomRow: View {
-	let room: RoomPreview
+	let room: Room
 
 	var body: some View {
 		HStack {
@@ -29,7 +29,7 @@ struct RoomRow: View {
 #if DEBUG
 struct RoomRow_Previews: PreviewProvider {
 	static var previews: some View {
-		RoomRow(room: Room.roomPreviews[0])
+		RoomRow(room: Room.rooms[0])
 	}
 }
 #endif

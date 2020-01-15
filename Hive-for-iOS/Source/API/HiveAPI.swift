@@ -38,17 +38,27 @@ typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
 struct HiveAPI {
 
+	static let shared = HiveAPI()
+
+	private init() { }
+
 	// MARK: - Rooms
 
-	func rooms() -> Future<[RoomPreview], HiveAPIError> {
+	func rooms() -> Future<[Room], HiveAPIError> {
+		print("Fetching rooms")
 		return Future { promise in
-			promise(.success(Room.roomPreviews))
+			promise(.success(Room.rooms))
 		}
 	}
 
-	func roomDetails(id: String) -> Future<Room, HiveAPIError> {
+	func room(id: String) -> Future<Room, HiveAPIError> {
+		print("Fetching room \(id)")
 		return Future { promise in
-			promise(.success(Room.testRoom))
+			if let room = Room.rooms.first(where: { $0.id == id }) {
+				promise(.success(room))
+			} else {
+				promise(.failure(.invalidData))
+			}
 		}
 	}
 

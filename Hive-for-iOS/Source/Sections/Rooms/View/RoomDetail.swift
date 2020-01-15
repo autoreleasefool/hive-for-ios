@@ -8,20 +8,25 @@
 
 import SwiftUI
 
-//struct RoomDetail: View {
-//	init(room: RoomDetail) {
-//
-//	}
-//
-//	var body: some View {
-//
-//	}
-//}
-//
-//#if DEBUG
-//struct RoomDetail_Preview: PreviewProvider {
-//	var previews: some View {
-//		RoomDetail(room: Room.rooms[0])
-//	}
-//}
-//#endif
+struct RoomDetail: View {
+	@ObservedObject var viewModel: RoomDetailViewModel
+
+	init(roomId: String) {
+		self.viewModel = RoomDetailViewModel(roomId: roomId)
+	}
+
+	var body: some View {
+		ZStack {
+			Text("Cool")
+		}
+		.onAppear { self.viewModel.fetchRoomDetails() }
+	}
+}
+
+#if DEBUG
+struct RoomDetail_Preview: PreviewProvider {
+	static var previews: some View {
+		RoomDetail(roomId: Room.rooms[0].id)
+	}
+}
+#endif
