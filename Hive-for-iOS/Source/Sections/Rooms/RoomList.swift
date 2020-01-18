@@ -23,19 +23,21 @@ struct RoomList: View {
 	}
 
 	var body: some View {
-		List {
-			ForEach(self.viewModel.rooms) { room in
-				NavigationLink(
-					destination: RoomDetail(roomId: room.id)
-				) {
-					RoomRow(room: room)
-				}
+		List(self.viewModel.rooms) { room in
+			NavigationLink(
+				destination: RoomDetail(roomId: room.id)
+			) {
+				RoomRow(room: room)
 			}
 		}
 		.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.standard))
+		.onAppear { self.viewModel.postViewAction(.onAppear) }
+		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
+		.loaf(self.$viewModel.errorLoaf)
+
 		.navigationBarTitle(Text("Lobby"))
 		.navigationBarItems(trailing: newRoomButton)
-		.onAppear { self.viewModel.fetchRooms() }
+
 	}
 }
 

@@ -29,6 +29,8 @@
 		CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861723CE4E6800B882D2 /* RoomRow.swift */; };
 		CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861923CE615800B882D2 /* ImageLoader.swift */; };
 		CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */; };
+		CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */ = {isa = PBXBuildFile; productRef = CAFA466C23D24BE7003C38AB /* Loaf */; };
+		CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA466F23D25B21003C38AB /* ViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +57,7 @@
 		CAC6861723CE4E6800B882D2 /* RoomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRow.swift; sourceTree = "<group>"; };
 		CAC6861923CE615800B882D2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
+		CAFA466F23D25B21003C38AB /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */,
 				CA40344923932603006C6BE3 /* HiveEngine in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -146,6 +150,7 @@
 		CAC685FA23CCF65F00B882D2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CAFA466E23D25B10003C38AB /* MVVM */,
 				CAC6861B23CE6AFD00B882D2 /* View */,
 				CAC685FD23CCF67300B882D2 /* Assets.swift */,
 				CAC6860F23CE3F3700B882D2 /* HostingController.swift */,
@@ -218,6 +223,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		CAFA466E23D25B10003C38AB /* MVVM */ = {
+			isa = PBXGroup;
+			children = (
+				CAFA466F23D25B21003C38AB /* ViewModel.swift */,
+			);
+			path = MVVM;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -236,6 +249,7 @@
 			name = "Hive-for-iOS";
 			packageProductDependencies = (
 				CA40344823932603006C6BE3 /* HiveEngine */,
+				CAFA466C23D24BE7003C38AB /* Loaf */,
 			);
 			productName = "Hive for iOS";
 			productReference = CA7299A02393156100AD1285 /* Hive for iOS.app */;
@@ -267,6 +281,7 @@
 			mainGroup = CA7299972393156100AD1285;
 			packageReferences = (
 				CA40344723932603006C6BE3 /* XCRemoteSwiftPackageReference "hive-engine" */,
+				CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */,
 			);
 			productRefGroup = CA7299A12393156100AD1285 /* Products */;
 			projectDirPath = "";
@@ -306,6 +321,7 @@
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
 				CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */,
+				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Room.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */,
@@ -520,6 +536,14 @@
 				minimumVersion = 2.1.0;
 			};
 		};
+		CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/josephroquedev/loaf";
+			requirement = {
+				branch = swiftui;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -527,6 +551,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA40344723932603006C6BE3 /* XCRemoteSwiftPackageReference "hive-engine" */;
 			productName = HiveEngine;
+		};
+		CAFA466C23D24BE7003C38AB /* Loaf */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */;
+			productName = Loaf;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

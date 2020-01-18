@@ -8,14 +8,31 @@
 
 import Foundation
 import Combine
+import Loaf
 import HiveEngine
 
-class RoomDetailViewModel: ObservableObject {
-	@Published var room: Room?
-	@Published var options: Set<GameState.Options> = []
+enum RoomDetailTask: Identifiable {
+	case refreshRoomDetails
+	case toggleOption(GameState.Options)
 
-	@Published var runningTask: AnyCancellable?
-	@Published var error: HiveAPIError?
+	var id: String {
+		switch self {
+		case .refreshRoomDetails: return "refreshRoomDetails"
+		case .toggleOption(let option): return "toggleOption.\(option)"
+		}
+	}
+}
+
+enum RoomDetailViewAction: BaseViewAction {
+	case onAppear
+	case onDisappear
+	case refreshRoomDetails
+}
+
+class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, ObservableObject {
+	@Published private(set) var room: Room?
+	@Published private(set) var options: Set<GameState.Options> = []
+	@Published var errorLoaf: Loaf?
 
 	private let roomId: String
 
@@ -23,21 +40,35 @@ class RoomDetailViewModel: ObservableObject {
 		self.roomId = roomId
 	}
 
-	func fetchRoomDetails() {
-		guard runningTask == nil else { return }
-		runningTask = HiveAPI
+	override func postViewAction(_ viewAction: RoomDetailViewAction) {
+		switch viewAction {
+		case .onAppear, .refreshRoomDetails: fetchRoomDetails()
+		case .onDisappear: cleanUp()
+		}
+	}
+
+	private func cleanUp() {
+		errorLoaf = nil
+		cancelAllRequests()
+	}
+
+	private func fetchRoomDetails() {
+		let request = HiveAPI
 			.shared
 			.room(id: roomId)
 			.receive(on: DispatchQueue.main)
 			.sink(
-				receiveCompletion: { result in
+				receiveCompletion: { [weak self] result in
+					self?.completeCancellable(withId: .refreshRoomDetails)
 					if case let .failure(error) = result {
-						self.error = error
+						self?.errorLoaf = error.loaf
 					}
 				},
 				receiveValue: { [weak self] room in
+					self?.errorLoaf = nil
 					self?.room = room
 				}
 			)
+		register(cancellable: request, withId: .refreshRoomDetails)
 	}
 }

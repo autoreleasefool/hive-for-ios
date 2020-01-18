@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RoomDetail: View {
-	@ObservedObject var viewModel: RoomDetailViewModel
+	@ObservedObject private var viewModel: RoomDetailViewModel
 
 	init(roomId: String) {
 		self.viewModel = RoomDetailViewModel(roomId: roomId)
@@ -19,7 +19,9 @@ struct RoomDetail: View {
 		ZStack {
 			Text("Cool")
 		}
-		.onAppear { self.viewModel.fetchRoomDetails() }
+		.loaf(self.$viewModel.errorLoaf)
+		.onAppear { self.viewModel.postViewAction(.onAppear) }
+		.onDisappear { self.viewModel.errorLoaf = nil }
 	}
 }
 

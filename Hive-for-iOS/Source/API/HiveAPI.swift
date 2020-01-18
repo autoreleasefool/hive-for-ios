@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import Loaf
 
 enum HiveAPIError: LocalizedError {
 	case networkingError(Error)
@@ -16,7 +17,7 @@ enum HiveAPIError: LocalizedError {
 	case invalidData
 	case missingData
 
-	var errorDescription: String? {
+	var errorDescription: String {
 		switch self {
 		case .networkingError:
 			return "Network error"
@@ -31,6 +32,10 @@ enum HiveAPIError: LocalizedError {
 		case .missingData:
 			return "Could not find data"
 		}
+	}
+
+	var loaf: Loaf {
+		return Loaf(self.errorDescription, state: .error)
 	}
 }
 
@@ -47,7 +52,13 @@ struct HiveAPI {
 	func rooms() -> Future<[Room], HiveAPIError> {
 		print("Fetching rooms")
 		return Future { promise in
-			promise(.success(Room.rooms))
+			if Bool.random() == true {
+				print("Returning rooms")
+				promise(.success(Room.rooms))
+			} else {
+				print("Returning error")
+				promise(.failure(.invalidResponse))
+			}
 		}
 	}
 
