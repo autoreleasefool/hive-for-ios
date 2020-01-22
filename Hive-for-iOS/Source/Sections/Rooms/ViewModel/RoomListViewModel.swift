@@ -25,8 +25,19 @@ enum RoomListViewAction: BaseViewAction {
 }
 
 class RoomListViewModel: ViewModel<RoomListViewAction, RoomListTask>, ObservableObject {
-	@Published private(set) var rooms: [Room] = []
 	@Published var errorLoaf: Loaf?
+
+	@Published private(set) var rooms: [Room] = [] {
+		willSet {
+			#warning("TODO: should remove view models for rooms that no longer exist")
+			newValue.forEach {
+				guard self.roomViewModels[$0.id] == nil else { return }
+				self.roomViewModels[$0.id] = RoomDetailViewModel(roomId: $0.id)
+			}
+		}
+	}
+
+	private(set) var roomViewModels: [String: RoomDetailViewModel] = [:]
 
 	override func postViewAction(_ viewAction: RoomListViewAction) {
 		switch viewAction {

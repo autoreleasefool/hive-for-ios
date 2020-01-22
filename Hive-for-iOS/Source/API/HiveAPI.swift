@@ -52,13 +52,14 @@ struct HiveAPI {
 	func rooms() -> Future<[Room], HiveAPIError> {
 		print("Fetching rooms")
 		return Future { promise in
-			if Bool.random() == true {
-				print("Returning rooms")
-				promise(.success(Room.rooms))
-			} else {
-				print("Returning error")
-				promise(.failure(.invalidResponse))
-			}
+			promise(.success(Room.rooms))
+//			if Bool.random() == true {
+//				print("Returning rooms")
+//				promise(.success(Room.rooms))
+//			} else {
+//				print("Returning error")
+//				promise(.failure(.invalidResponse))
+//			}
 		}
 	}
 

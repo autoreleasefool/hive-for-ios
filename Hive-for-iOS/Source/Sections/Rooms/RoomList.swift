@@ -24,9 +24,7 @@ struct RoomList: View {
 
 	var body: some View {
 		List(self.viewModel.rooms) { room in
-			NavigationLink(
-				destination: RoomDetail(roomId: room.id)
-			) {
+			NavigationLink(destination: RoomDetail(viewModel: self.viewModel.roomViewModels[room.id]!)) {
 				RoomRow(room: room)
 			}
 		}

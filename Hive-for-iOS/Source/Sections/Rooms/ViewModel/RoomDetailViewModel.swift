@@ -7,18 +7,19 @@
 //
 
 import Foundation
+import SwiftUI
 import Combine
 import Loaf
 import HiveEngine
 
 enum RoomDetailTask: Identifiable {
 	case refreshRoomDetails
-	case toggleOption(GameState.Options)
+	case modifyOptions
 
 	var id: String {
 		switch self {
 		case .refreshRoomDetails: return "refreshRoomDetails"
-		case .toggleOption(let option): return "toggleOption.\(option)"
+		case .modifyOptions: return "modifyOptions"
 		}
 	}
 }
@@ -27,14 +28,15 @@ enum RoomDetailViewAction: BaseViewAction {
 	case onAppear
 	case onDisappear
 	case refreshRoomDetails
+	case modifyOptions
 }
 
 class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, ObservableObject {
 	@Published private(set) var room: Room?
-	@Published private(set) var options: Set<GameState.Options> = []
+	@Published private(set) var options: GameOptionData = GameOptionData(options: [])
 	@Published var errorLoaf: Loaf?
 
-	private let roomId: String
+	let roomId: String
 
 	init(roomId: String) {
 		self.roomId = roomId
@@ -44,6 +46,7 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, Obse
 		switch viewAction {
 		case .onAppear, .refreshRoomDetails: fetchRoomDetails()
 		case .onDisappear: cleanUp()
+		case .modifyOptions: break
 		}
 	}
 
@@ -67,8 +70,33 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, Obse
 				receiveValue: { [weak self] room in
 					self?.errorLoaf = nil
 					self?.room = room
+					self?.options.update(with: room.options)
 				}
 			)
 		register(cancellable: request, withId: .refreshRoomDetails)
+	}
+}
+
+final class GameOptionData: ObservableObject {
+	private(set) var options: Set<GameState.Options>
+
+	init(options: Set<GameState.Options>) {
+		self.options = options
+	}
+
+	func update(with: Set<GameState.Options>) {
+		self.options = with
+	}
+
+	func binding(for option: GameState.Options) -> Binding<Bool> {
+		return Binding(get: {
+			return self.options.contains(option)
+		}, set: {
+			if $0 {
+				self.options.insert(option)
+			} else {
+				self.options.remove(option)
+			}
+		})
 	}
 }

@@ -19,7 +19,12 @@ struct RoomRow: View {
 			)
 				.scaledToFit()
 				.frame(width: Metrics.Image.listIcon, height: Metrics.Image.listIcon)
-			Text(room.host.name)
+			VStack {
+				Text(room.host.name)
+				if room.opponent != nil {
+					Text(room.opponent!.name)
+				}
+			}
 			Text(room.host.formattedELO)
 		}
 		.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
