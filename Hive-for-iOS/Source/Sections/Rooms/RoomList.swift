@@ -12,9 +12,7 @@ struct RoomList: View {
 	@ObservedObject private var viewModel = RoomListViewModel()
 
 	var newRoomButton: some View {
-		NavigationLink(
-			destination: RoomList()
-		) {
+		NavigationLink(destination: RoomList()) {
 			Image(systemName: "plus")
 				.imageScale(.large)
 				.accessibility(label: Text("Create Room"))

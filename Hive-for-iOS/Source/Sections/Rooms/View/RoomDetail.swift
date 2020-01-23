@@ -11,6 +11,7 @@ import HiveEngine
 
 struct RoomDetail: View {
 	@ObservedObject private var viewModel: RoomDetailViewModel
+	@State private var inGame = false
 
 	init(viewModel: RoomDetailViewModel) {
 		self.viewModel = viewModel
@@ -24,6 +25,12 @@ struct RoomDetail: View {
 				Text(viewModel.room!.host.name)
 				ForEach(GameState.Options.allCases, id: \.rawValue) { option in
 					Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
+				}
+				NavigationLink(
+					destination: GameContainer(isActive: self.$inGame),
+					isActive: self.$inGame
+				) {
+					Text("Start")
 				}
 			}
 		}
