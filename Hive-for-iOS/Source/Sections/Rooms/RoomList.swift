@@ -21,18 +21,20 @@ struct RoomList: View {
 	}
 
 	var body: some View {
-		List(self.viewModel.rooms) { room in
-			NavigationLink(destination: RoomDetail(viewModel: self.viewModel.roomViewModels[room.id]!)) {
-				RoomRow(room: room)
+		NavigationView {
+			List(self.viewModel.rooms) { room in
+				NavigationLink(destination: RoomDetail(viewModel: self.viewModel.roomViewModels[room.id]!)) {
+					RoomRow(room: room)
+				}
 			}
-		}
-		.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.standard))
-		.onAppear { self.viewModel.postViewAction(.onAppear) }
-		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
-		.loaf(self.$viewModel.errorLoaf)
+			.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.standard))
+			.onAppear { self.viewModel.postViewAction(.onAppear) }
+			.onDisappear { self.viewModel.postViewAction(.onDisappear) }
+	//		.loaf(self.$viewModel.errorLoaf)
 
-		.navigationBarTitle(Text("Lobby"))
-		.navigationBarItems(trailing: newRoomButton)
+			.navigationBarTitle(Text("Lobby"))
+			.navigationBarItems(trailing: newRoomButton)
+		}
 
 	}
 }

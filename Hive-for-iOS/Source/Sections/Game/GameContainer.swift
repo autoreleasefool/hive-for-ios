@@ -7,43 +7,40 @@
 //
 
 import SwiftUI
+import HiveEngine
 
 struct GameContainer: View {
-	@Binding var isActive: Bool
-	@State var arGameState = ARGameState()
+	@Binding var gameIsActive: Bool
+	@State var viewModel = ARGameViewModel()
 
 	init(isActive: Binding<Bool>) {
-		_isActive = isActive
-		print("new game container")
+		_gameIsActive = isActive
 	}
 
 	var body: some View {
-		print("Wjy is GameContainer updating")
-
-		return ZStack {
-			GameController(isActive: $isActive, arGameState: $arGameState)
+		ZStack {
+			GameController(shouldBePresented: $gameIsActive, viewModel: $viewModel)
 			GameHUD()
-				.environmentObject(arGameState)
+				.environmentObject(viewModel)
 		}
-			.edgesIgnoringSafeArea(.all)
-			.navigationBarTitle("")
-			.navigationBarHidden(true)
+		.edgesIgnoringSafeArea(.all)
+		.navigationBarTitle("")
+		.navigationBarHidden(true)
 	}
 }
 
 struct GameController: UIViewControllerRepresentable {
-	@Binding var isActive: Bool
-	@Binding var arGameState: ARGameState
+	@Binding var shouldBePresented: Bool
+	@Binding var viewModel: ARGameViewModel
 
 	func makeUIViewController(context: Context) -> HiveGameViewController {
-		print("Creating game controller")
 		let controller = HiveGameViewController()
 		controller.delegate = context.coordinator
 		return controller
 	}
 
 	func updateUIViewController(_ uiViewController: HiveGameViewController, context: Context) {
-		print("Updating game controller")
+
 	}
 
 	func makeCoordinator() -> Coordinator {
@@ -59,12 +56,11 @@ struct GameController: UIViewControllerRepresentable {
 
 		func exitGame() {
 			#warning("TODO: pop to room list")
-			parent.isActive = false
+			parent.shouldBePresented = false
 		}
 
-		func refreshInfo() {
-			print("Updating info")
-			parent.arGameState.updatePiece()
+		func showInformation(for piece: HiveEngine.Unit) {
+
 		}
 	}
 }

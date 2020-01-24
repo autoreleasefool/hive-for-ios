@@ -10,17 +10,17 @@ import SwiftUI
 import Combine
 
 struct GameHUD: View {
-	@EnvironmentObject var arGameState: ARGameState
+	@EnvironmentObject var viewModel: ARGameViewModel
 
 	var body: some View {
 		VStack {
 			Spacer()
 			HStack {
 				Image(uiImage: Assets.Image.glyph)
-				VStack {
-					Text(self.arGameState.previewedPieceName)
-					Text(self.arGameState.previewedPieceDescription)
-				}
+//				VStack {
+//					Text(self.arGameState.previewedPieceName)
+//					Text(self.arGameState.previewedPieceDescription)
+//				}
 			}
 		}
 	}

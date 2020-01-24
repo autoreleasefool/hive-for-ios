@@ -9,41 +9,16 @@
 import SwiftUI
 
 struct Home: View {
+	@State var isPlaying: Bool = false
+
 	var body: some View {
-		NavigationView {
-			VStack {
-				HStack {
-					Spacer()
-				}
-				Spacer()
-
-				Image(uiImage: Assets.Image.glyph)
-					.foregroundColor(Assets.Color.primary)
-
-				NavigationLink(
-					destination: RoomList()
-				) {
-					Text("Play")
-						.font(.system(size: Metrics.Text.subtitle))
-						.foregroundColor(.text)
-						.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
-				}
-
-				NavigationLink(
-					destination: RoomList()
-				) {
-					Text("Settings")
-						.font(.system(size: Metrics.Text.subtitle))
-						.foregroundColor(.text)
-						.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
-				}
-
-				Spacer()
+		Group {
+			if isPlaying {
+				RoomList()
+			} else {
+				Welcome(isPlaying: $isPlaying)
 			}
-			.background(Assets.Color.background)
-			.edgesIgnoringSafeArea(.all)
 		}
-		.navigationBarHidden(true)
 	}
 }
 

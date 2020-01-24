@@ -44,7 +44,8 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, Obse
 
 	override func postViewAction(_ viewAction: RoomDetailViewAction) {
 		switch viewAction {
-		case .onAppear, .refreshRoomDetails: fetchRoomDetails()
+		case .onAppear, .refreshRoomDetails:
+			fetchRoomDetails()
 		case .onDisappear: cleanUp()
 		case .modifyOptions: break
 		}
