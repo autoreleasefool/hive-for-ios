@@ -40,7 +40,8 @@ public struct RefreshableListInternal<Content: View>: View {
 		showRefreshView: Binding<Bool>,
 		pullStatus: Binding<CGFloat>,
 		onRefresh: @escaping () -> Void,
-		@ViewBuilder content: @escaping () -> Content
+		@ViewBuilder
+		content: @escaping () -> Content
 	) {
 		self._showRefreshView = showRefreshView
 		self._pullStatus = pullStatus
@@ -49,7 +50,7 @@ public struct RefreshableListInternal<Content: View>: View {
 	}
 
 	public var body: some View {
-		List{
+		List {
 			PullToRefreshView(showRefreshView: $showRefreshView, pullStatus: $pullStatus)
 			content()
 		}
@@ -61,7 +62,7 @@ public struct RefreshableListInternal<Content: View>: View {
 	}
 
 	func refresh(offset: CGFloat) {
-		if (offset > 185 && self.showRefreshView == false) {
+		if offset > 185 && self.showRefreshView == false {
 			self.showRefreshView = true
 			DispatchQueue.main.async {
 				self.onRefresh()
@@ -78,7 +79,7 @@ struct Spinner: View {
 	@Binding var percentage: CGFloat
 
 	var body: some View {
-		GeometryReader { geometry in
+		GeometryReader { _ in
 			ForEach(1...10, id: \.self) { i in
 				Rectangle()
 					.fill(Color.gray)
@@ -99,7 +100,7 @@ struct RefreshView: View {
 	@Binding var status: CGFloat
 
 	var body: some View {
-		HStack{
+		HStack {
 			Spacer()
 			VStack(alignment: .center) {
 				if !isRefreshing {

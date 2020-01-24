@@ -23,7 +23,7 @@ struct Home: View {
 }
 
 #if DEBUG
-struct Home_Previews: PreviewProvider {
+struct HomePreview: PreviewProvider {
 	static var previews: some View {
 		Home()
 	}

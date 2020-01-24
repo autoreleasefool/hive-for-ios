@@ -308,6 +308,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA7299B42393156400AD1285 /* Build configuration list for PBXNativeTarget "Hive-for-iOS" */;
 			buildPhases = (
+				CABDFCDC23DB935700C697AD /* ShellScript */,
 				CA72999C2393156100AD1285 /* Sources */,
 				CA72999D2393156100AD1285 /* Frameworks */,
 				CA72999E2393156100AD1285 /* Resources */,
@@ -374,6 +375,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CABDFCDC23DB935700C697AD /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CA72999C2393156100AD1285 /* Sources */ = {

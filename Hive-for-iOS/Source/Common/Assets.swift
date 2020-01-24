@@ -17,7 +17,7 @@ enum Assets {
 		static let glyph = UIImage(named: "Glyph")!
 	}
 
-	// MARK - Colors
+	// MARK: - Colors
 
 	enum Color {
 		case primary

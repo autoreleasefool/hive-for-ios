@@ -39,7 +39,7 @@ struct RoomList: View {
 }
 
 #if DEBUG
-struct RoomList_Previews: PreviewProvider {
+struct RoomListPreview: PreviewProvider {
 	static var previews: some View {
 		RoomList()
 	}

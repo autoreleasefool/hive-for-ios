@@ -42,7 +42,7 @@ struct RoomDetail: View {
 }
 
 #if DEBUG
-struct RoomDetail_Preview: PreviewProvider {
+struct RoomDetailPreview: PreviewProvider {
 	static var previews: some View {
 		RoomDetail(viewModel: RoomDetailViewModel(roomId: Room.rooms[0].id))
 	}
