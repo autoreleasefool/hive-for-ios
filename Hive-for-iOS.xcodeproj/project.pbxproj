@@ -33,6 +33,7 @@
 		CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA466F23D25B21003C38AB /* ViewModel.swift */; };
 		CAFA467423D8B3B1003C38AB /* GameContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA467323D8B3B1003C38AB /* GameContainer.swift */; };
 		CAFA467623D8BCEF003C38AB /* HiveGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA467523D8BCEF003C38AB /* HiveGameViewController.swift */; };
+		CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		CAFA466F23D25B21003C38AB /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		CAFA467323D8B3B1003C38AB /* GameContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameContainer.swift; sourceTree = "<group>"; };
 		CAFA467523D8BCEF003C38AB /* HiveGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameViewController.swift; sourceTree = "<group>"; };
+		CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */,
+				CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -338,6 +341,7 @@
 				CAC685F923CCF4D400B882D2 /* Home.swift in Sources */,
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
 				CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */,
+				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
 				CAC6861523CE4C0C00B882D2 /* Player.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveGameViewController.swift in Sources */,
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
