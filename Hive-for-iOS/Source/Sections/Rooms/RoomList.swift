@@ -35,7 +35,6 @@ struct RoomList: View {
 			.navigationBarTitle(Text("Lobby"))
 			.navigationBarItems(trailing: newRoomButton)
 		}
-
 	}
 }
 

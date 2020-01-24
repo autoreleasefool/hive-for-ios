@@ -10,7 +10,15 @@ import UIKit
 
 enum Theme {
 	static func applyPrimaryTheme() {
-		UINavigationBar.appearance().backgroundColor = Assets.Color.primary.uiColor
+		let coloredAppearance = UINavigationBarAppearance()
+		coloredAppearance.configureWithOpaqueBackground()
+		coloredAppearance.backgroundColor = Assets.Color.primary.uiColor
+		coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+		coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+
+		UINavigationBar.appearance().standardAppearance = coloredAppearance
+		UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
+		UINavigationBar.appearance().tintColor = .white
 
 		UITableView.appearance().backgroundColor = Assets.Color.background.uiColor
 		UITableViewCell.appearance().backgroundColor = Assets.Color.background.uiColor
