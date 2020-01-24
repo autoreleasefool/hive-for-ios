@@ -11,6 +11,7 @@ import RealityKit
 
 protocol HiveGameDelegate: class {
 	func exitGame()
+	func refreshInfo()
 }
 
 class HiveGameViewController: UIViewController {
@@ -29,7 +30,15 @@ class HiveGameViewController: UIViewController {
 	override func viewDidLoad() {
 		setupView()
 
-		DispatchQueue.main.asyncAfter(deadline: .now() + 3) { [weak self] in
+		DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+			self?.delegate?.refreshInfo()
+		}
+
+		DispatchQueue.main.asyncAfter(deadline: .now() + 8) { [weak self] in
+			self?.delegate?.refreshInfo()
+		}
+
+		DispatchQueue.main.asyncAfter(deadline: .now() + 12) { [weak self] in
 			self?.delegate?.exitGame()
 		}
 	}

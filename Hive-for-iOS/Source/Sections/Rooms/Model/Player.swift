@@ -23,7 +23,7 @@ struct Player: Identifiable, Codable {
 	}
 
 	static let players: [Player] = [
-		Player(id: 0, name: "Joseph", elo: 4324.98022, avatar: "https:fmekw/fw/fewavatars1.githubusercontent.com/u/6619581?v=4"),
+		Player(id: 0, name: "Joseph", elo: 4324.98022, avatar: "https://avatars1.githubusercontent.com/u/6619581?v=4"),
 		Player(id: 1, name: "Jordan", elo: 798, avatar: "https://avatars1.githubusercontent.com/u/6619581?v=4"),
 		Player(id: 2, name: "Audriana", elo: 10.02382, avatar: "https://avatars1.githubusercontent.com/u/6619581?v=4"),
 		Player(id: 3, name: "Pamela", elo: 100.432, avatar: "https://avatars1.githubusercontent.com/u/6619581?v=4"),

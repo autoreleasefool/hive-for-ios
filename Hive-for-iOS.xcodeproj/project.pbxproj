@@ -33,7 +33,10 @@
 		CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA466F23D25B21003C38AB /* ViewModel.swift */; };
 		CAFA467423D8B3B1003C38AB /* GameContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA467323D8B3B1003C38AB /* GameContainer.swift */; };
 		CAFA467623D8BCEF003C38AB /* HiveGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA467523D8BCEF003C38AB /* HiveGameViewController.swift */; };
+		CAFA469A23DAD13B003C38AB /* GameControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469923DAD13B003C38AB /* GameControllerViewModel.swift */; };
+		CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469B23DAD215003C38AB /* GameHUD.swift */; };
 		CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */; };
+		CAFA46A123DAD4A9003C38AB /* ARGameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA46A023DAD4A9003C38AB /* ARGameState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,7 +66,10 @@
 		CAFA466F23D25B21003C38AB /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		CAFA467323D8B3B1003C38AB /* GameContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameContainer.swift; sourceTree = "<group>"; };
 		CAFA467523D8BCEF003C38AB /* HiveGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameViewController.swift; sourceTree = "<group>"; };
+		CAFA469923DAD13B003C38AB /* GameControllerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameControllerViewModel.swift; sourceTree = "<group>"; };
+		CAFA469B23DAD215003C38AB /* GameHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHUD.swift; sourceTree = "<group>"; };
 		CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		CAFA46A023DAD4A9003C38AB /* ARGameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -251,9 +257,36 @@
 		CAFA467223D8B39F003C38AB /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				CAFA469F23DAD49A003C38AB /* Model */,
+				CAFA469723DAD114003C38AB /* View */,
+				CAFA469823DAD11D003C38AB /* ViewModel */,
 				CAFA467323D8B3B1003C38AB /* GameContainer.swift */,
 			);
 			path = Game;
+			sourceTree = "<group>";
+		};
+		CAFA469723DAD114003C38AB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAFA469B23DAD215003C38AB /* GameHUD.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAFA469823DAD11D003C38AB /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CAFA469923DAD13B003C38AB /* GameControllerViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CAFA469F23DAD49A003C38AB /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CAFA46A023DAD4A9003C38AB /* ARGameState.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -344,14 +377,17 @@
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
 				CAC6861523CE4C0C00B882D2 /* Player.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveGameViewController.swift in Sources */,
+				CAFA469A23DAD13B003C38AB /* GameControllerViewModel.swift in Sources */,
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
 				CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */,
 				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Room.swift in Sources */,
+				CAFA46A123DAD4A9003C38AB /* ARGameState.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */,
+				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
 				CAFA467423D8B3B1003C38AB /* GameContainer.swift in Sources */,
 				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,
 				CAC6860A23CD235100B882D2 /* RoomListViewModel.swift in Sources */,
