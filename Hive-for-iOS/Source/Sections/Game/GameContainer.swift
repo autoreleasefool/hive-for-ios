@@ -59,8 +59,8 @@ struct GameController: UIViewControllerRepresentable {
 			parent.shouldBePresented = false
 		}
 
-		func showInformation(for piece: HiveEngine.Unit) {
-
+		func show(information: GameInformation) {
+			parent.viewModel.informationToPresent = information
 		}
 	}
 }

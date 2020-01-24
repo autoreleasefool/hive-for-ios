@@ -13,14 +13,22 @@ struct GameHUD: View {
 	@EnvironmentObject var viewModel: ARGameViewModel
 
 	var body: some View {
-		VStack {
-			Spacer()
-			HStack {
-				Image(uiImage: Assets.Image.glyph)
-//				VStack {
-//					Text(self.arGameState.previewedPieceName)
-//					Text(self.arGameState.previewedPieceDescription)
-//				}
+		GeometryReader { geometry in
+			BottomSheet(
+				isOpen: self.viewModel.hasInformation,
+				minHeight: 0,
+				maxHeight: geometry.size.height * 0.5
+			) {
+				if self.viewModel.hasInformation.wrappedValue {
+					HStack {
+						Image(uiImage: Assets.Image.glyph)
+							.resizable()
+							.frame(width: Metrics.Spacing.standard, height: Metrics.Spacing.standard)
+						Text(self.viewModel.informationToPresent!.text)
+					}
+				} else {
+					EmptyView()
+				}
 			}
 		}
 	}

@@ -20,6 +20,7 @@
 		CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD123DB7FBC00C697AD /* Theme.swift */; };
 		CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD823DB89AA00C697AD /* Welcome.swift */; };
 		CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCDD23DBA17200C697AD /* BottomSheet.swift */; };
+		CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCE023DBAC5700C697AD /* GameInformation.swift */; };
 		CAC685F923CCF4D400B882D2 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685F823CCF4D400B882D2 /* Home.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
@@ -57,6 +58,7 @@
 		CABDFCD123DB7FBC00C697AD /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		CABDFCD823DB89AA00C697AD /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 		CABDFCDD23DBA17200C697AD /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
+		CABDFCE023DBAC5700C697AD /* GameInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInformation.swift; sourceTree = "<group>"; };
 		CAC685F823CCF4D400B882D2 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
@@ -155,6 +157,14 @@
 				CABDFCD823DB89AA00C697AD /* Welcome.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		CABDFCDF23DBAC3E00C697AD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CABDFCE023DBAC5700C697AD /* GameInformation.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		CAC685F623CCE9F400B882D2 /* Home */ = {
@@ -275,6 +285,7 @@
 		CAFA467223D8B39F003C38AB /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				CABDFCDF23DBAC3E00C697AD /* Model */,
 				CAFA469723DAD114003C38AB /* View */,
 				CAFA469823DAD11D003C38AB /* ViewModel */,
 				CAFA467323D8B3B1003C38AB /* GameContainer.swift */,
@@ -408,6 +419,7 @@
 				CAC6861523CE4C0C00B882D2 /* Player.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveGameViewController.swift in Sources */,
 				CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */,
+				CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */,
 				CAFA469A23DAD13B003C38AB /* ARGameViewModel.swift in Sources */,
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,

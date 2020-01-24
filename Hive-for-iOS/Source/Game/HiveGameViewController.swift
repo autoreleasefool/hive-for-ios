@@ -12,7 +12,7 @@ import HiveEngine
 
 protocol HiveGameDelegate: class {
 	func exitGame()
-	func showInformation(for piece: HiveEngine.Unit)
+	func show(information: GameInformation)
 }
 
 class HiveGameViewController: UIViewController {
@@ -31,7 +31,15 @@ class HiveGameViewController: UIViewController {
 	override func viewDidLoad() {
 		setupView()
 
-		DispatchQueue.main.asyncAfter(deadline: .now() + 12) { [weak self] in
+		DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+			self?.delegate?.show(information: .unit(.init(class: .ant, owner: .white, index: 1)))
+		}
+
+		DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+			self?.delegate?.show(information: .unit(.init(class: .queen, owner: .black, index: 1)))
+		}
+
+		DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
 			self?.delegate?.exitGame()
 		}
 	}
