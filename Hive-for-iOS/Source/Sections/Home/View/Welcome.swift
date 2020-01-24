@@ -19,25 +19,25 @@ struct Welcome: View {
 			Spacer()
 
 			Image(uiImage: Assets.Image.glyph)
-				.foregroundColor(.primary)
+				.foregroundColor(Assets.Color.primary.color)
 
 			Button("Play") {
 				self.isPlaying = true
 			}
-				.font(.system(size: .subtitle))
-				.foregroundColor(.text)
-				.padding(EdgeInsets(equalTo: .standard))
+				.font(.system(size: Metrics.Text.subtitle))
+				.foregroundColor(Assets.Color.text.color)
+				.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
 
 			Button("Settings") {
 				self.isPlaying = true
 			}
-				.font(.system(size: .subtitle))
-				.foregroundColor(.text)
-				.padding(EdgeInsets(equalTo: .standard))
+				.font(.system(size: Metrics.Text.subtitle))
+				.foregroundColor(Assets.Color.text.color)
+				.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
 
 			Spacer()
 		}
-		.background(.background)
+		.background(Assets.Color.background.color)
 		.edgesIgnoringSafeArea(.all)
 	}
 }

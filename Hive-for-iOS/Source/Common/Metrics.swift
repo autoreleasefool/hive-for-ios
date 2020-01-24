@@ -9,18 +9,18 @@
 import UIKit
 
 enum Metrics {
-	enum Spacing: CGFloat {
-		case standard = 16
+	enum Spacing {
+		static let standard: CGFloat = 16
 	}
 
-	enum Text: CGFloat {
-		case caption = 12
-		case body = 16
-		case subtitle = 24
-		case title = 32
+	enum Text {
+		static let caption: CGFloat = 12
+		static let body: CGFloat = 16
+		static let subtitle: CGFloat = 24
+		static let title: CGFloat = 32
 	}
 
-	enum Image: CGFloat {
-		case listIcon = 32
+	enum Image {
+		static let listIcon: CGFloat = 32
 	}
 }

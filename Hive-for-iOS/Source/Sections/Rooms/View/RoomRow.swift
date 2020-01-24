@@ -18,7 +18,7 @@ struct RoomRow: View {
 				placeholder: Assets.Image.glyph
 			)
 				.scaledToFit()
-				.frame(width: Metrics.Image.listIcon.rawValue, height: Metrics.Image.listIcon.rawValue)
+				.frame(width: Metrics.Image.listIcon, height: Metrics.Image.listIcon)
 			VStack {
 				Text(room.host.name)
 				if room.opponent != nil {
