@@ -22,6 +22,8 @@ enum Assets {
 	enum Color {
 		case primary
 		case background
+		case backgroundLight
+		case backgroundDark
 
 		case text
 		case textSecondary
@@ -30,6 +32,8 @@ enum Assets {
 			switch self {
 			case .primary: return UIColor(named: "Primary")!
 			case .background: return UIColor(named: "Background")!
+			case .backgroundLight: return UIColor(named: "BackgroundLight")!
+			case .backgroundDark: return UIColor(named: "BackgroundDark")!
 			case .text: return UIColor(named: "Text")!
 			case .textSecondary: return UIColor(named: "TextSecondary")!
 			}
