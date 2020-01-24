@@ -17,10 +17,12 @@ protocol HiveGameDelegate: class {
 
 class HiveGameViewController: UIViewController {
 	private var arView = ARView(frame: .zero)
+	private var gameState: GameState
 
 	weak var delegate: HiveGameDelegate?
 
-	init() {
+	init(state: GameState) {
+		self.gameState = state
 		super.init(nibName: nil, bundle: nil)
 	}
 

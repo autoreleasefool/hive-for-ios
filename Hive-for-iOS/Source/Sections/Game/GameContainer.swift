@@ -13,8 +13,9 @@ struct GameContainer: View {
 	@Binding var gameIsActive: Bool
 	@State var viewModel = ARGameViewModel()
 
-	init(isActive: Binding<Bool>) {
+	init(isActive: Binding<Bool>, state: GameState) {
 		_gameIsActive = isActive
+		viewModel.gameState = state
 	}
 
 	var body: some View {
@@ -34,7 +35,7 @@ struct GameController: UIViewControllerRepresentable {
 	@Binding var viewModel: ARGameViewModel
 
 	func makeUIViewController(context: Context) -> HiveGameViewController {
-		let controller = HiveGameViewController()
+		let controller = HiveGameViewController(state: viewModel.gameState)
 		controller.delegate = context.coordinator
 		return controller
 	}

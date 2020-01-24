@@ -38,6 +38,10 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, Obse
 
 	let roomId: String
 
+	var gameState: GameState {
+		return GameState(options: self.options.options)
+	}
+
 	init(roomId: String) {
 		self.roomId = roomId
 	}

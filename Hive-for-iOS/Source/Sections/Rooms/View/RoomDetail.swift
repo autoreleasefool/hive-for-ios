@@ -27,7 +27,7 @@ struct RoomDetail: View {
 					Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
 				}
 				NavigationLink(
-					destination: GameContainer(isActive: self.$inGame),
+					destination: GameContainer(isActive: self.$inGame, state: self.viewModel.gameState),
 					isActive: self.$inGame
 				) {
 					Text("Start")

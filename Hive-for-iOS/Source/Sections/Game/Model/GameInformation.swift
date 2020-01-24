@@ -11,9 +11,9 @@ import HiveEngine
 enum GameInformation {
 	case unit(HiveEngine.Unit)
 
-	var text: String {
+	func description(in state: GameState) -> String {
 		switch self {
-		case .unit(let unit): return unit.description
+		case .unit(let unit): return "\(unit.description) - \(state.position(of: unit))"
 		}
 	}
 }

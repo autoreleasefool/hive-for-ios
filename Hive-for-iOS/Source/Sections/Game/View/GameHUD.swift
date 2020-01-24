@@ -24,7 +24,7 @@ struct GameHUD: View {
 						Image(uiImage: Assets.Image.glyph)
 							.resizable()
 							.frame(width: Metrics.Spacing.standard, height: Metrics.Spacing.standard)
-						Text(self.viewModel.informationToPresent!.text)
+						Text(self.viewModel.informationToPresent!.description(in: self.viewModel.gameState))
 					}
 				} else {
 					EmptyView()
