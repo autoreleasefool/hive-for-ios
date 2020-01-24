@@ -16,6 +16,8 @@
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
+		CABDFCD423DB82D900C697AD /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD323DB82D900C697AD /* View+Extensions.swift */; };
+		CABDFCDB23DB8B9B00C697AD /* Font+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCDA23DB8B9B00C697AD /* Font+Extensions.swift */; };
 		CAC685F923CCF4D400B882D2 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685F823CCF4D400B882D2 /* Home.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
@@ -50,6 +52,8 @@
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CABDFCD323DB82D900C697AD /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		CABDFCDA23DB8B9B00C697AD /* Font+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extensions.swift"; sourceTree = "<group>"; };
 		CAC685F823CCF4D400B882D2 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
@@ -189,7 +193,9 @@
 			isa = PBXGroup;
 			children = (
 				CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */,
+				CABDFCDA23DB8B9B00C697AD /* Font+Extensions.swift */,
 				CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */,
+				CABDFCD323DB82D900C697AD /* View+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -369,11 +375,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */,
+				CABDFCD423DB82D900C697AD /* View+Extensions.swift in Sources */,
 				CAC6860323CD1CA500B882D2 /* RoomList.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,
 				CAC685F923CCF4D400B882D2 /* Home.swift in Sources */,
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
 				CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */,
+				CABDFCDB23DB8B9B00C697AD /* Font+Extensions.swift in Sources */,
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
 				CAC6861523CE4C0C00B882D2 /* Player.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveGameViewController.swift in Sources */,

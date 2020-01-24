@@ -20,11 +20,24 @@ enum Assets {
 	// MARK - Colors
 
 	enum Color {
-		static let primary = SwiftUI.Color(UIColor(named: "Primary")!)
-		static let background = SwiftUI.Color(UIColor(named: "Background")!)
+		case primary
+		case background
 
-		static let text = SwiftUI.Color(UIColor(named: "Text")!)
-		static let textSecondary = SwiftUI.Color(UIColor(named: "TextSecondary")!)
+		case text
+		case textSecondary
+
+		var uiColor: UIColor {
+			switch self {
+			case .primary: return UIColor(named: "Primary")!
+			case .background: return UIColor(named: "Background")!
+			case .text: return UIColor(named: "Text")!
+			case .textSecondary: return UIColor(named: "TextSecondary")!
+			}
+		}
+
+		var color: SwiftUI.Color {
+			return SwiftUI.Color(self.uiColor)
+		}
 	}
 }
 
