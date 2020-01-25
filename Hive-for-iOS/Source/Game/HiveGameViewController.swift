@@ -8,6 +8,7 @@
 
 import UIKit
 import RealityKit
+import ARKit
 import HiveEngine
 
 protocol HiveGameDelegate: class {
@@ -17,12 +18,11 @@ protocol HiveGameDelegate: class {
 
 class HiveGameViewController: UIViewController {
 	private var arView = ARView(frame: .zero)
-	private var gameState: GameState
-
+	private var gameController: ARGameController
 	weak var delegate: HiveGameDelegate?
 
 	init(state: GameState) {
-		self.gameState = state
+		self.gameController = ARGameController(state: state)
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -31,7 +31,21 @@ class HiveGameViewController: UIViewController {
 	}
 
 	override func viewDidLoad() {
-		setupView()
+		super.viewDidLoad()
+
+		view.addSubview(arView)
+		arView.constrainToFillView(view)
+
+		let arConfiguration = ARWorldTrackingConfiguration()
+		arConfiguration.planeDetection = .horizontal
+		arView.session.run(arConfiguration)
+
+		Experience.lo
+
+		if let hiveAnchor = try? Experience.loadHiveGame() {
+			arView.scene.anchors.append(hiveAnchor)
+		}
+
 
 		DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
 			self?.delegate?.show(information: .unit(.init(class: .ant, owner: .white, index: 1)))
@@ -47,7 +61,6 @@ class HiveGameViewController: UIViewController {
 	}
 
 	private func setupView() {
-		view.addSubview(arView)
-		arView.constrainToFillView(view)
+
 	}
 }

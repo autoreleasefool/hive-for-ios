@@ -21,6 +21,7 @@
 		CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD823DB89AA00C697AD /* Welcome.swift */; };
 		CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCDD23DBA17200C697AD /* BottomSheet.swift */; };
 		CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCE023DBAC5700C697AD /* GameInformation.swift */; };
+		CABDFD0423DC7A0D00C697AD /* ARGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0323DC7A0D00C697AD /* ARGameController.swift */; };
 		CAC685F923CCF4D400B882D2 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685F823CCF4D400B882D2 /* Home.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
@@ -59,6 +60,7 @@
 		CABDFCD823DB89AA00C697AD /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
 		CABDFCDD23DBA17200C697AD /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
 		CABDFCE023DBAC5700C697AD /* GameInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInformation.swift; sourceTree = "<group>"; };
+		CABDFD0323DC7A0D00C697AD /* ARGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameController.swift; sourceTree = "<group>"; };
 		CAC685F823CCF4D400B882D2 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
@@ -278,6 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				CAFA467523D8BCEF003C38AB /* HiveGameViewController.swift */,
+				CABDFD0323DC7A0D00C697AD /* ARGameController.swift */,
 			);
 			path = Game;
 			sourceTree = "<group>";
@@ -432,6 +435,7 @@
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */,
+				CABDFD0423DC7A0D00C697AD /* ARGameController.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
 				CAFA467423D8B3B1003C38AB /* GameContainer.swift in Sources */,
 				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,

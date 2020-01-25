@@ -20,7 +20,7 @@ struct GameContainer: View {
 
 	var body: some View {
 		ZStack {
-			GameController(shouldBePresented: $gameIsActive, viewModel: $viewModel)
+			GameViewController(shouldBePresented: $gameIsActive, viewModel: $viewModel)
 			GameHUD()
 				.environmentObject(viewModel)
 		}
@@ -30,7 +30,7 @@ struct GameContainer: View {
 	}
 }
 
-struct GameController: UIViewControllerRepresentable {
+struct GameViewController: UIViewControllerRepresentable {
 	@Binding var shouldBePresented: Bool
 	@Binding var viewModel: ARGameViewModel
 
@@ -49,9 +49,9 @@ struct GameController: UIViewControllerRepresentable {
 	}
 
 	class Coordinator: HiveGameDelegate {
-		var parent: GameController
+		var parent: GameViewController
 
-		init(_ parent: GameController) {
+		init(_ parent: GameViewController) {
 			self.parent = parent
 		}
 
