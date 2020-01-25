@@ -21,6 +21,10 @@ enum Theme {
 		UINavigationBar.appearance().tintColor = .white
 
 		UITableView.appearance().backgroundColor = Assets.Color.background.uiColor
-		UITableViewCell.appearance().backgroundColor = Assets.Color.background.uiColor
+		UITableViewCell.appearance().backgroundColor = Assets.Color.backgroundLight.uiColor
+
+		let backgroundView = UIView()
+		backgroundView.backgroundColor = Assets.Color.background.uiColor
+		UITableViewCell.appearance().selectedBackgroundView = backgroundView
 	}
 }
