@@ -37,7 +37,10 @@ struct RoomDetail: View {
 	}
 
 	private func expansionSection(options: GameOptionData) -> some View {
-		VStack {
+		VStack(alignment: .leading) {
+			Text("Expansions")
+				.font(.system(size: Metrics.Text.subtitle))
+				.foregroundColor(.text)
 			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
 					.foregroundColor(Assets.Color.text.color)
@@ -46,7 +49,10 @@ struct RoomDetail: View {
 	}
 
 	private func otherOptionsSection(options: GameOptionData) -> some View {
-		VStack {
+		VStack(alignment: .leading) {
+			Text("Other options")
+				.font(.system(size: Metrics.Text.subtitle))
+				.foregroundColor(.text)
 			ForEach(GameState.Options.nonExpansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
 					.foregroundColor(Assets.Color.text.color)
