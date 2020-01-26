@@ -26,14 +26,14 @@ struct Welcome: View {
 			}
 				.font(.system(size: Metrics.Text.subtitle))
 				.foregroundColor(Assets.Color.text.color)
-				.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
+				.padding(Metrics.Spacing.standard)
 
 			Button("Settings") {
 				self.isPlaying = true
 			}
 				.font(.system(size: Metrics.Text.subtitle))
 				.foregroundColor(Assets.Color.text.color)
-				.padding(EdgeInsets(equalTo: Metrics.Spacing.standard))
+				.padding(Metrics.Spacing.standard)
 
 			Spacer()
 		}

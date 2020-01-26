@@ -17,34 +17,77 @@ struct RoomDetail: View {
 		self.viewModel = viewModel
 	}
 
+	var startButton: some View {
+		NavigationLink(
+			destination: GameContainer(isActive: self.$inGame, state: self.viewModel.gameState),
+			isActive: self.$inGame
+		) {
+			Text("Start")
+		}
+	}
+
+	private func playerSection(room: Room) -> some View {
+		HStack(spacing: 0) {
+			Spacer()
+			PlayerPreview(room.host, iconSize: Metrics.Image.larger)
+			Spacer()
+			PlayerPreview(room.host, alignment: .trailing, iconSize: Metrics.Image.larger)
+			Spacer()
+		}
+	}
+
+	private func expansionSection(options: GameOptionData) -> some View {
+		VStack {
+			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
+				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
+					.foregroundColor(Assets.Color.text.color)
+			}
+		}
+	}
+
+	private func otherOptionsSection(options: GameOptionData) -> some View {
+		VStack {
+			ForEach(GameState.Options.nonExpansions, id: \.rawValue) { option in
+				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
+					.foregroundColor(Assets.Color.text.color)
+			}
+		}
+	}
+
 	var body: some View {
-		return List {
-			if viewModel.room == nil {
+		List {
+			if self.viewModel.room == nil {
 				Text("Loading")
 			} else {
-				Text(viewModel.room!.host.name)
-				ForEach(GameState.Options.allCases, id: \.rawValue) { option in
-					Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
-				}
-				NavigationLink(
-					destination: GameContainer(isActive: self.$inGame, state: self.viewModel.gameState),
-					isActive: self.$inGame
-				) {
-					Text("Start")
-				}
+				self.playerSection(room: self.viewModel.room!)
+					.padding(.vertical, Metrics.Spacing.standard)
+				self.expansionSection(options: self.viewModel.options)
+				self.otherOptionsSection(options: self.viewModel.options)
 			}
 		}
 		.navigationBarTitle(Text("Room \(viewModel.roomId)"), displayMode: .inline)
+		.navigationBarItems(trailing: startButton)
 		.onAppear { self.viewModel.postViewAction(.onAppear) }
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 		.loaf(self.$viewModel.errorLoaf)
 	}
 }
 
+private extension GameState.Options {
+	var preview: String? {
+		switch self {
+		case .mosquito: return "M"
+		case .ladyBug: return "L"
+		case .pillBug: return "P"
+		default: return nil
+		}
+	}
+}
+
 #if DEBUG
 struct RoomDetailPreview: PreviewProvider {
 	static var previews: some View {
-		RoomDetail(viewModel: RoomDetailViewModel(roomId: Room.rooms[0].id))
+		RoomDetail(viewModel: RoomDetailViewModel(room: Room.rooms[0]))
 	}
 }
 #endif

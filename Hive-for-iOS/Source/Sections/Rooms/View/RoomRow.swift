@@ -10,29 +10,11 @@ import SwiftUI
 import HiveEngine
 
 struct RoomRow: View {
-	private static let previewableOptions: [GameState.Options] = [.ladyBug, .mosquito, .pillBug]
-
 	let room: Room
-
-	private func playerPreview(for player: HivePlayer?) -> some View {
-		HStack(spacing: Metrics.Spacing.smaller) {
-			HexImage(url: player?.avatarUrl, placeholder: Assets.Image.joseph)
-				.frame(width: Metrics.Image.listIcon, height: Metrics.Image.listIcon)
-			VStack(alignment: .leading) {
-				Text(player?.formattedELO ?? "N/A")
-					.font(.system(size: Metrics.Text.body))
-					.foregroundColor(Assets.Color.text.color)
-					.frame(minWidth: 64, alignment: .leading)
-				Text("ELO")
-					.font(.system(size: Metrics.Text.caption))
-					.foregroundColor(Assets.Color.textSecondary.color)
-			}
-		}
-	}
 
 	private func optionsPreview(for options: Set<GameState.Options>) -> some View {
 		HStack(spacing: Metrics.Spacing.smaller) {
-			ForEach(RoomRow.previewableOptions, id: \.rawValue) { option in
+			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
 				self.optionPreview(for: option, enabled: options.contains(option))
 			}
 		}
@@ -59,12 +41,12 @@ struct RoomRow: View {
 
 	var body: some View {
 		HStack(spacing: Metrics.Spacing.standard) {
-			playerPreview(for: room.host)
-			playerPreview(for: room.opponent)
+			PlayerPreview(room.host, compact: true)
+			PlayerPreview(room.opponent, compact: true)
 			Spacer()
 			optionsPreview(for: room.options)
 		}
-		.padding(EdgeInsets(vertical: Metrics.Spacing.standard))
+		.padding(.vertical, Metrics.Spacing.standard)
 	}
 }
 

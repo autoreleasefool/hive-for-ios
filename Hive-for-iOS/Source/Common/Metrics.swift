@@ -25,8 +25,8 @@ enum Metrics {
 	}
 
 	enum Image {
-		static let largest: CGFloat = 128
-		static let larger: CGFloat = 64
+		static let largest: CGFloat = 64
+		static let larger: CGFloat = 48
 		static let standard: CGFloat = 32
 		static let smaller: CGFloat = 16
 

@@ -23,6 +23,8 @@
 		CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCE023DBAC5700C697AD /* GameInformation.swift */; };
 		CABDFD0423DC7A0D00C697AD /* ARGameController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0323DC7A0D00C697AD /* ARGameController.swift */; };
 		CABDFD0623DCA73500C697AD /* HexImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0523DCA73500C697AD /* HexImage.swift */; };
+		CABDFD0823DD9FE300C697AD /* PlayerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0723DD9FE300C697AD /* PlayerPreview.swift */; };
+		CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */; };
 		CAC685F923CCF4D400B882D2 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685F823CCF4D400B882D2 /* Home.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
@@ -63,6 +65,8 @@
 		CABDFCE023DBAC5700C697AD /* GameInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInformation.swift; sourceTree = "<group>"; };
 		CABDFD0323DC7A0D00C697AD /* ARGameController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARGameController.swift; sourceTree = "<group>"; };
 		CABDFD0523DCA73500C697AD /* HexImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexImage.swift; sourceTree = "<group>"; };
+		CABDFD0723DD9FE300C697AD /* PlayerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPreview.swift; sourceTree = "<group>"; };
+		CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Extensions.swift"; sourceTree = "<group>"; };
 		CAC685F823CCF4D400B882D2 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
@@ -219,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */,
+				CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */,
 				CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */,
 			);
 			path = Extensions;
@@ -254,6 +259,7 @@
 		CAC6861623CE4E5D00B882D2 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CABDFD0723DD9FE300C697AD /* PlayerPreview.swift */,
 				CAC6861723CE4E6800B882D2 /* RoomRow.swift */,
 				CA0290D523CEF7B800A933F9 /* RoomDetail.swift */,
 			);
@@ -438,6 +444,8 @@
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */,
+				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
+				CABDFD0823DD9FE300C697AD /* PlayerPreview.swift in Sources */,
 				CABDFD0423DC7A0D00C697AD /* ARGameController.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
 				CABDFD0623DCA73500C697AD /* HexImage.swift in Sources */,

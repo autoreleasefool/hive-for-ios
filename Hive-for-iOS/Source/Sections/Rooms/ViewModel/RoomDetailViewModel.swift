@@ -46,6 +46,15 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, Obse
 		self.roomId = roomId
 	}
 
+	init(room: Room) {
+		self.roomId = room.id
+		self.room = room
+
+		super.init()
+
+		self.options.update(with: room.options)
+	}
+
 	override func postViewAction(_ viewAction: RoomDetailViewAction) {
 		switch viewAction {
 		case .onAppear, .refreshRoomDetails:

@@ -29,6 +29,8 @@ enum Assets {
 		case text
 		case textSecondary
 
+		case separator
+
 		var uiColor: UIColor {
 			switch self {
 			case .primary: return UIColor(named: "Primary")!
@@ -37,6 +39,7 @@ enum Assets {
 			case .backgroundDark: return UIColor(named: "BackgroundDark")!
 			case .text: return UIColor(named: "Text")!
 			case .textSecondary: return UIColor(named: "TextSecondary")!
+			case .separator: return UIColor(named: "Separator")!
 			}
 		}
 
@@ -57,6 +60,7 @@ extension SwiftUI.Color {
 	static let backgroundLight = Assets.Color.backgroundLight.color
 	static let text = Assets.Color.text.color
 	static let textSecondary = Assets.Color.textSecondary.color
+	static let separator = Assets.Color.separator.color
 }
 
 extension UIColor {
