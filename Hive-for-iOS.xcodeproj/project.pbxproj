@@ -32,7 +32,7 @@
 		CAC6860E23CD236D00B882D2 /* Room.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860D23CD236D00B882D2 /* Room.swift */; };
 		CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860F23CE3F3700B882D2 /* HostingController.swift */; };
 		CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861223CE440A00B882D2 /* HiveAPI.swift */; };
-		CAC6861523CE4C0C00B882D2 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861423CE4C0C00B882D2 /* Player.swift */; };
+		CAC6861523CE4C0C00B882D2 /* HivePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861423CE4C0C00B882D2 /* HivePlayer.swift */; };
 		CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861723CE4E6800B882D2 /* RoomRow.swift */; };
 		CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861923CE615800B882D2 /* ImageLoader.swift */; };
 		CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */; };
@@ -72,7 +72,7 @@
 		CAC6860D23CD236D00B882D2 /* Room.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Room.swift; sourceTree = "<group>"; };
 		CAC6860F23CE3F3700B882D2 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		CAC6861223CE440A00B882D2 /* HiveAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveAPI.swift; sourceTree = "<group>"; };
-		CAC6861423CE4C0C00B882D2 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		CAC6861423CE4C0C00B882D2 /* HivePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HivePlayer.swift; sourceTree = "<group>"; };
 		CAC6861723CE4E6800B882D2 /* RoomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRow.swift; sourceTree = "<group>"; };
 		CAC6861923CE615800B882D2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
@@ -236,7 +236,7 @@
 		CAC6860B23CD235D00B882D2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CAC6861423CE4C0C00B882D2 /* Player.swift */,
+				CAC6861423CE4C0C00B882D2 /* HivePlayer.swift */,
 				CAC6860D23CD236D00B882D2 /* Room.swift */,
 			);
 			path = Model;
@@ -422,7 +422,7 @@
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
 				CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */,
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
-				CAC6861523CE4C0C00B882D2 /* Player.swift in Sources */,
+				CAC6861523CE4C0C00B882D2 /* HivePlayer.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveGameViewController.swift in Sources */,
 				CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */,
 				CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */,

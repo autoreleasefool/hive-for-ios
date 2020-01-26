@@ -11,24 +11,24 @@ import HiveEngine
 
 struct Room: Identifiable, Codable {
 	let id: String
-	let host: Player
-	let opponent: Player?
-	let viewers: [Player]
+	let host: HivePlayer
+	let opponent: HivePlayer?
+	let viewers: [HivePlayer]
 	let options: Set<GameState.Options>
 
 	static let rooms: [Room] = [
 		Room(
 			id: "0",
-			host: Player.players[0],
+			host: HivePlayer.players[0],
 			opponent: nil,
-			viewers: Array(Player.players.dropFirst()),
+			viewers: Array(HivePlayer.players.dropFirst()),
 			options: [.mosquito]
 		),
 		Room(
 			id: "1",
-			host: Player.players[1],
-			opponent: Player.players[2],
-			viewers: Array(Player.players.dropFirst(3)),
+			host: HivePlayer.players[1],
+			opponent: HivePlayer.players[2],
+			viewers: Array(HivePlayer.players.dropFirst(3)),
 			options: [.mosquito, .ladyBug, .pillBug]
 		),
 	]

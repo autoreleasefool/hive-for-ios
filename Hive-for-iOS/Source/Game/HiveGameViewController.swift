@@ -38,9 +38,9 @@ class HiveGameViewController: UIViewController {
 
 		let arConfiguration = ARWorldTrackingConfiguration()
 		arConfiguration.planeDetection = .horizontal
-		arView.session.run(arConfiguration)
+//		arView.session.run(arConfiguration)
 
-		Experience.lo
+//		Experience.lo
 
 		if let hiveAnchor = try? Experience.loadHiveGame() {
 			arView.scene.anchors.append(hiveAnchor)

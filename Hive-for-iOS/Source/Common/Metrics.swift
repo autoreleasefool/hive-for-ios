@@ -10,7 +10,11 @@ import UIKit
 
 enum Metrics {
 	enum Spacing {
+		static let huge: CGFloat = 64
+		static let larger: CGFloat = 32
 		static let standard: CGFloat = 16
+		static let smaller: CGFloat = 8
+		static let tiny: CGFloat = 4
 	}
 
 	enum Text {
@@ -21,6 +25,11 @@ enum Metrics {
 	}
 
 	enum Image {
+		static let largest: CGFloat = 128
+		static let larger: CGFloat = 64
+		static let standard: CGFloat = 32
+		static let smaller: CGFloat = 16
+
 		static let listIcon: CGFloat = 32
 	}
 }
