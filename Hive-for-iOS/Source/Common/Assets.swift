@@ -15,6 +15,7 @@ enum Assets {
 
 	enum Image {
 		static let glyph = UIImage(named: "Glyph")!
+		static let joseph = UIImage(named: "Joseph")!
 	}
 
 	// MARK: - Colors
@@ -42,12 +43,24 @@ enum Assets {
 		var color: SwiftUI.Color {
 			return SwiftUI.Color(self.uiColor)
 		}
+
+		func withAlphaComponent(_ alpha: CGFloat) -> UIColor {
+			return self.uiColor.withAlphaComponent(alpha)
+		}
 	}
 }
 
 extension SwiftUI.Color {
-	static let primary = Assets.Color.primary
-	static let background = Assets.Color.background
-	static let text = Assets.Color.text
-	static let textSecondary = Assets.Color.textSecondary
+	static let primary = Assets.Color.primary.color
+	static let background = Assets.Color.background.color
+	static let backgroundDark = Assets.Color.backgroundDark.color
+	static let backgroundLight = Assets.Color.backgroundLight.color
+	static let text = Assets.Color.text.color
+	static let textSecondary = Assets.Color.textSecondary.color
+}
+
+extension UIColor {
+	var color: Color {
+		return Color(self)
+	}
 }
