@@ -10,10 +10,12 @@ import UIKit
 import RealityKit
 import ARKit
 import HiveEngine
+import Loaf
 
 protocol HiveGameDelegate: class {
 	func exitGame()
 	func show(information: GameInformation)
+	func error(loaf: Loaf)
 }
 
 class HiveGameViewController: UIViewController {
@@ -36,31 +38,15 @@ class HiveGameViewController: UIViewController {
 		view.addSubview(arView)
 		arView.constrainToFillView(view)
 
-		let arConfiguration = ARWorldTrackingConfiguration()
-		arConfiguration.planeDetection = .horizontal
-//		arView.session.run(arConfiguration)
-
-//		Experience.lo
-
-		if let hiveAnchor = try? Experience.loadHiveGame() {
-			arView.scene.anchors.append(hiveAnchor)
-		}
-
-
-		DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
-			self?.delegate?.show(information: .unit(.init(class: .ant, owner: .white, index: 1)))
-		}
-
-		DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
-			self?.delegate?.show(information: .unit(.init(class: .queen, owner: .black, index: 1)))
-		}
-
-		DispatchQueue.main.asyncAfter(deadline: .now() + 15) { [weak self] in
-			self?.delegate?.exitGame()
-		}
+		gameController.delegate = self
+		gameController.setupExperience(inView: arView)
 	}
+}
 
-	private func setupView() {
+// MARK: - ARGameControllerDelegate
 
+extension HiveGameViewController: ARGameControllerDelegate {
+	func gameController(error: Error) {
+		delegate?.error(loaf: Loaf(error.localizedDescription, state: .error))
 	}
 }

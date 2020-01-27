@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import HiveEngine
+import Loaf
 
 enum ARGameTask: Identifiable {
 	var id: String {
@@ -23,6 +24,7 @@ enum ARGameViewAction: BaseViewAction {
 class ARGameViewModel: ViewModel<ARGameViewAction, ARGameTask>, ObservableObject {
 	@Published var informationToPresent: GameInformation?
 	@Published var gameState: GameState!
+	@Published var errorLoaf: Loaf?
 
 	var hasInformation: Binding<Bool> {
 		return Binding(

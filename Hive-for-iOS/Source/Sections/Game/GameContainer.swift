@@ -8,6 +8,7 @@
 
 import SwiftUI
 import HiveEngine
+import Loaf
 
 struct GameContainer: View {
 	@Binding var gameIsActive: Bool
@@ -27,6 +28,7 @@ struct GameContainer: View {
 		.edgesIgnoringSafeArea(.all)
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
+		.loaf($viewModel.errorLoaf)
 	}
 }
 
@@ -62,6 +64,10 @@ struct GameViewController: UIViewControllerRepresentable {
 
 		func show(information: GameInformation) {
 			parent.viewModel.informationToPresent = information
+		}
+
+		func error(loaf: Loaf) {
+			parent.viewModel.errorLoaf = loaf
 		}
 	}
 }
