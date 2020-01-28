@@ -25,14 +25,14 @@ struct RoomRow: View {
 			Text(option.preview ?? "")
 				.font(.system(size: Metrics.Text.caption))
 				.foregroundColor(enabled
-					? Assets.Color.text.color
-					: Assets.Color.textSecondary.color
+					? Color(ColorAsset.text)
+					: Color(ColorAsset.textSecondary)
 				)
 			Hex()
 				.stroke(
 					enabled
-						? Assets.Color.primary.color
-						: Assets.Color.primary.withAlphaComponent(0.4).color,
+						? Color(ColorAsset.primary)
+						: Color(ColorAsset.primary).opacity(0.4),
 					lineWidth: CGFloat(2)
 				)
 				.frame(width: 24, height: 24)
@@ -65,7 +65,7 @@ private extension GameState.Options {
 struct RoomRowPreview: PreviewProvider {
 	static var previews: some View {
 		RoomRow(room: Room.rooms[0])
-			.background(Assets.Color.background.color)
+			.background(Color(ColorAsset.background))
 	}
 }
 #endif

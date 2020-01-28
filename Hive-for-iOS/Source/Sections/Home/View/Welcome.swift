@@ -18,26 +18,26 @@ struct Welcome: View {
 			}
 			Spacer()
 
-			Image(uiImage: Assets.Image.glyph)
-				.foregroundColor(Assets.Color.primary.color)
+			Image(uiImage: ImageAsset.glyph)
+				.foregroundColor(Color(ColorAsset.primary))
 
 			Button("Play") {
 				self.isPlaying = true
 			}
 				.font(.system(size: Metrics.Text.subtitle))
-				.foregroundColor(Assets.Color.text.color)
+				.foregroundColor(Color(ColorAsset.text))
 				.padding(Metrics.Spacing.standard)
 
 			Button("Settings") {
 				self.isPlaying = true
 			}
 				.font(.system(size: Metrics.Text.subtitle))
-				.foregroundColor(Assets.Color.text.color)
+				.foregroundColor(Color(ColorAsset.text))
 				.padding(Metrics.Spacing.standard)
 
 			Spacer()
 		}
-		.background(Assets.Color.background.color)
+		.background(Color(ColorAsset.background))
 		.edgesIgnoringSafeArea(.all)
 	}
 }

@@ -36,7 +36,7 @@ struct PlayerPreview: View {
 	}
 
 	var playerImage: some View {
-		HexImage(url: player?.avatarUrl, placeholder: Assets.Image.joseph)
+		HexImage(url: player?.avatarUrl, placeholder: ImageAsset.joseph)
 			.frame(width: iconSize, height: iconSize)
 	}
 
@@ -44,12 +44,12 @@ struct PlayerPreview: View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
 				.font(.system(size: Metrics.Text.body))
-				.foregroundColor(Assets.Color.text.color)
+				.foregroundColor(Color(ColorAsset.text))
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if player != nil {
 				Text(secondaryText)
 					.font(.system(size: Metrics.Text.caption))
-					.foregroundColor(Assets.Color.textSecondary.color)
+					.foregroundColor(Color(ColorAsset.textSecondary))
 			}
 		}
 	}
@@ -81,7 +81,7 @@ struct PlayerPreviewPreview: PreviewProvider {
 			PlayerPreview(nil, alignment: .trailing)
 			PlayerPreview(nil, compact: true)
 		}
-			.background(Assets.Color.background.color)
+			.background(Color(ColorAsset.background))
 	}
 }
 #endif

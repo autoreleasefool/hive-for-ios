@@ -63,7 +63,8 @@ struct GameViewController: UIViewControllerRepresentable {
 		}
 
 		func show(information: GameInformation) {
-			parent.viewModel.informationToPresent = information
+			parent.viewModel.handToShow = PlayerHand(player: .white, state: GameState())
+//			parent.viewModel.informationToPresent = information
 		}
 
 		func error(loaf: Loaf) {

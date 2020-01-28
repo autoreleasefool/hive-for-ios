@@ -15,22 +15,22 @@ struct PlayerHandHUD: View {
 	private func card(unitClass: HiveEngine.Unit.Class, count: Int) -> some View {
 		ZStack {
 			RoundedRectangle(cornerRadius: Metrics.Spacing.smaller)
-				.fill(Assets.Color.background.color)
+				.fill(Color(ColorAsset.background))
 			HStack {
 				ZStack {
 					Text(unitClass.notation)
-						.foregroundColor(Assets.Color.text.color)
+						.foregroundColor(Color(ColorAsset.text))
 						.font(.system(size: Metrics.Text.subtitle))
 					Hex()
-						.stroke(Assets.Color.text.color, lineWidth: CGFloat(2))
+						.stroke(Color(ColorAsset.text), lineWidth: CGFloat(2))
 						.frame(width: 48, height: 48)
 				}
 				VStack {
 					Text(unitClass.description)
-						.foregroundColor(Assets.Color.text.color)
+						.foregroundColor(Color(ColorAsset.text))
 						.font(.system(size: Metrics.Text.title))
 					Text(count > 0 ? "\(count) remaining" : "All in play")
-						.foregroundColor(Assets.Color.textSecondary.color)
+						.foregroundColor(Color(ColorAsset.textSecondary))
 						.font(.system(size: Metrics.Text.body))
 				}
 			}

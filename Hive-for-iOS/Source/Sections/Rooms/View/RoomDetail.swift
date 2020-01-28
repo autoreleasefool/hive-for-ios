@@ -40,10 +40,10 @@ struct RoomDetail: View {
 		VStack(alignment: .leading) {
 			Text("Expansions")
 				.font(.system(size: Metrics.Text.subtitle))
-				.foregroundColor(.text)
+				.foregroundColor(Color(ColorAsset.text))
 			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
-					.foregroundColor(Assets.Color.text.color)
+					.foregroundColor(Color(ColorAsset.text))
 			}
 		}
 	}
@@ -52,10 +52,10 @@ struct RoomDetail: View {
 		VStack(alignment: .leading) {
 			Text("Other options")
 				.font(.system(size: Metrics.Text.subtitle))
-				.foregroundColor(.text)
+				.foregroundColor(Color(ColorAsset.text))
 			ForEach(GameState.Options.nonExpansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
-					.foregroundColor(Assets.Color.text.color)
+					.foregroundColor(Color(ColorAsset.text))
 			}
 		}
 	}

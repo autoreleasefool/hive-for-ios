@@ -11,11 +11,17 @@ import SwiftUI
 struct HexImage: View {
 	private let url: URL?
 	private let placeholder: UIImage
-	private let stroke: Color
+	private let stroke: ColorAsset
 
-	init(url: URL?, placeholder: UIImage = UIImage(), stroke: Color = Assets.Color.primary.color) {
+	init(url: URL?, placeholder: UIImage = UIImage(), stroke: ColorAsset = .primary) {
 		self.url = url
 		self.placeholder = placeholder
+		self.stroke = stroke
+	}
+
+	init(_ image: UIImage, stroke: ColorAsset = .primary) {
+		self.url = nil
+		self.placeholder = image
 		self.stroke = stroke
 	}
 
@@ -31,7 +37,7 @@ struct HexImage: View {
 					)
 				Hex()
 					.stroke(
-						self.stroke,
+						Color(self.stroke),
 						lineWidth: min(geometry.size.width, geometry.size.height) * 0.075
 					)
 					.frame(width: geometry.size.width, height: geometry.size.height)
@@ -70,7 +76,7 @@ struct Hex: Shape {
 #if DEBUG
 struct HexImagePreview: PreviewProvider {
 	static var previews: some View {
-		HexImage(url: nil, placeholder: Assets.Image.joseph, stroke: .blue)
+		HexImage(url: nil, placeholder: ImageAsset.joseph, stroke: .primary)
 			.frame(width: 128, height: 128)
 	}
 }

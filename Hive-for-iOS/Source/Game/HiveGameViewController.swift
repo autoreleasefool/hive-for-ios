@@ -40,6 +40,12 @@ class HiveGameViewController: UIViewController {
 
 		gameController.delegate = self
 		gameController.setupExperience(inView: arView)
+
+		arView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(arViewPress)))
+	}
+
+	@objc private func arViewPress() {
+		self.delegate?.show(information: .unit(HiveEngine.Unit(class: .ant, owner: .white, index: 1)))
 	}
 
 	fileprivate func restartGame() {

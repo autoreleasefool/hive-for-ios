@@ -15,7 +15,7 @@ struct InformationHUD: View {
 
 	var body: some View {
 		HStack {
-			Image(uiImage: Assets.Image.glyph)
+			Image(uiImage: ImageAsset.glyph)
 				.resizable()
 				.frame(width: Metrics.Spacing.standard, height: Metrics.Spacing.standard)
 			Text(information.description(in: state))

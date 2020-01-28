@@ -9,62 +9,37 @@
 import SwiftUI
 import UIKit
 
-enum Assets {
+// MARK: - Images
 
-	// MARK: - Images
-
-	enum Image {
-		static let glyph = UIImage(named: "Glyph")!
-		static let joseph = UIImage(named: "Joseph")!
-	}
-
-	// MARK: - Colors
-
-	enum Color {
-		case primary
-		case background
-		case backgroundLight
-		case backgroundDark
-
-		case text
-		case textSecondary
-
-		case separator
-
-		var uiColor: UIColor {
-			switch self {
-			case .primary: return UIColor(named: "Primary")!
-			case .background: return UIColor(named: "Background")!
-			case .backgroundLight: return UIColor(named: "BackgroundLight")!
-			case .backgroundDark: return UIColor(named: "BackgroundDark")!
-			case .text: return UIColor(named: "Text")!
-			case .textSecondary: return UIColor(named: "TextSecondary")!
-			case .separator: return UIColor(named: "Separator")!
-			}
-		}
-
-		var color: SwiftUI.Color {
-			return SwiftUI.Color(self.uiColor)
-		}
-
-		func withAlphaComponent(_ alpha: CGFloat) -> UIColor {
-			return self.uiColor.withAlphaComponent(alpha)
-		}
-	}
+enum ImageAsset {
+	static let glyph = UIImage(named: "Glyph")!
+	static let joseph = UIImage(named: "Joseph")!
 }
 
-extension SwiftUI.Color {
-	static let primary = Assets.Color.primary.color
-	static let background = Assets.Color.background.color
-	static let backgroundDark = Assets.Color.backgroundDark.color
-	static let backgroundLight = Assets.Color.backgroundLight.color
-	static let text = Assets.Color.text.color
-	static let textSecondary = Assets.Color.textSecondary.color
-	static let separator = Assets.Color.separator.color
+// MARK: - Colors
+
+enum ColorAsset: String {
+	case primary = "Primary"
+	case background = "Background"
+	case backgroundLight = "BackgroundLight"
+	case backgroundDark = "BackgroundDark"
+
+	case text = "Text"
+	case textSecondary = "TextSecondary"
+
+	case separator = "Separator"
+
+	case clear = "Clear"
 }
 
 extension UIColor {
-	var color: Color {
-		return Color(self)
+	convenience init(_ asset: ColorAsset) {
+		self.init(named: asset.rawValue)!
+	}
+}
+
+extension Color {
+	init(_ asset: ColorAsset) {
+		self.init(UIColor(asset))
 	}
 }

@@ -12,7 +12,7 @@ enum Theme {
 	static func applyPrimaryTheme() {
 		let coloredAppearance = UINavigationBarAppearance()
 		coloredAppearance.configureWithOpaqueBackground()
-		coloredAppearance.backgroundColor = Assets.Color.primary.uiColor
+		coloredAppearance.backgroundColor = UIColor(ColorAsset.primary)
 		coloredAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
 		coloredAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
 
@@ -20,11 +20,11 @@ enum Theme {
 		UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
 		UINavigationBar.appearance().tintColor = .white
 
-		UITableView.appearance().backgroundColor = Assets.Color.background.uiColor
-		UITableViewCell.appearance().backgroundColor = Assets.Color.backgroundLight.uiColor
+		UITableView.appearance().backgroundColor = UIColor(ColorAsset.background)
+		UITableViewCell.appearance().backgroundColor = UIColor(ColorAsset.backgroundLight)
 
 		let backgroundView = UIView()
-		backgroundView.backgroundColor = Assets.Color.background.uiColor
+		backgroundView.backgroundColor = UIColor(ColorAsset.background)
 		UITableViewCell.appearance().selectedBackgroundView = backgroundView
 	}
 }

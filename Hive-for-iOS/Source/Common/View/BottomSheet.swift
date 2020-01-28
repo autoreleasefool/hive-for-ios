@@ -19,7 +19,7 @@ struct BottomSheet<Content: View>: View {
 
 	let maxHeight: CGFloat
 	let minHeight: CGFloat
-	let backgroundColor: Color
+	let backgroundColor: ColorAsset
 	let content: Content
 
 	@GestureState private var translation: CGFloat = 0
@@ -30,7 +30,7 @@ struct BottomSheet<Content: View>: View {
 
 	private var indicator: some View {
 		RoundedRectangle(cornerRadius: Constants.radius)
-			.fill(Assets.Color.text.color)
+			.fill(Color(ColorAsset.text))
 			.frame(
 				width: Constants.indicatorWidth,
 				height: Constants.indicatorHeight
@@ -39,7 +39,7 @@ struct BottomSheet<Content: View>: View {
 		}
 	}
 
-	init(isOpen: Binding<Bool>, minHeight: CGFloat, maxHeight: CGFloat, backgroundColor: Color = Assets.Color.background.color, @ViewBuilder content: () -> Content) {
+	init(isOpen: Binding<Bool>, minHeight: CGFloat, maxHeight: CGFloat, backgroundColor: ColorAsset = .background, @ViewBuilder content: () -> Content) {
 		self.minHeight = minHeight
 		self.maxHeight = maxHeight
 		self.backgroundColor = backgroundColor
@@ -54,7 +54,7 @@ struct BottomSheet<Content: View>: View {
 				self.content
 			}
 			.frame(width: geometry.size.width, height: self.maxHeight, alignment: .top)
-			.background(self.backgroundColor)
+			.background(Color(self.backgroundColor))
 			.cornerRadius(Constants.radius)
 			.frame(height: geometry.size.height, alignment: .bottom)
 			.offset(y: max(self.offset + self.translation, 0))
