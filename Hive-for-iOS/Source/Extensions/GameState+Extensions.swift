@@ -8,6 +8,12 @@
 
 import HiveEngine
 
+extension HiveEngine.Unit.Class: Identifiable {
+	public var id: String {
+		return description
+	}
+}
+
 extension GameState.Options {
 	static let expansions = GameState.Options.allCases.filter { $0.isExpansion }.sorted()
 	static let nonExpansions = GameState.Options.allCases.filter { !$0.isExpansion }.sorted()

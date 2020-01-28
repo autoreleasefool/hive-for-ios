@@ -12,7 +12,6 @@ private enum Constants {
 	static let indicatorHeight: CGFloat = 6
 	static let indicatorWidth: CGFloat = 60
 	static let snapRatio: CGFloat = 0.25
-	static let minHeightRatio: CGFloat = 0.3
 }
 
 struct BottomSheet<Content: View>: View {
@@ -20,6 +19,7 @@ struct BottomSheet<Content: View>: View {
 
 	let maxHeight: CGFloat
 	let minHeight: CGFloat
+	let backgroundColor: Color
 	let content: Content
 
 	@GestureState private var translation: CGFloat = 0
@@ -30,7 +30,7 @@ struct BottomSheet<Content: View>: View {
 
 	private var indicator: some View {
 		RoundedRectangle(cornerRadius: Constants.radius)
-			.fill(Color.secondary)
+			.fill(Assets.Color.text.color)
 			.frame(
 				width: Constants.indicatorWidth,
 				height: Constants.indicatorHeight
@@ -39,15 +39,12 @@ struct BottomSheet<Content: View>: View {
 		}
 	}
 
-	init(isOpen: Binding<Bool>, minHeight: CGFloat, maxHeight: CGFloat, @ViewBuilder content: () -> Content) {
+	init(isOpen: Binding<Bool>, minHeight: CGFloat, maxHeight: CGFloat, backgroundColor: Color = Assets.Color.background.color, @ViewBuilder content: () -> Content) {
 		self.minHeight = minHeight
 		self.maxHeight = maxHeight
+		self.backgroundColor = backgroundColor
 		self.content = content()
 		self._isOpen = isOpen
-	}
-
-	init(isOpen: Binding<Bool>, maxHeight: CGFloat, @ViewBuilder content: () -> Content) {
-		self.init(isOpen: isOpen, minHeight: maxHeight * Constants.minHeightRatio, maxHeight: maxHeight, content: content)
 	}
 
 	var body: some View {
@@ -57,7 +54,7 @@ struct BottomSheet<Content: View>: View {
 				self.content
 			}
 			.frame(width: geometry.size.width, height: self.maxHeight, alignment: .top)
-			.background(Color(.secondarySystemBackground))
+			.background(self.backgroundColor)
 			.cornerRadius(Constants.radius)
 			.frame(height: geometry.size.height, alignment: .bottom)
 			.offset(y: max(self.offset + self.translation, 0))

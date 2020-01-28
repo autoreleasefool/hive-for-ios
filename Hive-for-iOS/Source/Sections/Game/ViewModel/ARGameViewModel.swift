@@ -22,9 +22,17 @@ enum ARGameViewAction: BaseViewAction {
 }
 
 class ARGameViewModel: ViewModel<ARGameViewAction, ARGameTask>, ObservableObject {
+	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
 	@Published var gameState: GameState!
 	@Published var errorLoaf: Loaf?
+
+	var showPlayerHand: Binding<Bool> {
+		return Binding(
+			get: { self.handToShow != nil },
+			set: { _ in self.handToShow = nil }
+		)
+	}
 
 	var hasInformation: Binding<Bool> {
 		return Binding(

@@ -14,17 +14,18 @@ struct GameHUD: View {
 
 	var body: some View {
 		GeometryReader { geometry in
-//			BottomSheet(
-//				isOpen: self.viewModel.showPlayerHand,
-//				minHeight: 0,
-//				maxHeight: geometry.size.height * 0.3
-//			) {
-//				if self.viewModel.showPlayerHand.wrappedValue {
-//					PlayerHandHUD(hand: self.viewModel.handToShow!)
-//				} else {
-//					EmptyView()
-//				}
-//			}
+			BottomSheet(
+				isOpen: self.viewModel.showPlayerHand,
+				minHeight: 0,
+				maxHeight: geometry.size.height * 0.3,
+				backgroundColor: .clear
+			) {
+				if self.viewModel.showPlayerHand.wrappedValue {
+					PlayerHandHUD(hand: self.viewModel.handToShow!)
+				} else {
+					EmptyView()
+				}
+			}
 
 			BottomSheet(
 				isOpen: self.viewModel.hasInformation,
@@ -48,4 +49,3 @@ struct GameHUDPreview: PreviewProvider {
 	}
 }
 #endif
-
