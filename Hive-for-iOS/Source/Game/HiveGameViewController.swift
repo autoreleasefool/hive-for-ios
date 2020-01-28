@@ -41,12 +41,26 @@ class HiveGameViewController: UIViewController {
 		gameController.delegate = self
 		gameController.setupExperience(inView: arView)
 	}
+
+	fileprivate func restartGame() {
+		guard let game = gameController.gameAnchor else { return }
+
+		// Hide pieces for a new game
+		game.visit { entity in
+			entity.isEnabled = false
+		}
+	}
 }
 
 // MARK: - ARGameControllerDelegate
 
 extension HiveGameViewController: ARGameControllerDelegate {
-	func gameController(error: Error) {
+	func gameControllerDidRaiseError(_ gameController: ARGameController, error: Error) {
 		delegate?.error(loaf: Loaf(error.localizedDescription, state: .error))
+	}
+
+	func gameControllerContentDidLoad(_ gameController: ARGameController) {
+//		guard let game = gameController.gameAnchor else { return }
+		self.restartGame()
 	}
 }
