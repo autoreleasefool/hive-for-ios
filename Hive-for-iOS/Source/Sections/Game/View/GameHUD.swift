@@ -14,18 +14,25 @@ struct GameHUD: View {
 
 	var body: some View {
 		GeometryReader { geometry in
+//			BottomSheet(
+//				isOpen: self.viewModel.showPlayerHand,
+//				minHeight: 0,
+//				maxHeight: geometry.size.height * 0.3
+//			) {
+//				if self.viewModel.showPlayerHand.wrappedValue {
+//					PlayerHandHUD(hand: self.viewModel.handToShow!)
+//				} else {
+//					EmptyView()
+//				}
+//			}
+
 			BottomSheet(
 				isOpen: self.viewModel.hasInformation,
 				minHeight: 0,
 				maxHeight: geometry.size.height * 0.5
 			) {
 				if self.viewModel.hasInformation.wrappedValue {
-					HStack {
-						Image(uiImage: Assets.Image.glyph)
-							.resizable()
-							.frame(width: Metrics.Spacing.standard, height: Metrics.Spacing.standard)
-						Text(self.viewModel.informationToPresent!.description(in: self.viewModel.gameState))
-					}
+					InformationHUD(information: self.viewModel.informationToPresent!, state: self.viewModel.gameState)
 				} else {
 					EmptyView()
 				}
@@ -33,3 +40,12 @@ struct GameHUD: View {
 		}
 	}
 }
+
+#if DEBUG
+struct GameHUDPreview: PreviewProvider {
+	static var previews: some View {
+		EmptyView()
+	}
+}
+#endif
+
