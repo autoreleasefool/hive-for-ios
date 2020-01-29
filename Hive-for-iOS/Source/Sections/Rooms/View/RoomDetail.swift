@@ -19,7 +19,7 @@ struct RoomDetail: View {
 
 	var startButton: some View {
 		NavigationLink(
-			destination: GameContainer(isActive: self.$inGame, state: self.viewModel.gameState),
+			destination: HiveGame(isActive: self.$inGame, state: self.viewModel.gameState),
 			isActive: self.$inGame
 		) {
 			Text("Start")

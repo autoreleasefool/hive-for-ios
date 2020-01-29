@@ -1,5 +1,5 @@
 //
-//  ARGameViewModel.swift
+//  HiveGameViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-24.
@@ -11,17 +11,18 @@ import Combine
 import HiveEngine
 import Loaf
 
-enum ARGameTask: Identifiable {
+enum HiveGameTask: Identifiable {
 	var id: String {
 		return ""
 	}
 }
 
-enum ARGameViewAction: BaseViewAction {
-
+enum HiveGameViewAction: BaseViewAction {
+	case contentDidLoad
+	case arViewError(Error)
 }
 
-class ARGameViewModel: ViewModel<ARGameViewAction, ARGameTask>, ObservableObject {
+class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, ObservableObject {
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
 	@Published var gameState: GameState!
@@ -41,7 +42,12 @@ class ARGameViewModel: ViewModel<ARGameViewAction, ARGameTask>, ObservableObject
 		)
 	}
 
-	override func postViewAction(_ viewAction: ARGameViewAction) {
-
+	override func postViewAction(_ viewAction: HiveGameViewAction) {
+		switch viewAction {
+		case .contentDidLoad:
+			break
+		case .arViewError(let error):
+			self.errorLoaf = Loaf(error.localizedDescription, state: .error)
+		}
 	}
 }

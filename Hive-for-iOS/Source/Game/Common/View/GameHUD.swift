@@ -10,7 +10,7 @@ import SwiftUI
 import Combine
 
 struct GameHUD: View {
-	@EnvironmentObject var viewModel: ARGameViewModel
+	@EnvironmentObject var viewModel: HiveGameViewModel
 
 	var body: some View {
 		GeometryReader { geometry in
