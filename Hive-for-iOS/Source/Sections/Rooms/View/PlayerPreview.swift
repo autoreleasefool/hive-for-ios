@@ -64,7 +64,7 @@ struct PlayerPreview: View {
 				playerImage
 			}
 		}
-			.opacity(player == nil ? 0.7 : 1)
+		.opacity(player == nil ? 0.7 : 1)
 	}
 }
 
@@ -81,7 +81,7 @@ struct PlayerPreviewPreview: PreviewProvider {
 			PlayerPreview(nil, alignment: .trailing)
 			PlayerPreview(nil, compact: true)
 		}
-			.background(Color(ColorAsset.background))
+		.background(Color(ColorAsset.background))
 	}
 }
 #endif

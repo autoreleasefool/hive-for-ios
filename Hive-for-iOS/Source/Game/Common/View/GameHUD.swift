@@ -19,24 +19,24 @@ struct GameHUD: View {
 			}, label: {
 				HexImage(UIImage(systemName: "xmark")!, stroke: .background)
 			})
-				.frame(width: 48, height: 48)
-				.position(x: 80, y: 80)
+			.frame(width: 48, height: 48)
+			.position(x: 80, y: 80)
 
 			Button(action: {
 				self.viewModel.handToShow = PlayerHand(player: .white, state: self.viewModel.gameState)
 			}, label: {
 				HexImage(UIImage(systemName: "hand.raised.fill")!, stroke: .text)
 			})
-				.frame(width: 64, height: 64)
-				.position(x: geometry.size.width / 2 - 80, y: geometry.size.height - 80)
+			.frame(width: 64, height: 64)
+			.position(x: geometry.size.width / 2 - 80, y: geometry.size.height - 80)
 
 			Button(action: {
 				self.viewModel.handToShow = PlayerHand(player: .black, state: self.viewModel.gameState)
 			}, label: {
 				HexImage(UIImage(systemName: "hand.raised.fill")!, stroke: .background)
 			})
-				.frame(width: 64, height: 64)
-				.position(x: geometry.size.width / 2 + 80, y: geometry.size.height - 80)
+			.frame(width: 64, height: 64)
+			.position(x: geometry.size.width / 2 + 80, y: geometry.size.height - 80)
 
 			BottomSheet(
 				isOpen: self.viewModel.showPlayerHand,
