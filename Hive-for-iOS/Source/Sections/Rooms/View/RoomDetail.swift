@@ -11,17 +11,13 @@ import HiveEngine
 
 struct RoomDetail: View {
 	@ObservedObject private var viewModel: RoomDetailViewModel
-	@State private var inGame = false
 
 	init(viewModel: RoomDetailViewModel) {
 		self.viewModel = viewModel
 	}
 
 	var startButton: some View {
-		NavigationLink(
-			destination: HiveGame(isActive: self.$inGame, state: self.viewModel.gameState),
-			isActive: self.$inGame
-		) {
+		NavigationLink(destination: HiveGame(state: self.viewModel.gameState)) {
 			Text("Start")
 		}
 	}

@@ -15,6 +15,14 @@ struct GameHUD: View {
 	var body: some View {
 		GeometryReader { geometry in
 			Button(action: {
+				self.viewModel.postViewAction(.exitGame)
+			}, label: {
+				HexImage(UIImage(systemName: "xmark")!, stroke: .background)
+			})
+				.frame(width: 48, height: 48)
+				.position(x: 80, y: 80)
+
+			Button(action: {
 				self.viewModel.handToShow = PlayerHand(player: .white, state: self.viewModel.gameState)
 			}, label: {
 				HexImage(UIImage(systemName: "hand.raised.fill")!, stroke: .text)

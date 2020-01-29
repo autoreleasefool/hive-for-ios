@@ -11,20 +11,19 @@ import HiveEngine
 import Loaf
 
 struct HiveGame: View {
-	@Binding var gameIsActive: Bool
+	@Environment(\.presentationMode) var presentationMode
 	@State var viewModel = HiveGameViewModel()
 
-	init(isActive: Binding<Bool>, state: GameState) {
-		_gameIsActive = isActive
+	init(state: GameState) {
 		viewModel.gameState = state
 	}
 
 	var body: some View {
 		ZStack {
-			HiveARGame(shouldBePresented: $gameIsActive, viewModel: $viewModel)
-			GameHUD()
-				.environmentObject(viewModel)
+			HiveARGame(viewModel: $viewModel)
+			GameHUD().environmentObject(viewModel)
 		}
+		.onReceive(viewModel.exitedGame) { _ in self.presentationMode.wrappedValue.dismiss() }
 		.edgesIgnoringSafeArea(.all)
 		.navigationBarTitle("")
 		.navigationBarHidden(true)

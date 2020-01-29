@@ -81,7 +81,6 @@ extension HiveARGameViewController: ARSessionDelegate {
 // MARK: - UIViewControllerRepresentable
 
 struct HiveARGame: UIViewControllerRepresentable {
-	@Binding var shouldBePresented: Bool
 	@Binding var viewModel: HiveGameViewModel
 
 	func makeUIViewController(context: Context) -> HiveARGameViewController {
