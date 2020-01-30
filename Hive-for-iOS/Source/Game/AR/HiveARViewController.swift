@@ -38,6 +38,9 @@ class HiveARGameViewController: UIViewController {
 	}
 
 	private func setupExperience() {
+		#if targetEnvironment(simulator)
+		return
+		#else
 		arView.automaticallyConfigureSession = false
 
 		let arConfiguration = ARWorldTrackingConfiguration()
@@ -60,6 +63,7 @@ class HiveARGameViewController: UIViewController {
 				self.viewModel.postViewAction(.arViewError(error))
 			}
 		}
+		#endif
 	}
 
 	private func restartGame() {
