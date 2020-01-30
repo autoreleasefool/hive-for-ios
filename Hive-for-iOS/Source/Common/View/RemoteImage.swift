@@ -52,16 +52,33 @@ struct RemoteImage: View {
 	}
 
 	var body: some View {
-		return ZStack {
-			if imageFetcher.image != nil {
-				Image(uiImage: imageFetcher.image!)
-					.resizable()
-			} else {
-				Image(uiImage: placeholder)
-					.resizable()
+		GeometryReader { geometry in
+			return ZStack {
+				if self.imageFetcher.image != nil {
+					Image(uiImage: self.imageFetcher.image!)
+						.resizable()
+						.frame(width: geometry.size.width, height: geometry.size.height)
+				} else {
+					Image(uiImage: self.placeholder)
+						.resizable()
+						.frame(width: geometry.size.width, height: geometry.size.height)
+				}
 			}
 		}
 		.onAppear(perform: imageFetcher.fetch)
 		.onDisappear(perform: imageFetcher.cancel)
 	}
 }
+
+#if DEBUG
+struct RemoteImagePreview: PreviewProvider {
+	static var previews: some View {
+		VStack {
+			RemoteImage(url: nil, placeholder: UIImage(systemName: "xmark")!)
+				.frame(width: 64, height: 64)
+			RemoteImage(url: nil, placeholder: ImageAsset.joseph)
+				.frame(width: 128, height: 128)
+		}
+	}
+}
+#endif

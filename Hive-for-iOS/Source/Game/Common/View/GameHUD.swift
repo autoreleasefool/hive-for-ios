@@ -69,7 +69,9 @@ struct GameHUD: View {
 #if DEBUG
 struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {
-		EmptyView()
+		GameHUD()
+			.environmentObject(HiveGameViewModel())
+			.background(Color(ColorAsset.backgroundDark))
 	}
 }
 #endif
