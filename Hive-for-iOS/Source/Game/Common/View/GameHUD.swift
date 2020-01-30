@@ -17,26 +17,32 @@ struct GameHUD: View {
 			Button(action: {
 				self.viewModel.postViewAction(.exitGame)
 			}, label: {
-				HexImage(UIImage(systemName: "xmark")!, stroke: .background)
+				HexImage(ImageAsset.Icon.close, stroke: .background)
+					.placeholderTint(.background)
+					.squareInnerImage(.s)
 			})
 			.squareImage(.l)
-			.position(x: 80, y: 80)
+			.position(x: Metrics.Image.l + Metrics.Spacing.m, y: Metrics.Image.l + Metrics.Spacing.m)
 
 			Button(action: {
 				self.viewModel.handToShow = PlayerHand(player: .white, state: self.viewModel.gameState)
 			}, label: {
-				HexImage(UIImage(systemName: "hand.raised.fill")!, stroke: .text)
+				HexImage(ImageAsset.Icon.hand, stroke: .text)
+					.placeholderTint(.text)
+					.squareInnerImage(.m)
 			})
 			.squareImage(.xl)
-			.position(x: geometry.size.width / 2 - 80, y: geometry.size.height - 80)
+			.position(x: geometry.size.width / 2 - (Metrics.Image.xl + Metrics.Spacing.m), y: geometry.size.height - (Metrics.Image.xl + Metrics.Spacing.m))
 
 			Button(action: {
 				self.viewModel.handToShow = PlayerHand(player: .black, state: self.viewModel.gameState)
 			}, label: {
-				HexImage(UIImage(systemName: "hand.raised.fill")!, stroke: .background)
+				HexImage(ImageAsset.Icon.hand, stroke: .background)
+					.placeholderTint(.background)
+					.squareInnerImage(.m)
 			})
 			.squareImage(.xl)
-			.position(x: geometry.size.width / 2 + 80, y: geometry.size.height - 80)
+			.position(x: geometry.size.width / 2 + (Metrics.Image.xl + Metrics.Spacing.m), y: geometry.size.height - (Metrics.Image.xl + Metrics.Spacing.m))
 
 			BottomSheet(
 				isOpen: self.viewModel.showPlayerHand,

@@ -33,6 +33,14 @@ extension Metrics {
 			case .custom(let value): return value
 			}
 		}
+
+		static func + (lhs: Metrics.Spacing, rhs: Metrics.Spacing) -> Metrics.Spacing {
+			.custom(lhs.rawValue + rhs.rawValue)
+		}
+
+		static func + (lhs: Metrics.Spacing, rhs: Metrics.Image) -> CGFloat {
+			lhs.rawValue + rhs.rawValue
+		}
 	}
 }
 
@@ -70,6 +78,14 @@ extension Metrics {
 			case .s:   return 16
 			case .custom(let value): return value
 			}
+		}
+
+		static func + (lhs: Metrics.Image, rhs: Metrics.Image) -> Metrics.Image {
+			.custom(lhs.rawValue + rhs.rawValue)
+		}
+
+		static func + (lhs: Metrics.Image, rhs: Metrics.Spacing) -> CGFloat {
+			lhs.rawValue + rhs.rawValue
 		}
 	}
 }

@@ -14,6 +14,11 @@ import UIKit
 enum ImageAsset {
 	static let glyph = UIImage(named: "Glyph")!
 	static let joseph = UIImage(named: "Joseph")!
+
+	enum Icon {
+		static let hand = UIImage(named: "Hand")!
+		static let close = UIImage(named: "Close")!
+	}
 }
 
 // MARK: - Colors

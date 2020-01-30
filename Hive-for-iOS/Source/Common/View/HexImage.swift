@@ -14,6 +14,7 @@ struct HexImage: View {
 	private let stroke: ColorAsset
 	private var imageWidth: Metrics.Image?
 	private var imageHeight: Metrics.Image?
+	private var placeholderTint: ColorAsset?
 
 	init(url: URL?, placeholder: UIImage = UIImage(), stroke: ColorAsset = .primary) {
 		self.url = url
@@ -31,9 +32,16 @@ struct HexImage: View {
 		GeometryReader { geometry in
 			ZStack {
 				RemoteImage(url: self.url, placeholder: self.placeholder)
-					.aspectRatio(contentMode: .fit)
-					.frame(width: self.imageWidth?.rawValue ?? geometry.size.width, height: self.imageHeight?.rawValue ?? geometry.size.height)
-					.mask(Hex())
+					.placeholderTint(self.placeholderTint)
+					.frame(
+						width: self.imageWidth?.rawValue ?? geometry.size.width,
+						height: self.imageHeight?.rawValue ?? geometry.size.height
+					)
+					.mask(
+						Hex()
+							.frame(width: geometry.size.width, height: geometry.size.height)
+							.scaledToFill()
+					)
 				Hex()
 					.stroke(
 						Color(self.stroke),
@@ -51,6 +59,12 @@ struct HexImage: View {
 		var hex = self
 		hex.imageWidth = width
 		hex.imageHeight = height
+		return hex
+	}
+
+	func placeholderTint(_ asset: ColorAsset) -> Self {
+		var hex = self
+		hex.placeholderTint = asset
 		return hex
 	}
 }
@@ -86,7 +100,11 @@ struct Hex: Shape {
 struct HexImagePreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
-			HexImage(UIImage(systemName: "xmark")!, stroke: .primary)
+			HexImage(ImageAsset.Icon.hand, stroke: .primary)
+				.placeholderTint(.primary)
+				.squareInnerImage(.m)
+				.squareImage(.l)
+			HexImage(ImageAsset.Icon.close, stroke: .primary)
 				.squareInnerImage(.s)
 				.squareImage(.l)
 			HexImage(ImageAsset.joseph, stroke: .primary)

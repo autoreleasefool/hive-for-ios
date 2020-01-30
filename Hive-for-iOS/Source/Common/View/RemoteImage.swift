@@ -45,6 +45,7 @@ private class RemoteImageFetcher: ObservableObject {
 struct RemoteImage: View {
 	@ObservedObject private var imageFetcher: RemoteImageFetcher
 	private let placeholder: UIImage
+	private var placeholderTint: ColorAsset?
 
 	init(url: URL?, placeholder: UIImage = UIImage()) {
 		self.placeholder = placeholder
@@ -53,20 +54,29 @@ struct RemoteImage: View {
 
 	var body: some View {
 		GeometryReader { geometry in
-			return ZStack {
-				if self.imageFetcher.image != nil {
-					Image(uiImage: self.imageFetcher.image!)
-						.resizable()
-						.frame(width: geometry.size.width, height: geometry.size.height)
-				} else {
-					Image(uiImage: self.placeholder)
-						.resizable()
-						.frame(width: geometry.size.width, height: geometry.size.height)
-				}
+			if self.imageFetcher.image != nil {
+				Image(uiImage: self.imageFetcher.image!)
+					.resizable()
+					.scaledToFit()
+					.frame(width: geometry.size.width, height: geometry.size.height)
+
+			} else {
+				Image(uiImage: self.placeholder)
+					.renderingMode(self.placeholderTint != nil ? .template : .original)
+					.resizable()
+					.scaledToFit()
+					.foregroundColor(self.placeholderTint != nil ? Color(self.placeholderTint!) : nil)
+					.frame(width: geometry.size.width, height: geometry.size.height)
 			}
 		}
 		.onAppear(perform: imageFetcher.fetch)
 		.onDisappear(perform: imageFetcher.cancel)
+	}
+
+	func placeholderTint(_ asset: ColorAsset?) -> Self {
+		var remoteImage = self
+		remoteImage.placeholderTint = asset
+		return remoteImage
 	}
 }
 
@@ -74,10 +84,11 @@ struct RemoteImage: View {
 struct RemoteImagePreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
-			RemoteImage(url: nil, placeholder: UIImage(systemName: "xmark")!)
+			RemoteImage(url: nil, placeholder: ImageAsset.Icon.hand)
+				.placeholderTint(.primary)
 				.squareImage(.xl)
 			RemoteImage(url: nil, placeholder: ImageAsset.joseph)
-				.squareImage(.xxl)
+				.imageFrame(width: .l, height: .m)
 		}
 	}
 }
