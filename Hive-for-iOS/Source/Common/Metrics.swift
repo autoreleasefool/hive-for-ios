@@ -13,12 +13,26 @@ enum Metrics { }
 // MARK: - Spacing
 
 extension Metrics {
-	enum Spacing: CGFloat {
-		case extraLarge = 64
-		case large      = 32
-		case standard   = 16
-		case small      = 8
-		case extraSmall = 4
+	enum Spacing {
+		case xxl
+		case xl
+		case l
+		case m
+		case s
+		case xs
+		case custom(CGFloat)
+
+		var rawValue: CGFloat {
+			switch self {
+			case .xxl: return 40
+			case .xl:  return 32
+			case .l:   return 24
+			case .m:   return 16
+			case .s:   return 8
+			case .xs:  return 4
+			case .custom(let value): return value
+			}
+		}
 	}
 }
 
@@ -39,22 +53,32 @@ extension View {
 // MARK: - Image
 
 extension Metrics {
-	enum Image: CGFloat {
-		case extraExtraLarge = 128
-		case extraLarge      = 64
-		case large           = 48
-		case standard        = 32
-		case small           = 16
+	enum Image {
+		case xxl
+		case xl
+		case l
+		case m
+		case s
+		case custom(CGFloat)
+
+		var rawValue: CGFloat {
+			switch self {
+			case .xxl: return 128
+			case .xl:  return 64
+			case .l:   return 48
+			case .m:   return 32
+			case .s:   return 16
+			case .custom(let value): return value
+			}
+		}
 	}
 }
 
-extension HexImage {
-	func imageFrame(width: Metrics.Image, height: Metrics.Image) -> some View {
-		return frame(width: width.rawValue, height: height.rawValue)
+extension View {
+	func squareImage(_ size: Metrics.Image) -> some View {
+		return frame(width: size.rawValue, height: size.rawValue)
 	}
-}
 
-extension Image {
 	func imageFrame(width: Metrics.Image, height: Metrics.Image) -> some View {
 		return frame(width: width.rawValue, height: height.rawValue)
 	}
@@ -63,11 +87,22 @@ extension Image {
 // MARK: - Text
 
 extension Metrics {
-	enum Text: CGFloat {
-		case title    = 32
-		case subtitle = 24
-		case body     = 16
-		case caption  = 12
+	enum Text {
+		case title
+		case subtitle
+		case body
+		case caption
+		case custom(CGFloat)
+
+		var rawValue: CGFloat {
+			switch self {
+			case .title:    return 32
+			case .subtitle: return 24
+			case .body:     return 16
+			case .caption:  return 12
+			case .custom(let value): return value
+			}
+		}
 	}
 }
 

@@ -43,6 +43,10 @@ struct HexImage: View {
 		}
 	}
 
+	func squareInnerImage(_ size: Metrics.Image) -> Self {
+		return innerImageFrame(width: size, height: size)
+	}
+
 	func innerImageFrame(width: Metrics.Image, height: Metrics.Image) -> Self {
 		var hex = self
 		hex.imageWidth = width
@@ -83,10 +87,10 @@ struct HexImagePreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
 			HexImage(UIImage(systemName: "xmark")!, stroke: .primary)
-				.innerImageFrame(width: .standard, height: .standard)
-				.imageFrame(width: .large, height: .large)
+				.squareInnerImage(.s)
+				.squareImage(.l)
 			HexImage(ImageAsset.joseph, stroke: .primary)
-				.imageFrame(width: .extraExtraLarge, height: .extraExtraLarge)
+				.imageFrame(width: .xxl, height: .xxl)
 		}
 	}
 }

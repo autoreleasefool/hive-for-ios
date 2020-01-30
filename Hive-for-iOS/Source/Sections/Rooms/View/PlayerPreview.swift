@@ -18,7 +18,7 @@ struct PlayerPreview: View {
 	let compact: Bool
 	let iconSize: Metrics.Image
 
-	init(_ player: HivePlayer?, alignment: Alignment = .leading, compact: Bool = false, iconSize: Metrics.Image = .standard) {
+	init(_ player: HivePlayer?, alignment: Alignment = .leading, compact: Bool = false, iconSize: Metrics.Image = .m) {
 		self.player = player
 		self.textAlignment = alignment
 		self.compact = compact
@@ -37,7 +37,7 @@ struct PlayerPreview: View {
 
 	var playerImage: some View {
 		HexImage(url: player?.avatarUrl, placeholder: ImageAsset.joseph)
-			.imageFrame(width: iconSize, height: iconSize)
+			.squareImage(iconSize)
 	}
 
 	var playerDescription: some View {
@@ -55,7 +55,7 @@ struct PlayerPreview: View {
 	}
 
 	var body: some View {
-		HStack(spacing: Metrics.Spacing.small.rawValue) {
+		HStack(spacing: Metrics.Spacing.s.rawValue) {
 			if textAlignment == .leading {
 				playerImage
 				playerDescription
@@ -73,11 +73,11 @@ struct PlayerPreviewPreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
 			PlayerPreview(HivePlayer.players[0])
-			PlayerPreview(HivePlayer.players[0], iconSize: .large)
+			PlayerPreview(HivePlayer.players[0], iconSize: .l)
 			PlayerPreview(HivePlayer.players[0], alignment: .trailing)
 			PlayerPreview(HivePlayer.players[0], compact: true)
 			PlayerPreview(nil)
-			PlayerPreview(nil, iconSize: .large)
+			PlayerPreview(nil, iconSize: .l)
 			PlayerPreview(nil, alignment: .trailing)
 			PlayerPreview(nil, compact: true)
 		}

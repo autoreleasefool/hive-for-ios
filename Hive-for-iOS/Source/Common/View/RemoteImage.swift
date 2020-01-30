@@ -75,9 +75,9 @@ struct RemoteImagePreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
 			RemoteImage(url: nil, placeholder: UIImage(systemName: "xmark")!)
-				.frame(width: 64, height: 64)
+				.squareImage(.xl)
 			RemoteImage(url: nil, placeholder: ImageAsset.joseph)
-				.frame(width: 128, height: 128)
+				.squareImage(.xxl)
 		}
 	}
 }

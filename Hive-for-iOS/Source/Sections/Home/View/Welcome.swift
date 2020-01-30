@@ -26,14 +26,14 @@ struct Welcome: View {
 			}
 			.subtitle()
 			.foregroundColor(Color(ColorAsset.text))
-			.padding(.standard)
+			.padding(.m)
 
 			Button("Settings") {
 				self.isPlaying = true
 			}
 			.subtitle()
 			.foregroundColor(Color(ColorAsset.text))
-			.padding(.standard)
+			.padding(.m)
 
 			Spacer()
 		}

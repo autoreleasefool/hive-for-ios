@@ -13,7 +13,7 @@ struct RoomRow: View {
 	let room: Room
 
 	private func optionsPreview(for options: Set<GameState.Options>) -> some View {
-		HStack(spacing: Metrics.Spacing.small.rawValue) {
+		HStack(spacing: Metrics.Spacing.s.rawValue) {
 			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
 				self.optionPreview(for: option, enabled: options.contains(option))
 			}
@@ -35,18 +35,18 @@ struct RoomRow: View {
 						: Color(ColorAsset.primary).opacity(0.4),
 					lineWidth: CGFloat(2)
 				)
-				.frame(width: 24, height: 24)
+				.squareImage(.m)
 		}
 	}
 
 	var body: some View {
-		HStack(spacing: Metrics.Spacing.standard.rawValue) {
+		HStack(spacing: Metrics.Spacing.m.rawValue) {
 			PlayerPreview(room.host, compact: true)
 			PlayerPreview(room.opponent, compact: true)
 			Spacer()
 			optionsPreview(for: room.options)
 		}
-		.padding(.vertical, .standard)
+		.padding(.vertical, .m)
 	}
 }
 

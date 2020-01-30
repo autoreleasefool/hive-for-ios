@@ -17,7 +17,7 @@ struct InformationHUD: View {
 		HStack {
 			Image(uiImage: ImageAsset.glyph)
 				.resizable()
-				.imageFrame(width: .standard, height: .standard)
+				.squareImage(.m)
 			Text(information.description(in: state))
 		}
 	}

@@ -25,9 +25,9 @@ struct RoomDetail: View {
 	private func playerSection(room: Room) -> some View {
 		HStack(spacing: 0) {
 			Spacer()
-			PlayerPreview(room.host, iconSize: .large)
+			PlayerPreview(room.host, iconSize: .l)
 			Spacer()
-			PlayerPreview(room.host, alignment: .trailing, iconSize: .large)
+			PlayerPreview(room.host, alignment: .trailing, iconSize: .l)
 			Spacer()
 		}
 	}
@@ -62,7 +62,7 @@ struct RoomDetail: View {
 				Text("Loading")
 			} else {
 				self.playerSection(room: self.viewModel.room!)
-					.padding(.vertical, Metrics.Spacing.standard)
+					.padding(.vertical, Metrics.Spacing.m)
 				self.expansionSection(options: self.viewModel.options)
 				self.otherOptionsSection(options: self.viewModel.options)
 			}

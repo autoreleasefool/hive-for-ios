@@ -14,7 +14,7 @@ struct PlayerHandHUD: View {
 
 	private func card(unitClass: HiveEngine.Unit.Class, count: Int) -> some View {
 		ZStack {
-			RoundedRectangle(cornerRadius: Metrics.Spacing.small.rawValue)
+			RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
 				.fill(Color(ColorAsset.background))
 			HStack {
 				ZStack {
@@ -23,7 +23,7 @@ struct PlayerHandHUD: View {
 						.subtitle()
 					Hex()
 						.stroke(Color(ColorAsset.text), lineWidth: CGFloat(2))
-						.frame(width: 48, height: 48)
+						.squareImage(.l)
 				}
 				VStack {
 					Text(unitClass.description)
