@@ -8,41 +8,43 @@
 
 import SwiftUI
 import Combine
+import HiveEngine
 
 struct GameHUD: View {
 	@EnvironmentObject var viewModel: HiveGameViewModel
 
+	var exitGameButton: some View {
+		Button(action: {
+			self.viewModel.postViewAction(.exitGame)
+		}, label: {
+			HexImage(ImageAsset.Icon.close, stroke: .background)
+				.placeholderTint(.background)
+				.squareInnerImage(.s)
+		})
+		.squareImage(.l)
+		.position(x: Metrics.Image.l + Metrics.Spacing.m, y: Metrics.Image.l + Metrics.Spacing.m)
+	}
+
+	func handButton(for player: Player, geometry: GeometryProxy) -> some View {
+		let color: ColorAsset = player == .white ? .text : .background
+		let xOffset = (Metrics.Image.xl + Metrics.Spacing.m) * (player == .white ? -1 : 1)
+
+		return Button(action: {
+			self.viewModel.handToShow = PlayerHand(player: player, state: self.viewModel.gameState)
+		}, label: {
+			HexImage(ImageAsset.Icon.hand, stroke: color)
+				.placeholderTint(color)
+				.squareInnerImage(.m)
+		})
+		.squareImage(.xl)
+		.position(x: geometry.size.width / 2 + xOffset, y: geometry.size.height - (Metrics.Image.xl + Metrics.Spacing.m))
+	}
+
 	var body: some View {
 		GeometryReader { geometry in
-			Button(action: {
-				self.viewModel.postViewAction(.exitGame)
-			}, label: {
-				HexImage(ImageAsset.Icon.close, stroke: .background)
-					.placeholderTint(.background)
-					.squareInnerImage(.s)
-			})
-			.squareImage(.l)
-			.position(x: Metrics.Image.l + Metrics.Spacing.m, y: Metrics.Image.l + Metrics.Spacing.m)
-
-			Button(action: {
-				self.viewModel.handToShow = PlayerHand(player: .white, state: self.viewModel.gameState)
-			}, label: {
-				HexImage(ImageAsset.Icon.hand, stroke: .text)
-					.placeholderTint(.text)
-					.squareInnerImage(.m)
-			})
-			.squareImage(.xl)
-			.position(x: geometry.size.width / 2 - (Metrics.Image.xl + Metrics.Spacing.m), y: geometry.size.height - (Metrics.Image.xl + Metrics.Spacing.m))
-
-			Button(action: {
-				self.viewModel.handToShow = PlayerHand(player: .black, state: self.viewModel.gameState)
-			}, label: {
-				HexImage(ImageAsset.Icon.hand, stroke: .background)
-					.placeholderTint(.background)
-					.squareInnerImage(.m)
-			})
-			.squareImage(.xl)
-			.position(x: geometry.size.width / 2 + (Metrics.Image.xl + Metrics.Spacing.m), y: geometry.size.height - (Metrics.Image.xl + Metrics.Spacing.m))
+			self.exitGameButton
+			self.handButton(for: .white, geometry: geometry)
+			self.handButton(for: .black, geometry: geometry)
 
 			BottomSheet(
 				isOpen: self.viewModel.showPlayerHand,
@@ -69,6 +71,7 @@ struct GameHUD: View {
 				}
 			}
 		}
+		.padding(.top, .l)
 	}
 }
 
