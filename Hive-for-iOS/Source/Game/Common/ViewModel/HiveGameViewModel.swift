@@ -12,13 +12,17 @@ import HiveEngine
 import Loaf
 
 enum HiveGameTask: Identifiable {
+	case arGameLoaded
+
 	var id: String {
-		return ""
+		switch self {
+		case .arGameLoaded: return "arGameLoaded"
+		}
 	}
 }
 
 enum HiveGameViewAction: BaseViewAction {
-	case contentDidLoad
+	case contentDidLoad(Experience.HiveGame)
 	case exitGame
 	case arViewError(Error)
 }
@@ -28,7 +32,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, Observable
 	@Published var informationToPresent: GameInformation?
 	@Published var gameState: GameState!
 	@Published var errorLoaf: Loaf?
+
 	var exitedGame = PassthroughSubject<Void, Never>()
+
+	var gameAnchor: Experience.HiveGame!
+	var gameLoaded = PassthroughSubject<Void, Never>()
 
 	var showPlayerHand: Binding<Bool> {
 		return Binding(
@@ -46,12 +54,15 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, Observable
 
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {
-		case .contentDidLoad:
-			break
+		case .contentDidLoad(let game):
+			if gameAnchor == nil {
+				gameAnchor = game
+				gameLoaded.send()
+			}
 		case .exitGame:
-			self.exitedGame.send()
+			exitedGame.send()
 		case .arViewError(let error):
-			self.errorLoaf = Loaf(error.localizedDescription, state: .error)
+			errorLoaf = Loaf(error.localizedDescription, state: .error)
 		}
 	}
 }

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import Combine
 import RealityKit
 import ARKit
 import HiveEngine
@@ -17,7 +18,6 @@ class HiveARGameViewController: UIViewController {
 	private var viewModel: HiveGameViewModel
 
 	private var arView = ARView(frame: .zero)
-	private var gameAnchor: Experience.HiveGame!
 
 	init(viewModel: HiveGameViewModel) {
 		self.viewModel = viewModel
@@ -34,7 +34,16 @@ class HiveARGameViewController: UIViewController {
 		view.addSubview(arView)
 		arView.constrainToFillView(view)
 
+		subscribeToPublishers()
 		setupExperience()
+	}
+
+	private func subscribeToPublishers() {
+		let gameLoaded = viewModel.gameLoaded.sink { [weak self] _ in
+			guard let game = self?.viewModel.gameAnchor else { return }
+			self?.arView.scene.anchors.append(game)
+		}
+		viewModel.register(cancellable: gameLoaded, withId: .arGameLoaded)
 	}
 
 	private func setupExperience() {
@@ -44,7 +53,7 @@ class HiveARGameViewController: UIViewController {
 		arView.automaticallyConfigureSession = false
 
 		let arConfiguration = ARWorldTrackingConfiguration()
-		arConfiguration.isCollaborationEnabled = true
+		arConfiguration.isCollaborationEnabled = false
 		arConfiguration.planeDetection = .horizontal
 
 		arView.session.delegate = self
@@ -55,10 +64,7 @@ class HiveARGameViewController: UIViewController {
 
 			switch result {
 			case .success(let hiveGame):
-				if self.gameAnchor == nil {
-					self.gameAnchor = hiveGame
-					self.viewModel.postViewAction(.contentDidLoad)
-				}
+				self.viewModel.postViewAction(.contentDidLoad(hiveGame))
 			case .failure(let error):
 				self.viewModel.postViewAction(.arViewError(error))
 			}
@@ -67,10 +73,11 @@ class HiveARGameViewController: UIViewController {
 	}
 
 	private func restartGame() {
-		guard let game = gameAnchor else { return }
+		guard let game = viewModel.gameAnchor else { return }
 
 		// Hide pieces for a new game
 		game.visit { entity in
+			entity.synchronization = nil
 			entity.isEnabled = false
 		}
 	}
