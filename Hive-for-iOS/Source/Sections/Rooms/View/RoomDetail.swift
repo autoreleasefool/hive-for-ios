@@ -25,9 +25,9 @@ struct RoomDetail: View {
 	private func playerSection(room: Room) -> some View {
 		HStack(spacing: 0) {
 			Spacer()
-			PlayerPreview(room.host, iconSize: Metrics.Image.larger)
+			PlayerPreview(room.host, iconSize: .large)
 			Spacer()
-			PlayerPreview(room.host, alignment: .trailing, iconSize: Metrics.Image.larger)
+			PlayerPreview(room.host, alignment: .trailing, iconSize: .large)
 			Spacer()
 		}
 	}
@@ -35,7 +35,7 @@ struct RoomDetail: View {
 	private func expansionSection(options: GameOptionData) -> some View {
 		VStack(alignment: .leading) {
 			Text("Expansions")
-				.font(.system(size: Metrics.Text.subtitle))
+				.subtitle()
 				.foregroundColor(Color(ColorAsset.text))
 			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
@@ -47,7 +47,7 @@ struct RoomDetail: View {
 	private func otherOptionsSection(options: GameOptionData) -> some View {
 		VStack(alignment: .leading) {
 			Text("Other options")
-				.font(.system(size: Metrics.Text.subtitle))
+				.subtitle()
 				.foregroundColor(Color(ColorAsset.text))
 			ForEach(GameState.Options.nonExpansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))

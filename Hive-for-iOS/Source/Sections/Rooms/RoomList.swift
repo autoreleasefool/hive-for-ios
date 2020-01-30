@@ -16,7 +16,7 @@ struct RoomList: View {
 			Image(systemName: "plus")
 				.imageScale(.large)
 				.accessibility(label: Text("Create Room"))
-				.padding()
+				.padding(.all, .standard)
 		}
 	}
 
@@ -27,7 +27,7 @@ struct RoomList: View {
 					RoomRow(room: room)
 				}
 			}
-			.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.standard))
+			.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.standard.rawValue))
 			.onAppear { self.viewModel.postViewAction(.onAppear) }
 			.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 	//		.loaf(self.$viewModel.errorLoaf)

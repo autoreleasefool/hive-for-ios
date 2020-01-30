@@ -12,8 +12,8 @@ struct HexImage: View {
 	private let url: URL?
 	private let placeholder: UIImage
 	private let stroke: ColorAsset
-	private var imageWidth: CGFloat?
-	private var imageHeight: CGFloat?
+	private var imageWidth: Metrics.Image?
+	private var imageHeight: Metrics.Image?
 
 	init(url: URL?, placeholder: UIImage = UIImage(), stroke: ColorAsset = .primary) {
 		self.url = url
@@ -32,7 +32,7 @@ struct HexImage: View {
 			ZStack {
 				RemoteImage(url: self.url, placeholder: self.placeholder)
 					.aspectRatio(contentMode: .fit)
-					.frame(width: self.imageWidth ?? geometry.size.width, height: self.imageHeight ?? geometry.size.height)
+					.frame(width: self.imageWidth?.rawValue ?? geometry.size.width, height: self.imageHeight?.rawValue ?? geometry.size.height)
 					.mask(Hex())
 				Hex()
 					.stroke(
@@ -43,7 +43,7 @@ struct HexImage: View {
 		}
 	}
 
-	func imageFrame(width: CGFloat?, height: CGFloat?) -> some View {
+	func innerImageFrame(width: Metrics.Image, height: Metrics.Image) -> Self {
 		var hex = self
 		hex.imageWidth = width
 		hex.imageHeight = height
@@ -83,10 +83,10 @@ struct HexImagePreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
 			HexImage(UIImage(systemName: "xmark")!, stroke: .primary)
-				.imageFrame(width: Metrics.Spacing.standard, height: Metrics.Spacing.standard)
-				.frame(width: 32, height: 32)
+				.innerImageFrame(width: .standard, height: .standard)
+				.imageFrame(width: .large, height: .large)
 			HexImage(ImageAsset.joseph, stroke: .primary)
-				.frame(width: 128, height: 128)
+				.imageFrame(width: .extraExtraLarge, height: .extraExtraLarge)
 		}
 	}
 }

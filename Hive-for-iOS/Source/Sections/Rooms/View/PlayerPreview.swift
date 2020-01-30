@@ -16,9 +16,9 @@ struct PlayerPreview: View {
 	let player: HivePlayer?
 	let textAlignment: Alignment
 	let compact: Bool
-	let iconSize: CGFloat
+	let iconSize: Metrics.Image
 
-	init(_ player: HivePlayer?, alignment: Alignment = .leading, compact: Bool = false, iconSize: CGFloat = Metrics.Image.listIcon) {
+	init(_ player: HivePlayer?, alignment: Alignment = .leading, compact: Bool = false, iconSize: Metrics.Image = .standard) {
 		self.player = player
 		self.textAlignment = alignment
 		self.compact = compact
@@ -37,25 +37,25 @@ struct PlayerPreview: View {
 
 	var playerImage: some View {
 		HexImage(url: player?.avatarUrl, placeholder: ImageAsset.joseph)
-			.frame(width: iconSize, height: iconSize)
+			.imageFrame(width: iconSize, height: iconSize)
 	}
 
 	var playerDescription: some View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
-				.font(.system(size: Metrics.Text.body))
+				.body()
 				.foregroundColor(Color(ColorAsset.text))
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if player != nil {
 				Text(secondaryText)
-					.font(.system(size: Metrics.Text.caption))
+					.caption()
 					.foregroundColor(Color(ColorAsset.textSecondary))
 			}
 		}
 	}
 
 	var body: some View {
-		HStack(spacing: Metrics.Spacing.smaller) {
+		HStack(spacing: Metrics.Spacing.small.rawValue) {
 			if textAlignment == .leading {
 				playerImage
 				playerDescription
@@ -73,11 +73,11 @@ struct PlayerPreviewPreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
 			PlayerPreview(HivePlayer.players[0])
-			PlayerPreview(HivePlayer.players[0], iconSize: Metrics.Image.larger)
+			PlayerPreview(HivePlayer.players[0], iconSize: .large)
 			PlayerPreview(HivePlayer.players[0], alignment: .trailing)
 			PlayerPreview(HivePlayer.players[0], compact: true)
 			PlayerPreview(nil)
-			PlayerPreview(nil, iconSize: Metrics.Image.larger)
+			PlayerPreview(nil, iconSize: .large)
 			PlayerPreview(nil, alignment: .trailing)
 			PlayerPreview(nil, compact: true)
 		}

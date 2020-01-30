@@ -13,7 +13,7 @@ struct RoomRow: View {
 	let room: Room
 
 	private func optionsPreview(for options: Set<GameState.Options>) -> some View {
-		HStack(spacing: Metrics.Spacing.smaller) {
+		HStack(spacing: Metrics.Spacing.small.rawValue) {
 			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
 				self.optionPreview(for: option, enabled: options.contains(option))
 			}
@@ -23,7 +23,7 @@ struct RoomRow: View {
 	private func optionPreview(for option: GameState.Options, enabled: Bool) -> some View {
 		ZStack {
 			Text(option.preview ?? "")
-				.font(.system(size: Metrics.Text.caption))
+				.caption()
 				.foregroundColor(enabled
 					? Color(ColorAsset.text)
 					: Color(ColorAsset.textSecondary)
@@ -40,13 +40,13 @@ struct RoomRow: View {
 	}
 
 	var body: some View {
-		HStack(spacing: Metrics.Spacing.standard) {
+		HStack(spacing: Metrics.Spacing.standard.rawValue) {
 			PlayerPreview(room.host, compact: true)
 			PlayerPreview(room.opponent, compact: true)
 			Spacer()
 			optionsPreview(for: room.options)
 		}
-		.padding(.vertical, Metrics.Spacing.standard)
+		.padding(.vertical, .standard)
 	}
 }
 

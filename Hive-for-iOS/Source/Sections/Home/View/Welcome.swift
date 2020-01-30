@@ -24,16 +24,16 @@ struct Welcome: View {
 			Button("Play") {
 				self.isPlaying = true
 			}
-				.font(.system(size: Metrics.Text.subtitle))
-				.foregroundColor(Color(ColorAsset.text))
-				.padding(Metrics.Spacing.standard)
+			.subtitle()
+			.foregroundColor(Color(ColorAsset.text))
+			.padding(.standard)
 
 			Button("Settings") {
 				self.isPlaying = true
 			}
-				.font(.system(size: Metrics.Text.subtitle))
-				.foregroundColor(Color(ColorAsset.text))
-				.padding(Metrics.Spacing.standard)
+			.subtitle()
+			.foregroundColor(Color(ColorAsset.text))
+			.padding(.standard)
 
 			Spacer()
 		}
