@@ -18,12 +18,21 @@ struct HiveGame: View {
 		viewModel.gameState = state
 	}
 
+	private func handleTransition(to newState: HiveGameViewModel.State) {
+		switch newState {
+		case .forfeit:
+			presentationMode.wrappedValue.dismiss()
+		case .begin, .gameEnd, .gameStart, .opponentTurn, .playerTurn, .sendingMovement, .receivingMovement:
+			break
+		}
+	}
+
 	var body: some View {
 		ZStack {
 			HiveARGame(viewModel: $viewModel)
 			GameHUD().environmentObject(viewModel)
 		}
-		.onReceive(viewModel.exitedGame) { _ in self.presentationMode.wrappedValue.dismiss() }
+		.onReceive(viewModel.flowState) { receivedValue in self.handleTransition(to: receivedValue) }
 		.edgesIgnoringSafeArea(.all)
 		.navigationBarTitle("")
 		.navigationBarHidden(true)

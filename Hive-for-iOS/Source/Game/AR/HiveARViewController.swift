@@ -39,11 +39,10 @@ class HiveARGameViewController: UIViewController {
 	}
 
 	private func subscribeToPublishers() {
-		let gameLoaded = viewModel.gameLoaded.sink { [weak self] _ in
-			guard let game = self?.viewModel.gameAnchor else { return }
-			self?.arView.scene.anchors.append(game)
+		let watchState = viewModel.flowState.sink { [weak self] receivedValue in
+			self?.handleTransition(to: receivedValue)
 		}
-		viewModel.register(cancellable: gameLoaded, withId: .arGameLoaded)
+		viewModel.register(cancellable: watchState, withId: .viewFlowState)
 	}
 
 	private func setupExperience() {
@@ -72,13 +71,27 @@ class HiveARGameViewController: UIViewController {
 		#endif
 	}
 
-	private func restartGame() {
+	private func prepareGame() {
+		guard let game = viewModel.gameAnchor else { return }
+		arView.scene.anchors.append(game)
+
+		game.visit { $0.synchronization = nil }
+//		resetGame()
+	}
+
+	private func resetGame() {
 		guard let game = viewModel.gameAnchor else { return }
 
 		// Hide pieces for a new game
-		game.visit { entity in
-			entity.synchronization = nil
-			entity.isEnabled = false
+		game.visit { $0.isEnabled = false }
+	}
+
+	private func handleTransition(to newState: HiveGameViewModel.State) {
+		switch newState {
+		case .gameStart:
+			prepareGame()
+		case .begin, .gameEnd, .forfeit, .opponentTurn, .playerTurn, .sendingMovement, .receivingMovement:
+			#warning("TODO: handle remaining state changes in view")
 		}
 	}
 }
@@ -86,7 +99,7 @@ class HiveARGameViewController: UIViewController {
 // MARK: - ARSessionDelegate
 
 extension HiveARGameViewController: ARSessionDelegate {
-//	func sess
+
 }
 
 // MARK: - UIViewControllerRepresentable

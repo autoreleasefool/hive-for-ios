@@ -13,6 +13,13 @@ import HiveEngine
 struct GameHUD: View {
 	@EnvironmentObject var viewModel: HiveGameViewModel
 
+	private func handleTransition(to newState: HiveGameViewModel.State) {
+		switch newState {
+		case .forfeit, .begin, .gameEnd, .gameStart, .opponentTurn, .playerTurn, .sendingMovement, .receivingMovement:
+			#warning("TODO: handle remaining state changes in hud")
+		}
+	}
+
 	var exitGameButton: some View {
 		Button(action: {
 			self.viewModel.postViewAction(.exitGame)
@@ -72,6 +79,7 @@ struct GameHUD: View {
 			}
 		}
 		.padding(.top, .l)
+		.onReceive(viewModel.flowState) { receivedValue in self.handleTransition(to: receivedValue) }
 	}
 }
 
