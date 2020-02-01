@@ -16,6 +16,9 @@ struct HiveGame: View {
 
 	init(state: GameState) {
 		viewModel.gameState = state
+
+		#warning("TODO: set the player based on whether they are host or opponent")
+		viewModel.playingAs = .white
 	}
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {

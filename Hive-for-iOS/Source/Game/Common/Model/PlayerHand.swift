@@ -10,15 +10,15 @@ import HiveEngine
 
 struct PlayerHand {
 	let player: Player
-	let unitsInHand: [HiveEngine.Unit.Class: Int]
+	let piecesInHand: [Piece.Class: Int]
 
 	init(player: Player, state: GameState) {
 		self.player = player
-		var unitsInHand: [HiveEngine.Unit.Class: Int] = [:]
+		var piecesInHand: [Piece.Class: Int] = [:]
 		state.unitsInHand[player]?.forEach {
-			unitsInHand[$0.class] = (unitsInHand[$0.class] ?? 0) + 1
+			piecesInHand[$0.class] = (piecesInHand[$0.class] ?? 0) + 1
 		}
 
-		self.unitsInHand = unitsInHand
+		self.piecesInHand = piecesInHand
 	}
 }

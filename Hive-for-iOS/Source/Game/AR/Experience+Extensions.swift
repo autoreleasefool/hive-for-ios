@@ -51,6 +51,13 @@ extension Experience.HiveGame {
 			wS2,
 		]
 	}
+
+	func pieces(for player: Player) -> [Entity?] {
+		switch player {
+		case .white: return whitePieces
+		case .black: return blackPieces
+		}
+	}
 }
 
 extension Entity {
@@ -60,5 +67,9 @@ extension Entity {
 		for child in children {
 			child.visit(using: block)
 		}
+	}
+
+	var gamePiece: Piece? {
+		return Piece(notation: self.name)
 	}
 }

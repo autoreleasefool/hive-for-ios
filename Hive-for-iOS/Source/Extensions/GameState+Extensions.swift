@@ -8,7 +8,9 @@
 
 import HiveEngine
 
-extension HiveEngine.Unit.Class: Identifiable {
+typealias Piece = HiveEngine.Unit
+
+extension Piece.Class: Identifiable {
 	public var id: String {
 		return description
 	}

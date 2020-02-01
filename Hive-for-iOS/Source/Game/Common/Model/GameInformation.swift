@@ -9,11 +9,11 @@
 import HiveEngine
 
 enum GameInformation {
-	case unit(HiveEngine.Unit)
+	case piece(Piece)
 
 	func description(in state: GameState) -> String {
 		switch self {
-		case .unit(let unit): return "\(unit.description) - \(state.position(of: unit))"
+		case .piece(let piece): return "\(piece.description) - \(state.position(of: piece))"
 		}
 	}
 }

@@ -43,6 +43,11 @@ class HiveARGameViewController: UIViewController {
 			self?.handleTransition(to: receivedValue)
 		}
 		viewModel.register(cancellable: watchState, withId: .viewFlowState)
+
+		let selectedPiece = viewModel.selectedPiece.sink { [weak self] receivedValue in
+			self?.presentSelectedPiece(receivedValue)
+		}
+		viewModel.register(cancellable: selectedPiece, withId: .viewSelectedPiece)
 	}
 
 	private func setupExperience() {
@@ -84,7 +89,15 @@ class HiveARGameViewController: UIViewController {
 		guard let game = viewModel.gameAnchor else { return }
 
 		// Hide pieces for a new game
-		game.visit { $0.isEnabled = false }
+		game.allPieces.forEach { $0?.isEnabled = false }
+	}
+
+	private func presentSelectedPiece(_ pieceClass: Piece.Class) {
+		guard let game = viewModel.gameAnchor else { return }
+		let pieces = game.pieces(for: viewModel.playingAs)
+		if let piece = pieces.first(where: { $0?.gamePiece?.class == pieceClass && $0?.isEnabled == false }) {
+			piece?.isEnabled = true
+		}
 	}
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {

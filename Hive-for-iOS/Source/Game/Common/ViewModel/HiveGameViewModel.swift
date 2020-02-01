@@ -13,6 +13,7 @@ import Loaf
 
 enum HiveGameTask: String, Identifiable {
 	case viewFlowState
+	case viewSelectedPiece
 
 	var id: String {
 		return rawValue
@@ -22,6 +23,8 @@ enum HiveGameTask: String, Identifiable {
 enum HiveGameViewAction: BaseViewAction {
 	case viewContentDidLoad(GameViewContent)
 	case viewContentReady
+
+	case selectedFromHand(Piece.Class)
 
 	case exitGame
 	case arViewError(Error)
@@ -33,8 +36,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, Observable
 	@Published var gameState: GameState!
 	@Published var errorLoaf: Loaf?
 
+	var selectedPiece = PassthroughSubject<Piece.Class, Never>()
+
 	var flowState = CurrentValueSubject<State, Never>(State.begin)
 	var gameContent: GameViewContent!
+	var playingAs: Player!
 
 	var gameAnchor: Experience.HiveGame? {
 		guard let gameContent = gameContent else { return nil }
@@ -68,6 +74,12 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, Observable
 			}
 		case .viewContentReady:
 			setupNewGame()
+
+		case .selectedFromHand(let pieceClass):
+			if handToShow?.player == playingAs {
+				selectedPiece.send(pieceClass)
+			}
+
 		case .exitGame:
 			transition(to: .forfeit)
 		case .arViewError(let error):
@@ -77,7 +89,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, Observable
 
 	private func setupNewGame() {
 		#warning("TODO: check against the player's actual color")
-		if gameState.currentPlayer == .white {
+		if gameState.currentPlayer == playingAs {
 			transition(to: .playerTurn)
 		} else {
 			transition(to: .opponentTurn)
