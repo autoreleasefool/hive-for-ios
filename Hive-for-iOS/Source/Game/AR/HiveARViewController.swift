@@ -63,7 +63,7 @@ class HiveARGameViewController: UIViewController {
 
 			switch result {
 			case .success(let hiveGame):
-				self.viewModel.postViewAction(.contentDidLoad(hiveGame))
+				self.viewModel.postViewAction(.viewContentDidLoad(.arExperience(hiveGame)))
 			case .failure(let error):
 				self.viewModel.postViewAction(.arViewError(error))
 			}
@@ -74,9 +74,10 @@ class HiveARGameViewController: UIViewController {
 	private func prepareGame() {
 		guard let game = viewModel.gameAnchor else { return }
 		arView.scene.anchors.append(game)
-
 		game.visit { $0.synchronization = nil }
-//		resetGame()
+		resetGame()
+
+		viewModel.postViewAction(.viewContentReady)
 	}
 
 	private func resetGame() {
@@ -99,7 +100,8 @@ class HiveARGameViewController: UIViewController {
 // MARK: - ARSessionDelegate
 
 extension HiveARGameViewController: ARSessionDelegate {
-
+	func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+	}
 }
 
 // MARK: - UIViewControllerRepresentable

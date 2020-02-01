@@ -10,6 +10,7 @@
 		CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0290D523CEF7B800A933F9 /* RoomDetail.swift */; };
 		CA0290D823CEF7FE00A933F9 /* RoomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0290D723CEF7FE00A933F9 /* RoomDetailViewModel.swift */; };
 		CA0290DE23CFA08300A933F9 /* RefreshableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0290DD23CFA08300A933F9 /* RefreshableList.swift */; };
+		CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0523EF23E57813008F8A94 /* GameViewContent.swift */; };
 		CA40344923932603006C6BE3 /* HiveEngine in Frameworks */ = {isa = PBXBuildFile; productRef = CA40344823932603006C6BE3 /* HiveEngine */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
@@ -54,6 +55,7 @@
 		CA0290D523CEF7B800A933F9 /* RoomDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetail.swift; sourceTree = "<group>"; };
 		CA0290D723CEF7FE00A933F9 /* RoomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewModel.swift; sourceTree = "<group>"; };
 		CA0290DD23CFA08300A933F9 /* RefreshableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableList.swift; sourceTree = "<group>"; };
+		CA0523EF23E57813008F8A94 /* GameViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewContent.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				CAFA467323D8B3B1003C38AB /* HiveGame.swift */,
+				CA0523EF23E57813008F8A94 /* GameViewContent.swift */,
 				CABDFCDF23DBAC3E00C697AD /* Model */,
 				CAFA469723DAD114003C38AB /* View */,
 				CAFA469823DAD11D003C38AB /* ViewModel */,
@@ -467,6 +470,7 @@
 				CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
 				CABDFD0623DCA73500C697AD /* HexImage.swift in Sources */,
+				CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */,
 				CABDFD1023E0C87700C697AD /* PlayerHand.swift in Sources */,
 				CAFA467423D8B3B1003C38AB /* HiveGame.swift in Sources */,
 				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,
