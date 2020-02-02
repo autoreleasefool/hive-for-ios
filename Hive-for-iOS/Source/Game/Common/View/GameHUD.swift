@@ -49,15 +49,16 @@ struct GameHUD: View {
 
 	var body: some View {
 		GeometryReader { geometry in
-			self.exitGameButton
-			self.handButton(for: .white, geometry: geometry)
-			self.handButton(for: .black, geometry: geometry)
+			if !self.viewModel.shouldHideHUDControls {
+				self.exitGameButton
+				self.handButton(for: .white, geometry: geometry)
+				self.handButton(for: .black, geometry: geometry)
+			}
 
 			BottomSheet(
 				isOpen: self.viewModel.showPlayerHand,
 				minHeight: 0,
-				maxHeight: geometry.size.height * 0.3,
-				backgroundColor: .clear
+				maxHeight: geometry.size.height * 0.3
 			) {
 				if self.viewModel.showPlayerHand.wrappedValue {
 					PlayerHandHUD(hand: self.viewModel.handToShow!)

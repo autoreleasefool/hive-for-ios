@@ -24,6 +24,7 @@ enum HiveGameViewAction: BaseViewAction {
 	case viewContentDidLoad(GameViewContent)
 	case viewContentReady
 
+	case enquiredFromHand(Piece.Class)
 	case selectedFromHand(Piece.Class)
 
 	case exitGame
@@ -65,20 +66,21 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, Observable
 		)
 	}
 
+	var shouldHideHUDControls: Bool {
+		return showPlayerHand.wrappedValue || hasInformation.wrappedValue
+	}
+
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {
 		case .viewContentDidLoad(let content):
-			if gameContent == nil {
-				self.gameContent = content
-				transition(to: .gameStart)
-			}
+			setupView(content: content)
 		case .viewContentReady:
 			setupNewGame()
 
 		case .selectedFromHand(let pieceClass):
-			if handToShow?.player == playingAs {
-				selectedPiece.send(pieceClass)
-			}
+			placeFromHand(pieceClass)
+		case .enquiredFromHand(let pieceClass):
+			enquireFromHand(pieceClass)
 
 		case .exitGame:
 			transition(to: .forfeit)
@@ -94,6 +96,25 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, Observable
 		} else {
 			transition(to: .opponentTurn)
 		}
+	}
+
+	private func setupView(content: GameViewContent) {
+		if gameContent == nil {
+			self.gameContent = content
+			transition(to: .gameStart)
+		}
+	}
+
+	private func placeFromHand(_ pieceClass: Piece.Class) {
+		if handToShow?.player == playingAs {
+			selectedPiece.send(pieceClass)
+		}
+		handToShow = nil
+	}
+
+	private func enquireFromHand(_ pieceClass: Piece.Class) {
+		handToShow = nil
+		informationToPresent = .pieceClass(pieceClass)
 	}
 }
 

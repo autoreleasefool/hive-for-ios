@@ -13,46 +13,66 @@ struct PlayerHandHUD: View {
 	@EnvironmentObject var viewModel: HiveGameViewModel
 	let hand: PlayerHand
 
-	private func card(pieceClass: Piece.Class, count: Int) -> some View {
-		Button(
-			action: { self.viewModel.postViewAction(.selectedFromHand(pieceClass)) },
-			label: {
-				ZStack {
-					RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
-						.fill(Color(ColorAsset.background))
-						.shadow(radius: Metrics.Spacing.s.rawValue)
-					HStack {
+	private func card(pieceClass: Piece.Class, count: Int, viewPortWidth: CGFloat) -> some View {
+		GeometryReader { geometry in
+			ZStack {
+				RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
+					.fill(Color(.backgroundLight))
+					.shadow(radius: Metrics.Spacing.s.rawValue)
+
+				Button(
+					action: { self.viewModel.postViewAction(.enquiredFromHand(pieceClass)) },
+					label: {
+						Image(systemName: "info.circle")
+							.resizable()
+							.foregroundColor(Color(.text))
+							.squareImage(.s)
+							.padding()
+							.position(
+								x: geometry.size.width - (Metrics.Spacing.s + Metrics.Spacing.s).rawValue,
+								y: Metrics.Spacing.m.rawValue
+							)
+					}
+				)
+
+				Button(
+					action: { self.viewModel.postViewAction(.selectedFromHand(pieceClass)) },
+					label: {
 						ZStack {
 							Text(pieceClass.notation)
-								.foregroundColor(Color(ColorAsset.text))
+								.foregroundColor(Color(.text))
 								.subtitle()
 							Hex()
-								.stroke(Color(ColorAsset.text), lineWidth: CGFloat(2))
+								.stroke(Color(.text), lineWidth: CGFloat(2))
 								.squareImage(.l)
 						}
-						VStack {
-							Text(pieceClass.description)
-								.foregroundColor(Color(ColorAsset.text))
-								.title()
-							Text(count > 0 ? "\(count) remaining" : "All in play")
-								.foregroundColor(Color(ColorAsset.textSecondary))
-								.body()
-						}
+						.padding()
 					}
-				}
-				.frame(width: 300)
+				)
 			}
-		)
+		}
+		.frame(width: viewPortWidth * 0.75)
 	}
 
 	var body: some View {
-		VStack {
-			Text("\(hand.player.description) hand")
-			ScrollView(.horizontal, showsIndicators: false) {
-				HStack {
-					ForEach(hand.piecesInHand.keys.sorted()) { pieceClass in
-						self.card(pieceClass: pieceClass, count: self.hand.piecesInHand[pieceClass]!)
+		GeometryReader { geometry in
+			VStack(alignment: .leading) {
+				Text("\(self.hand.player.description) hand")
+					.underline()
+					.subtitle()
+					.foregroundColor(Color(.text))
+					.padding(.horizontal, .m)
+				ScrollView(.horizontal, showsIndicators: false) {
+					HStack {
+						ForEach(self.hand.piecesInHand.keys.sorted()) { pieceClass in
+							self.card(
+								pieceClass: pieceClass,
+								count: self.hand.piecesInHand[pieceClass]!,
+								viewPortWidth: geometry.size.width
+							)
+						}
 					}
+					.padding(.horizontal, .m)
 				}
 			}
 		}
