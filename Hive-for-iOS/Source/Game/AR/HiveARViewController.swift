@@ -67,6 +67,8 @@ class HiveARGameViewController: UIViewController {
 		arView.session.delegate = self
 		arView.session.run(arConfiguration, options: [])
 
+		enableCoaching()
+
 		Experience.loadHiveGameAsync { [weak self] result in
 			guard let self = self else { return }
 
@@ -78,6 +80,15 @@ class HiveARGameViewController: UIViewController {
 			}
 		}
 		#endif
+	}
+
+	private func enableCoaching() {
+		let coachingOverlay = ARCoachingOverlayView()
+		coachingOverlay.delegate = self
+		coachingOverlay.session = arView.session
+		coachingOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+		coachingOverlay.goal = .horizontalPlane
+		arView.addSubview(coachingOverlay)
 	}
 
 	@objc private func didTapArView(_ sender: UITapGestureRecognizer) {
@@ -154,6 +165,15 @@ class HiveARGameViewController: UIViewController {
 
 extension HiveARGameViewController: ARSessionDelegate {
 	func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
+	}
+}
+
+// MARK: - ARCoachingOverlayViewDelegate
+
+extension HiveARGameViewController: ARCoachingOverlayViewDelegate {
+	func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
+		viewModel.postViewAction(.viewInteractionsReady)
+		coachingOverlayView.removeFromSuperview()
 	}
 }
 

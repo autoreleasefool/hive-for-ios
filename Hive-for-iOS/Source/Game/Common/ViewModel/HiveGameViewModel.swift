@@ -14,6 +14,7 @@ import Loaf
 enum HiveGameViewAction: BaseViewAction {
 	case viewContentDidLoad(GameViewContent)
 	case viewContentReady
+	case viewInteractionsReady
 
 	case enquiredFromHand(Piece.Class)
 	case selectedFromHand(Piece.Class)
@@ -66,12 +67,19 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		return showPlayerHand.wrappedValue || hasInformation.wrappedValue
 	}
 
+	private var viewContentReady: Bool = false
+	private var viewInteractionsReady: Bool = false
+
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {
 		case .viewContentDidLoad(let content):
 			setupView(content: content)
 		case .viewContentReady:
-			setupNewGame()
+			viewContentReady = true
+			attemptSetupNewGame()
+		case .viewInteractionsReady:
+			viewInteractionsReady = true
+			attemptSetupNewGame()
 
 		case .selectedFromHand(let pieceClass):
 			placeFromHand(pieceClass)
@@ -85,6 +93,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .arViewError(let error):
 			errorLoaf = Loaf(error.localizedDescription, state: .error)
 		}
+	}
+
+	private func attemptSetupNewGame() {
+		guard !inGame && viewContentReady && viewInteractionsReady else { return }
+		setupNewGame()
 	}
 
 	private func setupNewGame() {
@@ -104,6 +117,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func placeFromHand(_ pieceClass: Piece.Class) {
+		guard inGame else { return }
+
 		if handToShow?.player == playingAs {
 			selectedPiece.send(pieceClass)
 		}
@@ -111,6 +126,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func enquireFromHand(_ pieceClass: Piece.Class) {
+		guard inGame else { return }
 		handToShow = nil
 		informationToPresent = .pieceClass(pieceClass)
 	}
