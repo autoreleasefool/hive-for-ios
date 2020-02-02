@@ -39,15 +39,17 @@ class HiveARGameViewController: UIViewController {
 	}
 
 	private func subscribeToPublishers() {
-		let watchState = viewModel.flowState.sink { [weak self] receivedValue in
-			self?.handleTransition(to: receivedValue)
-		}
-		viewModel.register(cancellable: watchState, withId: .viewFlowState)
+		viewModel.flowState
+			.sink { [weak self] receivedValue in
+				self?.handleTransition(to: receivedValue)
+			}
+			.store(in: viewModel)
 
-		let selectedPiece = viewModel.selectedPiece.sink { [weak self] receivedValue in
-			self?.presentSelectedPiece(receivedValue)
-		}
-		viewModel.register(cancellable: selectedPiece, withId: .viewSelectedPiece)
+		viewModel.selectedPiece
+			.sink { [weak self] receivedValue in
+				self?.presentSelectedPiece(receivedValue)
+			}
+			.store(in: viewModel)
 	}
 
 	private func setupExperience() {

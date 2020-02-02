@@ -10,31 +10,29 @@ import Combine
 
 protocol BaseViewAction { }
 
-class ViewModel<ViewAction, CancellableID> where ViewAction: BaseViewAction, CancellableID: Identifiable {
+class ViewModel<ViewAction> where ViewAction: BaseViewAction {
 
-	private var cancellables: [CancellableID.ID: AnyCancellable] = [:]
+	private var cancellables: [AnyCancellable] = []
+
+	deinit {
+		cancellables.removeAll()
+	}
 
 	func postViewAction(_ viewAction: ViewAction) {
 		fatalError("Classes extending ViewModel must override postViewAction(_:)")
 	}
 
-	func register(cancellable: AnyCancellable, withId id: CancellableID) {
-		if let existing = cancellables[id.id] {
-			existing.cancel()
-		}
-
-		cancellables[id.id] = cancellable
-	}
-
-	func completeCancellable(withId id: CancellableID) {
-		cancellables[id.id]?.cancel()
-		cancellables[id.id] = nil
-	}
-
 	func cancelAllRequests() {
-		for id in cancellables.keys {
-			cancellables[id]?.cancel()
-			cancellables[id] = nil
-		}
+		cancellables.removeAll()
+	}
+
+	fileprivate func store(_ cancellable: AnyCancellable) {
+		cancellable.store(in: &cancellables)
+	}
+}
+
+extension AnyCancellable {
+	func store<V>(in model: ViewModel<V>) {
+		model.store(self)
 	}
 }

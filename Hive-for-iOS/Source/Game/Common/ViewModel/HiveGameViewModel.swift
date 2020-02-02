@@ -11,15 +11,6 @@ import Combine
 import HiveEngine
 import Loaf
 
-enum HiveGameTask: String, Identifiable {
-	case viewFlowState
-	case viewSelectedPiece
-
-	var id: String {
-		return rawValue
-	}
-}
-
 enum HiveGameViewAction: BaseViewAction {
 	case viewContentDidLoad(GameViewContent)
 	case viewContentReady
@@ -31,7 +22,7 @@ enum HiveGameViewAction: BaseViewAction {
 	case arViewError(Error)
 }
 
-class HiveGameViewModel: ViewModel<HiveGameViewAction, HiveGameTask>, ObservableObject {
+class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
 	@Published var gameState: GameState!

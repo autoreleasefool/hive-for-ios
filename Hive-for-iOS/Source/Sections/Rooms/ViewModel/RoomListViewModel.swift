@@ -11,21 +11,13 @@ import SwiftUI
 import Combine
 import Loaf
 
-enum RoomListTask: String, Identifiable {
-	case roomRefresh
-
-	var id: String {
-		return self.rawValue
-	}
-}
-
 enum RoomListViewAction: BaseViewAction {
 	case onAppear
 	case onDisappear
 	case refreshRooms
 }
 
-class RoomListViewModel: ViewModel<RoomListViewAction, RoomListTask>, ObservableObject {
+class RoomListViewModel: ViewModel<RoomListViewAction>, ObservableObject {
 	@Published var errorLoaf: Loaf?
 
 	@Published private(set) var rooms: [Room] = [] {
@@ -53,13 +45,12 @@ class RoomListViewModel: ViewModel<RoomListViewAction, RoomListTask>, Observable
 	}
 
 	private func refreshRooms() {
-		let request = HiveAPI
+		HiveAPI
 			.shared
 			.rooms()
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
-					self?.completeCancellable(withId: .roomRefresh)
 					if case let .failure(error) = result {
 						self?.errorLoaf = error.loaf
 					}
@@ -69,7 +60,6 @@ class RoomListViewModel: ViewModel<RoomListViewAction, RoomListTask>, Observable
 					self?.rooms = rooms
 				}
 			)
-
-		register(cancellable: request, withId: .roomRefresh)
+			.store(in: self)
 	}
 }

@@ -12,18 +12,6 @@ import Combine
 import Loaf
 import HiveEngine
 
-enum RoomDetailTask: Identifiable {
-	case refreshRoomDetails
-	case modifyOptions
-
-	var id: String {
-		switch self {
-		case .refreshRoomDetails: return "refreshRoomDetails"
-		case .modifyOptions: return "modifyOptions"
-		}
-	}
-}
-
 enum RoomDetailViewAction: BaseViewAction {
 	case onAppear
 	case onDisappear
@@ -31,7 +19,7 @@ enum RoomDetailViewAction: BaseViewAction {
 	case modifyOptions
 }
 
-class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, ObservableObject {
+class RoomDetailViewModel: ViewModel<RoomDetailViewAction>, ObservableObject {
 	@Published private(set) var room: Room?
 	@Published private(set) var options: GameOptionData = GameOptionData(options: [])
 	@Published var errorLoaf: Loaf?
@@ -70,13 +58,12 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, Obse
 	}
 
 	private func fetchRoomDetails() {
-		let request = HiveAPI
+		HiveAPI
 			.shared
 			.room(id: roomId)
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
-					self?.completeCancellable(withId: .refreshRoomDetails)
 					if case let .failure(error) = result {
 						self?.errorLoaf = error.loaf
 					}
@@ -87,7 +74,7 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction, RoomDetailTask>, Obse
 					self?.options.update(with: room.options)
 				}
 			)
-		register(cancellable: request, withId: .refreshRoomDetails)
+			.store(in: self)
 	}
 }
 
