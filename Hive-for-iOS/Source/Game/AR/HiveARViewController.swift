@@ -33,6 +33,8 @@ class HiveARGameViewController: UIViewController {
 
 		view.addSubview(arView)
 		arView.constrainToFillView(view)
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapArView))
+		arView.addGestureRecognizer(tapGesture)
 
 		subscribeToPublishers()
 		setupExperience()
@@ -78,6 +80,36 @@ class HiveARGameViewController: UIViewController {
 		#endif
 	}
 
+	@objc private func didTapArView(_ sender: UITapGestureRecognizer) {
+		guard viewModel.inGame else { return }
+		let location = sender.location(in: arView)
+		guard let tappedPiece = arView.entity(at: location),
+			let gamePiece = tappedPiece.gamePiece else {
+			return
+		}
+
+		viewModel.postViewAction(.tappedPiece(gamePiece))
+	}
+
+	private func presentSelectedPiece(_ pieceClass: Piece.Class) {
+		guard let game = viewModel.gameAnchor else { return }
+		let pieces = game.pieces(for: viewModel.playingAs)
+		if let piece = pieces.first(where: { $0?.gamePiece?.class == pieceClass && $0?.isEnabled == false }) {
+			piece?.isEnabled = true
+		}
+	}
+
+	private func handleTransition(to newState: HiveGameViewModel.State) {
+		switch newState {
+		case .gameStart:
+			prepareGame()
+		case .begin, .gameEnd, .forfeit, .opponentTurn, .sendingMovement, .receivingMovement:
+			#warning("TODO: handle remaining state changes in view")
+		case .playerTurn:
+			startPlayerTurn()
+		}
+	}
+
 	private func prepareGame() {
 		guard let game = viewModel.gameAnchor else { return }
 		arView.scene.anchors.append(game)
@@ -94,21 +126,27 @@ class HiveARGameViewController: UIViewController {
 		game.allPieces.forEach { $0?.isEnabled = false }
 	}
 
-	private func presentSelectedPiece(_ pieceClass: Piece.Class) {
+	private func startPlayerTurn() {
 		guard let game = viewModel.gameAnchor else { return }
-		let pieces = game.pieces(for: viewModel.playingAs)
-		if let piece = pieces.first(where: { $0?.gamePiece?.class == pieceClass && $0?.isEnabled == false }) {
-			piece?.isEnabled = true
-		}
+		game.pieces(for: viewModel.playingAs)
+			.forEach {
+				guard let entity = $0 as? Entity & HasCollision else { return }
+				let gestureRecognizers = arView.installGestures([.translation], for: entity)
+				if let gestureRecognizer = gestureRecognizers.first as? EntityTranslationGestureRecognizer {
+					gestureRecognizer.removeTarget(nil, action: nil)
+					gestureRecognizer.addTarget(self, action: #selector(self.handlePieceTranslation))
+				}
+			}
 	}
 
-	private func handleTransition(to newState: HiveGameViewModel.State) {
-		switch newState {
-		case .gameStart:
-			prepareGame()
-		case .begin, .gameEnd, .forfeit, .opponentTurn, .playerTurn, .sendingMovement, .receivingMovement:
-			#warning("TODO: handle remaining state changes in view")
+	@objc func handlePieceTranslation(_ recognizer: EntityTranslationGestureRecognizer) {
+		guard let game = viewModel.gameAnchor,
+			let entity = recognizer.entity,
+			recognizer.state == .changed else {
+			return
 		}
+
+		entity.position = recognizer.location(in: game) ?? entity.position
 	}
 }
 

@@ -17,6 +17,7 @@ enum HiveGameViewAction: BaseViewAction {
 
 	case enquiredFromHand(Piece.Class)
 	case selectedFromHand(Piece.Class)
+	case tappedPiece(Piece)
 
 	case exitGame
 	case arViewError(Error)
@@ -33,6 +34,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	var flowState = CurrentValueSubject<State, Never>(State.begin)
 	var gameContent: GameViewContent!
 	var playingAs: Player!
+
+	var inGame: Bool {
+		return flowState.value.inGame
+	}
 
 	var gameAnchor: Experience.HiveGame? {
 		guard let gameContent = gameContent else { return nil }
@@ -72,6 +77,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			placeFromHand(pieceClass)
 		case .enquiredFromHand(let pieceClass):
 			enquireFromHand(pieceClass)
+		case .tappedPiece(let piece):
+			informationToPresent = .piece(piece)
 
 		case .exitGame:
 			transition(to: .forfeit)
@@ -121,6 +128,13 @@ extension HiveGameViewModel {
 		case receivingMovement(Movement)
 		case gameEnd
 		case forfeit
+
+		var inGame: Bool {
+			switch self {
+			case .begin, .gameStart, .gameEnd, .forfeit: return false
+			case .playerTurn, .opponentTurn, .sendingMovement, .receivingMovement: return true
+			}
+		}
 	}
 
 	func transition(to nextState: State) {
