@@ -1690,6 +1690,94 @@
                       ]
                     }
                   },
+                  "7A9C9574-97DB-4449-ACA3-1539ADFDA2CE" : {
+                    "overrides" : {
+                      "arguments" : [
+                        [
+                          "bevelRadius",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.0050000000000000001
+                          }
+                        ],
+                        [
+                          "diameter",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.10000000000000001
+                          }
+                        ],
+                        [
+                          "height",
+                          {
+                            "typeName" : "Double",
+                            "value" : 0.02
+                          }
+                        ],
+                        [
+                          "material",
+                          {
+                            "typeName" : "String",
+                            "value" : "gold"
+                          }
+                        ],
+                        [
+                          "sides",
+                          {
+                            "typeName" : "Int",
+                            "value" : 6
+                          }
+                        ],
+                        [
+                          "type",
+                          {
+                            "typeName" : "String",
+                            "value" : "prism"
+                          }
+                        ]
+                      ],
+                      "factory" : {
+                        "identifier" : "com.apple.rc.af.CoreAssetFactories.PrimitiveShapeAssetFactory",
+                        "version" : "1.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "279FDA4A-EDDA-474F-A205-81ECD6364E9C"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "OpenPosition"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0.010000002570450306,
+                        1.4901161193847656e-08,
+                        1
+                      ]
+                    }
+                  },
                   "07A64E3C-7BCC-409F-B565-C020BBD9DC31" : null,
                   "7F5F1ADC-E5E4-4EF5-A5B5-FC43B071FFA5" : null,
                   "8E7AD486-BBB9-4385-9664-A6D44317F36C" : null,
@@ -2800,6 +2888,7 @@
                       ]
                     }
                   },
+                  "063A77C2-97E3-432A-BAA0-9E4AF90C7FE7" : null,
                   "75F896D6-11CF-4406-8890-C74D2A69993A" : {
                     "overrides" : {
                       "children" : {
@@ -7799,6 +7888,7 @@
                     }
                   },
                   "F229F298-0F06-41C6-8A39-9704490A388F" : null,
+                  "F0318233-0DB5-4CB9-A3D8-10ED2AC3A2A3" : null,
                   "FC855C33-3491-4B2E-984D-5D5E20E0B56D" : null,
                   "FF2559EB-7CCF-4B22-8BF9-D4D819BE7F23" : null
                 },
@@ -7819,9 +7909,9 @@
                   0.58980095386505127,
                   0.80744397640228271,
                   0,
-                  0.20946937799453735,
-                  0.36536979675292969,
-                  0.43328157067298889,
+                  0.14133021235466003,
+                  0.55015337467193604,
+                  0.83240795135498047,
                   1
                 ],
                 "sceneTransform" : [
