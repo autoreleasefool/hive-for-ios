@@ -1103,6 +1103,13 @@
                             "typeName" : "String",
                             "value" : "wA1"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -2035,6 +2042,13 @@
                             "typeName" : "String",
                             "value" : "wA2"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -2864,6 +2878,13 @@
                             "typeName" : "String",
                             "value" : "wA3"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -3417,6 +3438,13 @@
                             "typeName" : "String",
                             "value" : "wM"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -3697,6 +3725,20 @@
                           {
                             "typeName" : "String",
                             "value" : "wG1"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
+                        ],
+                        [
+                          "rigidBody-shapeType",
+                          {
+                            "typeName" : "String",
+                            "value" : "default"
                           }
                         ]
                       ]
@@ -3980,6 +4022,13 @@
                             "typeName" : "String",
                             "value" : "wG3"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -4255,6 +4304,13 @@
                           {
                             "typeName" : "String",
                             "value" : "wS1"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
                           }
                         ]
                       ]
@@ -4813,6 +4869,13 @@
                             "typeName" : "String",
                             "value" : "wB1"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -5091,6 +5154,13 @@
                           {
                             "typeName" : "String",
                             "value" : "wP"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
                           }
                         ]
                       ]
@@ -5653,6 +5723,13 @@
                             "typeName" : "String",
                             "value" : "wG2"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -6205,6 +6282,13 @@
                           {
                             "typeName" : "String",
                             "value" : "wL"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
                           }
                         ]
                       ]
@@ -7035,6 +7119,13 @@
                             "typeName" : "String",
                             "value" : "wQ"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -7310,6 +7401,13 @@
                           {
                             "typeName" : "String",
                             "value" : "wB2"
+                          }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
                           }
                         ]
                       ]
@@ -7863,6 +7961,13 @@
                             "typeName" : "String",
                             "value" : "wS2"
                           }
+                        ],
+                        [
+                          "rigidBody-enabled",
+                          {
+                            "typeName" : "Bool",
+                            "value" : true
+                          }
                         ]
                       ]
                     },
@@ -7909,9 +8014,9 @@
                   0.58980095386505127,
                   0.80744397640228271,
                   0,
-                  0.14133021235466003,
-                  0.55015337467193604,
-                  0.83240795135498047,
+                  0.092694506049156189,
+                  0.52178138494491577,
+                  0.85234934091567993,
                   1
                 ],
                 "sceneTransform" : [
