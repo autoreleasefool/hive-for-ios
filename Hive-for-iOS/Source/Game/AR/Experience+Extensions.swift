@@ -73,3 +73,9 @@ extension Entity {
 		return Piece(notation: self.name)
 	}
 }
+
+extension SIMD3 where Scalar == Float {
+	func euclideanDistance(to other: SIMD3<Scalar>) -> Scalar {
+		return sqrt(pow(self.x - other.x, 2) + pow(self.y - other.y, 2) + pow(self.z - other.z, 2))
+	}
+}

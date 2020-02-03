@@ -49,6 +49,7 @@
 		CAFA469A23DAD13B003C38AB /* HiveGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469923DAD13B003C38AB /* HiveGameViewModel.swift */; };
 		CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469B23DAD215003C38AB /* GameHUD.swift */; };
 		CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */; };
+		CAFA91F223E77B290087F1F0 /* GameState+AR.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA91F123E77B290087F1F0 /* GameState+AR.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		CAFA469923DAD13B003C38AB /* HiveGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameViewModel.swift; sourceTree = "<group>"; };
 		CAFA469B23DAD215003C38AB /* GameHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHUD.swift; sourceTree = "<group>"; };
 		CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		CAFA91F123E77B290087F1F0 /* GameState+AR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+AR.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +191,7 @@
 			children = (
 				CAFA467523D8BCEF003C38AB /* HiveARViewController.swift */,
 				CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */,
+				CAFA91F123E77B290087F1F0 /* GameState+AR.swift */,
 			);
 			path = AR;
 			sourceTree = "<group>";
@@ -455,6 +458,7 @@
 				CAFA469A23DAD13B003C38AB /* HiveGameViewModel.swift in Sources */,
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
+				CAFA91F223E77B290087F1F0 /* GameState+AR.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
 				CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */,
 				CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */,

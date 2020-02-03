@@ -15,6 +15,8 @@ import Loaf
 
 class HiveARGameViewController: UIViewController {
 
+	private let debugSnapping = false
+
 	private var viewModel: HiveGameViewModel
 
 	private var arView = ARView(frame: .zero)
@@ -135,6 +137,16 @@ class HiveARGameViewController: UIViewController {
 
 		// Hide pieces for a new game
 		game.allPieces.forEach { $0?.isEnabled = false }
+//		game.openPosition?.isEnabled = false
+
+		if debugSnapping {
+			(0..<6).forEach { idx in
+				let e = game.openPosition?.clone(recursive: true)
+				e!.name = "OpenPosition\(idx)"
+				game.addChild(e!)
+				e!.isEnabled = false
+			}
+		}
 	}
 
 	private func startPlayerTurn() {
@@ -150,14 +162,59 @@ class HiveARGameViewController: UIViewController {
 			}
 	}
 
+	private var initialTouchPosition: SIMD3<Float>?
+	private var snappingPositions: [SIMD3<Float>]? {
+		didSet {
+			guard debugSnapping, let game = viewModel.gameAnchor, let s = snappingPositions else { return }
+			(0..<6).forEach { idx in
+				let e = game.findEntity(named: "OpenPosition\(idx)")!
+				if s.count > idx {
+					e.isEnabled = true
+					e.position = s[idx]
+				} else {
+					e.isEnabled = false
+				}
+			}
+		}
+	}
+
 	@objc func handlePieceTranslation(_ recognizer: EntityTranslationGestureRecognizer) {
 		guard let game = viewModel.gameAnchor,
 			let entity = recognizer.entity,
-			recognizer.state == .changed else {
+			let gamePiece = entity.gamePiece,
+			let location = recognizer.location(in: game) else {
 			return
 		}
 
-		entity.position = recognizer.location(in: game) ?? entity.position
+		if recognizer.state == .began {
+			initialTouchPosition = location
+			snappingPositions = generateSnappingPositions(for: gamePiece)
+		} else if recognizer.state == .ended || recognizer.state == .cancelled {
+			initialTouchPosition = nil
+			snappingPositions = nil
+		}
+
+		guard recognizer.state == .changed else { return }
+
+		if let snappingPositions = snappingPositions, snappingPositions.count > 0 {
+			let initialClosest = (location.euclideanDistance(to: snappingPositions[0]), snappingPositions[0])
+			let closest = snappingPositions.reduce(initialClosest) { (previous, snappingPosition) in
+				let distance = location.euclideanDistance(to: snappingPosition)
+				return distance < previous.0 ? (distance, snappingPosition) : previous
+			}
+
+			if closest.0 < 0.05 {
+				entity.position = closest.1
+				return
+			}
+		}
+
+		entity.position = SIMD3(x: location.x, y: 0, z: location.z)
+	}
+
+	private func generateSnappingPositions(for piece: Piece) -> [SIMD3<Float>] {
+//		Position.origin.adjacent().adjacent().map { $0.vector }
+		Position.origin.adjacent().flatMap { $0.adjacent().flatMap { $0.adjacent().map { $0.vector } } }
 	}
 }
 
