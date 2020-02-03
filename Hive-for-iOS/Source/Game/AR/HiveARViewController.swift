@@ -15,8 +15,6 @@ import Loaf
 
 class HiveARGameViewController: UIViewController {
 
-	private let debugSnapping = false
-
 	private var viewModel: HiveGameViewModel
 
 	private var arView = ARView(frame: .zero)
@@ -134,19 +132,7 @@ class HiveARGameViewController: UIViewController {
 
 	private func resetGame() {
 		guard let game = viewModel.gameAnchor else { return }
-
-		// Hide pieces for a new game
 		game.allPieces.forEach { $0?.isEnabled = false }
-//		game.openPosition?.isEnabled = false
-
-		if debugSnapping {
-			(0..<6).forEach { idx in
-				let e = game.openPosition?.clone(recursive: true)
-				e!.name = "OpenPosition\(idx)"
-				game.addChild(e!)
-				e!.isEnabled = false
-			}
-		}
 	}
 
 	private func startPlayerTurn() {
@@ -165,15 +151,10 @@ class HiveARGameViewController: UIViewController {
 	private var initialTouchPosition: SIMD3<Float>?
 	private var snappingPositions: [SIMD3<Float>]? {
 		didSet {
-			guard debugSnapping, let game = viewModel.gameAnchor, let s = snappingPositions else { return }
-			(0..<6).forEach { idx in
-				let e = game.findEntity(named: "OpenPosition\(idx)")!
-				if s.count > idx {
-					e.isEnabled = true
-					e.position = s[idx]
-				} else {
-					e.isEnabled = false
-				}
+			if let snappingPositions = snappingPositions {
+				viewModel.gameAnchor?.updateSnappingPositions(snappingPositions)
+			} else {
+				viewModel.gameAnchor?.removeSnappingPositions()
 			}
 		}
 	}

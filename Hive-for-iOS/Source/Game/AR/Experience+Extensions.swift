@@ -58,6 +58,34 @@ extension Experience.HiveGame {
 		case .black: return blackPieces
 		}
 	}
+
+	private func openPositionName(at index: Int) -> String {
+		"OpenPosition-\(index)"
+	}
+
+	func updateSnappingPositions(_ snappingPositions: [SIMD3<Float>]) {
+		guard let baseModel = openPosition else { return }
+
+		snappingPositions.enumerated().forEach { (index, position) in
+			if let entity = findEntity(named: openPositionName(at: index)) {
+				entity.position = position
+				entity.isEnabled = true
+			} else {
+				let cloned = baseModel.clone(recursive: true)
+				cloned.name = openPositionName(at: index)
+				addChild(cloned)
+				cloned.isEnabled = true
+			}
+		}
+	}
+
+	func removeSnappingPositions() {
+		var index = 0
+		while let entity = findEntity(named: openPositionName(at: index)) {
+			entity.isEnabled = false
+			index += 1
+		}
+	}
 }
 
 extension Entity {
