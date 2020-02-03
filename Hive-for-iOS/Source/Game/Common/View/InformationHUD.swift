@@ -13,6 +13,19 @@ struct InformationHUD: View {
 	let information: GameInformation
 	let state: GameState
 
+	private func view(for information: GameInformation) -> AnyView {
+		switch information {
+		case .piece, .pieceClass:
+			return AnyView(debugView(for: information))
+		case .movement(let movement):
+			return AnyView(MovementConfirmation(movement: movement))
+		}
+	}
+
+	private func debugView(for information: GameInformation) -> some View {
+		return Text(information.description(in: state))
+	}
+
 	var body: some View {
 		HStack {
 			Image(uiImage: ImageAsset.glyph)

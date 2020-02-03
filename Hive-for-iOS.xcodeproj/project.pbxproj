@@ -50,6 +50,7 @@
 		CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469B23DAD215003C38AB /* GameHUD.swift */; };
 		CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */; };
 		CAFA91F223E77B290087F1F0 /* GameState+AR.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA91F123E77B290087F1F0 /* GameState+AR.swift */; };
+		CAFA91F423E8CE5B0087F1F0 /* MovementConfirmation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA91F323E8CE5B0087F1F0 /* MovementConfirmation.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +97,7 @@
 		CAFA469B23DAD215003C38AB /* GameHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHUD.swift; sourceTree = "<group>"; };
 		CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		CAFA91F123E77B290087F1F0 /* GameState+AR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+AR.swift"; sourceTree = "<group>"; };
+		CAFA91F323E8CE5B0087F1F0 /* MovementConfirmation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementConfirmation.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -332,6 +334,7 @@
 				CAFA469B23DAD215003C38AB /* GameHUD.swift */,
 				CABDFD1123E0C97000C697AD /* InformationHUD.swift */,
 				CABDFD1323E0DADD00C697AD /* PlayerHandHUD.swift */,
+				CAFA91F323E8CE5B0087F1F0 /* MovementConfirmation.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -444,6 +447,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAFA91F423E8CE5B0087F1F0 /* MovementConfirmation.swift in Sources */,
 				CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */,
 				CAC6860323CD1CA500B882D2 /* RoomList.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,

@@ -105,6 +105,11 @@ class HiveARGameViewController: UIViewController {
 	private func presentSelectedPiece(_ pieceClass: Piece.Class) {
 		guard let game = viewModel.gameAnchor else { return }
 		let pieces = game.pieces(for: viewModel.playingAs)
+
+		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
+			$0.entity(in: game)?.isEnabled = false
+		}
+
 		if let piece = pieces.first(where: { $0?.gamePiece?.class == pieceClass && $0?.isEnabled == false }) {
 			piece?.isEnabled = true
 		}
@@ -173,12 +178,14 @@ class HiveARGameViewController: UIViewController {
 		} else if recognizer.state == .ended || recognizer.state == .cancelled {
 			initialTouchPosition = nil
 			snappingPositions = nil
+			viewModel.postViewAction(.gamePieceMoved(gamePiece, entity.position.position))
 		}
 
 		guard recognizer.state == .changed else { return }
 
 		if let snappingPositions = snappingPositions, snappingPositions.count > 0 {
-			let initialClosest = (location.euclideanDistance(to: snappingPositions[0]), snappingPositions[0])
+			let firstPosition = snappingPositions.first!
+			let initialClosest = (location.euclideanDistance(to: firstPosition), firstPosition)
 			let closest = snappingPositions.reduce(initialClosest) { (previous, snappingPosition) in
 				let distance = location.euclideanDistance(to: snappingPosition)
 				return distance < previous.0 ? (distance, snappingPosition) : previous
@@ -194,8 +201,10 @@ class HiveARGameViewController: UIViewController {
 	}
 
 	private func generateSnappingPositions(for piece: Piece) -> [SIMD3<Float>] {
-//		Position.origin.adjacent().adjacent().map { $0.vector }
-		Position.origin.adjacent().flatMap { $0.adjacent().flatMap { $0.adjacent().map { $0.vector } } }
+		Set(viewModel.gameState.availableMoves
+			.filter { $0.movedUnit == piece }
+			.compactMap { $0.targetPosition })
+			.map { $0.vector }
 	}
 }
 

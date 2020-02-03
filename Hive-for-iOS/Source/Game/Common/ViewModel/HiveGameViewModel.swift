@@ -20,6 +20,9 @@ enum HiveGameViewAction: BaseViewAction {
 	case selectedFromHand(Piece.Class)
 	case tappedPiece(Piece)
 
+	case gamePieceMoved(Piece, Position)
+	case movementConfirmed(Movement)
+
 	case exitGame
 	case arViewError(Error)
 }
@@ -87,6 +90,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			enquireFromHand(pieceClass)
 		case .tappedPiece(let piece):
 			informationToPresent = .piece(piece)
+		case .gamePieceMoved(let piece, let position):
+			updatePosition(of: piece, to: position)
+		case .movementConfirmed(let movement):
+			apply(movement: movement)
 
 		case .exitGame:
 			transition(to: .forfeit)
@@ -129,6 +136,20 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		guard inGame else { return }
 		handToShow = nil
 		informationToPresent = .pieceClass(pieceClass)
+	}
+
+	private func updatePosition(of piece: Piece, to position: Position) {
+		guard inGame else { return }
+		guard let movement = gameState.availableMoves.first(where: { $0.movedUnit == piece && $0.targetPosition == position }) else {
+			selectedPiece.send(piece.class)
+			return
+		}
+
+		informationToPresent = .movement(movement)
+	}
+
+	private func apply(movement: Movement) {
+
 	}
 }
 

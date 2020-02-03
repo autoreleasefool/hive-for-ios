@@ -29,8 +29,8 @@ import HiveEngine
 //
 
 extension Position {
-	private static let horizontalScale: Float = 0.05
-	private static let verticalScale: Float = 0.02
+	fileprivate static let horizontalScale: Float = 0.05
+	fileprivate static let verticalScale: Float = 0.02
 
 	var vector: SIMD3<Float> {
 		let q = Float(x)
@@ -38,5 +38,24 @@ extension Position {
 		let x: Float = Position.horizontalScale * (Float(3.0 / 2.0) * q)
 		let z: Float = Position.horizontalScale * (sqrt(Float(3.0)) / 2.0 * q + sqrt(Float(3.0)) * r)
 		return SIMD3(x: x, y: 0, z: z)
+	}
+}
+
+extension SIMD3 where Scalar == Float {
+	var position: Position {
+		let xToQ: Float = 2.0 / 3.0 * self.x
+		let q = Int((xToQ / Position.horizontalScale).rounded())
+
+		let xToR: Float = 1.0 / 3.0 * self.x
+		let yToR: Float = sqrt(Float(3.0)) / 3.0 * self.y
+		let r = Int(((xToR + yToR) / Position.horizontalScale).rounded())
+
+		return Position(x: q, y: -r - q, z: r)
+	}
+}
+
+extension Piece {
+	func entity(in game: Experience.HiveGame) -> Entity? {
+		game.findEntity(named: self.notation)
 	}
 }
