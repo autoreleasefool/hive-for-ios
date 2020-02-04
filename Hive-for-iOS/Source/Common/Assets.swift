@@ -19,6 +19,13 @@ enum ImageAsset {
 		static let hand = UIImage(named: "Hand")!
 		static let close = UIImage(named: "Close")!
 	}
+
+	enum Movement {
+		static let move = UIImage(named: "Movement/Move")!
+		static let place = UIImage(named: "Movement/Place")!
+		static let yoink = UIImage(named: "Movement/Yoink")!
+		static let pass = UIImage(named: "Movement/Pass")!
+	}
 }
 
 // MARK: - Colors
