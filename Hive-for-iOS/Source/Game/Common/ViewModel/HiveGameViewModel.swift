@@ -34,6 +34,12 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	@Published var actionsToPresent: ActionSheetConfig?
 	@Published var errorLoaf: Loaf?
 
+	private lazy var client: HiveGameClient = {
+		let client = HiveGameClient()
+		client.delegate = self
+		return client
+	}()
+
 	var selectedPiece = PassthroughSubject<Piece.Class?, Never>()
 
 	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
@@ -107,7 +113,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .gamePieceMoved(let piece, let position):
 			updatePosition(of: piece, to: position)
 		case .movementConfirmed(let movement):
+			#warning("TODO: shouldn't apply the movement here, but wait for it to be accepted by server")
 			apply(movement: movement)
+			client.send(.movement(movement, gameState))
 		case .cancelMovement:
 			pickUpHand()
 
@@ -197,6 +205,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		gameState.apply(movement)
 		gameStateSubject.send(gameState)
 	}
+
+	private func apply(movement: RelativeMovement) {
+		guard inGame else { return }
+		apply(movement: movement.movement(in: gameState))
+	}
 }
 
 // MARK: - State
@@ -263,4 +276,23 @@ extension HiveGameViewModel {
 	}
 
 	// swiftlint:enable cyclomatic_complexity
+}
+
+// MARK: HiveGameClientDelegate
+
+extension HiveGameViewModel: HiveGameClientDelegate {
+	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameClientResponse) {
+		switch response {
+		case .movement(let movement):
+			self.apply(movement: movement)
+		}
+	}
+
+	func clientDidConnect(_ hiveGameClient: HiveGameClient) {
+		print("Connected to server")
+	}
+
+	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, error: DisconnectError?) {
+		print("Disconnected from server, \(error)")
+	}
 }
