@@ -43,12 +43,12 @@ extension Position {
 
 extension SIMD3 where Scalar == Float {
 	var position: Position {
-		let xToQ: Float = 2.0 / 3.0 * self.x
+		let xToQ: Float = (2.0 / 3.0) * self.x
 		let q = Int((xToQ / Position.horizontalScale).rounded())
 
 		let xToR: Float = 1.0 / 3.0 * self.x
-		let yToR: Float = sqrt(Float(3.0)) / 3.0 * self.y
-		let r = Int(((xToR + yToR) / Position.horizontalScale).rounded())
+		let zToR: Float = sqrt(Float(3.0)) / 3.0 * self.z
+		let r = Int(((xToR + zToR) / Position.horizontalScale).rounded())
 
 		return Position(x: q, y: -r - q, z: r)
 	}
