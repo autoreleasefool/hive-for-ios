@@ -102,14 +102,16 @@ class HiveARGameViewController: UIViewController {
 		viewModel.postViewAction(.tappedPiece(gamePiece))
 	}
 
-	private func presentSelectedPiece(_ pieceClass: Piece.Class) {
+	private func presentSelectedPiece(_ pieceClass: Piece.Class?) {
 		guard let game = viewModel.gameAnchor else { return }
-		let pieces = game.pieces(for: viewModel.playingAs)
 
 		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
 			$0.entity(in: game)?.isEnabled = false
 		}
 
+		guard let pieceClass = pieceClass else { return }
+
+		let pieces = game.pieces(for: viewModel.playingAs)
 		if let piece = pieces.first(where: { $0?.gamePiece?.class == pieceClass && $0?.isEnabled == false }) {
 			piece?.isEnabled = true
 		}

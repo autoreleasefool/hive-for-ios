@@ -22,6 +22,7 @@ enum HiveGameViewAction: BaseViewAction {
 
 	case gamePieceMoved(Piece, Position)
 	case movementConfirmed(Movement)
+	case cancelMovement
 
 	case exitGame
 	case arViewError(Error)
@@ -30,10 +31,11 @@ enum HiveGameViewAction: BaseViewAction {
 class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
+	@Published var actionsToPresent: ActionSheetConfig?
 	@Published var gameState: GameState!
 	@Published var errorLoaf: Loaf?
 
-	var selectedPiece = PassthroughSubject<Piece.Class, Never>()
+	var selectedPiece = PassthroughSubject<Piece.Class?, Never>()
 
 	var flowState = CurrentValueSubject<State, Never>(State.begin)
 	var gameContent: GameViewContent!
@@ -66,6 +68,13 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		)
 	}
 
+	var hasActions: Binding<Bool> {
+		return Binding(
+			get: { self.actionsToPresent != nil },
+			set: { _ in self.actionsToPresent = nil }
+		)
+	}
+
 	var shouldHideHUDControls: Bool {
 		return showPlayerHand.wrappedValue || hasInformation.wrappedValue
 	}
@@ -94,6 +103,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			updatePosition(of: piece, to: position)
 		case .movementConfirmed(let movement):
 			apply(movement: movement)
+		case .cancelMovement:
+			pickUpHand()
 
 		case .exitGame:
 			transition(to: .forfeit)
@@ -138,18 +149,47 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		informationToPresent = .pieceClass(pieceClass)
 	}
 
-	private func updatePosition(of piece: Piece, to position: Position) {
+	private func pickUpHand() {
+		self.gameState.unitsInHand[playingAs]?.forEach { updatePosition(of: $0, to: nil) }
+	}
+
+	private func updatePosition(of piece: Piece, to position: Position?) {
 		guard inGame else { return }
-		guard let movement = gameState.availableMoves.first(where: { $0.movedUnit == piece && $0.targetPosition == position }) else {
+		guard let targetPosition = position else {
+			selectedPiece.send(nil)
+			return
+		}
+
+		guard let movement = gameState.availableMoves.first(where: { $0.movedUnit == piece && $0.targetPosition == targetPosition }) else {
 			selectedPiece.send(piece.class)
 			return
 		}
 
-		informationToPresent = .movement(movement)
+		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
+
+		actionsToPresent = ActionSheetConfig(
+			title: "Move \(piece.class)?",
+			message: "From \(currentPosition) to \(targetPosition)",
+			buttons: [
+				ActionSheetConfig.ButtonConfig(
+					title: "Move",
+					type: .default
+				) { [weak self] in
+					self?.postViewAction(.movementConfirmed(movement))
+				},
+				ActionSheetConfig.ButtonConfig(
+					title: "Cancel",
+					type: .cancel
+				) { [weak self] in
+					self?.postViewAction(.cancelMovement)
+				},
+			]
+		)
 	}
 
 	private func apply(movement: Movement) {
-
+		guard inGame else { return }
+		gameState.apply(movement)
 	}
 }
 
