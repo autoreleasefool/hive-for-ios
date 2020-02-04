@@ -15,7 +15,7 @@ struct HiveGame: View {
 	@State var viewModel = HiveGameViewModel()
 
 	init(state: GameState) {
-		viewModel.gameState = state
+		viewModel.gameStateSubject.send(state)
 
 		#warning("TODO: set the player based on whether they are host or opponent")
 		viewModel.playingAs = .white
@@ -35,7 +35,7 @@ struct HiveGame: View {
 			HiveARGame(viewModel: $viewModel)
 			GameHUD().environmentObject(viewModel)
 		}
-		.onReceive(viewModel.flowState) { receivedValue in self.handleTransition(to: receivedValue) }
+		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }
 		.edgesIgnoringSafeArea(.all)
 		.navigationBarTitle("")
 		.navigationBarHidden(true)

@@ -41,15 +41,22 @@ class HiveARGameViewController: UIViewController {
 	}
 
 	private func subscribeToPublishers() {
-		viewModel.flowState
+		viewModel.flowStateSubject
 			.sink { [weak self] receivedValue in
 				self?.handleTransition(to: receivedValue)
 			}
 			.store(in: viewModel)
 
+		viewModel.gameStateSubject
+			.sink { [weak self] receivedValue in
+				guard let gameState = receivedValue else { return }
+				self?.present(gameState: gameState)
+			}
+			.store(in: viewModel)
+
 		viewModel.selectedPiece
 			.sink { [weak self] receivedValue in
-				self?.presentSelectedPiece(receivedValue)
+				self?.present(selectedPiece: receivedValue)
 			}
 			.store(in: viewModel)
 	}
@@ -102,7 +109,22 @@ class HiveARGameViewController: UIViewController {
 		viewModel.postViewAction(.tappedPiece(gamePiece))
 	}
 
-	private func presentSelectedPiece(_ pieceClass: Piece.Class?) {
+	private func present(gameState: GameState) {
+		guard let game = viewModel.gameAnchor else { return }
+
+		// Hide pieces not in play
+		viewModel.gameState.unitsInHand[.white]?.forEach { $0.entity(in: game)?.isEnabled = false }
+		viewModel.gameState.unitsInHand[.black]?.forEach { $0.entity(in: game)?.isEnabled = false }
+
+		// Set position for pieces in play
+		viewModel.gameState.allUnitsInPlay.forEach {
+			guard let entity = $0.key.entity(in: game) else { return }
+			entity.position = $0.value.vector
+			entity.isEnabled = true
+		}
+	}
+
+	private func present(selectedPiece pieceClass: Piece.Class?) {
 		guard let game = viewModel.gameAnchor else { return }
 
 		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {

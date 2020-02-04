@@ -80,7 +80,7 @@ struct GameHUD: View {
 			}
 		}
 		.padding(.top, .l)
-		.onReceive(viewModel.flowState) { receivedValue in self.handleTransition(to: receivedValue) }
+		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }
 		.actionSheet(isPresented: viewModel.hasActions) {
 			viewModel.actionsToPresent!.actionSheet
 		}

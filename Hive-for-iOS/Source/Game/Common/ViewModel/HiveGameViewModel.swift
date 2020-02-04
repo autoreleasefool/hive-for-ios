@@ -32,17 +32,22 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
 	@Published var actionsToPresent: ActionSheetConfig?
-	@Published var gameState: GameState!
 	@Published var errorLoaf: Loaf?
 
 	var selectedPiece = PassthroughSubject<Piece.Class?, Never>()
 
-	var flowState = CurrentValueSubject<State, Never>(State.begin)
+	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
+	var gameStateSubject = CurrentValueSubject<GameState?, Never>(nil)
+
 	var gameContent: GameViewContent!
 	var playingAs: Player!
 
 	var inGame: Bool {
-		return flowState.value.inGame
+		return flowStateSubject.value.inGame
+	}
+
+	var gameState: GameState {
+		return gameStateSubject.value!
 	}
 
 	var gameAnchor: Experience.HiveGame? {
@@ -190,6 +195,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func apply(movement: Movement) {
 		guard inGame else { return }
 		gameState.apply(movement)
+		gameStateSubject.send(gameState)
 	}
 }
 
@@ -215,8 +221,8 @@ extension HiveGameViewModel {
 	}
 
 	func transition(to nextState: State) {
-		guard canTransition(from: flowState.value, to: nextState) else { return }
-		flowState.send(nextState)
+		guard canTransition(from: flowStateSubject.value, to: nextState) else { return }
+		flowStateSubject.send(nextState)
 	}
 
 	// swiftlint:disable cyclomatic_complexity
