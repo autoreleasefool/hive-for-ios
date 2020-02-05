@@ -209,6 +209,7 @@ class HiveARGameViewController: UIViewController {
 	private var snappingPositions: [SIMD3<Float>]? {
 		didSet {
 			if let snappingPositions = snappingPositions {
+				print("Updated snapping positions: \(snappingPositions)")
 				viewModel.gameAnchor?.updateSnappingPositions(snappingPositions)
 			} else {
 				viewModel.gameAnchor?.removeSnappingPositions()
