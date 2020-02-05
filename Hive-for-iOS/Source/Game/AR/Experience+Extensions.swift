@@ -74,6 +74,7 @@ extension Experience.HiveGame {
 				let cloned = baseModel.clone(recursive: true)
 				cloned.name = openPositionName(at: index)
 				addChild(cloned)
+				cloned.position = position
 				cloned.isEnabled = true
 			}
 		}

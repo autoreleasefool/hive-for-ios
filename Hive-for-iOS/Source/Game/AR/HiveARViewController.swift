@@ -126,6 +126,7 @@ class HiveARGameViewController: UIViewController {
 
 	private func present(selectedPiece pieceClass: Piece.Class?) {
 		guard let game = viewModel.gameAnchor else { return }
+		game.openPosition?.isEnabled = false
 
 		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
 			$0.entity(in: game)?.isEnabled = false
@@ -135,6 +136,7 @@ class HiveARGameViewController: UIViewController {
 
 		let pieces = game.pieces(for: viewModel.playingAs)
 		if let piece = pieces.first(where: { $0?.gamePiece?.class == pieceClass && $0?.isEnabled == false }) {
+			piece?.position = SIMD3(x: 0, y: 0, z: 0.3)
 			piece?.isEnabled = true
 		}
 	}
@@ -156,12 +158,38 @@ class HiveARGameViewController: UIViewController {
 		game.visit { $0.synchronization = nil }
 		resetGame()
 
+		if let gridPosition = game.gridPosition {
+			for x in -4...4 {
+//				for y in -4...4 {
+					for z in -4...4 {
+						let position = Position(x: x, y: -z - x, z: z)
+						let clone = gridPosition.clone(recursive: true)
+						let textEntity = clone.findEntity(named: "PositionText")!.children[0].children[0]
+						var textModel: ModelComponent = textEntity.components[ModelComponent]!
+						textModel.mesh = .generateText(
+							position.description,
+							extrusionDepth: 0.005,
+							font: .systemFont(ofSize: 0.0175),
+							containerFrame: CGRect.zero,
+							alignment: .center,
+							lineBreakMode: .byCharWrapping
+						)
+						textEntity.components.set(textModel)
+						clone.position = position.vector
+						game.addChild(clone)
+					}
+//				}
+			}
+			gridPosition.isEnabled = false
+		}
+
 		viewModel.postViewAction(.viewContentReady)
 	}
 
 	private func resetGame() {
 		guard let game = viewModel.gameAnchor else { return }
 		game.allPieces.forEach { $0?.isEnabled = false }
+		game.openPosition?.position = Position.origin.vector
 	}
 
 	private func startPlayerTurn() {

@@ -17,11 +17,12 @@
                 -9.8000001907348633,
                 0
               ],
-              "hasGroundPlane" : true,
+              "hasGroundPlane" : false,
               "identifier" : "F9610871-0955-494F-A5C3-51D1A281BAB3",
               "material" : "concrete",
               "overrides" : {
                 "children" : {
+                  "0C7430FE-C913-4E13-9AE1-D4C341E926FA" : null,
                   "0D10A7D9-7334-451A-84F9-0A813057AFEE" : {
                     "overrides" : {
                       "children" : {
@@ -1135,6 +1136,7 @@
                     }
                   },
                   "2B1366FC-D421-40A2-B484-1CC2012BE565" : null,
+                  "2F321854-C7E3-40DB-A451-37D79727D2BA" : null,
                   "3E76C378-1C45-46AE-836A-D388305670EC" : {
                     "overrides" : {
                       "children" : {
@@ -1778,9 +1780,9 @@
                         0,
                         1,
                         0,
+                        0.10000000149011612,
                         0,
-                        0.010000002570450306,
-                        1.4901161193847656e-08,
+                        7.4512405134896653e-09,
                         1
                       ]
                     }
@@ -3470,6 +3472,296 @@
                     }
                   },
                   "85CA160D-E89B-4935-ACA9-B7AF305AE18B" : null,
+                  "86EC8562-78C8-45E2-8183-7645A9A2D907" : {
+                    "overrides" : {
+                      "children" : {
+                        "0C7430FE-C913-4E13-9AE1-D4C341E926FA" : {
+                          "overrides" : {
+                            "arguments" : [
+                              [
+                                "boundHeight",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 1.5
+                                }
+                              ],
+                              [
+                                "boundWidth",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 6
+                                }
+                              ],
+                              [
+                                "depth",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 0.30017897161354584
+                                }
+                              ],
+                              [
+                                "font",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "Helvetica"
+                                }
+                              ],
+                              [
+                                "hasBackground",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : false
+                                }
+                              ],
+                              [
+                                "height",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 0.017500000000000002
+                                }
+                              ],
+                              [
+                                "horizontalAlignment",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "center"
+                                }
+                              ],
+                              [
+                                "material",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "standard"
+                                }
+                              ],
+                              [
+                                "materialColor",
+                                {
+                                  "typeName" : "double4",
+                                  "value" : [
+                                    1,
+                                    1,
+                                    1,
+                                    1
+                                  ]
+                                }
+                              ],
+                              [
+                                "oneLine",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : false
+                                }
+                              ],
+                              [
+                                "precision",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "normal"
+                                }
+                              ],
+                              [
+                                "text",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "0,0,0"
+                                }
+                              ],
+                              [
+                                "verticalAlignment",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "bottom"
+                                }
+                              ],
+                              [
+                                "verticalPosition",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "middle"
+                                }
+                              ],
+                              [
+                                "wordWrap",
+                                {
+                                  "typeName" : "Bool",
+                                  "value" : true
+                                }
+                              ]
+                            ],
+                            "factory" : {
+                              "identifier" : "com.apple.rc.af.CoreAssetFactories.Text",
+                              "version" : "0.0"
+                            },
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "2282F06D-00BB-4E09-A75D-108221ACF809"
+                                }
+                              ],
+                              [
+                                "entityName",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "PositionText"
+                                }
+                              ]
+                            ]
+                          },
+                          "transform" : {
+                            "matrix" : [
+                              0.99999994039535522,
+                              0,
+                              0,
+                              0,
+                              0,
+                              5.9604641222676946e-08,
+                              -0.99999994039535522,
+                              0,
+                              0,
+                              0.99999994039535522,
+                              5.9604641222676946e-08,
+                              0,
+                              0,
+                              0.010000001639127731,
+                              0,
+                              0.99999994039535522
+                            ]
+                          }
+                        },
+                        "2F321854-C7E3-40DB-A451-37D79727D2BA" : {
+                          "overrides" : {
+                            "arguments" : [
+                              [
+                                "bevelRadius",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 0.0050000000000000001
+                                }
+                              ],
+                              [
+                                "diameter",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 0.089999999999999997
+                                }
+                              ],
+                              [
+                                "height",
+                                {
+                                  "typeName" : "Double",
+                                  "value" : 0.01
+                                }
+                              ],
+                              [
+                                "material",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "clayTerracotta"
+                                }
+                              ],
+                              [
+                                "sides",
+                                {
+                                  "typeName" : "Int",
+                                  "value" : 6
+                                }
+                              ],
+                              [
+                                "type",
+                                {
+                                  "typeName" : "String",
+                                  "value" : "prism"
+                                }
+                              ]
+                            ],
+                            "factory" : {
+                              "identifier" : "com.apple.rc.af.CoreAssetFactories.PrimitiveShapeAssetFactory",
+                              "version" : "1.0"
+                            },
+                            "runtimeAttributes" : [
+                              [
+                                "RuntimeIdentifier",
+                                {
+                                  "typeName" : "UUID",
+                                  "value" : "7F5FA410-3151-480D-A551-37FACD08A68F"
+                                }
+                              ],
+                              [
+                                "entityName",
+                                {
+                                  "typeName" : "String",
+                                  "value" : ""
+                                }
+                              ]
+                            ]
+                          },
+                          "transform" : {
+                            "matrix" : [
+                              0.99999994039535522,
+                              0,
+                              0,
+                              0,
+                              0,
+                              0.99999994039535522,
+                              0,
+                              0,
+                              0,
+                              0,
+                              0.99999994039535522,
+                              0,
+                              0,
+                              0.0050000017508864403,
+                              7.4505783764777789e-09,
+                              0.99999994039535522
+                            ]
+                          }
+                        }
+                      },
+                      "factory" : {
+                        "identifier" : "com.apple.af.Group",
+                        "version" : "0.0"
+                      },
+                      "runtimeAttributes" : [
+                        [
+                          "RuntimeIdentifier",
+                          {
+                            "typeName" : "UUID",
+                            "value" : "8C9CE8B1-0147-45B9-A5C9-F4D0231FA524"
+                          }
+                        ],
+                        [
+                          "entityName",
+                          {
+                            "typeName" : "String",
+                            "value" : "GridPosition"
+                          }
+                        ]
+                      ]
+                    },
+                    "transform" : {
+                      "matrix" : [
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        -0.0050000022165477276,
+                        0,
+                        1
+                      ]
+                    }
+                  },
                   "91DA9CF8-97C7-46D4-B22B-713092237BCF" : null,
                   "97F3D05B-179D-41AB-BE75-630EC889CED4" : null,
                   "0360DEC5-A4B1-4460-88DC-203390A0E33D" : null,
@@ -8002,21 +8294,21 @@
               "title" : "HiveGame",
               "viewTransform" : {
                 "cameraTransform" : [
-                  0.99713361263275146,
+                  0.99862301349639893,
+                  -3.7252902984619141e-09,
+                  0.052459195256233215,
                   0,
-                  0.075659863650798798,
+                  0.037603080272674561,
+                  0.69727611541748047,
+                  -0.71581554412841797,
                   0,
-                  0.06586669385433197,
-                  0.4920564591884613,
-                  -0.86806792020797729,
+                  -0.03657883033156395,
+                  0.71680241823196411,
+                  0.69631612300872803,
                   0,
-                  -0.037228934466838837,
-                  0.87056320905685425,
-                  0.49064609408378601,
-                  0,
-                  0.08834056556224823,
-                  0.66019338369369507,
-                  0.66023045778274536,
+                  0.032126061618328094,
+                  0.26087170839309692,
+                  0.266816645860672,
                   1
                 ],
                 "sceneTransform" : [
