@@ -111,11 +111,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .tappedPiece(let piece):
 			informationToPresent = .piece(piece)
 		case .gamePieceMoved(let piece, let position):
-			print("Moving \(piece) to \(position)")
+			debugLog("Moving \(piece) to \(position)")
 			updatePosition(of: piece, to: position)
 		case .movementConfirmed(let movement):
 			#warning("TODO: shouldn't apply the movement here, but wait for it to be accepted by server")
-			print("Sending move \(movement)")
+			debugLog("Sending move \(movement)")
 			apply(movement: movement)
 			client.send(.movement(movement, gameState))
 		case .cancelMovement:
@@ -177,7 +177,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		guard let movement = gameState.availableMoves.first(where: { $0.movedUnit == piece && $0.targetPosition == targetPosition }) else {
 			selectedPiece.send(piece.class)
-			print("Did not find \"\(piece) to \(targetPosition)\" in \(gameState.availableMoves)")
+			debugLog("Did not find \"\(piece) to \(targetPosition)\" in \(gameState.availableMoves)")
 			return
 		}
 
@@ -287,16 +287,16 @@ extension HiveGameViewModel: HiveGameClientDelegate {
 	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameClientResponse) {
 		switch response {
 		case .movement(let movement):
-			print("Received movement: \(movement)")
+			debugLog("Received movement: \(movement)")
 			self.apply(movement: movement)
 		}
 	}
 
 	func clientDidConnect(_ hiveGameClient: HiveGameClient) {
-		print("Connected to server")
+		debugLog("Connected to server")
 	}
 
 	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, error: DisconnectError?) {
-		print("Disconnected from server, \(error)")
+		debugLog("Disconnected from server, \(error)")
 	}
 }
