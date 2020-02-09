@@ -79,17 +79,17 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction>, ObservableObject {
 }
 
 final class GameOptionData: ObservableObject {
-	private(set) var options: Set<GameState.Options>
+	private(set) var options: Set<GameState.Option>
 
-	init(options: Set<GameState.Options>) {
+	init(options: Set<GameState.Option>) {
 		self.options = options
 	}
 
-	func update(with: Set<GameState.Options>) {
+	func update(with: Set<GameState.Option>) {
 		self.options = with
 	}
 
-	func binding(for option: GameState.Options) -> Binding<Bool> {
+	func binding(for option: GameState.Option) -> Binding<Bool> {
 		return Binding(get: {
 			return self.options.contains(option)
 		}, set: {

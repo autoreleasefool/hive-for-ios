@@ -14,7 +14,7 @@ struct Room: Identifiable, Codable {
 	let host: HivePlayer
 	let opponent: HivePlayer?
 	let viewers: [HivePlayer]
-	let options: Set<GameState.Options>
+	let options: Set<GameState.Option>
 
 	static let rooms: [Room] = [
 		Room(

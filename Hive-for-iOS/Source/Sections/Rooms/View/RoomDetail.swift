@@ -37,7 +37,7 @@ struct RoomDetail: View {
 			Text("Expansions")
 				.subtitle()
 				.foregroundColor(Color(ColorAsset.text))
-			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
+			ForEach(GameState.Option.expansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
 					.foregroundColor(Color(ColorAsset.text))
 			}
@@ -49,7 +49,7 @@ struct RoomDetail: View {
 			Text("Other options")
 				.subtitle()
 				.foregroundColor(Color(ColorAsset.text))
-			ForEach(GameState.Options.nonExpansions, id: \.rawValue) { option in
+			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
 					.foregroundColor(Color(ColorAsset.text))
 			}
@@ -75,7 +75,7 @@ struct RoomDetail: View {
 	}
 }
 
-private extension GameState.Options {
+private extension GameState.Option {
 	var preview: String? {
 		switch self {
 		case .mosquito: return "M"

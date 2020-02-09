@@ -16,9 +16,9 @@ extension Piece.Class: Identifiable {
 	}
 }
 
-extension GameState.Options {
-	static let expansions = GameState.Options.allCases.filter { $0.isExpansion }.sorted()
-	static let nonExpansions = GameState.Options.allCases.filter { !$0.isExpansion }.sorted()
+extension GameState.Option {
+	static let expansions = GameState.Option.allCases.filter { $0.isExpansion }.sorted()
+	static let nonExpansions = GameState.Option.allCases.filter { !$0.isExpansion }.sorted()
 
 	var isExpansion: Bool {
 		switch self {
@@ -28,8 +28,8 @@ extension GameState.Options {
 	}
 }
 
-extension GameState.Options: Comparable {
-	public static func < (lhs: GameState.Options, rhs: GameState.Options) -> Bool {
+extension GameState.Option: Comparable {
+	public static func < (lhs: GameState.Option, rhs: GameState.Option) -> Bool {
 		return lhs.rawValue < rhs.rawValue
 	}
 }

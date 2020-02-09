@@ -698,7 +698,7 @@
 			repositoryURL = "https://github.com/josephroquedev/hive-engine.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
+				minimumVersion = 2.3.0;
 			};
 		};
 		CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */ = {

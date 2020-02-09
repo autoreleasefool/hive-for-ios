@@ -12,15 +12,15 @@ import HiveEngine
 struct RoomRow: View {
 	let room: Room
 
-	private func optionsPreview(for options: Set<GameState.Options>) -> some View {
+	private func optionsPreview(for options: Set<GameState.Option>) -> some View {
 		HStack(spacing: Metrics.Spacing.s.rawValue) {
-			ForEach(GameState.Options.expansions, id: \.rawValue) { option in
+			ForEach(GameState.Option.expansions, id: \.rawValue) { option in
 				self.optionPreview(for: option, enabled: options.contains(option))
 			}
 		}
 	}
 
-	private func optionPreview(for option: GameState.Options, enabled: Bool) -> some View {
+	private func optionPreview(for option: GameState.Option, enabled: Bool) -> some View {
 		ZStack {
 			Text(option.preview ?? "")
 				.caption()
@@ -50,7 +50,7 @@ struct RoomRow: View {
 	}
 }
 
-private extension GameState.Options {
+private extension GameState.Option {
 	var preview: String? {
 		switch self {
 		case .mosquito: return "M"
