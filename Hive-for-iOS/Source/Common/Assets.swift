@@ -14,6 +14,7 @@ import UIKit
 enum ImageAsset {
 	static let glyph = UIImage(named: "Glyph")!
 	static let joseph = UIImage(named: "Joseph")!
+	static let borderlessGlyph = UIImage(named: "BorderlessGlyph")!
 
 	enum Icon {
 		static let hand = UIImage(named: "Hand")!
@@ -42,6 +43,7 @@ enum ColorAsset: String {
 	case separator = "Separator"
 
 	case clear = "Clear"
+	case white = "White"
 }
 
 extension UIColor {

@@ -36,7 +36,8 @@ struct PlayerPreview: View {
 	}
 
 	var playerImage: some View {
-		HexImage(url: player?.avatarUrl, placeholder: ImageAsset.joseph)
+		HexImage(url: player?.avatarUrl, placeholder: ImageAsset.borderlessGlyph)
+			.placeholderTint(.white)
 			.squareImage(iconSize)
 	}
 
