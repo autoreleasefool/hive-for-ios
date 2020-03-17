@@ -32,7 +32,10 @@ struct HiveGame: View {
 
 	var body: some View {
 		ZStack {
+			#if targetEnvironment(simulator)
+			#else
 			HiveARGame(viewModel: $viewModel)
+			#endif
 			GameHUD().environmentObject(viewModel)
 		}
 		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }

@@ -13,6 +13,12 @@ import ARKit
 import HiveEngine
 import Loaf
 
+#if targetEnvironment(simulator)
+
+class HiveARGameViewController: UIViewController { }
+
+#else
+
 class HiveARGameViewController: UIViewController {
 
 	private var viewModel: HiveGameViewModel
@@ -62,9 +68,6 @@ class HiveARGameViewController: UIViewController {
 	}
 
 	private func setupExperience() {
-		#if targetEnvironment(simulator)
-		return
-		#else
 		arView.automaticallyConfigureSession = false
 
 		let arConfiguration = ARWorldTrackingConfiguration()
@@ -86,7 +89,6 @@ class HiveARGameViewController: UIViewController {
 				self.viewModel.postViewAction(.arViewError(error))
 			}
 		}
-		#endif
 	}
 
 	private func enableCoaching() {
@@ -288,3 +290,5 @@ struct HiveARGame: UIViewControllerRepresentable {
 
 	func updateUIViewController(_ uiViewController: HiveARGameViewController, context: Context) {}
 }
+
+#endif
