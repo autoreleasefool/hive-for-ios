@@ -27,6 +27,18 @@ enum ImageAsset {
 		static let yoink = UIImage(named: "Movement/Yoink")!
 		static let pass = UIImage(named: "Movement/Pass")!
 	}
+
+	enum Pieces {
+		static let ant = UIImage(named: "Pieces/Ant")!
+		static let beetle = UIImage(named: "Pieces/Beetle")!
+		static let hopper = UIImage(named: "Pieces/Hopper")!
+		static let ladyBug = UIImage(named: "Pieces/LadyBug")!
+		static let mosquito = UIImage(named: "Pieces/Mosquito")!
+		static let pillBug = UIImage(named: "Pieces/PillBug")!
+		static let queen = UIImage(named: "Pieces/Queen")!
+		static let spider = UIImage(named: "Pieces/Spider")!
+
+	}
 }
 
 // MARK: - Colors
