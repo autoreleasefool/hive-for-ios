@@ -31,7 +31,7 @@ enum HiveGameViewAction: BaseViewAction {
 class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
-	@Published var actionsToPresent: ActionSheetConfig?
+	@Published var actionsToPresent: PopoverSheetConfig?
 	@Published var errorLoaf: Loaf?
 
 	private lazy var client: HiveGameClient = {
@@ -183,18 +183,18 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
 
-		actionsToPresent = ActionSheetConfig(
-			title: "Move \(piece.class)?",
-			message: "From \(currentPosition) to \(targetPosition)",
+		actionsToPresent = PopoverSheetConfig(
+			title: Text("Move \(piece.class.description)?"),
+			message: Text("From \(currentPosition) to \(targetPosition.description)"),
 			buttons: [
-				ActionSheetConfig.ButtonConfig(
-					title: "Move",
+				PopoverSheetConfig.ButtonConfig(
+					title: Text("Move"),
 					type: .default
 				) { [weak self] in
 					self?.postViewAction(.movementConfirmed(movement))
 				},
-				ActionSheetConfig.ButtonConfig(
-					title: "Cancel",
+				PopoverSheetConfig.ButtonConfig(
+					title: Text("Cancel"),
 					type: .cancel
 				) { [weak self] in
 					self?.postViewAction(.cancelMovement)
