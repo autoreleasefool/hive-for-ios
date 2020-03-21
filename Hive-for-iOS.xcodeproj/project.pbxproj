@@ -11,6 +11,7 @@
 		CA0290D823CEF7FE00A933F9 /* RoomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0290D723CEF7FE00A933F9 /* RoomDetailViewModel.swift */; };
 		CA0290DE23CFA08300A933F9 /* RefreshableList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0290DD23CFA08300A933F9 /* RefreshableList.swift */; };
 		CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0523EF23E57813008F8A94 /* GameViewContent.swift */; };
+		CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F938E2422C80800F6E104 /* DebugOverlay.swift */; };
 		CA40344923932603006C6BE3 /* HiveEngine in Frameworks */ = {isa = PBXBuildFile; productRef = CA40344823932603006C6BE3 /* HiveEngine */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
@@ -60,6 +61,7 @@
 		CA0290D723CEF7FE00A933F9 /* RoomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailViewModel.swift; sourceTree = "<group>"; };
 		CA0290DD23CFA08300A933F9 /* RefreshableList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableList.swift; sourceTree = "<group>"; };
 		CA0523EF23E57813008F8A94 /* GameViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewContent.swift; sourceTree = "<group>"; };
+		CA0F938E2422C80800F6E104 /* DebugOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOverlay.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 				CAFA467523D8BCEF003C38AB /* HiveARViewController.swift */,
 				CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */,
 				CAFA91F123E77B290087F1F0 /* GameState+AR.swift */,
+				CA0F938E2422C80800F6E104 /* DebugOverlay.swift */,
 			);
 			path = AR;
 			sourceTree = "<group>";
@@ -477,6 +480,7 @@
 				CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */,
 				CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
+				CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,

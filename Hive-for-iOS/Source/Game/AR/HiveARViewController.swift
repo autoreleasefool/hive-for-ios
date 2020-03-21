@@ -25,6 +25,8 @@ class HiveARGameViewController: UIViewController {
 
 	private var arView = ARView(frame: .zero)
 
+	private let debugOverlay = DebugOverlay(enabled: true)
+
 	init(viewModel: HiveGameViewModel) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
@@ -41,6 +43,12 @@ class HiveARGameViewController: UIViewController {
 		arView.constrainToFillView(view)
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapArView))
 		arView.addGestureRecognizer(tapGesture)
+
+		view.addSubviewForAutoLayout(debugOverlay)
+		NSLayoutConstraint.activate([
+			debugOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+			debugOverlay.topAnchor.constraint(equalTo: view.topAnchor),
+		])
 
 		subscribeToPublishers()
 		setupExperience()
@@ -226,6 +234,8 @@ class HiveARGameViewController: UIViewController {
 			let location = recognizer.location(in: game) else {
 			return
 		}
+
+		self.debugOverlay.debugInfo = DebugInfo(touchPosition: location, hivePosition: location.position)
 
 		if recognizer.state == .began {
 			initialTouchPosition = location
