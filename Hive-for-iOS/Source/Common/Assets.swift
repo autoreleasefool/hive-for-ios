@@ -14,11 +14,11 @@ import UIKit
 enum ImageAsset {
 	static let glyph = UIImage(named: "Glyph")!
 	static let joseph = UIImage(named: "Joseph")!
-	static let borderlessGlyph = UIImage(named: "BorderlessGlyph")!
+	static let borderlessGlyph = UIImage(named: "Icons/BorderlessGlyph")!
 
 	enum Icon {
-		static let hand = UIImage(named: "Hand")!
-		static let close = UIImage(named: "Close")!
+		static let hand = UIImage(named: "Icons/Hand")!
+		static let close = UIImage(named: "Icons/Close")!
 	}
 
 	enum Movement {
@@ -32,18 +32,18 @@ enum ImageAsset {
 // MARK: - Colors
 
 enum ColorAsset: String {
-	case primary = "Primary"
-	case background = "Background"
-	case backgroundLight = "BackgroundLight"
-	case backgroundDark = "BackgroundDark"
+	case primary = "Colors/Primary"
+	case background = "Colors/Background"
+	case backgroundLight = "Colors/BackgroundLight"
+	case backgroundDark = "Colors/BackgroundDark"
 
-	case text = "Text"
-	case textSecondary = "TextSecondary"
+	case text = "Colors/Text"
+	case textSecondary = "Colors/TextSecondary"
 
-	case separator = "Separator"
+	case separator = "Colors/Separator"
 
-	case clear = "Clear"
-	case white = "White"
+	case clear = "Colors/Clear"
+	case white = "Colors/White"
 }
 
 extension UIColor {
