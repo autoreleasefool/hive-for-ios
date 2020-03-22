@@ -72,6 +72,7 @@ class HiveGameScene: SKScene {
 
 	override func sceneDidLoad() {
 		subscribeToPublishers()
+		viewModel.postViewAction(.viewContentDidLoad(.skScene(self)))
 	}
 
 	override func didMove(to view: SKView) {
