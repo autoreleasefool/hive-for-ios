@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Ant.png",
+      "filename" : "LadyBug.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "Ant@2x.png",
+      "filename" : "LadyBug@2x.png",
       "scale" : "2x"
     },
     {

@@ -29,12 +29,13 @@ enum ImageAsset {
 	}
 
 	enum Pieces {
+		static let blank = UIImage(named: "Pieces/Blank")!
 		static let ant = UIImage(named: "Pieces/Ant")!
 		static let beetle = UIImage(named: "Pieces/Beetle")!
 		static let hopper = UIImage(named: "Pieces/Hopper")!
-		static let ladyBug = UIImage(named: "Pieces/LadyBug")!
+		static let ladyBug = UIImage(named: "Pieces/Lady Bug")!
 		static let mosquito = UIImage(named: "Pieces/Mosquito")!
-		static let pillBug = UIImage(named: "Pieces/PillBug")!
+		static let pillBug = UIImage(named: "Pieces/Pill Bug")!
 		static let queen = UIImage(named: "Pieces/Queen")!
 		static let spider = UIImage(named: "Pieces/Spider")!
 
