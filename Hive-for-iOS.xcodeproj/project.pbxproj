@@ -18,7 +18,6 @@
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
-		CAB9D04623EAB4B9003B89EB /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAB9D04523EAB4B9003B89EB /* Logger.swift */; };
 		CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCCC23DB73E400C697AD /* HiveGameClient.swift */; };
 		CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD123DB7FBC00C697AD /* Theme.swift */; };
 		CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD823DB89AA00C697AD /* Welcome.swift */; };
@@ -69,7 +68,6 @@
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CAB9D04523EAB4B9003B89EB /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		CABDFCCC23DB73E400C697AD /* HiveGameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameClient.swift; sourceTree = "<group>"; };
 		CABDFCD123DB7FBC00C697AD /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		CABDFCD823DB89AA00C697AD /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
@@ -243,7 +241,6 @@
 				CAC685FD23CCF67300B882D2 /* Assets.swift */,
 				CAC6860F23CE3F3700B882D2 /* HostingController.swift */,
 				CAC6861923CE615800B882D2 /* ImageLoader.swift */,
-				CAB9D04523EAB4B9003B89EB /* Logger.swift */,
 				CAC685FF23CD18C100B882D2 /* Metrics.swift */,
 				CABDFCD123DB7FBC00C697AD /* Theme.swift */,
 			);
@@ -476,7 +473,6 @@
 				CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */,
 				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Room.swift in Sources */,
-				CAB9D04623EAB4B9003B89EB /* Logger.swift in Sources */,
 				CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */,
 				CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,

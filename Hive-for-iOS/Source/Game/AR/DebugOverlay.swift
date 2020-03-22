@@ -28,10 +28,6 @@ struct DebugInfo {
 }
 
 class DebugOverlay: UIView {
-	override var canBecomeFirstResponder: Bool {
-		get { true }
-	}
-
 	var enabled: Bool {
 		didSet {
 			self.isHidden = !enabled
@@ -79,11 +75,5 @@ class DebugOverlay: UIView {
 			widthAnchor.constraint(equalToConstant: 200),
 			heightAnchor.constraint(equalToConstant: 200),
 		])
-	}
-
-	override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-		if motion == .motionShake {
-			self.enabled.toggle()
-		}
 	}
 }

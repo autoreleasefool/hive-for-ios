@@ -73,6 +73,12 @@ class HiveARGameViewController: UIViewController {
 				self?.present(selectedPiece: receivedValue)
 			}
 			.store(in: viewModel)
+
+		viewModel.debugEnabledSubject
+			.sink { [weak self] receivedValue in
+				self?.debugEnabled = receivedValue
+			}
+			.store(in: viewModel)
 	}
 
 	private func setupExperience() {
@@ -219,7 +225,7 @@ class HiveARGameViewController: UIViewController {
 	private var snappingPositions: [SIMD3<Float>]? {
 		didSet {
 			if let snappingPositions = snappingPositions {
-				debugLog("Updated snapping positions: \(snappingPositions)")
+				viewModel.debugLog("Updated snapping positions: \(snappingPositions)")
 				viewModel.gameAnchor?.updateSnappingPositions(snappingPositions)
 			} else {
 				viewModel.gameAnchor?.removeSnappingPositions()
@@ -299,6 +305,31 @@ struct HiveARGame: UIViewControllerRepresentable {
 	}
 
 	func updateUIViewController(_ uiViewController: HiveARGameViewController, context: Context) {}
+}
+
+// MARK: - Debug
+
+extension HiveARGameViewController {
+	private var debugEnabled: Bool {
+		get {
+			viewModel.debugEnabledSubject.value
+		}
+		set {
+			DispatchQueue.main.async {
+				self.debugOverlay.enabled = newValue
+			}
+		}
+	}
+
+	override var canBecomeFirstResponder: Bool {
+		get { true }
+	}
+
+	override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+		if motion == .motionShake {
+			viewModel.postViewAction(.toggleDebug)
+		}
+	}
 }
 
 #endif

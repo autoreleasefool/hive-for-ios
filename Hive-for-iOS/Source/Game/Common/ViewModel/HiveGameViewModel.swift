@@ -26,6 +26,8 @@ enum HiveGameViewAction: BaseViewAction {
 
 	case exitGame
 	case arViewError(Error)
+
+	case toggleDebug
 }
 
 class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
@@ -44,6 +46,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
 	var gameStateSubject = CurrentValueSubject<GameState?, Never>(nil)
+	var debugEnabledSubject = CurrentValueSubject<Bool, Never>(false)
 
 	var gameContent: GameViewContent!
 	var playingAs: Player!
@@ -57,7 +60,6 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	var gameAnchor: Experience.HiveGame? {
-		guard let gameContent = gameContent else { return nil }
 		if case let .arExperience(anchor) = gameContent {
 			return anchor
 		} else {
@@ -125,6 +127,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			transition(to: .forfeit)
 		case .arViewError(let error):
 			errorLoaf = Loaf(error.localizedDescription, state: .error)
+
+		case .toggleDebug:
+			debugEnabledSubject.send(!debugEnabledSubject.value)
 		}
 	}
 
@@ -298,5 +303,14 @@ extension HiveGameViewModel: HiveGameClientDelegate {
 
 	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, error: DisconnectError?) {
 		debugLog("Disconnected from server, \(error)")
+	}
+}
+
+// MARK: - Logging
+
+extension HiveGameViewModel {
+	func debugLog(_ message: String) {
+		guard debugEnabledSubject.value else { return }
+		print("HIVE_DEBUG: \(message)")
 	}
 }
