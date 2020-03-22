@@ -81,7 +81,7 @@ class HiveGameScene: SKScene {
 
 		viewModel.gameState.allPiecesInHands.forEach {
 			resetPiece($0)
-			addChild(sprite(for: $0))
+//			addChild(sprite(for: $0))
 		}
 
 		viewModel.postViewAction(.viewInteractionsReady)
@@ -122,7 +122,7 @@ class HiveGameScene: SKScene {
 		viewModel.gameState.allUnitsInPlay.forEach {
 			let sprite = self.sprite(for: $0.key)
 			sprite.position = $0.value.point(scale: currentScale, offset: currentOffset)
-			addChild(sprite)
+			addUnownedChild(sprite)
 		}
 	}
 
@@ -137,9 +137,7 @@ class HiveGameScene: SKScene {
 		if let piece = pieces.first(where: { $0.class == pieceClass }) {
 			let sprite = self.sprite(for: piece)
 			sprite.position = Position.origin.point(scale: currentScale, offset: currentOffset)
-			if sprite.parent == nil {
-				addChild(sprite)
-			}
+			addUnownedChild(sprite)
 		}
 	}
 
@@ -193,9 +191,7 @@ class HiveGameScene: SKScene {
 		snappingPositions.forEach {
 			let sprite = self.sprite(for: $0.position())
 			sprite.color = UIColor(.highlight)
-			if sprite.parent == nil {
-				addChild(sprite)
-			}
+			addUnownedChild(sprite)
 		}
 
 		self.snappingPositions = snappingPositions
@@ -393,7 +389,7 @@ extension HiveGameScene {
 				let sprite = self.sprite(for: position)
 
 				if enabled {
-					addChild(sprite)
+					addUnownedChild(sprite)
 					spriteManager.hidePositionLabel(for: position, hidden: false)
 				} else {
 					sprite.removeFromParent()
