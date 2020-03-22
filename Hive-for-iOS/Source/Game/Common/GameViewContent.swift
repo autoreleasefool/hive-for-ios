@@ -7,7 +7,9 @@
 //
 
 import Foundation
+import SpriteKit
 
 enum GameViewContent {
 	case arExperience(Experience.HiveGame)
+	case skScene(SKScene)
 }

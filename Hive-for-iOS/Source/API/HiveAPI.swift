@@ -50,7 +50,6 @@ struct HiveAPI {
 	// MARK: - Rooms
 
 	func rooms() -> Future<[Room], HiveAPIError> {
-		debugLog("Fetching rooms")
 		return Future { promise in
 			promise(.success(Room.rooms))
 //			if Bool.random() == true {
@@ -64,7 +63,6 @@ struct HiveAPI {
 	}
 
 	func room(id: String) -> Future<Room, HiveAPIError> {
-		debugLog("Fetching room \(id)")
 		return Future { promise in
 			if let room = Room.rooms.first(where: { $0.id == id }) {
 				promise(.success(room))

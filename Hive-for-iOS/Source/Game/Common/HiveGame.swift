@@ -33,8 +33,10 @@ struct HiveGame: View {
 	var body: some View {
 		ZStack {
 			#if targetEnvironment(simulator)
+			Hive2DGame(viewModel: $viewModel)
 			#else
-			HiveARGame(viewModel: $viewModel)
+			Hive2DGame(viewModel: $viewModel)
+//			HiveARGame(viewModel: $viewModel)
 			#endif
 			GameHUD().environmentObject(viewModel)
 		}

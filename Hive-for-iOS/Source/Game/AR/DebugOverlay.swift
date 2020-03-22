@@ -50,7 +50,6 @@ class DebugOverlay: UIView {
 		super.init(frame: .zero)
 
 		setupView()
-		becomeFirstResponder()
 	}
 
 	required init?(coder: NSCoder) {

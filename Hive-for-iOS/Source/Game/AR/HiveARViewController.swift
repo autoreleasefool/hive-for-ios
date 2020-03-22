@@ -52,6 +52,7 @@ class HiveARGameViewController: UIViewController {
 
 		subscribeToPublishers()
 		setupExperience()
+		becomeFirstResponder()
 	}
 
 	private func subscribeToPublishers() {
@@ -174,6 +175,7 @@ class HiveARGameViewController: UIViewController {
 		game.visit { $0.synchronization = nil }
 		resetGame()
 
+		#warning("FIXME: move this to function to show/remove when debug enabled/disabled")
 		if let gridPosition = game.gridPosition {
 			for x in -4...4 {
 //				for y in -4...4 {
@@ -254,8 +256,7 @@ class HiveARGameViewController: UIViewController {
 
 		guard recognizer.state == .changed else { return }
 
-		if let snappingPositions = snappingPositions, snappingPositions.count > 0 {
-			let firstPosition = snappingPositions.first!
+		if let snappingPositions = snappingPositions, let firstPosition = snappingPositions.first {
 			let initialClosest = (location.euclideanDistance(to: firstPosition), firstPosition)
 			let closest = snappingPositions.reduce(initialClosest) { (previous, snappingPosition) in
 				let distance = location.euclideanDistance(to: snappingPosition)

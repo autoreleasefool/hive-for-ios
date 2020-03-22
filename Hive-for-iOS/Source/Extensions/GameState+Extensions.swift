@@ -16,6 +16,12 @@ extension Piece.Class: Identifiable {
 	}
 }
 
+extension GameState {
+	var allPiecesInHands: [Piece] {
+		Array((unitsInHand[.white] ?? []).union(unitsInHand[.black] ?? []))
+	}
+}
+
 extension GameState.Option {
 	static let expansions = GameState.Option.allCases.filter { $0.isExpansion }.sorted()
 	static let nonExpansions = GameState.Option.allCases.filter { !$0.isExpansion }.sorted()

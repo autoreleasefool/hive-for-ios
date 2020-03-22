@@ -46,7 +46,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
 	var gameStateSubject = CurrentValueSubject<GameState?, Never>(nil)
-	var debugEnabledSubject = CurrentValueSubject<Bool, Never>(false)
+	var debugEnabledSubject = CurrentValueSubject<Bool, Never>(true)
 
 	var gameContent: GameViewContent!
 	var playingAs: Player!
