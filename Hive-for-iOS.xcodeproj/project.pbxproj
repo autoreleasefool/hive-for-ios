@@ -14,7 +14,7 @@
 		CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F938E2422C80800F6E104 /* DebugOverlay.swift */; };
 		CA0F93942426003800F6E104 /* Hive2DViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93932426003800F6E104 /* Hive2DViewController.swift */; };
 		CA0F9396242602BA00F6E104 /* HiveGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F9395242602BA00F6E104 /* HiveGameScene.swift */; };
-		CA0F939824264CB700F6E104 /* HiveGameScene+Pieces.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F939724264CB700F6E104 /* HiveGameScene+Pieces.swift */; };
+		CA0F939824264CB700F6E104 /* HiveSpriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F939724264CB700F6E104 /* HiveSpriteManager.swift */; };
 		CA0F939A24264DE400F6E104 /* GameState+2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F939924264DE400F6E104 /* GameState+2D.swift */; };
 		CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93A02427DCE600F6E104 /* CoreGraphics+Extensions.swift */; };
 		CA0F93A32427E83500F6E104 /* SKView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93A22427E83500F6E104 /* SKView+Extensions.swift */; };
@@ -69,7 +69,7 @@
 		CA0F938E2422C80800F6E104 /* DebugOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOverlay.swift; sourceTree = "<group>"; };
 		CA0F93932426003800F6E104 /* Hive2DViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hive2DViewController.swift; sourceTree = "<group>"; };
 		CA0F9395242602BA00F6E104 /* HiveGameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameScene.swift; sourceTree = "<group>"; };
-		CA0F939724264CB700F6E104 /* HiveGameScene+Pieces.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HiveGameScene+Pieces.swift"; sourceTree = "<group>"; };
+		CA0F939724264CB700F6E104 /* HiveSpriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveSpriteManager.swift; sourceTree = "<group>"; };
 		CA0F939924264DE400F6E104 /* GameState+2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+2D.swift"; sourceTree = "<group>"; };
 		CA0F93A02427DCE600F6E104 /* CoreGraphics+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions.swift"; sourceTree = "<group>"; };
 		CA0F93A22427E83500F6E104 /* SKView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKView+Extensions.swift"; sourceTree = "<group>"; };
@@ -135,7 +135,7 @@
 				CA0F939924264DE400F6E104 /* GameState+2D.swift */,
 				CA0F93932426003800F6E104 /* Hive2DViewController.swift */,
 				CA0F9395242602BA00F6E104 /* HiveGameScene.swift */,
-				CA0F939724264CB700F6E104 /* HiveGameScene+Pieces.swift */,
+				CA0F939724264CB700F6E104 /* HiveSpriteManager.swift */,
 			);
 			path = 2D;
 			sourceTree = "<group>";
@@ -494,7 +494,7 @@
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
 				CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */,
 				CA0F939A24264DE400F6E104 /* GameState+2D.swift in Sources */,
-				CA0F939824264CB700F6E104 /* HiveGameScene+Pieces.swift in Sources */,
+				CA0F939824264CB700F6E104 /* HiveSpriteManager.swift in Sources */,
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
 				CAFA91F223E77B290087F1F0 /* GameState+AR.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,

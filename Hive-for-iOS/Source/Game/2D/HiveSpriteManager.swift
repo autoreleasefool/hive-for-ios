@@ -1,5 +1,5 @@
 //
-//  HiveGameScene+Pieces.swift
+//  HiveSpriteManager.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-03-21.
@@ -20,6 +20,7 @@ class HiveSpriteManager {
 
 		let sprite = SKSpriteNode(from: piece)
 		sprite.name = "Piece-\(piece.notation)"
+		sprite.zPosition = 1
 		pieceSprites[piece] = sprite
 		return sprite
 	}
@@ -40,6 +41,7 @@ class HiveSpriteManager {
 		sprite.position = position.point()
 		resetAppearance(sprite: sprite)
 		sprite.colorBlendFactor = 1
+		sprite.zPosition = -1
 
 		let positionLabel = SKLabelNode(text: position.description)
 		positionLabel.name = "Label"
