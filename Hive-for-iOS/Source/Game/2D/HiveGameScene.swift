@@ -10,8 +10,17 @@ import SpriteKit
 import HiveEngine
 
 class HiveGameScene: SKScene {
+	private let BASE_SCALE: CGPoint = CGPoint(x: 62, y: 62)
+
 	private let viewModel: HiveGameViewModel
 	private var spriteManager = HiveSpriteManager()
+
+	private var currentScaleMultiplier: CGFloat = 1
+	private var currentOffset: CGPoint = .zero
+
+	private var currentScale: CGPoint {
+		CGPoint(x: BASE_SCALE.x * currentScaleMultiplier, y: BASE_SCALE.y * currentScaleMultiplier)
+	}
 
 	init(viewModel: HiveGameViewModel, size: CGSize) {
 		self.viewModel = viewModel
@@ -72,7 +81,7 @@ class HiveGameScene: SKScene {
 		// Set position for pieces in play
 		viewModel.gameState.allUnitsInPlay.forEach {
 			let sprite = self.sprite(for: $0.key)
-			sprite.position = $0.value.point()
+			sprite.position = $0.value.point(scale: currentScale, offset: currentOffset)
 			addChild(sprite)
 		}
 	}
@@ -87,7 +96,7 @@ class HiveGameScene: SKScene {
 		let pieces = Array(viewModel.gameState.playableUnits(for: viewModel.playingAs)).sorted()
 		if let piece = pieces.first(where: { $0.class == pieceClass }) {
 			let sprite = self.sprite(for: piece)
-			sprite.position = Position.origin.point()
+			sprite.position = Position.origin.point(scale: currentScale, offset: currentOffset)
 			if sprite.parent == nil {
 				addChild(sprite)
 			}
@@ -97,7 +106,7 @@ class HiveGameScene: SKScene {
 	func resetPiece(_ piece: Piece) {
 		let sprite = self.sprite(for: piece)
 		sprite.removeFromParent()
-		sprite.position = Position.origin.point()
+		sprite.position = Position.origin.point(scale: currentScale, offset: currentOffset)
 	}
 
 	private func resetGame() {
@@ -113,7 +122,7 @@ class HiveGameScene: SKScene {
 		let snappingPositions = Set(viewModel.gameState.availableMoves
 			.filter { $0.movedUnit == piece }
 			.compactMap { $0.targetPosition })
-			.map { $0.point() }
+			.map { $0.point(scale: currentScale, offset: currentOffset) }
 
 		snappingPositions.forEach {
 			let sprite = self.sprite(for: $0.position())
@@ -128,7 +137,7 @@ class HiveGameScene: SKScene {
 
 	private func removeSnappingPositions() {
 		snappingPositions?.forEach {
-			let position = $0.position()
+			let position = $0.position(scale: currentScale, offset: currentOffset)
 			let sprite = self.sprite(for: position)
 			spriteManager.resetAppearance(sprite: sprite)
 			if !viewModel.debugEnabledSubject.value {

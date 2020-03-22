@@ -72,22 +72,25 @@ class HiveSpriteManager {
 }
 
 extension Position {
-	fileprivate static let horizontalScale: CGFloat = 62
-	fileprivate static let verticalScale: CGFloat = 62
+	fileprivate static var baseScale: CGPoint {
+		CGPoint(x: 1, y: 1)
+	}
 
-	func point(scale: CGFloat = 1.0) -> CGPoint {
+	func point(scale: CGPoint = baseScale, offset: CGPoint = .zero) -> CGPoint {
 		let q = CGFloat(x)
 		let r = CGFloat(z)
-		let x: CGFloat = Position.horizontalScale * (CGFloat(3.0 / 2.0) * q)
-		let y: CGFloat = Position.horizontalScale * (sqrt(CGFloat(3.0)) / 2.0 * q + sqrt(CGFloat(3.0)) * r)
-		return CGPoint(x: x, y: y)
+		let x: CGFloat = CGFloat(3.0 / 2.0) * q
+		let y: CGFloat = sqrt(CGFloat(3.0)) / 2.0 * q + sqrt(CGFloat(3.0)) * r
+		return CGPoint(x: offset.x + scale.x * x, y: offset.y + scale.y * y)
 	}
 }
 
 extension CGPoint {
-	func position(scale: CGFloat = 1.0) -> Position {
-		let q = Int((2 * self.x) / (3 * Position.horizontalScale))
-		let r = Int((self.y / (sqrt(CGFloat(3.0)) * Position.horizontalScale))) - (q / 2)
+	func position(scale: CGPoint = Position.baseScale, offset: CGPoint = .zero) -> Position {
+		let x = self.x - offset.x
+		let y = self.y - offset.y
+		let q = Int((2 * x) / (3 * scale.x))
+		let r = Int((y / (sqrt(CGFloat(3.0)) * scale.y))) - (q / 2)
 
 		return Position(x: q, y: -r - q, z: r)
 	}
