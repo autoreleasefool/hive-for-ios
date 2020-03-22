@@ -236,8 +236,10 @@ extension HiveGameScene {
 
 				if enabled {
 					addChild(sprite)
+					spriteManager.hidePositionLabel(for: position, hidden: false)
 				} else {
 					sprite.removeFromParent()
+					spriteManager.hidePositionLabel(for: position, hidden: true)
 				}
 			}
 		}

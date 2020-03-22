@@ -42,6 +42,7 @@ class HiveSpriteManager {
 		sprite.colorBlendFactor = 1
 
 		let positionLabel = SKLabelNode(text: position.description)
+		positionLabel.name = "Label"
 		positionLabel.horizontalAlignmentMode = .center
 		positionLabel.verticalAlignmentMode = .center
 		positionLabel.fontSize = 24
@@ -49,8 +50,15 @@ class HiveSpriteManager {
 		positionLabel.zPosition = 1
 		sprite.addChild(positionLabel)
 
+		#warning("TODO: change text anchor point to center")
+
 		positionSprites[position] = sprite
 		return sprite
+	}
+
+	func hidePositionLabel(for position: Position, hidden: Bool) {
+		let sprite = self.sprite(for: position)
+		sprite.childNode(withName: "Label")?.isHidden = hidden
 	}
 
 	func resetAppearance(sprite: SKSpriteNode) {
