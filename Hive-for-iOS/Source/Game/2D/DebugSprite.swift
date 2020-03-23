@@ -13,31 +13,41 @@ class DebugSprite: SKNode {
 		didSet {
 			touchLabel.text = debugInfo.touchPositionFormatted
 			positionLabel.text = debugInfo.hivePositionFormatted
+			touchIndicator.position = debugInfo.touchPosition.point
+			positionIndicator.position = debugInfo.hivePosition.point(scale: debugInfo.scale, offset: debugInfo.offset)
 		}
 	}
 
 	private var touchLabel = SKLabelNode()
 	private var positionLabel = SKLabelNode()
 
+	private var touchIndicator = SKShapeNode(rectOf: CGSize(width: 5, height: 5))
+	private var positionIndicator = SKShapeNode(rectOf: CGSize(width: 5, height: 5))
+
 	override init() {
 		super.init()
+
+		let background = SKShapeNode(rectOf: CGSize(width: 200, height: 50))
+		background.fillColor = UIColor(.backgroundLight)
+		background.position = CGPoint(x: 100, y: 200)
+		addChild(background)
 
 		touchLabel.fontSize = 12
 		touchLabel.position = .zero
 		touchLabel.horizontalAlignmentMode = .left
-		addChild(touchLabel)
+		background.addChild(touchLabel)
 
 		positionLabel.fontSize = 12
 		positionLabel.position = CGPoint(x: 0, y: 20)
 		positionLabel.horizontalAlignmentMode = .left
-		addChild(positionLabel)
+		background.addChild(positionLabel)
 
-		let background = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 200, height: 50))
-		background.fillColor = UIColor(.backgroundLight)
-		background.position = .zero
-		addChild(background)
+		touchIndicator.fillColor = UIColor(.primary)
+		addChild(touchIndicator)
 
-		self.position = CGPoint(x: 0, y: 500)
+		positionIndicator.fillColor = UIColor(.highlight)
+		addChild(positionIndicator)
+
 		self.alpha = 0.5
 	}
 

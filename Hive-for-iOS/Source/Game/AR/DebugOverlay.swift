@@ -33,15 +33,32 @@ enum TouchPosition {
 		case .cgPoint: return 0
 		}
 	}
+
+	var point: CGPoint {
+		CGPoint(x: x, y: y)
+	}
+
+	var simd3: SIMD3<Float> {
+		SIMD3<Float>(x: Float(x), y: Float(y), z: Float(z))
+	}
 }
 
 struct DebugInfo {
-	let touchPosition: TouchPosition
-	let hivePosition: Position
+	private(set) var touchPosition: TouchPosition
+	private(set) var hivePosition: Position
+	private(set) var scale: CGPoint
+	private(set) var offset: CGPoint
 
-	init(touchPosition: TouchPosition, hivePosition: Position = .origin) {
+	init(
+		touchPosition: TouchPosition,
+		hivePosition: Position = .origin,
+		scale: CGPoint = .zero,
+		offset: CGPoint = .zero
+	) {
 		self.touchPosition = touchPosition
 		self.hivePosition = hivePosition
+		self.scale = scale
+		self.offset = offset
 	}
 
 	var touchPositionFormatted: String {
@@ -50,6 +67,16 @@ struct DebugInfo {
 
 	var hivePositionFormatted: String {
 		hivePosition.description
+	}
+
+	mutating func update(touchPosition: TouchPosition, position: Position) {
+		self.touchPosition = touchPosition
+		self.hivePosition = position
+	}
+
+	mutating func update(scale: CGPoint, offset: CGPoint) {
+		self.scale = scale
+		self.offset = offset
 	}
 }
 

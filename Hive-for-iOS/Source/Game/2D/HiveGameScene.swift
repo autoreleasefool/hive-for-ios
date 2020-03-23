@@ -163,6 +163,11 @@ class HiveGameScene: SKScene {
 			$0.value.position = $0.key.point(scale: currentScale, offset: currentOffset)
 			$0.value.size = currentHexSize
 		}
+
+		self.debugSprite.debugInfo.update(
+			scale: currentScale,
+			offset: currentOffset
+		)
 	}
 
 	// MARK: - Touch
@@ -239,17 +244,17 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 				panScreen(translation: translation)
 				gesture.setTranslation(.zero, in: self.view)
 
-				self.debugSprite.debugInfo = DebugInfo(
+				self.debugSprite.debugInfo.update(
 					touchPosition: .cgPoint(touchPoint),
-					hivePosition: touchPoint.position(scale: currentScale, offset: currentOffset)
+					position: touchPoint.position(scale: currentScale, offset: currentOffset)
 				)
 			}
 			return
 		}
 
-		self.debugSprite.debugInfo = DebugInfo(
+		self.debugSprite.debugInfo.update(
 			touchPosition: .cgPoint(touchPoint),
-			hivePosition: touchPoint.position(scale: currentScale, offset: currentOffset)
+			position: touchPoint.position(scale: currentScale, offset: currentOffset)
 		)
 
 		if gesture.state == .began {
