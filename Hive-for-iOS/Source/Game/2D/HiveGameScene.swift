@@ -18,7 +18,7 @@ class HiveGameScene: SKScene {
 
 	private var debugSprite = DebugSprite()
 
-	private var currentScaleMultiplier: CGFloat = 1 {
+	private var currentScaleMultiplier: CGFloat = 0.75 {
 		didSet {
 			updateSpriteScaleAndOffset()
 		}
@@ -59,6 +59,11 @@ class HiveGameScene: SKScene {
 		fatalError("init(coder:) has not been implemented")
 	}
 
+	// MARK: Initial Load
+
+	private var hasMovedToView = false
+	private var hasChangedSize = false
+
 	override func sceneDidLoad() {
 		subscribeToPublishers()
 		viewModel.postViewAction(.viewContentDidLoad(.skScene(self)))
@@ -73,7 +78,20 @@ class HiveGameScene: SKScene {
 			resetPiece($0)
 		}
 
-		viewModel.postViewAction(.viewInteractionsReady)
+		hasMovedToView = true
+		if hasChangedSize {
+			viewModel.postViewAction(.viewInteractionsReady)
+		}
+	}
+
+	override func didChangeSize(_ oldSize: CGSize) {
+		guard !viewModel.flowStateSubject.value.inGame, size.equalTo(.zero) == false else { return }
+		currentOffset = CGPoint(x: size.width / 2, y: size.height / 2)
+
+		hasChangedSize = true
+		if hasMovedToView {
+			viewModel.postViewAction(.viewInteractionsReady)
+		}
 	}
 
 	private func subscribeToPublishers() {
@@ -126,8 +144,13 @@ class HiveGameScene: SKScene {
 
 		let sprite = self.sprite(for: piece)
 		sprite.position = position.point(scale: currentScale, offset: currentOffset)
+		let shouldAnimate = sprite.parent == nil
 		addUnownedChild(sprite)
 		updateSpriteScaleAndOffset()
+
+		if shouldAnimate {
+			animate(to: position)
+		}
 	}
 
 	func resetPiece(_ piece: Piece) {
@@ -155,7 +178,6 @@ class HiveGameScene: SKScene {
 
 			$0.value.position = position.point(scale: currentScale, offset: currentOffset)
 			$0.value.size = currentHexSize
-
 		}
 
 		spriteManager.positionSprites.forEach {
@@ -228,6 +250,8 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 	}
 
 	@objc private func handlePan(_ gesture: UIPanGestureRecognizer) {
+		removeAction(forKey: AnimationKey.toPosition.rawValue)
+
 		let intermediateTranslation = gesture.translation(in: self.view)
 		let translation = CGPoint(x: intermediateTranslation.x, y: -intermediateTranslation.y)
 
@@ -276,7 +300,8 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 
 	@objc private func handlePinch(_ gesture: UIPinchGestureRecognizer) {
 		if gesture.state == .changed {
-			currentScaleMultiplier = gesture.scale
+			currentScaleMultiplier *= gesture.scale
+			gesture.scale = 1
 		}
 	}
 
@@ -375,5 +400,35 @@ extension HiveGameScene {
 				}
 			}
 		}
+	}
+}
+
+// MARK: - Animation
+
+extension HiveGameScene {
+	enum AnimationKey: String {
+		case toPosition
+	}
+
+	private func animate(to piece: Piece) {
+		guard let position = viewModel.gameState.position(of: piece) else { return }
+		animate(to: position)
+	}
+
+	private func animate(to position: Position) {
+		self.removeAction(forKey: AnimationKey.toPosition.rawValue)
+
+		let startingOffset = currentOffset
+		let offsetDifference = position.point(scale: currentScale, offset: currentOffset) -
+			CGPoint(x: size.width / 2, y: size.height / 2)
+		let duration: TimeInterval = 0.5
+
+		let action = SKAction.customAction(withDuration: duration) { [weak self] _, elapsed in
+			let percentElapsed = elapsed / CGFloat(duration)
+			self?.currentOffset = startingOffset - (offsetDifference * percentElapsed)
+		}
+		action.timingMode = .easeInEaseOut
+
+		self.run(action, withKey: AnimationKey.toPosition.rawValue)
 	}
 }

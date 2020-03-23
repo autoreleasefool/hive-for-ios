@@ -94,7 +94,12 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private var selectedPieceDefaultPosition: Position {
-		Position(x: -4, y: 0, z: 4)
+		let positions = gameState.stacks.keys
+		let startX = positions.first?.x ?? 0
+		let minX = positions.reduce(startX, { minX, position in min(minX, position.x) })
+		let x = minX - 2
+		let z = x < 0 ? -x / 2 : Int((Double(-x) / 2.0).rounded(.down))
+		return Position(x: x, y: -x - z, z: z)
 	}
 
 	private var viewContentReady: Bool = false
