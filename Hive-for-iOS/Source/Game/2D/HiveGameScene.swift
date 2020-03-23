@@ -15,22 +15,27 @@ class HiveGameScene: SKScene {
 
 	private let viewModel: HiveGameViewModel
 	private var spriteManager = HiveSpriteManager()
+
 	private var debugSprite = DebugSprite()
 
 	private var currentScaleMultiplier: CGFloat = 1 {
 		didSet {
-			updateSpritePositions()
+			updateSpriteScaleAndOffset()
 		}
 	}
 
 	private var currentOffset: CGPoint = .zero {
 		didSet {
-			updateSpritePositions()
+			updateSpriteScaleAndOffset()
 		}
 	}
 
 	private var currentScale: CGPoint {
 		BASE_HEX_SCALE * currentScaleMultiplier
+	}
+
+	private var currentHexSize: CGSize {
+		BASE_HEX_SIZE * currentScaleMultiplier
 	}
 
 	lazy var panGesture: UIPanGestureRecognizer = {
@@ -107,6 +112,7 @@ class HiveGameScene: SKScene {
 			let sprite = self.sprite(for: $0.key)
 			sprite.position = $0.value.point(scale: currentScale, offset: currentOffset)
 			addUnownedChild(sprite)
+			updateSpriteScaleAndOffset()
 		}
 	}
 
@@ -121,6 +127,7 @@ class HiveGameScene: SKScene {
 		let sprite = self.sprite(for: piece)
 		sprite.position = position.point(scale: currentScale, offset: currentOffset)
 		addUnownedChild(sprite)
+		updateSpriteScaleAndOffset()
 	}
 
 	func resetPiece(_ piece: Piece) {
@@ -133,7 +140,7 @@ class HiveGameScene: SKScene {
 		viewModel.gameState.allPiecesInHands.forEach { resetPiece($0) }
 	}
 
-	private func updateSpritePositions() {
+	private func updateSpriteScaleAndOffset() {
 		spriteManager.pieceSprites.forEach {
 			guard $0.value.parent != nil else { return }
 			let position: Position
@@ -147,22 +154,22 @@ class HiveGameScene: SKScene {
 			}
 
 			$0.value.position = position.point(scale: currentScale, offset: currentOffset)
-			$0.value.size = BASE_HEX_SIZE * currentScaleMultiplier
+			$0.value.size = currentHexSize
 
 		}
 
 		spriteManager.positionSprites.forEach {
 			guard $0.value.parent != nil else { return }
 			$0.value.position = $0.key.point(scale: currentScale, offset: currentOffset)
-			$0.value.size = BASE_HEX_SIZE * currentScaleMultiplier
+			$0.value.size = currentHexSize
 		}
 	}
 
 	// MARK: - Touch
 
 	private var currentNode: SKNode?
-	private var snappingPositions: [CGPoint]?
 	private var nodeInitialPosition: CGPoint?
+	private var snappingPositions: [CGPoint]?
 
 	private func enableSnappingPositions(for piece: Piece) {
 		let snappingPositions = Set(viewModel.gameState.availableMoves
@@ -171,9 +178,10 @@ class HiveGameScene: SKScene {
 			.map { $0.point(scale: currentScale, offset: currentOffset) }
 
 		snappingPositions.forEach {
-			let sprite = self.sprite(for: $0.position())
+			let sprite = self.sprite(for: $0.position(scale: currentScale, offset: currentOffset))
 			sprite.color = UIColor(.highlight)
 			addUnownedChild(sprite)
+			updateSpriteScaleAndOffset()
 		}
 
 		self.snappingPositions = snappingPositions
@@ -221,8 +229,11 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 		let intermediateTouch = gesture.location(in: self.view)
 		let touchPoint = convertPoint(fromView: intermediateTouch)
 
-		guard let touchedNode = currentNode ?? nodes(at: touchPoint)
-				.first(where: { $0.name?.starts(with: "Piece-") == true}),
+		if gesture.state == .began {
+			currentNode = nodes(at: touchPoint).first(where: { $0.name?.starts(with: "Piece-") == true })
+		}
+
+		guard let touchedNode = currentNode,
 			let touchedPiece = spriteManager.piece(from: touchedNode) else {
 			if gesture.state == .changed {
 				panScreen(translation: translation)
@@ -243,15 +254,15 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 
 		if gesture.state == .began {
 			touchedNode.zPosition = maxZPosition + 1
-			nodeInitialPosition = touchedNode.position
+			nodeInitialPosition = touchPoint
 			self.enableSnappingPositions(for: touchedPiece)
-			self.currentNode = touchedNode
 		} else if gesture.state == .changed {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			snap(touchedPiece, location: translatedPosition, move: false)
 		} else if gesture.state == .ended {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			snap(touchedPiece, location: translatedPosition, move: true)
+			removeSnappingPositions()
 			self.currentNode = nil
 			self.snappingPositions = nil
 			self.nodeInitialPosition = nil
@@ -305,11 +316,21 @@ extension HiveGameScene {
 
 extension HiveGameScene {
 	private func sprite(for piece: Piece) -> SKSpriteNode {
-		spriteManager.sprite(for: piece)
+		spriteManager.sprite(
+			for: piece,
+			initialSize: currentHexSize,
+			initialScale: currentScale,
+			initialOffset: currentOffset
+		)
 	}
 
 	private func sprite(for position: Position) -> SKSpriteNode {
-		spriteManager.sprite(for: position)
+		spriteManager.sprite(
+			for: position,
+			initialSize: currentHexSize,
+			initialScale: currentScale,
+			initialOffset: currentOffset
+		)
 	}
 }
 
@@ -331,6 +352,8 @@ extension HiveGameScene {
 				}
 			}
 		}
+
+		updateSpriteScaleAndOffset()
 	}
 
 	private var debugEnabled: Bool {

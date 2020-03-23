@@ -13,7 +13,12 @@ class HiveSpriteManager {
 	private(set) var pieceSprites: [Piece: SKSpriteNode] = [:]
 	private(set) var positionSprites: [Position: SKSpriteNode] = [:]
 
-	func sprite(for piece: Piece) -> SKSpriteNode {
+	func sprite(
+		for piece: Piece,
+		initialSize: CGSize,
+		initialScale: CGPoint,
+		initialOffset: CGPoint
+	) -> SKSpriteNode {
 		if let sprite = pieceSprites[piece] {
 			return sprite
 		}
@@ -22,6 +27,9 @@ class HiveSpriteManager {
 		sprite.name = "Piece-\(piece.notation)"
 		sprite.zPosition = 1
 		sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+		sprite.size = initialSize
+		sprite.position = Position.origin.point(scale: initialScale, offset: initialOffset)
+
 		pieceSprites[piece] = sprite
 		return sprite
 	}
@@ -32,14 +40,20 @@ class HiveSpriteManager {
 		return Piece(notation: notation)
 	}
 
-	func sprite(for position: Position) -> SKSpriteNode {
+	func sprite(
+		for position: Position,
+		initialSize: CGSize,
+		initialScale: CGPoint,
+		initialOffset: CGPoint
+	) -> SKSpriteNode {
 		if let sprite = positionSprites[position] {
 			return sprite
 		}
 
 		let sprite = SKSpriteNode(imageNamed: "Pieces/Blank")
 		sprite.name = "Position-\(position.description)"
-		sprite.position = position.point()
+		sprite.size = initialSize
+		sprite.position = position.point(scale: initialScale, offset: initialOffset)
 		sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
 		resetAppearance(sprite: sprite)
 		sprite.colorBlendFactor = 1
@@ -60,7 +74,7 @@ class HiveSpriteManager {
 	}
 
 	func hidePositionLabel(for position: Position, hidden: Bool) {
-		let sprite = self.sprite(for: position)
+		let sprite = self.sprite(for: position, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
 		sprite.childNode(withName: "Label")?.isHidden = hidden
 	}
 
@@ -75,11 +89,7 @@ class HiveSpriteManager {
 }
 
 extension Position {
-	fileprivate static var baseScale: CGPoint {
-		CGPoint(x: 1, y: 1)
-	}
-
-	func point(scale: CGPoint = baseScale, offset: CGPoint = .zero) -> CGPoint {
+	func point(scale: CGPoint, offset: CGPoint) -> CGPoint {
 		let q = CGFloat(x)
 		let r = CGFloat(z)
 		let x: CGFloat = CGFloat(3.0 / 2.0) * q
@@ -89,7 +99,7 @@ extension Position {
 }
 
 extension CGPoint {
-	func position(scale: CGPoint = Position.baseScale, offset: CGPoint = .zero) -> Position {
+	func position(scale: CGPoint, offset: CGPoint) -> Position {
 		let x = self.x - offset.x
 		let y = self.y - offset.y
 		let q = Int((2 * x) / (3 * scale.x))
