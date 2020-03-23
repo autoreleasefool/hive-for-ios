@@ -47,7 +47,7 @@ class HiveSpriteManager {
 		positionLabel.name = "Label"
 		positionLabel.horizontalAlignmentMode = .center
 		positionLabel.verticalAlignmentMode = .center
-		positionLabel.fontSize = 24
+		positionLabel.fontSize = 16
 		positionLabel.position = CGPoint(x: sprite.size.width / 2, y: sprite.size.height / 2)
 		positionLabel.zPosition = 1
 		sprite.addChild(positionLabel)
