@@ -9,11 +9,37 @@
 import UIKit
 import HiveEngine
 
+enum TouchPosition {
+	case simd3(SIMD3<Float>)
+	case cgPoint(CGPoint)
+
+	var x: CGFloat {
+		switch self {
+		case .simd3(let position): return CGFloat(position.x)
+		case .cgPoint(let position): return position.x
+		}
+	}
+
+	var y: CGFloat {
+		switch self {
+		case .simd3(let position): return CGFloat(position.y)
+		case .cgPoint(let position): return position.y
+		}
+	}
+
+	var z: CGFloat {
+		switch self {
+		case .simd3(let position): return CGFloat(position.z)
+		case .cgPoint: return 0
+		}
+	}
+}
+
 struct DebugInfo {
-	let touchPosition: SIMD3<Float>
+	let touchPosition: TouchPosition
 	let hivePosition: Position
 
-	init(touchPosition: SIMD3<Float> = SIMD3<Float>(), hivePosition: Position = .origin) {
+	init(touchPosition: TouchPosition, hivePosition: Position = .origin) {
 		self.touchPosition = touchPosition
 		self.hivePosition = hivePosition
 	}
@@ -44,7 +70,7 @@ class DebugOverlay: UIView {
 	private let touchPositionLabel = UILabel()
 	private let hivePositionLabel = UILabel()
 
-	init(enabled: Bool = false, debugInfo: DebugInfo = DebugInfo()) {
+	init(enabled: Bool = false, debugInfo: DebugInfo = DebugInfo(touchPosition: .simd3(SIMD3<Float>()))) {
 		self.enabled = enabled
 		self.debugInfo = debugInfo
 		super.init(frame: .zero)

@@ -15,6 +15,7 @@ class HiveGameScene: SKScene {
 
 	private let viewModel: HiveGameViewModel
 	private var spriteManager = HiveSpriteManager()
+	private var debugSprite = DebugSprite()
 
 	private var currentScaleMultiplier: CGFloat = 1 {
 		didSet {
@@ -226,9 +227,19 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 			if gesture.state == .changed {
 				panScreen(translation: translation)
 				gesture.setTranslation(.zero, in: self.view)
+
+				self.debugSprite.debugInfo = DebugInfo(
+					touchPosition: .cgPoint(touchPoint),
+					hivePosition: touchPoint.position(scale: currentScale, offset: currentOffset)
+				)
 			}
 			return
 		}
+
+		self.debugSprite.debugInfo = DebugInfo(
+			touchPosition: .cgPoint(touchPoint),
+			hivePosition: touchPoint.position(scale: currentScale, offset: currentOffset)
+		)
 
 		if gesture.state == .began {
 			touchedNode.zPosition = maxZPosition + 1
@@ -329,6 +340,11 @@ extension HiveGameScene {
 		set {
 			DispatchQueue.main.async {
 				self.enablePositionGrid(newValue)
+				if newValue {
+					self.addUnownedChild(self.debugSprite)
+				} else {
+					self.debugSprite.removeFromParent()
+				}
 			}
 		}
 	}

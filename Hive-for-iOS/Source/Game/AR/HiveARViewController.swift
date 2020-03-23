@@ -243,7 +243,7 @@ class HiveARGameViewController: UIViewController {
 			return
 		}
 
-		self.debugOverlay.debugInfo = DebugInfo(touchPosition: location, hivePosition: location.position)
+		self.debugOverlay.debugInfo = DebugInfo(touchPosition: .simd3(location), hivePosition: location.position)
 
 		if recognizer.state == .began {
 			initialTouchPosition = location
