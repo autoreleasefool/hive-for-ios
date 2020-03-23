@@ -71,7 +71,7 @@ class HiveARGameViewController: UIViewController {
 
 		viewModel.selectedPiece
 			.sink { [weak self] receivedValue in
-				self?.present(selectedPiece: receivedValue)
+				self?.present(selectedPiece: receivedValue.0, at: receivedValue.1)
 			}
 			.store(in: viewModel)
 
@@ -141,7 +141,7 @@ class HiveARGameViewController: UIViewController {
 		}
 	}
 
-	private func present(selectedPiece pieceClass: Piece.Class?) {
+	private func present(selectedPiece piece: Piece?, at position: Position?) {
 		guard let game = viewModel.gameAnchor else { return }
 		game.openPosition?.isEnabled = false
 
@@ -149,13 +149,12 @@ class HiveARGameViewController: UIViewController {
 			$0.entity(in: game)?.isEnabled = false
 		}
 
-		guard let pieceClass = pieceClass else { return }
+		guard let piece = piece else { return }
 
-		let pieces = game.pieces(for: viewModel.playingAs)
-		if let piece = pieces.first(where: { $0?.gamePiece?.class == pieceClass && $0?.isEnabled == false }) {
-			piece?.position = SIMD3(x: 0, y: 0, z: 0.3)
-			piece?.isEnabled = true
-		}
+		#warning("FIXME: should use Position")
+		let entity = piece.entity(in: game)
+		entity?.position = SIMD3(x: 0, y: 0, z: 0.3)
+		entity?.isEnabled = true
 	}
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {
@@ -236,6 +235,7 @@ class HiveARGameViewController: UIViewController {
 	}
 
 	@objc func handlePieceTranslation(_ recognizer: EntityTranslationGestureRecognizer) {
+		#warning("FIXME: should send snap position to viewModel so it can update")
 		guard let game = viewModel.gameAnchor,
 			let entity = recognizer.entity,
 			let gamePiece = entity.gamePiece,

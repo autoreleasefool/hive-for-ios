@@ -21,6 +21,7 @@ class HiveSpriteManager {
 		let sprite = SKSpriteNode(from: piece)
 		sprite.name = "Piece-\(piece.notation)"
 		sprite.zPosition = 1
+		sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
 		pieceSprites[piece] = sprite
 		return sprite
 	}
@@ -39,6 +40,7 @@ class HiveSpriteManager {
 		let sprite = SKSpriteNode(imageNamed: "Pieces/Blank")
 		sprite.name = "Position-\(position.description)"
 		sprite.position = position.point()
+		sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
 		resetAppearance(sprite: sprite)
 		sprite.colorBlendFactor = 1
 		sprite.zPosition = -1
@@ -47,8 +49,7 @@ class HiveSpriteManager {
 		positionLabel.name = "Label"
 		positionLabel.horizontalAlignmentMode = .center
 		positionLabel.verticalAlignmentMode = .center
-		positionLabel.fontSize = 16
-		positionLabel.position = CGPoint(x: sprite.size.width / 2, y: sprite.size.height / 2)
+		positionLabel.fontSize = 12
 		positionLabel.zPosition = 1
 		sprite.addChild(positionLabel)
 

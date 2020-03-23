@@ -20,6 +20,12 @@ extension GameState {
 	var allPiecesInHands: [Piece] {
 		Array((unitsInHand[.white] ?? []).union(unitsInHand[.black] ?? []))
 	}
+
+	func firstUnplayed(of pieceClass: Piece.Class, inHand player: Player) -> Piece? {
+		let unplayed = unitsInHand[player]?.filter { $0.class == pieceClass } ?? []
+		guard let first = unplayed.first else { return nil }
+		return unplayed.reduce(first, { (lowest, next) in next.index < lowest.index ? next : lowest })
+	}
 }
 
 extension GameState.Option {

@@ -9,7 +9,6 @@
 import SpriteKit
 
 extension SKScene {
-
 	@discardableResult
 	func addUnownedChild(_ node: SKNode) -> Bool {
 		guard node.parent == nil else { return false }

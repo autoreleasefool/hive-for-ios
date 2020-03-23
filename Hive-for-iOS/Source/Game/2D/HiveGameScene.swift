@@ -17,24 +17,14 @@ class HiveGameScene: SKScene {
 	private var spriteManager = HiveSpriteManager()
 
 	private var currentScaleMultiplier: CGFloat = 1 {
-		willSet {
-			updateSpritePositions(
-				oldScale: currentScale,
-				newScale: BASE_HEX_SCALE * newValue,
-				oldOffset: currentOffset,
-				newOffset: currentOffset
-			)
+		didSet {
+			updateSpritePositions()
 		}
 	}
 
 	private var currentOffset: CGPoint = .zero {
-		willSet {
-			updateSpritePositions(
-				oldScale: currentScale,
-				newScale: currentScale,
-				oldOffset: currentOffset,
-				newOffset: newValue
-			)
+		didSet {
+			updateSpritePositions()
 		}
 	}
 
@@ -96,7 +86,7 @@ class HiveGameScene: SKScene {
 
 		viewModel.selectedPiece
 			.sink { [weak self] receivedValue in
-				self?.present(selectedPiece: receivedValue)
+				self?.present(selectedPiece: receivedValue.0, at: receivedValue.1)
 			}
 			.store(in: viewModel)
 
@@ -119,19 +109,17 @@ class HiveGameScene: SKScene {
 		}
 	}
 
-	private func present(selectedPiece pieceClass: Piece.Class?) {
+	private func present(selectedPiece piece: Piece?, at position: Position?) {
 		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
+			guard $0 != piece else { return }
 			resetPiece($0)
 		}
 
-		guard let pieceClass = pieceClass else { return }
+		guard let piece = piece, let position = position else { return }
 
-		let pieces = Array(viewModel.gameState.playableUnits(for: viewModel.playingAs)).sorted()
-		if let piece = pieces.first(where: { $0.class == pieceClass }) {
-			let sprite = self.sprite(for: piece)
-			sprite.position = Position.origin.point(scale: currentScale, offset: currentOffset)
-			addUnownedChild(sprite)
-		}
+		let sprite = self.sprite(for: piece)
+		sprite.position = position.point(scale: currentScale, offset: currentOffset)
+		addUnownedChild(sprite)
 	}
 
 	func resetPiece(_ piece: Piece) {
@@ -144,16 +132,21 @@ class HiveGameScene: SKScene {
 		viewModel.gameState.allPiecesInHands.forEach { resetPiece($0) }
 	}
 
-	private func updateSpritePositions(oldScale: CGPoint, newScale: CGPoint, oldOffset: CGPoint, newOffset: CGPoint) {
+	private func updateSpritePositions() {
 		spriteManager.pieceSprites.forEach {
 			guard $0.value.parent != nil else { return }
-			$0.value.size = BASE_HEX_SIZE * currentScaleMultiplier
-			if let position = viewModel.gameState.position(of: $0.key) {
-				$0.value.position = position.point(scale: currentScale, offset: currentOffset)
+			let position: Position
+			if let gamePosition = viewModel.gameState.position(of: $0.key) {
+				position = gamePosition
+			} else if viewModel.selectedPiece.value.0 == $0.key,
+				let selectedPosition = viewModel.selectedPiece.value.1 {
+				position = selectedPosition
 			} else {
-				let position = $0.value.position.position(scale: oldScale, offset: oldOffset)
-				$0.value.position = position.point(scale: newScale, offset: newOffset)
+				position = .origin
 			}
+
+			$0.value.position = position.point(scale: currentScale, offset: currentOffset)
+			$0.value.size = BASE_HEX_SIZE * currentScaleMultiplier
 
 		}
 
@@ -198,21 +191,13 @@ class HiveGameScene: SKScene {
 		snappingPositions = nil
 	}
 
-	private func snap(_ node: SKNode, location: CGPoint) {
-		if let snappingPositions = snappingPositions, let firstPosition = snappingPositions.first {
-			let initialClosest = (location.euclideanDistance(to: firstPosition), firstPosition)
-			let closest = snappingPositions.reduce(initialClosest) { (previous, snappingPosition) in
-				let distance = location.euclideanDistance(to: snappingPosition)
-				return distance < previous.0 ? (distance, snappingPosition) : previous
-			}
-
-			if closest.0 < 128 {
-				node.position = closest.1
-				return
-			}
+	private func snap(_ piece: Piece, location: CGPoint, move: Bool) {
+		let position = location.position(scale: currentScale, offset: currentOffset)
+		if move {
+			viewModel.postViewAction(.gamePieceMoved(piece, position))
+		} else {
+			viewModel.postViewAction(.gamePieceSnapped(piece, position))
 		}
-
-		node.position = location
 	}
 
 	var maxZPosition: CGFloat {
@@ -252,17 +237,13 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 			self.currentNode = touchedNode
 		} else if gesture.state == .changed {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
-			snap(touchedNode, location: translatedPosition)
+			snap(touchedPiece, location: translatedPosition, move: false)
 		} else if gesture.state == .ended {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
-			snap(touchedNode, location: translatedPosition)
+			snap(touchedPiece, location: translatedPosition, move: true)
 			self.currentNode = nil
 			self.snappingPositions = nil
 			self.nodeInitialPosition = nil
-			viewModel.postViewAction(.gamePieceMoved(
-				touchedPiece,
-				touchedNode.position.position(scale: currentScale, offset: currentOffset)
-			))
 		}
 	}
 

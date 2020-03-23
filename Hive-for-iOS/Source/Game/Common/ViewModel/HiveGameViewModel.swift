@@ -20,6 +20,7 @@ enum HiveGameViewAction: BaseViewAction {
 	case selectedFromHand(Piece.Class)
 	case tappedPiece(Piece)
 
+	case gamePieceSnapped(Piece, Position)
 	case gamePieceMoved(Piece, Position)
 	case movementConfirmed(Movement)
 	case cancelMovement
@@ -42,7 +43,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		return client
 	}()
 
-	var selectedPiece = PassthroughSubject<Piece.Class?, Never>()
+	var selectedPiece = CurrentValueSubject<(Piece?, Position?), Never>((nil, nil))
 
 	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
 	var gameStateSubject = CurrentValueSubject<GameState?, Never>(nil)
@@ -92,6 +93,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		return showPlayerHand.wrappedValue || hasInformation.wrappedValue
 	}
 
+	private var selectedPieceDefaultPosition: Position {
+		Position(x: -4, y: 0, z: 4)
+	}
+
 	private var viewContentReady: Bool = false
 	private var viewInteractionsReady: Bool = false
 
@@ -112,9 +117,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			enquireFromHand(pieceClass)
 		case .tappedPiece(let piece):
 			informationToPresent = .piece(piece)
+		case .gamePieceSnapped(let piece, let position):
+			updatePosition(of: piece, to: position, shouldMove: false)
 		case .gamePieceMoved(let piece, let position):
 			debugLog("Moving \(piece) to \(position)")
-			updatePosition(of: piece, to: position)
+			updatePosition(of: piece, to: position, shouldMove: true)
 		case .movementConfirmed(let movement):
 			#warning("TODO: shouldn't apply the movement here, but wait for it to be accepted by server")
 			debugLog("Sending move \(movement)")
@@ -157,8 +164,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func placeFromHand(_ pieceClass: Piece.Class) {
 		guard inGame else { return }
 
-		if handToShow?.player == playingAs {
-			selectedPiece.send(pieceClass)
+		if handToShow?.player == playingAs,
+			let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
+			selectedPiece.send((piece, selectedPieceDefaultPosition))
 		}
 		handToShow = nil
 	}
@@ -170,21 +178,27 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func pickUpHand() {
-		self.gameState.unitsInHand[playingAs]?.forEach { updatePosition(of: $0, to: nil) }
+		self.gameState.unitsInHand[playingAs]?.forEach { updatePosition(of: $0, to: nil, shouldMove: true) }
 	}
 
-	private func updatePosition(of piece: Piece, to position: Position?) {
+	private func updatePosition(of piece: Piece, to position: Position?, shouldMove: Bool) {
 		guard inGame else { return }
 		guard let targetPosition = position else {
-			selectedPiece.send(nil)
+			selectedPiece.send((nil, nil))
+			return
+		}
+
+		guard shouldMove else {
+			selectedPiece.send((selectedPiece.value.0, targetPosition))
 			return
 		}
 
 		guard let movement = gameState.availableMoves.first(where: { $0.movedUnit == piece && $0.targetPosition == targetPosition }) else {
-			selectedPiece.send(piece.class)
 			debugLog("Did not find \"\(piece) to \(targetPosition)\" in \(gameState.availableMoves)")
 			return
 		}
+
+		selectedPiece.send((selectedPiece.value.0, targetPosition))
 
 		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
 
