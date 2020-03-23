@@ -23,7 +23,6 @@ class Hive2DGameViewController: UIViewController {
 
 	override func loadView() {
 		self.view = SKView()
-		becomeFirstResponder()
 	}
 
 	override func viewDidLoad() {
@@ -35,10 +34,7 @@ class Hive2DGameViewController: UIViewController {
 		view.ignoresSiblingOrder = true
 		scene.scaleMode = .resizeFill
 		view.presentScene(scene)
-	}
-
-	override var prefersHomeIndicatorAutoHidden: Bool {
-		true
+		becomeFirstResponder()
 	}
 }
 
