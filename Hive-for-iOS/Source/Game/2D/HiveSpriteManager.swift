@@ -102,8 +102,11 @@ extension CGPoint {
 	func position(scale: CGPoint, offset: CGPoint) -> Position {
 		let x = self.x - offset.x
 		let y = self.y - offset.y
-		let q = Int((2 * x) / (3 * scale.x))
-		let r = Int((y / (sqrt(CGFloat(3.0)) * scale.y))) - (q / 2)
+		let qf = (2 * x) / (3 * scale.x)
+		let rf = (y / (sqrt(CGFloat(3.0)) * scale.y)) - (qf / 2)
+
+		let q = Int(qf.rounded())
+		let r = Int(rf.rounded())
 
 		return Position(x: q, y: -r - q, z: r)
 	}
