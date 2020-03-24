@@ -26,6 +26,10 @@ extension GameState {
 		guard let first = unplayed.first else { return nil }
 		return unplayed.reduce(first, { (lowest, next) in next.index < lowest.index ? next : lowest })
 	}
+
+	func pieceHasMoves(_ piece: Piece) -> Bool {
+		return availableMoves.contains(where: { $0.movedUnit == piece })
+	}
 }
 
 extension GameState.Option {

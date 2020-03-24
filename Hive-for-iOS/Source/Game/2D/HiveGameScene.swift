@@ -167,11 +167,11 @@ class HiveGameScene: SKScene {
 		spriteManager.pieceSprites.forEach {
 			guard $0.value.parent != nil else { return }
 			let position: Position
-			if let gamePosition = viewModel.gameState.position(of: $0.key) {
-				position = gamePosition
-			} else if viewModel.selectedPiece.value.0 == $0.key,
+			if viewModel.selectedPiece.value.0 == $0.key,
 				let selectedPosition = viewModel.selectedPiece.value.1 {
 				position = selectedPosition
+			} else if let gamePosition = viewModel.gameState.position(of: $0.key) {
+				position = gamePosition
 			} else {
 				position = .origin
 			}
@@ -194,7 +194,7 @@ class HiveGameScene: SKScene {
 
 	// MARK: - Touch
 
-	private var currentNode: SKNode?
+	private var nodeBeingMoved: SKNode?
 	private var nodeInitialPosition: CGPoint?
 	private var snappingPositions: [CGPoint]?
 
@@ -259,10 +259,13 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 		let touchPoint = convertPoint(fromView: intermediateTouch)
 
 		if gesture.state == .began {
-			currentNode = nodes(at: touchPoint).first(where: { $0.name?.starts(with: "Piece-") == true })
+			nodeBeingMoved = nodes(at: touchPoint).first(where: {
+				guard let piece = spriteManager.piece(from: $0) else { return false }
+				return viewModel.gameState.pieceHasMoves(piece)
+			})
 		}
 
-		guard let touchedNode = currentNode,
+		guard let touchedNode = nodeBeingMoved,
 			let touchedPiece = spriteManager.piece(from: touchedNode) else {
 			if gesture.state == .changed {
 				panScreen(translation: translation)
@@ -284,7 +287,9 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 		if gesture.state == .began {
 			touchedNode.zPosition = maxZPosition + 1
 			nodeInitialPosition = touchPoint
+			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			self.enableSnappingPositions(for: touchedPiece)
+			snap(touchedPiece, location: translatedPosition, move: false)
 		} else if gesture.state == .changed {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			snap(touchedPiece, location: translatedPosition, move: false)
@@ -292,7 +297,7 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			snap(touchedPiece, location: translatedPosition, move: true)
 			removeSnappingPositions()
-			self.currentNode = nil
+			self.nodeBeingMoved = nil
 			self.snappingPositions = nil
 			self.nodeInitialPosition = nil
 		}

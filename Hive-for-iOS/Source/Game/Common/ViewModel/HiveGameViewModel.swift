@@ -194,7 +194,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		}
 
 		guard shouldMove else {
-			selectedPiece.send((selectedPiece.value.0, targetPosition))
+			selectedPiece.send((piece, targetPosition))
 			return
 		}
 
@@ -203,7 +203,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			return
 		}
 
-		selectedPiece.send((selectedPiece.value.0, targetPosition))
+		selectedPiece.send((piece, targetPosition))
 
 		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
 
