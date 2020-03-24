@@ -4,6 +4,7 @@
 //  Created by Majid Jabrayilov
 //  Copyright © 2019 Majid Jabrayilov. All rights reserved.
 //
+// swiftlint:disable all
 
 import SwiftUI
 

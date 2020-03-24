@@ -323,7 +323,7 @@ extension HiveARGameViewController {
 	}
 
 	override var canBecomeFirstResponder: Bool {
-		get { true }
+		true
 	}
 
 	override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {

@@ -1,9 +1,18 @@
+excluded:
+  - .build
+
 disabled_rules:
   - identifier_name
-  - line_length
   - file_length
+  - function_body_length
   - type_body_length
+  - function_parameter_count
   - nesting
+  - cyclomatic_complexity
 
 trailing_comma:
   mandatory_comma: true
+
+type_name:
+  excluded:
+    - ID

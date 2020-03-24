@@ -198,7 +198,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			return
 		}
 
-		guard let movement = gameState.availableMoves.first(where: { $0.movedUnit == piece && $0.targetPosition == targetPosition }) else {
+		guard let movement = gameState.availableMoves.first(where: {
+			$0.movedUnit == piece && $0.targetPosition == targetPosition
+		}) else {
 			debugLog("Did not find \"\(piece) to \(targetPosition)\" in \(gameState.availableMoves)")
 			return
 		}

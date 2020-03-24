@@ -7,6 +7,8 @@
 //  Source: https://github.com/AppPear/SwiftUI-PullToRefresh
 //
 
+// swiftlint:disable all
+
 import SwiftUI
 
 struct RefreshableList<Content: View>: View {

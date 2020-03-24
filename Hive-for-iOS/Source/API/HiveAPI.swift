@@ -74,7 +74,12 @@ struct HiveAPI {
 
 	// MARK: - Common
 
-	private func handleResponse<Result: Codable>(data: Data?, response: URLResponse?, error: Error?, promise: HiveAPIPromise<Result>) {
+	private func handleResponse<Result: Codable>(
+		data: Data?,
+		response: URLResponse?,
+		error: Error?,
+		promise: HiveAPIPromise<Result>
+	) {
 		guard error == nil else {
 			promise(.failure(.networkingError(error!)))
 			return
