@@ -132,6 +132,13 @@ class HiveGameScene: SKScene {
 			addUnownedChild(sprite)
 			updateSpriteScaleAndOffset()
 		}
+
+		viewModel.gameState.playableSpaces().forEach {
+			let sprite = self.sprite(for: $0)
+			sprite.color = UIColor(.backgroundLight)
+			addUnownedChild(sprite)
+			updateSpriteScaleAndOffset()
+		}
 	}
 
 	private func present(selectedPiece piece: Piece?, at position: Position?) {
@@ -219,7 +226,7 @@ class HiveGameScene: SKScene {
 			let position = $0.position(scale: currentScale, offset: currentOffset)
 			let sprite = self.sprite(for: position)
 			spriteManager.resetAppearance(sprite: sprite)
-			if !viewModel.debugEnabledSubject.value {
+			if !viewModel.debugEnabledSubject.value && !viewModel.gameState.playableSpaces().contains(position) {
 				sprite.removeFromParent()
 			}
 		}
@@ -382,7 +389,9 @@ extension HiveGameScene {
 					addUnownedChild(sprite)
 					spriteManager.hidePositionLabel(for: position, hidden: false)
 				} else {
-					sprite.removeFromParent()
+					if !viewModel.gameState.playableSpaces().contains(position) {
+						sprite.removeFromParent()
+					}
 					spriteManager.hidePositionLabel(for: position, hidden: true)
 				}
 			}
