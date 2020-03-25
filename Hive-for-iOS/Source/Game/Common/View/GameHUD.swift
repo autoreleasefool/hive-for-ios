@@ -24,8 +24,8 @@ struct GameHUD: View {
 		Button(action: {
 			self.viewModel.postViewAction(.exitGame)
 		}, label: {
-			HexImage(ImageAsset.Icon.close, stroke: .background)
-				.placeholderTint(.background)
+			HexImage(ImageAsset.Icon.close, stroke: .backgroundLight)
+				.placeholderTint(.backgroundLight)
 				.squareInnerImage(.s)
 		})
 		.squareImage(.l)
@@ -33,7 +33,7 @@ struct GameHUD: View {
 	}
 
 	func handButton(for player: Player, geometry: GeometryProxy) -> some View {
-		let color: ColorAsset = player == .white ? .text : .background
+		let color: ColorAsset = player == .white ? .white : .primary
 		let xOffset = (Metrics.Image.xl + Metrics.Spacing.m) * (player == .white ? -1 : 1)
 
 		return Button(action: {
