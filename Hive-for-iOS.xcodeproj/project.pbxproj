@@ -25,6 +25,8 @@
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
+		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
+		CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* HiveARGameView.swift */; };
 		CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCCC23DB73E400C697AD /* HiveGameClient.swift */; };
 		CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD123DB7FBC00C697AD /* Theme.swift */; };
 		CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD823DB89AA00C697AD /* Welcome.swift */; };
@@ -82,6 +84,8 @@
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA75CE42242A98D200998719 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
+		CA75CE44242AB65300998719 /* HiveARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveARGameView.swift; sourceTree = "<group>"; };
 		CABDFCCC23DB73E400C697AD /* HiveGameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameClient.swift; sourceTree = "<group>"; };
 		CABDFCD123DB7FBC00C697AD /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		CABDFCD823DB89AA00C697AD /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
@@ -225,6 +229,7 @@
 				CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */,
 				CAFA91F123E77B290087F1F0 /* GameState+AR.swift */,
 				CA0F938E2422C80800F6E104 /* DebugOverlay.swift */,
+				CA75CE44242AB65300998719 /* HiveARGameView.swift */,
 			);
 			path = AR;
 			sourceTree = "<group>";
@@ -269,6 +274,7 @@
 				CAC6861923CE615800B882D2 /* ImageLoader.swift */,
 				CAC685FF23CD18C100B882D2 /* Metrics.swift */,
 				CABDFCD123DB7FBC00C697AD /* Theme.swift */,
+				CA75CE42242A98D200998719 /* LoafState.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -488,6 +494,7 @@
 				CAC685F923CCF4D400B882D2 /* Home.swift in Sources */,
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
 				CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */,
+				CA75CE43242A98D200998719 /* LoafState.swift in Sources */,
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
 				CAC6861523CE4C0C00B882D2 /* HivePlayer.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveARViewController.swift in Sources */,
@@ -504,6 +511,7 @@
 				CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */,
 				CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */,
 				CA0F9396242602BA00F6E104 /* HiveGameScene.swift in Sources */,
+				CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */,
 				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Room.swift in Sources */,
 				CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */,

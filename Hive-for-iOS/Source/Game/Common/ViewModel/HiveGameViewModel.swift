@@ -34,8 +34,6 @@ enum HiveGameViewAction: BaseViewAction {
 class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
-	@Published var actionsToPresent: PopoverSheetConfig?
-	@Published var errorLoaf: Loaf?
 
 	private lazy var client: HiveGameClient = {
 		let client = HiveGameClient()
@@ -43,11 +41,13 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		return client
 	}()
 
-	var selectedPiece = CurrentValueSubject<(Piece?, Position?), Never>((nil, nil))
+	var loafSubject = PassthroughSubject<LoafState, Never>()
+	var actionsSubject = PassthroughSubject<PopoverSheetConfig, Never>()
 
+	var selectedPiece = CurrentValueSubject<(Piece?, Position?), Never>((nil, nil))
 	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
 	var gameStateSubject = CurrentValueSubject<GameState?, Never>(nil)
-	var debugEnabledSubject = CurrentValueSubject<Bool, Never>(true)
+	var debugEnabledSubject = CurrentValueSubject<Bool, Never>(false)
 
 	var gameContent: GameViewContent!
 	var playingAs: Player!
@@ -79,13 +79,6 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		return Binding(
 			get: { self.informationToPresent != nil },
 			set: { _ in self.informationToPresent = nil }
-		)
-	}
-
-	var hasActions: Binding<Bool> {
-		return Binding(
-			get: { self.actionsToPresent != nil },
-			set: { _ in self.actionsToPresent = nil }
 		)
 	}
 
@@ -138,7 +131,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .exitGame:
 			transition(to: .forfeit)
 		case .arViewError(let error):
-			errorLoaf = Loaf(error.localizedDescription, state: .error)
+			loafSubject.send(LoafState(error.localizedDescription, state: .error))
 
 		case .toggleDebug:
 			debugEnabledSubject.send(!debugEnabledSubject.value)
@@ -209,24 +202,25 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
 
-		actionsToPresent = PopoverSheetConfig(
-			title: Text("Move \(piece.class.description)?"),
-			message: Text("From \(currentPosition) to \(targetPosition.description)"),
+		let popoverSheet = PopoverSheetConfig(
+			title: "Move \(piece.class.description)?",
+			message: "From \(currentPosition) to \(targetPosition.description)",
 			buttons: [
 				PopoverSheetConfig.ButtonConfig(
-					title: Text("Move"),
+					title: "Move",
 					type: .default
 				) { [weak self] in
 					self?.postViewAction(.movementConfirmed(movement))
 				},
 				PopoverSheetConfig.ButtonConfig(
-					title: Text("Cancel"),
+					title: "Cancel",
 					type: .cancel
 				) { [weak self] in
 					self?.postViewAction(.cancelMovement)
 				},
 			]
 		)
+		actionsSubject.send(popoverSheet)
 	}
 
 	private func apply(movement: Movement) {

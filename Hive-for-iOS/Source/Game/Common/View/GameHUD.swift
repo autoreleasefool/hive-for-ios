@@ -81,9 +81,6 @@ struct GameHUD: View {
 		}
 		.padding(.top, .l)
 		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }
-		.popoverSheet(isPresented: viewModel.hasActions) {
-			self.viewModel.actionsToPresent!
-		}
 	}
 }
 

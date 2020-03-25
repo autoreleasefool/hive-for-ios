@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PopoverSheetConfig {
 	struct ButtonConfig {
-		let title: Text
+		let title: String
 		let type: ButtonType
 		let action: () -> Void
 
@@ -22,9 +22,9 @@ struct PopoverSheetConfig {
 
 		func actionSheetButton() -> ActionSheet.Button {
 			switch type {
-			case .default: return .default(title, action: action)
-			case .cancel: return .cancel(title, action: action)
-			case .destructive: return .destructive(title, action: action)
+			case .default: return .default(Text(title), action: action)
+			case .cancel: return .cancel(Text(title), action: action)
+			case .destructive: return .destructive(Text(title), action: action)
 			}
 		}
 
@@ -35,26 +35,38 @@ struct PopoverSheetConfig {
 					self.action()
 				}
 			}, label: {
-				self.title
+				Text(self.title)
 			})
+		}
+
+		func alertAction() -> UIAlertAction {
+			let style: UIAlertAction.Style
+			switch type {
+			case .default: style = .default
+			case .cancel: style = .cancel
+			case .destructive: style = .destructive
+			}
+			return UIAlertAction(title: title, style: style) { _ in
+				self.action()
+			}
 		}
 	}
 
-	let title: Text
-	let message: Text
+	let title: String
+	let message: String
 	let buttons: [ButtonConfig]
 
 	func actionSheet() -> ActionSheet {
 		ActionSheet(
-			title: title,
-			message: message,
+			title: Text(title),
+			message: Text(message),
 			buttons: buttons.map { $0.actionSheetButton() }
 		)
 	}
 
 	func popover(isPresented: Binding<Bool>) -> some View {
 		VStack {
-			self.title.padding(.top, .m)
+			Text(self.title).padding(.top, .m)
 			Divider()
 			List {
 				ForEach(Array(self.buttons.enumerated()), id: \.offset) { (_, button) in
@@ -62,6 +74,14 @@ struct PopoverSheetConfig {
 				}
 			}
 		}
+	}
+
+	func alertController() -> UIAlertController {
+		let alert = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
+		buttons.forEach {
+			alert.addAction($0.alertAction())
+		}
+		return alert
 	}
 }
 

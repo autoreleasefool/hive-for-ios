@@ -44,6 +44,5 @@ struct HiveGame: View {
 		.edgesIgnoringSafeArea(.all)
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
-		.loaf($viewModel.errorLoaf)
 	}
 }
