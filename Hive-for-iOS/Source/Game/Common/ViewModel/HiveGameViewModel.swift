@@ -265,20 +265,31 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		if isOpponentMove {
 			let opponent = playingAs.next
 			let message: String
+			let image: UIImage
 			switch movement {
 			case .pass:
 				message = "\(opponent) passed"
+				image = ImageAsset.Movement.pass
 			case .move(let unit, _), .yoink(_, let unit, _):
 				if unit.owner == opponent {
 					message = "\(opponent) moved their \(unit.class)"
+					image = ImageAsset.Movement.move
 				} else {
 					message = "\(opponent) yoinked your \(unit.class)"
+					image = ImageAsset.Movement.yoink
 				}
 			case .place(let unit, _):
 				message = "\(opponent) placed their \(unit.class)"
+				image = ImageAsset.Movement.place
 			}
 
-			loafSubject.send(LoafState(message, state: .info) { [weak self] dismissalReason in
+			loafSubject.send(LoafState(
+				message,
+				state: .custom(Loaf.Style(
+					backgroundColor: UIColor(.background),
+					textColor: UIColor(.text),
+					icon: image))
+			) { [weak self] dismissalReason in
 				guard let self = self,
 					dismissalReason == .tapped,
 					let position = movement.targetPosition else { return }
@@ -319,8 +330,6 @@ extension HiveGameViewModel {
 		flowStateSubject.send(nextState)
 	}
 
-	// swiftlint:disable cyclomatic_complexity
-
 	private func canTransition(from currentState: State, to nextState: State) -> Bool {
 		switch (currentState, nextState) {
 
@@ -355,8 +364,6 @@ extension HiveGameViewModel {
 		case (_, .gameEnd): return false
 		}
 	}
-
-	// swiftlint:enable cyclomatic_complexity
 }
 
 // MARK: HiveGameClientDelegate
