@@ -19,6 +19,7 @@ enum ImageAsset {
 	enum Icon {
 		static let hand = UIImage(named: "Icons/Hand")!
 		static let close = UIImage(named: "Icons/Close")!
+		static let info = UIImage(named: "Icons/Info")!
 	}
 
 	enum Movement {
@@ -38,7 +39,6 @@ enum ImageAsset {
 		static let pillBug = UIImage(named: "Pieces/Pill Bug")!
 		static let queen = UIImage(named: "Pieces/Queen")!
 		static let spider = UIImage(named: "Pieces/Spider")!
-
 	}
 }
 

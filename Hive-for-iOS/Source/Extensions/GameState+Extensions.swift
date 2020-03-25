@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import UIKit
 import HiveEngine
 
 typealias Piece = HiveEngine.Unit
@@ -13,6 +14,19 @@ typealias Piece = HiveEngine.Unit
 extension Piece.Class: Identifiable {
 	public var id: String {
 		return description
+	}
+
+	var image: UIImage {
+		switch self {
+		case .ant: return ImageAsset.Pieces.ant
+		case .beetle: return ImageAsset.Pieces.beetle
+		case .hopper: return ImageAsset.Pieces.hopper
+		case .ladyBug: return ImageAsset.Pieces.ladyBug
+		case .mosquito: return ImageAsset.Pieces.mosquito
+		case .pillBug: return ImageAsset.Pieces.pillBug
+		case .queen: return ImageAsset.Pieces.queen
+		case .spider: return ImageAsset.Pieces.spider
+		}
 	}
 }
 

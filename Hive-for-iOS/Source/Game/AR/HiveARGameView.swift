@@ -71,7 +71,7 @@ class HiveARGameView: UIView {
 
 		viewModel.selectedPiece
 			.sink { [weak self] receivedValue in
-				self?.present(selectedPiece: receivedValue.0, at: receivedValue.1)
+				self?.present(selectedPiece: receivedValue)
 			}
 			.store(in: viewModel)
 
@@ -141,7 +141,7 @@ class HiveARGameView: UIView {
 		}
 	}
 
-	private func present(selectedPiece piece: Piece?, at position: Position?) {
+	private func present(selectedPiece: HiveGameViewModel.SelectedPiece?) {
 		guard let game = viewModel.gameAnchor else { return }
 		game.openPosition?.isEnabled = false
 
@@ -149,11 +149,11 @@ class HiveARGameView: UIView {
 			$0.entity(in: game)?.isEnabled = false
 		}
 
-		guard let piece = piece else { return }
+		guard let piece = selectedPiece?.piece, let position = selectedPiece?.position else { return }
 
 		#warning("FIXME: should use Position")
 		let entity = piece.entity(in: game)
-		entity?.position = SIMD3(x: 0, y: 0, z: 0.3)
+		entity?.position = position.vector
 		entity?.isEnabled = true
 	}
 
