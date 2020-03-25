@@ -20,6 +20,11 @@ class HiveGameScene: SKScene {
 
 	private var currentScaleMultiplier: CGFloat = 0.75 {
 		didSet {
+			if currentScaleMultiplier < 0.25 {
+				currentScaleMultiplier = 0.26
+			} else if currentScaleMultiplier > 2 {
+				currentScaleMultiplier = 1.99
+			}
 			updateSpriteScaleAndOffset()
 		}
 	}
