@@ -16,6 +16,7 @@ struct LoafState {
 	let presentingDirection: Loaf.Direction
 	let dismissingDirection: Loaf.Direction
 	let duration: Loaf.Duration?
+	let onDismiss: Loaf.LoafCompletionHandler
 
 	init(
 		_ message: String,
@@ -23,7 +24,8 @@ struct LoafState {
 		location: Loaf.Location = .bottom,
 		presentingDirection: Loaf.Direction = .vertical,
 		dismissingDirection: Loaf.Direction = .vertical,
-		duration: Loaf.Duration? = nil
+		duration: Loaf.Duration? = nil,
+		onDismiss: Loaf.LoafCompletionHandler = nil
 	) {
 		self.message = message
 		self.state = state
@@ -31,27 +33,28 @@ struct LoafState {
 		self.presentingDirection = presentingDirection
 		self.dismissingDirection = dismissingDirection
 		self.duration = duration
+		self.onDismiss = onDismiss
 	}
 
-	func build(withSender sender: UIViewController? = nil) -> Loaf {
-		if let sender = sender {
-			return Loaf(
-				message,
-				state: state,
-				location: location,
-				presentingDirection: presentingDirection,
-				dismissingDirection: dismissingDirection,
-				sender: sender
-			)
-		} else {
-			return Loaf(
-				message,
-				state: state,
-				location: location,
-				presentingDirection: presentingDirection,
-				dismissingDirection: dismissingDirection,
-				duration: duration ?? .average
-			)
-		}
+	func show(withSender sender: UIViewController) {
+		Loaf(
+			message,
+			state: state,
+			location: location,
+			presentingDirection: presentingDirection,
+			dismissingDirection: dismissingDirection,
+			sender: sender
+		).show(duration ?? .average, completionHandler: onDismiss)
+	}
+
+	func build() -> Loaf {
+		return Loaf(
+			message,
+			state: state,
+			location: location,
+			presentingDirection: presentingDirection,
+			dismissingDirection: dismissingDirection,
+			duration: duration ?? .average
+		)
 	}
 }

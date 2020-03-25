@@ -43,7 +43,8 @@ class HiveARViewController: UIViewController {
 
 	private func subscribeToPublishers() {
 		viewModel.loafSubject.sink { [weak self] receivedValue in
-			receivedValue.build(withSender: self).show()
+			guard let self = self else { return }
+			receivedValue.show(withSender: self)
 		}.store(in: viewModel)
 	}
 }

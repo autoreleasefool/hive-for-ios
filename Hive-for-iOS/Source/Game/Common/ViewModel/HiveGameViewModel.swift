@@ -43,8 +43,14 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}()
 
 	var loafSubject = PassthroughSubject<LoafState, Never>()
+	var animateToPosition = PassthroughSubject<Position, Never>()
 
-	var selectedPiece = CurrentValueSubject<(Piece?, Position?), Never>((nil, nil))
+	struct SelectedPiece {
+		let piece: Piece
+		let position: Position
+	}
+
+	var selectedPiece = CurrentValueSubject<HiveGameViewModel.SelectedPiece?, Never>(nil)
 	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
 	var gameStateSubject = CurrentValueSubject<GameState?, Never>(nil)
 	var debugEnabledSubject = CurrentValueSubject<Bool, Never>(false)
@@ -184,7 +190,12 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		if handToShow?.player == playingAs,
 			let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
-			selectedPiece.send((piece, selectedPieceDefaultPosition))
+			let position = selectedPieceDefaultPosition
+			selectedPiece.send(SelectedPiece(
+				piece: piece,
+				position: position
+			))
+			animateToPosition.send(position)
 		}
 		handToShow = nil
 	}
@@ -202,12 +213,12 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func updatePosition(of piece: Piece, to position: Position?, shouldMove: Bool) {
 		guard inGame else { return }
 		guard let targetPosition = position else {
-			selectedPiece.send((nil, nil))
+			selectedPiece.send(nil)
 			return
 		}
 
 		guard shouldMove else {
-			selectedPiece.send((piece, targetPosition))
+			selectedPiece.send(SelectedPiece(piece: piece, position: targetPosition))
 			return
 		}
 
@@ -218,7 +229,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			return
 		}
 
-		selectedPiece.send((piece, targetPosition))
+		selectedPiece.send(SelectedPiece(piece: piece, position: targetPosition))
 
 		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
 
@@ -247,8 +258,33 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	private func apply(movement: Movement) {
 		guard inGame else { return }
+		let isOpponentMove = gameState.currentPlayer != playingAs
 		gameState.apply(movement)
 		gameStateSubject.send(gameState)
+
+		if isOpponentMove {
+			let opponent = playingAs.next
+			let message: String
+			switch movement {
+			case .pass:
+				message = "\(opponent) passed"
+			case .move(let unit, _), .yoink(_, let unit, _):
+				if unit.owner == opponent {
+					message = "\(opponent) moved their \(unit.class)"
+				} else {
+					message = "\(opponent) yoinked your \(unit.class)"
+				}
+			case .place(let unit, _):
+				message = "\(opponent) placed their \(unit.class)"
+			}
+
+			loafSubject.send(LoafState(message, state: .info) { [weak self] dismissalReason in
+				guard let self = self,
+					dismissalReason == .tapped,
+					let position = movement.targetPosition else { return }
+				self.animateToPosition.send(position)
+			})
+		}
 	}
 
 	private func apply(movement: RelativeMovement) {

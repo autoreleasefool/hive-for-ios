@@ -110,13 +110,19 @@ class HiveGameScene: SKScene {
 
 		viewModel.selectedPiece
 			.sink { [weak self] receivedValue in
-				self?.present(selectedPiece: receivedValue.0, at: receivedValue.1)
+				self?.present(selectedPiece: receivedValue)
 			}
 			.store(in: viewModel)
 
 		viewModel.debugEnabledSubject
 			.sink { [weak self] receivedValue in
 				self?.debugEnabled = receivedValue
+			}
+			.store(in: viewModel)
+
+		viewModel.animateToPosition
+			.sink { [weak self] receivedValue in
+				self?.animate(to: receivedValue)
 			}
 			.store(in: viewModel)
 	}
@@ -141,23 +147,18 @@ class HiveGameScene: SKScene {
 		}
 	}
 
-	private func present(selectedPiece piece: Piece?, at position: Position?) {
+	private func present(selectedPiece: HiveGameViewModel.SelectedPiece?) {
 		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
-			guard $0 != piece else { return }
+			guard $0 != selectedPiece?.piece else { return }
 			resetPiece($0)
 		}
 
-		guard let piece = piece, let position = position else { return }
+		guard let piece = selectedPiece?.piece, let position = selectedPiece?.position else { return }
 
 		let sprite = self.sprite(for: piece)
 		sprite.position = position.point(scale: currentScale, offset: currentOffset)
-		let shouldAnimate = sprite.parent == nil
 		addUnownedChild(sprite)
 		updateSpriteScaleAndOffset()
-
-		if shouldAnimate {
-			animate(to: position)
-		}
 	}
 
 	func resetPiece(_ piece: Piece) {
@@ -174,8 +175,8 @@ class HiveGameScene: SKScene {
 		spriteManager.pieceSprites.forEach {
 			guard $0.value.parent != nil else { return }
 			let position: Position
-			if viewModel.selectedPiece.value.0 == $0.key,
-				let selectedPosition = viewModel.selectedPiece.value.1 {
+			if viewModel.selectedPiece.value?.piece == $0.key,
+				let selectedPosition = viewModel.selectedPiece.value?.position {
 				position = selectedPosition
 			} else if let gamePosition = viewModel.gameState.position(of: $0.key) {
 				position = gamePosition
