@@ -11,15 +11,25 @@ import HiveEngine
 
 class HiveSpriteManager {
 	private(set) var pieceSprites: [Piece: SKSpriteNode] = [:]
+	private(set) var pieceSpriteVisibility: [Piece: Bool] = [:]
 	private(set) var positionSprites: [Position: SKSpriteNode] = [:]
 
 	func sprite(
 		for piece: Piece,
 		initialSize: CGSize,
 		initialScale: CGPoint,
-		initialOffset: CGPoint
+		initialOffset: CGPoint,
+		blank: Bool = false
 	) -> SKSpriteNode {
 		if let sprite = pieceSprites[piece] {
+			if blank && pieceSpriteVisibility[piece] == true {
+				sprite.texture = SKTexture(imageNamed: "Pieces/Blank")
+				pieceSpriteVisibility[piece] = false
+			} else if !blank && pieceSpriteVisibility[piece] == false {
+				sprite.texture = SKTexture(imageNamed: "Pieces/\(piece.class.description)")
+				pieceSpriteVisibility[piece] = true
+			}
+
 			return sprite
 		}
 
@@ -31,6 +41,7 @@ class HiveSpriteManager {
 		sprite.position = Position.origin.point(scale: initialScale, offset: initialOffset)
 
 		pieceSprites[piece] = sprite
+		pieceSpriteVisibility[piece] = blank
 		return sprite
 	}
 
@@ -78,10 +89,11 @@ class HiveSpriteManager {
 		sprite.childNode(withName: "Label")?.isHidden = hidden
 	}
 
-	func resetAppearance(sprite: SKSpriteNode) {
+	func resetAppearance(sprite: SKSpriteNode, gameState: GameState? = nil) {
 		if sprite.name?.starts(with: "Piece-") ?? false {
 			guard let piece = self.piece(from: sprite) else { return }
 			sprite.color = piece.owner == .white ? UIColor(.white) : UIColor(.primary)
+			sprite.alpha = gameState?.unitIsTopOfStack[piece] ?? true ? 1 : 0.5
 		} else if sprite.name?.starts(with: "Position-") ?? false {
 			sprite.color = UIColor(.backgroundLight)
 		}

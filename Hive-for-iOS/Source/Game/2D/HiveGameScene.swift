@@ -140,6 +140,7 @@ class HiveGameScene: SKScene {
 		viewModel.gameState.allUnitsInPlay.forEach {
 			let sprite = self.sprite(for: $0.key)
 			sprite.position = $0.value.point(scale: currentScale, offset: currentOffset)
+			spriteManager.resetAppearance(sprite: sprite, gameState: gameState)
 			addUnownedChild(sprite)
 			updateSpriteScaleAndOffset()
 		}
@@ -164,6 +165,13 @@ class HiveGameScene: SKScene {
 		sprite.position = position.point(scale: currentScale, offset: currentOffset)
 		addUnownedChild(sprite)
 		updateSpriteScaleAndOffset()
+
+		if let position = viewModel.gameState.position(of: piece), let stack = viewModel.gameState.stacks[position] {
+			stack.forEach {
+				let sprite = self.sprite(for: $0)
+				spriteManager.resetAppearance(sprite: sprite, gameState: viewModel.gameState)
+			}
+		}
 	}
 
 	func resetPiece(_ piece: Piece) {
@@ -191,6 +199,14 @@ class HiveGameScene: SKScene {
 
 			$0.value.position = position.point(scale: currentScale, offset: currentOffset)
 			$0.value.size = currentHexSize
+
+			if let stack = viewModel.gameState.stacks[position],
+				stack.count > 1,
+				let index = stack.firstIndex(of: $0.key) {
+				let cgIndex = CGFloat(index)
+				let incrementor: CGFloat = 16.0 / CGFloat(stack.count - 1)
+				$0.value.position.x += (-8.0 + incrementor * cgIndex) * currentScaleMultiplier
+			}
 		}
 
 		spriteManager.positionSprites.forEach {
@@ -368,7 +384,9 @@ extension HiveGameScene {
 			for: piece,
 			initialSize: currentHexSize,
 			initialScale: currentScale,
-			initialOffset: currentOffset
+			initialOffset: currentOffset,
+			blank: !((viewModel.gameState.unitIsTopOfStack[piece] ?? true) ||
+				viewModel.gameState.position(of: piece) == nil)
 		)
 	}
 
