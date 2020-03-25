@@ -11,7 +11,6 @@ import HiveEngine
 
 struct PlayerHandHUD: View {
 	@EnvironmentObject var viewModel: HiveGameViewModel
-	let hand: PlayerHand
 
 	private func card(pieceClass: Piece.Class, count: Int, viewPortWidth: CGFloat) -> some View {
 		GeometryReader { geometry in
@@ -54,20 +53,20 @@ struct PlayerHandHUD: View {
 		.frame(width: viewPortWidth * 0.75)
 	}
 
-	var body: some View {
+	fileprivate func HUD(hand: PlayerHand) -> some View {
 		GeometryReader { geometry in
 			VStack(alignment: .leading) {
-				Text("\(self.hand.player.description) hand")
+				Text("\(hand.player.description) hand")
 					.underline()
 					.subtitle()
 					.foregroundColor(Color(.text))
 					.padding(.horizontal, length: .m)
 				ScrollView(.horizontal, showsIndicators: false) {
 					HStack {
-						ForEach(self.hand.piecesInHand.keys.sorted()) { pieceClass in
+						ForEach(hand.piecesInHand.keys.sorted()) { pieceClass in
 							self.card(
 								pieceClass: pieceClass,
-								count: self.hand.piecesInHand[pieceClass]!,
+								count: hand.piecesInHand[pieceClass]!,
 								viewPortWidth: geometry.size.width
 							)
 						}
@@ -77,12 +76,38 @@ struct PlayerHandHUD: View {
 			}
 		}
 	}
+
+	var body: some View {
+		GeometryReader { geometry in
+			BottomSheet(
+				isOpen: self.viewModel.showPlayerHand,
+				minHeight: 0,
+				maxHeight: geometry.size.height / 3.0
+			) {
+				if self.viewModel.showPlayerHand.wrappedValue {
+					self.HUD(hand: self.viewModel.handToShow!)
+				} else {
+					EmptyView()
+				}
+			}
+		}
+	}
 }
 
 #if DEBUG
 struct PlayerHandHUDPreview: PreviewProvider {
+	@State static var isOpen: Bool = true
+
 	static var previews: some View {
-		EmptyView()
+		GeometryReader { geometry in
+			BottomSheet(
+				isOpen: $isOpen,
+				minHeight: 0,
+				maxHeight: geometry.size.height / 3.0
+			) {
+				PlayerHandHUD().HUD(hand: PlayerHand(player: .white, state: GameState()))
+			}
+		}.edgesIgnoringSafeArea(.all)
 	}
 }
 #endif

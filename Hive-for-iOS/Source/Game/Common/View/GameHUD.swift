@@ -55,44 +55,9 @@ struct GameHUD: View {
 				self.handButton(for: .black, geometry: geometry)
 			}
 
-			BottomSheet(
-				isOpen: self.viewModel.showPlayerHand,
-				minHeight: 0,
-				maxHeight: geometry.size.height / 3.0
-			) {
-				if self.viewModel.showPlayerHand.wrappedValue {
-					PlayerHandHUD(hand: self.viewModel.handToShow!)
-				} else {
-					EmptyView()
-				}
-			}
-
-			BottomSheet(
-				isOpen: self.viewModel.hasInformation,
-				minHeight: 0,
-				maxHeight: geometry.size.height / 2.0
-			) {
-				if self.viewModel.hasInformation.wrappedValue {
-					InformationHUD(information: self.viewModel.informationToPresent!, state: self.viewModel.gameState)
-				} else {
-					EmptyView()
-				}
-			}
-
-			BottomSheet(
-				isOpen: self.viewModel.hasGameAction,
-				minHeight: 0,
-				maxHeight: geometry.size.height / 2.0,
-				showsDragIndicator: false,
-				dragGestureEnabled: false,
-				backgroundColor: .clear
-			) {
-				if self.viewModel.hasGameAction.wrappedValue {
-					ActionHUD(action: self.viewModel.gameActionToPresent!)
-				} else {
-					EmptyView()
-				}
-			}
+			PlayerHandHUD()
+			InformationHUD()
+			ActionHUD()
 		}
 		.padding(.top, length: .l)
 		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }

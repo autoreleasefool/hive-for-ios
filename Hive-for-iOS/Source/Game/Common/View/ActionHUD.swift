@@ -10,18 +10,17 @@ import SwiftUI
 import HiveEngine
 
 struct ActionHUD: View {
-//	@EnvironmentObject var viewModel: HiveGameViewModel
-	let action: GameAction
+	@EnvironmentObject var viewModel: HiveGameViewModel
 
-	var cancelButton: PopoverSheetConfig.ButtonConfig? {
-		return action.config.buttons.first(where: { $0.type == .cancel })
+	private func cancelButton(from config: PopoverSheetConfig) -> PopoverSheetConfig.ButtonConfig? {
+		config.buttons.first(where: { $0.type == .cancel })
 	}
 
-	var actionButtons: [PopoverSheetConfig.ButtonConfig] {
-		return action.config.buttons.filter { $0.type != .cancel }
+	private func actionButtons(from config: PopoverSheetConfig) -> [PopoverSheetConfig.ButtonConfig] {
+		config.buttons.filter { $0.type != .cancel }
 	}
 
-	func button(for button: PopoverSheetConfig.ButtonConfig) -> some View {
+	private func button(for button: PopoverSheetConfig.ButtonConfig) -> some View {
 		Button(action: button.action) {
 			HStack {
 				if button.type == .destructive {
@@ -42,15 +41,11 @@ struct ActionHUD: View {
 			.frame(minWidth: 0, maxWidth: .infinity)
 			.padding(length: .m)
 			.background(Color(.actionSheetBackground))
-//				RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
-//					.fill(Color(.actionSheetBackground))
-//			)
 		}
 	}
 
-	var prompt: some View {
-		let config = action.config
-
+	private func prompt(config: PopoverSheetConfig) -> some View {
+		let actionButtons = self.actionButtons(from: config)
 		return VStack(spacing: 0) {
 			HStack { Spacer() }
 
@@ -68,10 +63,10 @@ struct ActionHUD: View {
 
 			Divider()
 
-			ForEach(Array(self.actionButtons.enumerated()), id: \.offset) { (offset, button) in
+			ForEach(Array(actionButtons.enumerated()), id: \.offset) { (offset, button) in
 				Group {
 					self.button(for: button)
-					if offset < self.actionButtons.count - 1 {
+					if offset < actionButtons.count - 1 {
 						Divider()
 					}
 				}
@@ -90,10 +85,11 @@ struct ActionHUD: View {
 			.padding(.all, length: .m)
 	}
 
-	var cancel: some View {
-		Group {
+	private func cancel(config: PopoverSheetConfig) -> some View {
+		let cancelButton = self.cancelButton(from: config)
+		return Group {
 			if cancelButton != nil {
-				self.button(for: self.cancelButton!)
+				self.button(for: cancelButton!)
 					.background(Color(.actionSheetBackground))
 					.mask(
 						RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
@@ -106,35 +102,49 @@ struct ActionHUD: View {
 		}
 	}
 
-	var body: some View {
-		return VStack {
+	fileprivate func HUD(action: GameAction) -> some View {
+		VStack {
 			Spacer()
-			prompt
-			cancel
+			prompt(config: action.config)
+			cancel(config: action.config)
+		}
+	}
+
+	var body: some View {
+		GeometryReader { geometry in
+			BottomSheet(
+				isOpen: self.viewModel.hasGameAction,
+				minHeight: 0,
+				maxHeight: geometry.size.height / 2.0,
+				showsDragIndicator: false,
+				dragGestureEnabled: false,
+				backgroundColor: .clear
+			) {
+				if self.viewModel.hasGameAction.wrappedValue {
+					self.HUD(action: self.viewModel.gameActionToPresent!)
+				} else {
+					EmptyView()
+				}
+			}
 		}
 	}
 }
 
 #if DEBUG
 struct ActionHUDPreview: PreviewProvider {
-	static var isOpen: Binding<Bool> {
-		return Binding(
-			get: { true },
-			set: { _ in }
-		)
-	}
+	@State static var isOpen: Bool = true
 
 	static var previews: some View {
 		GeometryReader { geometry in
 			BottomSheet(
-				isOpen: ActionHUDPreview.isOpen,
+				isOpen: ActionHUDPreview.$isOpen,
 				minHeight: 0,
 				maxHeight: geometry.size.height / 2.0,
 				showsDragIndicator: false,
 				dragGestureEnabled: false,
-				backgroundColor: .primary
+				backgroundColor: .clear
 			) {
-				ActionHUD(action: .confirmMovement(PopoverSheetConfig(
+				ActionHUD().HUD(action: .confirmMovement(PopoverSheetConfig(
 					title: "Move Ant?",
 					message: "From in hand to (0, 0, 0)",
 					buttons: [
@@ -144,8 +154,7 @@ struct ActionHUDPreview: PreviewProvider {
 					]
 				)))
 			}
-		}
-			.background(Color(.backgroundDark))
+		}.edgesIgnoringSafeArea(.all)
 	}
 }
 #endif
