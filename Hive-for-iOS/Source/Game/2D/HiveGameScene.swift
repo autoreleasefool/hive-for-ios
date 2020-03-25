@@ -11,7 +11,7 @@ import HiveEngine
 
 class HiveGameScene: SKScene {
 	private let BASE_HEX_SCALE: CGPoint = CGPoint(x: 64, y: 64)
-	private let BASE_HEX_SIZE: CGSize = CGSize(width: 123.5, height: 107.5)
+	private let BASE_HEX_SIZE: CGSize = CGSize(width: 109, height: 95)
 
 	private let viewModel: HiveGameViewModel
 	private var spriteManager = HiveSpriteManager()
