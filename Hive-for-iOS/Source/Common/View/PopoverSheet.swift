@@ -50,10 +50,6 @@ struct PopoverSheetConfig {
 				self.action()
 			}
 		}
-
-		func bottomSheetButton() -> some View {
-			Button(action: action, label: { Text(title) })
-		}
 	}
 
 	let title: String
@@ -86,17 +82,6 @@ struct PopoverSheetConfig {
 			alert.addAction($0.alertAction())
 		}
 		return alert
-	}
-
-	func bottomSheet() -> some View {
-		VStack {
-			Text(self.title)
-			Text(self.message)
-			ForEach(self.buttons, id: \.title) { button in
-				button.bottomSheetButton()
-			}
-		}
-		.background(Color(.highlight))
 	}
 }
 

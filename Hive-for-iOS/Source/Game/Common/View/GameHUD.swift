@@ -82,7 +82,10 @@ struct GameHUD: View {
 			BottomSheet(
 				isOpen: self.viewModel.hasGameAction,
 				minHeight: 0,
-				maxHeight: geometry.size.height / 2.0
+				maxHeight: geometry.size.height / 2.0,
+				showsDragIndicator: false,
+				dragGestureEnabled: false,
+				backgroundColor: .clear
 			) {
 				if self.viewModel.hasGameAction.wrappedValue {
 					ActionHUD(action: self.viewModel.gameActionToPresent!)
