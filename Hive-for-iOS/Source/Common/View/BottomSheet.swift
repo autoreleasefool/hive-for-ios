@@ -21,6 +21,8 @@ struct BottomSheet<Content: View>: View {
 	let maxHeight: CGFloat
 	let minHeight: CGFloat
 	let backgroundColor: ColorAsset
+	let showsDragIndicator: Bool
+	let dragGestureEnabled: Bool
 	let content: Content
 
 	@GestureState private var translation: CGFloat = 0
@@ -40,9 +42,11 @@ struct BottomSheet<Content: View>: View {
 		}
 	}
 
-	init(isOpen: Binding<Bool>, minHeight: CGFloat, maxHeight: CGFloat, backgroundColor: ColorAsset = .background, @ViewBuilder content: () -> Content) {
+	init(isOpen: Binding<Bool>, minHeight: CGFloat, maxHeight: CGFloat, showsDragIndicator: Bool = true, dragGestureEnabled: Bool = true, backgroundColor: ColorAsset = .background, @ViewBuilder content: () -> Content) {
 		self.minHeight = minHeight
 		self.maxHeight = maxHeight
+		self.showsDragIndicator = showsDragIndicator
+		self.dragGestureEnabled = dragGestureEnabled
 		self.backgroundColor = backgroundColor
 		self.content = content()
 		self._isOpen = isOpen
@@ -51,7 +55,9 @@ struct BottomSheet<Content: View>: View {
 	var body: some View {
 		GeometryReader { geometry in
 			VStack(spacing: 0) {
-				self.indicator.padding()
+				if self.showsDragIndicator {
+					self.indicator.padding()
+				}
 				self.content
 			}
 			.frame(width: geometry.size.width, height: self.maxHeight, alignment: .top)
@@ -62,8 +68,10 @@ struct BottomSheet<Content: View>: View {
 			.animation(.interactiveSpring())
 			.gesture(
 				DragGesture().updating(self.$translation) { value, state, _ in
+					guard self.dragGestureEnabled else { return }
 					state = value.translation.height
 				}.onEnded { value in
+					guard self.dragGestureEnabled else { return }
 					let snapDistance = self.maxHeight * Constants.snapRatio
 					guard abs(value.translation.height) > snapDistance else {
 						return
