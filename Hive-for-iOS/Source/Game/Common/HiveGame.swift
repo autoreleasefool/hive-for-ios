@@ -44,5 +44,6 @@ struct HiveGame: View {
 		.edgesIgnoringSafeArea(.all)
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
+		.navigationBarBackButtonHidden(true)
 	}
 }

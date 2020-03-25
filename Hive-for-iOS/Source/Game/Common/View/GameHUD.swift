@@ -58,7 +58,7 @@ struct GameHUD: View {
 			BottomSheet(
 				isOpen: self.viewModel.showPlayerHand,
 				minHeight: 0,
-				maxHeight: geometry.size.height * 0.3
+				maxHeight: geometry.size.height / 3.0
 			) {
 				if self.viewModel.showPlayerHand.wrappedValue {
 					PlayerHandHUD(hand: self.viewModel.handToShow!)
@@ -70,10 +70,22 @@ struct GameHUD: View {
 			BottomSheet(
 				isOpen: self.viewModel.hasInformation,
 				minHeight: 0,
-				maxHeight: geometry.size.height * 0.5
+				maxHeight: geometry.size.height / 2.0
 			) {
 				if self.viewModel.hasInformation.wrappedValue {
 					InformationHUD(information: self.viewModel.informationToPresent!, state: self.viewModel.gameState)
+				} else {
+					EmptyView()
+				}
+			}
+
+			BottomSheet(
+				isOpen: self.viewModel.hasGameAction,
+				minHeight: 0,
+				maxHeight: geometry.size.height / 2.0
+			) {
+				if self.viewModel.hasGameAction.wrappedValue {
+					ActionHUD(action: self.viewModel.gameActionToPresent!)
 				} else {
 					EmptyView()
 				}

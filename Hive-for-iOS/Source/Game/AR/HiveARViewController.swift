@@ -45,10 +45,6 @@ class HiveARViewController: UIViewController {
 		viewModel.loafSubject.sink { [weak self] receivedValue in
 			receivedValue.build(withSender: self).show()
 		}.store(in: viewModel)
-
-		viewModel.actionsSubject.sink { [weak self] receivedValue in
-			self?.present(receivedValue.alertController(), animated: true, completion: nil)
-		}.store(in: viewModel)
 	}
 }
 

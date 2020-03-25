@@ -34,6 +34,7 @@ enum HiveGameViewAction: BaseViewAction {
 class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
+	@Published var gameActionToPresent: GameAction?
 
 	private lazy var client: HiveGameClient = {
 		let client = HiveGameClient()
@@ -42,7 +43,6 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}()
 
 	var loafSubject = PassthroughSubject<LoafState, Never>()
-	var actionsSubject = PassthroughSubject<PopoverSheetConfig, Never>()
 
 	var selectedPiece = CurrentValueSubject<(Piece?, Position?), Never>((nil, nil))
 	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
@@ -71,19 +71,39 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	var showPlayerHand: Binding<Bool> {
 		return Binding(
 			get: { self.handToShow != nil },
-			set: { _ in self.handToShow = nil }
+			set: { newValue in
+				guard !newValue else { return }
+				self.handToShow = nil
+			}
 		)
 	}
 
 	var hasInformation: Binding<Bool> {
 		return Binding(
 			get: { self.informationToPresent != nil },
-			set: { _ in self.informationToPresent = nil }
+			set: { newValue in
+				guard !newValue else { return }
+				self.informationToPresent = nil
+			}
+		)
+	}
+
+	var hasGameAction: Binding<Bool> {
+		return Binding(
+			get: { self.gameActionToPresent != nil },
+			set: { newValue in
+				guard !newValue else { return }
+				switch self.gameActionToPresent {
+				case .confirmMovement: self.postViewAction(.cancelMovement)
+				case .none: break
+				}
+				self.gameActionToPresent = nil
+			}
 		)
 	}
 
 	var shouldHideHUDControls: Bool {
-		return showPlayerHand.wrappedValue || hasInformation.wrappedValue
+		return showPlayerHand.wrappedValue || hasInformation.wrappedValue || hasGameAction.wrappedValue
 	}
 
 	private var selectedPieceDefaultPosition: Position {
@@ -211,16 +231,18 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 					type: .default
 				) { [weak self] in
 					self?.postViewAction(.movementConfirmed(movement))
+					self?.gameActionToPresent = nil
 				},
 				PopoverSheetConfig.ButtonConfig(
 					title: "Cancel",
 					type: .cancel
 				) { [weak self] in
 					self?.postViewAction(.cancelMovement)
+					self?.gameActionToPresent = nil
 				},
 			]
 		)
-		actionsSubject.send(popoverSheet)
+		gameActionToPresent = .confirmMovement(popoverSheet)
 	}
 
 	private func apply(movement: Movement) {
