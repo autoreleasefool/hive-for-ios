@@ -46,7 +46,7 @@ struct RoomRow: View {
 			Spacer()
 			optionsPreview(for: room.options)
 		}
-		.padding(.vertical, .m)
+		.padding(.vertical, length: .m)
 	}
 }
 

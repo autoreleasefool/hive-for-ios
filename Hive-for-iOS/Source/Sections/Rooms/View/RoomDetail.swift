@@ -62,7 +62,7 @@ struct RoomDetail: View {
 				Text("Loading")
 			} else {
 				self.playerSection(room: self.viewModel.room!)
-					.padding(.vertical, Metrics.Spacing.m)
+					.padding(.vertical, length: .m)
 				self.expansionSection(options: self.viewModel.options)
 				self.otherOptionsSection(options: self.viewModel.options)
 			}

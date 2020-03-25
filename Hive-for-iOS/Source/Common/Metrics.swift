@@ -53,8 +53,8 @@ extension View {
 		return padding(length.rawValue)
 	}
 
-	func padding(_ edges: Edge.Set = .all, _ length: Metrics.Spacing? = nil) -> some View {
-		return padding(edges, length?.rawValue)
+	func padding(_ edges: Edge.Set = .all, length: Metrics.Spacing) -> some View {
+		return padding(edges, length.rawValue)
 	}
 }
 

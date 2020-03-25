@@ -66,7 +66,7 @@ struct PopoverSheetConfig {
 
 	func popover(isPresented: Binding<Bool>) -> some View {
 		VStack {
-			Text(self.title).padding(.top, .m)
+			Text(self.title).padding(.top, length: .m)
 			Divider()
 			List {
 				ForEach(Array(self.buttons.enumerated()), id: \.offset) { (_, button) in

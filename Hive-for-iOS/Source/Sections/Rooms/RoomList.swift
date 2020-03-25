@@ -16,7 +16,7 @@ struct RoomList: View {
 			Image(systemName: "plus")
 				.imageScale(.large)
 				.accessibility(label: Text("Create Room"))
-				.padding(.all, .m)
+				.padding(.all, length: .m)
 		}
 	}
 

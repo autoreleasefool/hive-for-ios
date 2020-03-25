@@ -52,7 +52,6 @@ class HiveARViewController: UIViewController {
 	}
 }
 
-
 // MARK: - UIViewControllerRepresentable
 
 struct HiveARGame: UIViewControllerRepresentable {

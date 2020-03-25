@@ -61,7 +61,7 @@ struct PlayerHandHUD: View {
 					.underline()
 					.subtitle()
 					.foregroundColor(Color(.text))
-					.padding(.horizontal, .m)
+					.padding(.horizontal, length: .m)
 				ScrollView(.horizontal, showsIndicators: false) {
 					HStack {
 						ForEach(self.hand.piecesInHand.keys.sorted()) { pieceClass in
@@ -72,7 +72,7 @@ struct PlayerHandHUD: View {
 							)
 						}
 					}
-					.padding(.horizontal, .m)
+					.padding(.horizontal, length: .m)
 				}
 			}
 		}

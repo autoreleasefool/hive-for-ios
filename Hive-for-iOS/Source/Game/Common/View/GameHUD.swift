@@ -79,7 +79,7 @@ struct GameHUD: View {
 				}
 			}
 		}
-		.padding(.top, .l)
+		.padding(.top, length: .l)
 		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }
 	}
 }
