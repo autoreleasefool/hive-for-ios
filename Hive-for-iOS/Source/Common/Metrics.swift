@@ -14,11 +14,17 @@ enum Metrics { }
 
 extension Metrics {
 	enum Spacing {
+		/// 40pt
 		case xxl
+		/// 32pt
 		case xl
+		/// 24pt
 		case l
+		/// 16pt
 		case m
+		/// 8pt
 		case s
+		/// 4pt
 		case xs
 		case custom(CGFloat)
 
@@ -62,10 +68,15 @@ extension View {
 
 extension Metrics {
 	enum Image {
+		/// 128pt
 		case xxl
+		/// 64pt
 		case xl
+		/// 48pt
 		case l
+		/// 32pt
 		case m
+		/// 16pt
 		case s
 		case custom(CGFloat)
 
@@ -104,9 +115,13 @@ extension View {
 
 extension Metrics {
 	enum Text {
+		/// 32pt
 		case title
+		/// 24pt
 		case subtitle
+		/// 16pt
 		case body
+		/// 12pt
 		case caption
 		case custom(CGFloat)
 
