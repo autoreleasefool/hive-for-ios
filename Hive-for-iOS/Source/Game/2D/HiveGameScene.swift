@@ -140,17 +140,16 @@ class HiveGameScene: SKScene {
 		viewModel.gameState.allUnitsInPlay.forEach {
 			let sprite = self.sprite(for: $0.key)
 			sprite.position = $0.value.point(scale: currentScale, offset: currentOffset)
-			spriteManager.resetAppearance(sprite: sprite, gameState: gameState)
 			addUnownedChild(sprite)
-			updateSpriteScaleAndOffset()
 		}
 
 		viewModel.gameState.playableSpaces().forEach {
 			let sprite = self.sprite(for: $0)
-			sprite.color = UIColor(.backgroundLight)
 			addUnownedChild(sprite)
-			updateSpriteScaleAndOffset()
 		}
+
+		updateSpriteScaleAndOffset()
+		updateSpriteAlpha()
 	}
 
 	private func present(selectedPiece: HiveGameViewModel.SelectedPiece?) {
@@ -165,13 +164,7 @@ class HiveGameScene: SKScene {
 		sprite.position = position.point(scale: currentScale, offset: currentOffset)
 		addUnownedChild(sprite)
 		updateSpriteScaleAndOffset()
-
-		if let position = viewModel.gameState.position(of: piece), let stack = viewModel.gameState.stacks[position] {
-			stack.forEach {
-				let sprite = self.sprite(for: $0)
-				spriteManager.resetAppearance(sprite: sprite, gameState: viewModel.gameState)
-			}
-		}
+		updateSpriteAlpha()
 	}
 
 	func resetPiece(_ piece: Piece) {
@@ -184,41 +177,90 @@ class HiveGameScene: SKScene {
 		viewModel.gameState.allPiecesInHands.forEach { resetPiece($0) }
 	}
 
+	private static let bottomStackOffset: CGFloat = -8.0
+	private static let topStackOffset: CGFloat = 16.0
+
 	private func updateSpriteScaleAndOffset() {
-		spriteManager.pieceSprites.forEach {
-			guard $0.value.parent != nil else { return }
-			let position: Position
-			if viewModel.selectedPiece.value?.piece == $0.key,
-				let selectedPosition = viewModel.selectedPiece.value?.position {
-				position = selectedPosition
-			} else if let gamePosition = viewModel.gameState.position(of: $0.key) {
-				position = gamePosition
-			} else {
-				position = .origin
-			}
+		spriteManager.pieceSprites.keys.forEach { piece in
+			let sprite = self.sprite(for: piece)
 
-			$0.value.position = position.point(scale: currentScale, offset: currentOffset)
-			$0.value.size = currentHexSize
+			// Get position to snap sprite to
+			guard sprite.parent != nil else { return }
+			let position = self.position(of: piece)
 
-			if let stack = viewModel.gameState.stacks[position],
-				stack.count > 1,
-				let index = stack.firstIndex(of: $0.key) {
-				let cgIndex = CGFloat(index)
-				let incrementor: CGFloat = 16.0 / CGFloat(stack.count - 1)
-				$0.value.position.x += (-8.0 + incrementor * cgIndex) * currentScaleMultiplier
+			// Set current position and size of sprite based on scale and global offset
+			sprite.position = position.point(scale: currentScale, offset: currentOffset)
+			sprite.size = currentHexSize
+
+			// Check if the piece is part of a stack and, if so, offset it based on its position in the stack
+			let (positionInStack, stackCount) = self.positionInStack(of: piece)
+			if stackCount > 1 {
+				let incrementor = HiveGameScene.topStackOffset / CGFloat(stackCount - 1)
+				sprite.position.x += (HiveGameScene.bottomStackOffset + incrementor * CGFloat(positionInStack - 1))
+					* currentScaleMultiplier
 			}
 		}
 
-		spriteManager.positionSprites.forEach {
-			guard $0.value.parent != nil else { return }
-			$0.value.position = $0.key.point(scale: currentScale, offset: currentOffset)
-			$0.value.size = currentHexSize
+		spriteManager.positionSprites.keys.forEach { position in
+			let sprite = self.sprite(for: position)
+			guard sprite.parent != nil else { return }
+			sprite.position = position.point(scale: currentScale, offset: currentOffset)
+			sprite.size = currentHexSize
 		}
 
 		self.debugSprite.debugInfo.update(
 			scale: currentScale,
 			offset: currentOffset
 		)
+	}
+
+	private func updateSpriteAlpha() {
+		spriteManager.pieceSprites.keys.forEach { piece in
+			let sprite = self.sprite(for: piece)
+			let (positionInStack, stackCount) = self.positionInStack(of: piece)
+			sprite.alpha = positionInStack < stackCount ? CGFloat(positionInStack) / CGFloat(stackCount) : 1
+		}
+	}
+
+	/// Returns the position in the stack and the total number of pieces in the stack
+	private func positionInStack(of piece: Piece) -> (Int, Int) {
+		let position = self.position(of: piece)
+		if let stack = viewModel.gameState.stacks[position] {
+			let selectedPieceInStack: Bool
+			let selectedPieceOnStack: Bool
+			let selectedPieceFromStack: Bool
+			if let selectedPiece = viewModel.selectedPiece.value {
+				selectedPieceInStack = stack.contains(selectedPiece.piece)
+				selectedPieceOnStack = !selectedPieceInStack && selectedPiece.position == position
+				selectedPieceFromStack = selectedPieceInStack && selectedPiece.position != position
+			} else {
+				selectedPieceInStack = false
+				selectedPieceOnStack = false
+				selectedPieceFromStack = false
+			}
+
+			let additionalStackPieces = selectedPieceOnStack ? 1 : (selectedPieceFromStack ? -1 : 0)
+			let stackCount = stack.count + additionalStackPieces
+
+			if let indexInStack = stack.firstIndex(of: piece) {
+				return (indexInStack + 1, stackCount)
+			} else {
+				return (stackCount, stackCount)
+			}
+		} else {
+			return (1, 1)
+		}
+	}
+
+	private func position(of piece: Piece) -> Position {
+		if viewModel.selectedPiece.value?.piece == piece,
+			let selectedPosition = viewModel.selectedPiece.value?.position {
+			return selectedPosition
+		} else if let gamePosition = viewModel.gameState.position(of: piece) {
+			return gamePosition
+		} else {
+			return .origin
+		}
 	}
 
 	// MARK: - Touch
@@ -376,13 +418,14 @@ extension HiveGameScene {
 
 extension HiveGameScene {
 	private func sprite(for piece: Piece) -> SKSpriteNode {
-		spriteManager.sprite(
+		let (positionInStack, stackCount) = self.positionInStack(of: piece)
+
+		return spriteManager.sprite(
 			for: piece,
 			initialSize: currentHexSize,
 			initialScale: currentScale,
 			initialOffset: currentOffset,
-			blank: !((viewModel.gameState.unitIsTopOfStack[piece] ?? true) ||
-				viewModel.gameState.position(of: piece) == nil)
+			blank: positionInStack < stackCount
 		)
 	}
 
