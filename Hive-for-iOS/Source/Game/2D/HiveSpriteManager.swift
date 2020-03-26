@@ -62,11 +62,13 @@ class HiveSpriteManager {
 		}
 
 		let sprite = SKSpriteNode(imageNamed: "Pieces/Blank")
+		positionSprites[position] = sprite
+
 		sprite.name = "Position-\(position.description)"
 		sprite.size = initialSize
 		sprite.position = position.point(scale: initialScale, offset: initialOffset)
 		sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-		resetAppearance(sprite: sprite)
+		resetColor(for: position)
 		sprite.colorBlendFactor = 1
 		sprite.zPosition = -1
 
@@ -78,9 +80,6 @@ class HiveSpriteManager {
 		positionLabel.zPosition = 1
 		sprite.addChild(positionLabel)
 
-		#warning("TODO: change text anchor point to center")
-
-		positionSprites[position] = sprite
 		return sprite
 	}
 
@@ -89,13 +88,13 @@ class HiveSpriteManager {
 		sprite.childNode(withName: "Label")?.isHidden = hidden
 	}
 
-	func resetAppearance(sprite: SKSpriteNode, gameState: GameState? = nil) {
-		if sprite.name?.starts(with: "Piece-") ?? false {
-			guard let piece = self.piece(from: sprite) else { return }
-			sprite.color = piece.owner == .white ? UIColor(.white) : UIColor(.primary)
-			sprite.alpha = gameState?.unitIsTopOfStack[piece] ?? true ? 1 : 0.5
-		} else if sprite.name?.starts(with: "Position-") ?? false {
-			sprite.color = UIColor(.backgroundLight)
-		}
+	func resetColor(for position: Position) {
+		let sprite = self.sprite(for: position, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
+		sprite.color = UIColor(.backgroundLight)
+	}
+
+	func resetColor(for piece: Piece) {
+		let sprite = self.sprite(for: piece, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
+		sprite.color = piece.owner == .white ? UIColor(.white) : UIColor(.primary)
 	}
 }
