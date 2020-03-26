@@ -246,11 +246,7 @@ class HiveGameScene: SKScene {
 	private func removeSnappingPositions() {
 		snappingPositions?.forEach {
 			let position = $0.position(scale: currentScale, offset: currentOffset)
-			let sprite = self.sprite(for: position)
-			spriteManager.resetAppearance(sprite: sprite)
-			if !viewModel.debugEnabledSubject.value && !viewModel.gameState.playableSpaces().contains(position) {
-				sprite.removeFromParent()
-			}
+			spriteManager.resetColor(for: position)
 		}
 
 		snappingPositions = nil
