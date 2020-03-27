@@ -10,9 +10,12 @@ import SpriteKit
 import HiveEngine
 
 class HiveSpriteManager {
-	private(set) var pieceSprites: [Piece: SKSpriteNode] = [:]
-	private(set) var pieceSpriteVisibility: [Piece: Bool] = [:]
-	private(set) var positionSprites: [Position: SKSpriteNode] = [:]
+	private var pieceSprites: [Piece: SKSpriteNode] = [:]
+	private var pieceSpriteVisibility: [Piece: Bool] = [:]
+	private var positionSprites: [Position: SKSpriteNode] = [:]
+
+	var piecesWithSprites: [Piece] { Array(pieceSprites.keys) }
+	var positionsWithSprites: [Position] { Array(positionSprites.keys) }
 
 	func sprite(
 		for piece: Piece,

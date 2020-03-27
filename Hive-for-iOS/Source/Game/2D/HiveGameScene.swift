@@ -14,9 +14,11 @@ class HiveGameScene: SKScene {
 	private let BASE_HEX_SIZE: CGSize = CGSize(width: 109, height: 95)
 
 	private let viewModel: HiveGameViewModel
+	private var debugSprite = DebugSprite()
 	private var spriteManager = HiveSpriteManager()
 
-	private var debugSprite = DebugSprite()
+	private var piecesInPlay: [Piece] { spriteManager.piecesWithSprites }
+	private var positionsInPlay: [Position] { spriteManager.positionsWithSprites }
 
 	private var currentScaleMultiplier: CGFloat = 0.75 {
 		didSet {
@@ -181,7 +183,7 @@ class HiveGameScene: SKScene {
 	private static let topStackOffset: CGFloat = 16.0
 
 	private func updateSpriteScaleAndOffset() {
-		spriteManager.pieceSprites.keys.forEach { piece in
+		piecesInPlay.forEach { piece in
 			let sprite = self.sprite(for: piece)
 
 			// Get position to snap sprite to
@@ -201,7 +203,7 @@ class HiveGameScene: SKScene {
 			}
 		}
 
-		spriteManager.positionSprites.keys.forEach { position in
+		positionsInPlay.forEach { position in
 			let sprite = self.sprite(for: position)
 			guard sprite.parent != nil else { return }
 			sprite.position = position.point(scale: currentScale, offset: currentOffset)
@@ -215,7 +217,7 @@ class HiveGameScene: SKScene {
 	}
 
 	private func updateSpriteAlpha() {
-		spriteManager.pieceSprites.keys.forEach { piece in
+		piecesInPlay.forEach { piece in
 			let sprite = self.sprite(for: piece)
 			let (positionInStack, stackCount) = self.positionInStack(of: piece)
 			sprite.alpha = positionInStack < stackCount ? CGFloat(positionInStack) / CGFloat(stackCount) : 1
@@ -303,8 +305,8 @@ class HiveGameScene: SKScene {
 		}
 	}
 
-	var maxZPosition: CGFloat {
-		self.children.map { $0.zPosition }.sorted().last ?? 0
+	var maxPieceZPosition: CGFloat {
+		piecesInPlay.map { sprite(for: $0).zPosition }.sorted().last ?? 0
 	}
 }
 
@@ -352,7 +354,7 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 		)
 
 		if gesture.state == .began {
-			touchedNode.zPosition = maxZPosition + 1
+			touchedNode.zPosition = maxPieceZPosition + 0.1
 			nodeInitialPosition = touchPoint
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			self.enableSnappingPositions(for: touchedPiece)
