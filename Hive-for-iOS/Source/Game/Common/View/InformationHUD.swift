@@ -12,16 +12,41 @@ import HiveEngine
 struct InformationHUD: View {
 	@EnvironmentObject var viewModel: HiveGameViewModel
 
-	private func debugView(for information: GameInformation, state: GameState) -> some View {
-		return Text(information.description(in: state))
+	private func header(information: GameInformation) -> some View {
+		VStack(spacing: Metrics.Spacing.s.rawValue) {
+			Text(information.title)
+				.title()
+				.foregroundColor(Color(.text))
+				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+			Text(information.subtitle)
+				.caption()
+				.foregroundColor(Color(.textSecondary))
+				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+		}
+			.padding(.horizontal, length: .m)
+	}
+
+	private func details(information: GameInformation) -> some View {
+		Group { () -> AnyView in
+			switch information {
+			case .stack(let stack):
+				return AnyView(
+					PieceStack(stack: stack)
+						.padding(.horizontal, length: .m)
+				)
+			default:
+				return AnyView(EmptyView())
+			}
+		}
 	}
 
 	fileprivate func HUD(information: GameInformation, state: GameState) -> some View {
-		HStack {
-			Image(uiImage: ImageAsset.glyph)
-				.resizable()
-				.squareImage(.m)
-			debugView(for: information, state: state)
+		VStack {
+			header(information: information)
+			Divider()
+				.background(Color(ColorAsset.white))
+				.padding(.all, length: .m)
+			details(information: information)
 		}
 	}
 
@@ -53,7 +78,12 @@ struct InformationHUDPreview: PreviewProvider {
 				minHeight: 0,
 				maxHeight: geometry.size.height / 2.0
 			) {
-				InformationHUD().HUD(information: .pieceClass(.queen), state: GameState())
+//				InformationHUD().HUD(information: .pieceClass(.queen), state: GameState())
+				InformationHUD().HUD(information: .stack([
+					Piece(class: .ant, owner: .white, index: 1),
+					Piece(class: .beetle, owner: .black, index: 1),
+					Piece(class: .beetle, owner: .white, index: 1),
+				]), state: GameState())
 			}
 		}.edgesIgnoringSafeArea(.all)
 	}
