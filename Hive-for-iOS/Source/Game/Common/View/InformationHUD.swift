@@ -12,6 +12,14 @@ import HiveEngine
 struct InformationHUD: View {
 	@EnvironmentObject var viewModel: HiveGameViewModel
 
+	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
+		switch information {
+		case .piece, .pieceClass: return maxHeight / 2
+		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
+		case .none: return 0
+		}
+	}
+
 	private func header(information: GameInformation) -> some View {
 		VStack(spacing: Metrics.Spacing.s.rawValue) {
 			Text(information.title)
@@ -55,7 +63,10 @@ struct InformationHUD: View {
 			BottomSheet(
 				isOpen: self.viewModel.hasInformation,
 				minHeight: 0,
-				maxHeight: geometry.size.height / 2.0
+				maxHeight: self.hudHeight(
+					maxHeight: geometry.size.height,
+					information: self.viewModel.informationToPresent
+				)
 			) {
 				if self.viewModel.hasInformation.wrappedValue {
 					self.HUD(information: self.viewModel.informationToPresent!, state: self.viewModel.gameState)
@@ -72,18 +83,25 @@ struct InformationHUDPreview: PreviewProvider {
 	@State static var isOpen: Bool = true
 
 	static var previews: some View {
-		GeometryReader { geometry in
+		let information: GameInformation = .stack([
+			Piece(class: .ant, owner: .white, index: 1),
+			Piece(class: .beetle, owner: .black, index: 1),
+			Piece(class: .beetle, owner: .white, index: 1),
+			Piece(class: .beetle, owner: .black, index: 2),
+//			Piece(class: .beetle, owner: .white, index: 2),
+//			Piece(class: .mosquito, owner: .white, index: 1),
+//			Piece(class: .mosquito, owner: .black, index: 1),
+		])
+
+		let hud = InformationHUD()
+
+		return GeometryReader { geometry in
 			BottomSheet(
 				isOpen: $isOpen,
 				minHeight: 0,
-				maxHeight: geometry.size.height / 2.0
+				maxHeight: hud.hudHeight(maxHeight: geometry.size.height, information: information)
 			) {
-//				InformationHUD().HUD(information: .pieceClass(.queen), state: GameState())
-				InformationHUD().HUD(information: .stack([
-					Piece(class: .ant, owner: .white, index: 1),
-					Piece(class: .beetle, owner: .black, index: 1),
-					Piece(class: .beetle, owner: .white, index: 1),
-				]), state: GameState())
+				hud.HUD(information: information, state: GameState())
 			}
 		}.edgesIgnoringSafeArea(.all)
 	}

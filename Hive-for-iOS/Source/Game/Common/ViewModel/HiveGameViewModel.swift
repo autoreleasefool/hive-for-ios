@@ -19,6 +19,7 @@ enum HiveGameViewAction: BaseViewAction {
 	case enquiredFromHand(Piece.Class)
 	case selectedFromHand(Piece.Class)
 	case tappedPiece(Piece)
+	case tappedGamePiece(Piece)
 
 	case gamePieceSnapped(Piece, Position)
 	case gamePieceMoved(Piece, Position)
@@ -144,7 +145,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .enquiredFromHand(let pieceClass):
 			enquireFromHand(pieceClass)
 		case .tappedPiece(let piece):
-			informationToPresent = .piece(piece)
+			tappedPiece(piece)
+		case .tappedGamePiece(let piece):
+			tappedPiece(piece, showStack: true)
 		case .gamePieceSnapped(let piece, let position):
 			updatePosition(of: piece, to: position, shouldMove: false)
 		case .gamePieceMoved(let piece, let position):
@@ -211,6 +214,24 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		guard inGame else { return }
 		handToShow = nil
 		informationToPresent = .pieceClass(pieceClass)
+	}
+
+	private func tappedPiece(_ piece: Piece, showStack: Bool = false) {
+		if showStack {
+			let position = self.position(of: piece)
+			guard let stack = gameState.stacks[position] else {
+				informationToPresent = .piece(piece)
+				return
+			}
+
+			let (_, stackCount) = self.positionInStack(of: piece)
+			if stackCount > 1 {
+				let stackAddition = stackCount > stack.count ? [selectedPiece.value.1?.piece].compactMap { $0 } : []
+				informationToPresent = .stack(stack + stackAddition)
+				return
+			}
+		}
+		informationToPresent = .piece(piece)
 	}
 
 	private func pickUpHand() {

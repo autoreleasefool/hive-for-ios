@@ -45,6 +45,12 @@ class HiveGameScene: SKScene {
 		BASE_HEX_SIZE * currentScaleMultiplier
 	}
 
+	lazy var tapGesture: UITapGestureRecognizer = {
+		let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+		gestureRecognizer.delegate = self
+		return gestureRecognizer
+	}()
+
 	lazy var panGesture: UIPanGestureRecognizer = {
 		let gestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
 		gestureRecognizer.delegate = self
@@ -288,8 +294,22 @@ class HiveGameScene: SKScene {
 
 extension HiveGameScene: UIGestureRecognizerDelegate {
 	private func setupGestureRecognizers(in view: SKView) {
+		view.addGestureRecognizer(tapGesture)
 		view.addGestureRecognizer(panGesture)
 		view.addGestureRecognizer(pinchGesture)
+	}
+
+	@objc private func handleTap(_ gesture: UITapGestureRecognizer) {
+		removeAction(forKey: AnimationKey.toPosition.rawValue)
+
+		let intermediateTouch = gesture.location(in: self.view)
+		let touchPoint = convertPoint(fromView: intermediateTouch)
+
+		for node in nodes(at: touchPoint) where spriteManager.piece(from: node) != nil {
+			guard let piece = spriteManager.piece(from: node) else { continue }
+			viewModel.postViewAction(.tappedGamePiece(piece))
+			return
+		}
 	}
 
 	@objc private func handlePan(_ gesture: UIPanGestureRecognizer) {
@@ -361,7 +381,8 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 		_ gestureRecognizer: UIGestureRecognizer,
 		shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
 	) -> Bool {
-		true
+		return gestureRecognizer is UITapGestureRecognizer == false &&
+			otherGestureRecognizer is UITapGestureRecognizer == false
 	}
 }
 
