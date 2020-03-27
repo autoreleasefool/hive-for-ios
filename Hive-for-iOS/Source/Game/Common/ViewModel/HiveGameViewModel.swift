@@ -50,7 +50,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		let position: Position
 	}
 
-	var selectedPiece = CurrentValueSubject<HiveGameViewModel.SelectedPiece?, Never>(nil)
+	typealias DeselectedPiece = SelectedPiece
+
+	var selectedPiece = CurrentValueSubject<(DeselectedPiece?, SelectedPiece?), Never>((nil, nil))
+	var currentSelectedPiece: SelectedPiece? { selectedPiece.value.1 }
+
 	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
 	var gameStateSubject = CurrentValueSubject<GameState?, Never>(nil)
 	var debugEnabledSubject = CurrentValueSubject<Bool, Never>(false)
@@ -191,9 +195,12 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		if handToShow?.player == playingAs,
 			let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
 			let position = selectedPieceDefaultPosition
-			selectedPiece.send(SelectedPiece(
-				piece: piece,
-				position: position
+			selectedPiece.send((
+				selectedPiece.value.1,
+				SelectedPiece(
+					piece: piece,
+					position: position
+				)
 			))
 			animateToPosition.send(position)
 		}
@@ -213,12 +220,12 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func updatePosition(of piece: Piece, to position: Position?, shouldMove: Bool) {
 		guard inGame else { return }
 		guard let targetPosition = position else {
-			selectedPiece.send(nil)
+			selectedPiece.send((selectedPiece.value.1, nil))
 			return
 		}
 
 		guard shouldMove else {
-			selectedPiece.send(SelectedPiece(piece: piece, position: targetPosition))
+			selectedPiece.send((selectedPiece.value.1, SelectedPiece(piece: piece, position: targetPosition)))
 			return
 		}
 
@@ -229,7 +236,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			return
 		}
 
-		selectedPiece.send(SelectedPiece(piece: piece, position: targetPosition))
+		selectedPiece.send((selectedPiece.value.1, SelectedPiece(piece: piece, position: targetPosition)))
 
 		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
 

@@ -117,7 +117,7 @@ class HiveGameScene: SKScene {
 
 		viewModel.selectedPiece
 			.sink { [weak self] receivedValue in
-				self?.present(selectedPiece: receivedValue)
+				self?.present(deselectedPiece: receivedValue.0, selectedPiece: receivedValue.1)
 			}
 			.store(in: viewModel)
 
@@ -154,10 +154,17 @@ class HiveGameScene: SKScene {
 		updateSpriteAlpha()
 	}
 
-	private func present(selectedPiece: HiveGameViewModel.SelectedPiece?) {
+	private func present(
+		deselectedPiece: HiveGameViewModel.DeselectedPiece?,
+		selectedPiece: HiveGameViewModel.SelectedPiece?
+	) {
 		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
 			guard $0 != selectedPiece?.piece else { return }
 			resetPiece($0)
+		}
+
+		if let deselected = deselectedPiece, positionsInPlay.contains(deselected.position) {
+			addUnownedChild(self.sprite(for: deselected.position))
 		}
 
 		guard let piece = selectedPiece?.piece, let position = selectedPiece?.position else { return }
@@ -167,6 +174,10 @@ class HiveGameScene: SKScene {
 		addUnownedChild(sprite)
 		updateSpriteScaleAndOffset()
 		updateSpriteAlpha()
+
+		if positionsInPlay.contains(position) {
+			self.sprite(for: position).removeFromParent()
+		}
 	}
 
 	func resetPiece(_ piece: Piece) {
@@ -231,7 +242,7 @@ class HiveGameScene: SKScene {
 			let selectedPieceInStack: Bool
 			let selectedPieceOnStack: Bool
 			let selectedPieceFromStack: Bool
-			if let selectedPiece = viewModel.selectedPiece.value {
+			if let selectedPiece = viewModel.currentSelectedPiece {
 				selectedPieceInStack = stack.contains(selectedPiece.piece)
 				selectedPieceOnStack = !selectedPieceInStack && selectedPiece.position == position
 				selectedPieceFromStack = selectedPieceInStack && selectedPiece.position != position
@@ -255,8 +266,8 @@ class HiveGameScene: SKScene {
 	}
 
 	private func position(of piece: Piece) -> Position {
-		if viewModel.selectedPiece.value?.piece == piece,
-			let selectedPosition = viewModel.selectedPiece.value?.position {
+		if viewModel.currentSelectedPiece?.piece == piece,
+			let selectedPosition = viewModel.currentSelectedPiece?.position {
 			return selectedPosition
 		} else if let gamePosition = viewModel.gameState.position(of: piece) {
 			return gamePosition

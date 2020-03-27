@@ -71,7 +71,7 @@ class HiveARGameView: UIView {
 
 		viewModel.selectedPiece
 			.sink { [weak self] receivedValue in
-				self?.present(selectedPiece: receivedValue)
+				self?.present(deselectedPiece: receivedValue.0, selectedPiece: receivedValue.1)
 			}
 			.store(in: viewModel)
 
@@ -141,7 +141,10 @@ class HiveARGameView: UIView {
 		}
 	}
 
-	private func present(selectedPiece: HiveGameViewModel.SelectedPiece?) {
+	private func present(
+		deselectedPiece: HiveGameViewModel.DeselectedPiece?,
+		selectedPiece: HiveGameViewModel.SelectedPiece?
+	) {
 		guard let game = viewModel.gameAnchor else { return }
 		game.openPosition?.isEnabled = false
 
