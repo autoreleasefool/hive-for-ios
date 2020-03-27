@@ -280,6 +280,7 @@ class HiveGameScene: SKScene {
 		snappingPositions.forEach {
 			let sprite = self.sprite(for: $0.position(scale: currentScale, offset: currentOffset))
 			sprite.color = UIColor(.highlight)
+			sprite.zPosition = maxPieceZPosition - 0.05
 			addUnownedChild(sprite)
 			updateSpriteScaleAndOffset()
 		}
@@ -291,6 +292,9 @@ class HiveGameScene: SKScene {
 		snappingPositions?.forEach {
 			let position = $0.position(scale: currentScale, offset: currentOffset)
 			spriteManager.resetColor(for: position)
+
+			let sprite = self.sprite(for: position)
+			sprite.zPosition = -1
 		}
 
 		snappingPositions = nil
