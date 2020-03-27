@@ -405,7 +405,7 @@ extension HiveGameScene {
 
 	private func prepareGame() {
 		resetGame()
-		enablePositionGrid(debugEnabled)
+		debugEnabled = viewModel.debugEnabledSubject.value
 		viewModel.postViewAction(.viewContentReady)
 	}
 
@@ -442,34 +442,13 @@ extension HiveGameScene {
 // MARK: - Debug
 
 extension HiveGameScene {
-	private func enablePositionGrid(_ enabled: Bool) {
-		for x in -4...4 {
-			for z in -4...4 {
-				let position = Position(x: x, y: -z - x, z: z)
-				let sprite = self.sprite(for: position)
-
-				if enabled {
-					addUnownedChild(sprite)
-					spriteManager.hidePositionLabel(for: position, hidden: false)
-				} else {
-					if !viewModel.gameState.playableSpaces().contains(position) {
-						sprite.removeFromParent()
-					}
-					spriteManager.hidePositionLabel(for: position, hidden: true)
-				}
-			}
-		}
-
-		updateSpriteScaleAndOffset()
-	}
-
 	private var debugEnabled: Bool {
 		get {
 			viewModel.debugEnabledSubject.value
 		}
 		set {
+			spriteManager.debugEnabled = newValue
 			DispatchQueue.main.async {
-				self.enablePositionGrid(newValue)
 				if newValue {
 					self.addUnownedChild(self.debugSprite)
 				} else {

@@ -72,20 +72,11 @@ class HiveSpriteManager {
 		sprite.colorBlendFactor = 1
 		sprite.zPosition = -1
 
-		let positionLabel = SKLabelNode(text: position.description)
-		positionLabel.name = "Label"
-		positionLabel.horizontalAlignmentMode = .center
-		positionLabel.verticalAlignmentMode = .center
-		positionLabel.fontSize = 12
-		positionLabel.zPosition = 1
-		sprite.addChild(positionLabel)
+		if debugEnabled {
+			addPositionLabel(to: position)
+		}
 
 		return sprite
-	}
-
-	func hidePositionLabel(for position: Position, hidden: Bool) {
-		let sprite = self.sprite(for: position, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
-		sprite.childNode(withName: "Label")?.isHidden = hidden
 	}
 
 	func resetColor(for position: Position) {
@@ -96,5 +87,38 @@ class HiveSpriteManager {
 	func resetColor(for piece: Piece) {
 		let sprite = self.sprite(for: piece, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
 		sprite.color = piece.owner == .white ? UIColor(.white) : UIColor(.primary)
+	}
+
+	var debugEnabled: Bool = false {
+		didSet {
+			positionSprites.keys.forEach {
+				if debugEnabled {
+					addPositionLabel(to: $0)
+				} else {
+					removePositionLabel(from: $0)
+				}
+			}
+		}
+	}
+}
+
+// MARK: - Debug
+
+extension HiveSpriteManager {
+	private func addPositionLabel(to position: Position) {
+		let sprite = self.sprite(for: position, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
+		guard sprite.childNode(withName: "Label") == nil else { return }
+		let positionLabel = SKLabelNode(text: position.description)
+		positionLabel.name = "Label"
+		positionLabel.horizontalAlignmentMode = .center
+		positionLabel.verticalAlignmentMode = .center
+		positionLabel.fontSize = 12
+		positionLabel.zPosition = 1
+		sprite.addChild(positionLabel)
+	}
+
+	private func removePositionLabel(from position: Position) {
+		let sprite = self.sprite(for: position, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
+		sprite.childNode(withName: "Label")?.removeFromParent()
 	}
 }
