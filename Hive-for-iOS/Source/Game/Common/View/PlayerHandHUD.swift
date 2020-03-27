@@ -58,7 +58,7 @@ struct PlayerHandHUD: View {
 								.resizable()
 								.scaledToFit()
 								.squareImage(.l)
-								.foregroundColor(Color(owner == .white ? .white : .primary))
+								.foregroundColor(Color(owner.color))
 							VStack {
 								Text(pieceClass.description)
 									.subtitle()

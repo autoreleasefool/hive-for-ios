@@ -89,7 +89,7 @@ class HiveSpriteManager {
 
 	func resetColor(for piece: Piece) {
 		let sprite = self.sprite(for: piece, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
-		sprite.color = piece.owner == .white ? UIColor(.white) : UIColor(.primary)
+		sprite.color = UIColor(piece.owner.color)
 	}
 
 	var debugEnabled: Bool = false {

@@ -63,3 +63,12 @@ extension GameState.Option: Comparable {
 		return lhs.rawValue < rhs.rawValue
 	}
 }
+
+extension Player {
+	var color: ColorAsset {
+		switch self {
+		case .white: return .white
+		case .black: return .primary
+		}
+	}
+}

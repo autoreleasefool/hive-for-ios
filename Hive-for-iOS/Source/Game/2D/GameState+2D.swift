@@ -12,7 +12,7 @@ import HiveEngine
 extension SKSpriteNode {
 	convenience init(from piece: Piece) {
 		self.init(imageNamed: "Pieces/\(piece.class.description)")
-		color = piece.owner == .white ? UIColor(.white) : UIColor(.primary)
+		color = UIColor(piece.owner.color)
 		colorBlendFactor = 1
 	}
 }
