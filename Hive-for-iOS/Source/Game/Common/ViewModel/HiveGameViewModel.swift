@@ -311,6 +311,52 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 }
 
+// MARK: - Position
+
+extension HiveGameViewModel {
+	/// Returns the position in the stack and the total number of pieces in the stack
+	func positionInStack(of piece: Piece) -> (Int, Int) {
+		let position = self.position(of: piece)
+		if let stack = gameState.stacks[position] {
+			let selectedPieceInStack: Bool
+			let selectedPieceOnStack: Bool
+			let selectedPieceFromStack: Bool
+			if let selectedPiece = currentSelectedPiece {
+				selectedPieceInStack = stack.contains(selectedPiece.piece)
+				selectedPieceOnStack = !selectedPieceInStack && selectedPiece.position == position
+				selectedPieceFromStack = selectedPieceInStack && selectedPiece.position != position
+			} else {
+				selectedPieceInStack = false
+				selectedPieceOnStack = false
+				selectedPieceFromStack = false
+			}
+
+			let additionalStackPieces = selectedPieceOnStack ? 1 : (selectedPieceFromStack ? -1 : 0)
+			let stackCount = stack.count + additionalStackPieces
+
+			if let indexInStack = stack.firstIndex(of: piece) {
+				return (indexInStack + 1, stackCount)
+			} else {
+				return (stackCount, stackCount)
+			}
+		} else {
+			return (1, 1)
+		}
+	}
+
+	/// Returns the current position of the piece, accounting for the selected piece, and it's in game position
+	func position(of piece: Piece) -> Position {
+		if currentSelectedPiece?.piece == piece,
+			let selectedPosition = currentSelectedPiece?.position {
+			return selectedPosition
+		} else if let gamePosition = gameState.position(of: piece) {
+			return gamePosition
+		} else {
+			return .origin
+		}
+	}
+}
+
 // MARK: - State
 
 extension HiveGameViewModel {
