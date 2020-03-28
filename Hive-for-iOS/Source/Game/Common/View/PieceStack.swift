@@ -40,7 +40,9 @@ struct PieceStack: View {
 	}
 
 	var body: some View {
-		ForEach(stack.reversed(), id: \.description, content: row)
+		VStack {
+			ForEach(stack.reversed(), id: \.description, content: row)
+		}
 	}
 }
 

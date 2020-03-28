@@ -22,24 +22,18 @@ struct InformationHUD: View {
 
 	private func header(information: GameInformation) -> some View {
 		GeometryReader { geometry in
-//			let height = FormattedLabel(text: information.subtitle, maxWidth: geometry.size.width).height
-
-			return VStack(spacing: Metrics.Spacing.s.rawValue) {
+			VStack(spacing: Metrics.Spacing.s.rawValue) {
 				Text(information.title)
 					.title()
 					.foregroundColor(Color(.text))
 					.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-				FormattedLabel(text: information.subtitle, maxWidth: geometry.size.width)
-					.frame(height: 100, alignment: .topLeading)
-//					.frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
-				Spacer()
-	//			Text(information.subtitle)
-	//				.caption()
-	//				.foregroundColor(Color(.textSecondary))
-	//				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+				Markdown(information.subtitle, maxWidth: geometry.size.width)
+				.scaledToFit()
 			}
 		}
+
 			.padding(.horizontal, length: .m)
+		.scaledToFill()
 	}
 
 	private func details(information: GameInformation) -> some View {
@@ -57,11 +51,11 @@ struct InformationHUD: View {
 	}
 
 	fileprivate func HUD(information: GameInformation, state: GameState) -> some View {
-		VStack {
+		VStack(spacing: Metrics.Spacing.m.rawValue) {
 			header(information: information)
 			Divider()
 				.background(Color(ColorAsset.white))
-				.padding(.all, length: .m)
+				.padding(.horizontal, length: .m)
 			details(information: information)
 		}
 	}

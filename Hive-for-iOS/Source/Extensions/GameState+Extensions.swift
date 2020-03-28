@@ -28,6 +28,20 @@ extension Piece.Class: Identifiable {
 		case .spider: return ImageAsset.Pieces.spider
 		}
 	}
+
+	init?(fromName name: String) {
+		switch name {
+		case "Ant": self = .ant
+		case "Beetle": self = .beetle
+		case "Hopper": self = .hopper
+		case "Lady Bug": self = .ladyBug
+		case "Mosquito": self = .mosquito
+		case "Pill Bug": self = .pillBug
+		case "Queen": self = .queen
+		case "Spider": self = .spider
+		default: return nil
+		}
+	}
 }
 
 extension GameState {

@@ -6,9 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import Foundation
-
-enum HiveRule: CaseIterable {
+enum HiveRule: String, CaseIterable {
 	case objective
 	case placement
 	case movement
