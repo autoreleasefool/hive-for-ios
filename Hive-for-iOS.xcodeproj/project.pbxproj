@@ -23,6 +23,7 @@
 		CA45F9BA242B7C4C007EC94D /* ActionHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9B9242B7C4C007EC94D /* ActionHUD.swift */; };
 		CA45F9BC242B85C2007EC94D /* GameAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9BB242B85C2007EC94D /* GameAction.swift */; };
 		CA45F9C0242E4857007EC94D /* PieceStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9BF242E4857007EC94D /* PieceStack.swift */; };
+		CA45F9C4242E758C007EC94D /* HiveRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* HiveRule.swift */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
@@ -83,6 +84,7 @@
 		CA45F9B9242B7C4C007EC94D /* ActionHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionHUD.swift; sourceTree = "<group>"; };
 		CA45F9BB242B85C2007EC94D /* GameAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAction.swift; sourceTree = "<group>"; };
 		CA45F9BF242E4857007EC94D /* PieceStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceStack.swift; sourceTree = "<group>"; };
+		CA45F9C3242E758C007EC94D /* HiveRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveRule.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 				CA45F9BB242B85C2007EC94D /* GameAction.swift */,
 				CABDFCE023DBAC5700C697AD /* GameInformation.swift */,
 				CABDFD0F23E0C87700C697AD /* PlayerHand.swift */,
+				CA45F9C3242E758C007EC94D /* HiveRule.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -533,6 +536,7 @@
 				CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */,
+				CA45F9C4242E758C007EC94D /* HiveRule.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
 				CABDFD0823DD9FE300C697AD /* PlayerPreview.swift in Sources */,
 				CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */,
