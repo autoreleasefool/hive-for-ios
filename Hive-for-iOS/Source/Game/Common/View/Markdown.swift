@@ -7,33 +7,94 @@
 //
 
 import SwiftUI
-import Regex
+import SwiftyMarkdown
 
-struct Markdown: UIViewRepresentable {
-	private let text: String
-	private let maxWidth: CGFloat
+struct MarkdownInternal: UIViewRepresentable {
+	private let markdown: String
+	@Binding var height: CGFloat
+	private let didTapURL: ((URL) -> Void)?
 
-	private let label = UILabel()
-
-	init(_ text: String, maxWidth: CGFloat) {
-		self.text = text
-		self.maxWidth = maxWidth
+	init(_ markdown: String, height: Binding<CGFloat>, didTapURL: ((URL) -> Void)? = nil) {
+		self.markdown = markdown
+		self._height = height
+		self.didTapURL = didTapURL
+		print(self.height)
 	}
 
-	func makeUIView(context: Context) -> UILabel {
-		label.lineBreakMode = .byWordWrapping
-		label.numberOfLines = 0
+	func makeUIView(context: Context) -> UITextView {
+		let label = UITextView()
+		label.delegate = context.coordinator
+
 		label.font = UIFont.systemFont(ofSize: Metrics.Text.body.rawValue)
-		label.preferredMaxLayoutWidth = maxWidth
-		label.attributedText = parse(markdown: text).attributedString
+		label.isEditable = false
+		label.isScrollEnabled = false
+		label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 		label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
-		label.setContentHuggingPriority(.required, for: .vertical)
-		label.sizeToFit()
+		label.backgroundColor = nil
+		label.delegate = context.coordinator
 		return label
 	}
 
-	func updateUIView(_ uiView: UILabel, context: Context) {
-		label.sizeToFit()
+	func updateUIView(_ label: UITextView, context: Context) {
+		label.delegate = context.coordinator
+		label.attributedText = SwiftyMarkdown(string: markdown).attributedString()
+		MarkdownInternal.recalculateHeight(view: label, result: $height)
+	}
+
+	fileprivate static func recalculateHeight(view: UIView, result: Binding<CGFloat>) {
+		let newSize = view.sizeThatFits(CGSize(width: view.frame.size.width, height: CGFloat.greatestFiniteMagnitude))
+		if result.wrappedValue != newSize.height {
+			DispatchQueue.main.async {
+				result.wrappedValue = newSize.height
+			}
+		}
+	}
+
+	func makeCoordinator() -> Coordinator {
+		return Coordinator(height: $height, didTapURL: didTapURL)
+	}
+
+	class Coordinator: NSObject, UITextViewDelegate {
+		private var height: Binding<CGFloat>
+		private let didTapURL: ((URL) -> Void)?
+
+		init(height: Binding<CGFloat>, didTapURL: ((URL) -> Void)?) {
+			self.height = height
+			self.didTapURL = didTapURL
+			super.init()
+		}
+
+		func textView(
+			_ textView: UITextView,
+			shouldInteractWith URL: URL,
+			in characterRange: NSRange,
+			interaction: UITextItemInteraction
+		) -> Bool {
+			self.didTapURL?(URL)
+			return false
+		}
+
+		func textViewDidChange(_ textView: UITextView) {
+			MarkdownInternal.recalculateHeight(view: textView, result: height)
+		}
+	}
+}
+
+struct Markdown: View {
+	private let markdown: String
+	private var dynamicHeight: Binding<CGFloat>
+	let didTapURL: ((URL) -> Void)?
+
+	init(_ markdown: String, height: Binding<CGFloat>, didTapURL: ((URL) -> Void)? = nil) {
+		self.markdown = markdown
+		self.dynamicHeight = height
+		self.didTapURL = didTapURL
+	}
+
+	var body: some View {
+		print(dynamicHeight)
+		return MarkdownInternal(markdown, height: dynamicHeight, didTapURL: didTapURL)
+			.frame(minHeight: dynamicHeight.wrappedValue, maxHeight: dynamicHeight.wrappedValue)
 	}
 }
 
@@ -41,147 +102,25 @@ struct Markdown: UIViewRepresentable {
 
 #if DEBUG
 struct MarkdownPreview: PreviewProvider {
+	@State static var height: CGFloat = 90
+
 	static var previews: some View {
 		GeometryReader { geometry in
-			return Markdown("This is a **test** with a red [link](class:Queen)", maxWidth: geometry.size.width)
-				.frame(minWidth: 0, maxWidth: geometry.size.width, minHeight: 0, maxHeight: geometry.size.height)
+			return Markdown(
+				"On 2 your turn you can either move a piece or [place a piece](rule:placement). " +
+				"Each type of piece moves in a unique way, and can be learned by looking through the rules, " +
+				"or by tapping on any piece on the board or in your hand. Moving a piece must always " +
+				"respect the [freedom of movement](rule:freedomOfMovement) rule and the [one hive](rule:oneHive) " +
+				"rule. A player cannot move their pieces until they have [placed](rule:placement) their " +
+				"[queen](class:Queen). If a player is ever unable to move or place a piece, they must " +
+				"[pass their turn](rule:passing). If they have any moves available, then they **must** move. " +
+				"The [pill bug](class:Pill Bug) adds additional complexity to moving pieces and should be " +
+				"explored separately.",
+				height: $height
+			)
+				.frame(minHeight: height, maxHeight: height)
 				.background(Color(.background))
-		}
+		}.background(Color(.primary))
 	}
 }
 #endif
-
-// MARK: - Markdown Parsing
-
-enum MarkdownElement {
-	case plain(String)
-	case bold(String)
-	case link(String, GameInformation)
-
-	var string: String {
-		switch self {
-		case .plain(let string), .bold(let string), .link(let string, _): return string
-		}
-	}
-}
-
-private let boldRegex = Regex(#"\*\*(.*?)\*\*"#)
-private let linkRegex = Regex(#"\[([^\]]*?)\]\(((rule|class):\w+)\)"#)
-
-private func parse(markdown: String) -> [MarkdownElement] {
-	var elements: [MarkdownElement] = []
-	let allMatches = (boldRegex.allMatches(in: markdown) + linkRegex.allMatches(in: markdown)).sorted {
-		$0.range.lowerBound < $1.range.lowerBound
-	}
-
-	var previousEnd = markdown.startIndex
-	for match in allMatches {
-		if previousEnd < match.range.lowerBound {
-			elements.append(.plain(String(markdown[previousEnd..<match.range.lowerBound])))
-		}
-
-		if match.matchedString.starts(with: "**") {
-			elements.append(.bold(String(markdown[match.range])))
-		} else if match.matchedString.starts(with: "[") {
-			guard let content = match.captures[0],
-				let linkContent = match.captures[1],
-				let link = GameInformation(fromLink: linkContent) else {
-				fatalError("Unsupported Markdown link: \(match.matchedString)")
-			}
-			elements.append(.link(content, link))
-		} else {
-			fatalError("Unsupported Markdown element matched: \(match.matchedString)")
-		}
-		previousEnd = match.range.upperBound
-	}
-
-	if previousEnd < markdown.endIndex {
-		elements.append(.plain(String(markdown[previousEnd...])))
-	}
-
-	return elements
-}
-
-extension Array where Element == MarkdownElement {
-	var attributedString: NSAttributedString {
-		let mutable = NSMutableAttributedString()
-		self.forEach { formattedText in
-			var attributes: [NSAttributedString.Key: Any] = [:]
-			switch formattedText {
-			case .plain:
-				attributes[.foregroundColor] = UIColor(.text)
-				attributes[.font] = UIFont.systemFont(ofSize: Metrics.Text.body.rawValue)
-			case .bold:
-				attributes[.foregroundColor] = UIColor(.text)
-				attributes[.font] = UIFont.boldSystemFont(ofSize: Metrics.Text.body.rawValue)
-			case .link:
-				attributes[.foregroundColor] = UIColor(.primary)
-				attributes[.font] = UIFont.boldSystemFont(ofSize: Metrics.Text.body.rawValue)
-			}
-
-			mutable.append(NSAttributedString(string: formattedText.string, attributes: attributes))
-		}
-
-		return mutable
-	}
-}
-
-//enum FormattedText {
-//	case plain(String)
-//	case highlight(String)
-//	case link(String, GameInformation)
-//
-//	var string: String {
-//		switch self {
-//		case .plain(let string), .highlight(let string), .link(let string, _): return string
-//		}
-//	}
-//}
-
-//struct Markdown: UIViewRepresentable {
-//	let text: [FormattedText]
-//	let maxWidth: CGFloat
-//
-//	private let label = UILabel()
-//
-//	var height: CGFloat {
-//		return label.frame.height
-//	}
-//
-//	func makeUIView(context: Context) -> UILabel {
-//		label.frame = CGRect(x: 0, y: 0, width: maxWidth, height: .greatestFiniteMagnitude)
-//		label.lineBreakMode = .byWordWrapping
-//		label.numberOfLines = 0
-//		label.attributedText = formatText(text)
-//		label.preferredMaxLayoutWidth = maxWidth
-//		label.font = UIFont.systemFont(ofSize: Metrics.Text.body.rawValue)
-//		label.sizeToFit()
-//		return label
-//	}
-//
-//	func updateUIView(_ uiView: UILabel, context: Context) {
-//		label.sizeToFit()
-//	}
-//
-//	private func formatText(_ text: [FormattedText]) -> NSAttributedString {
-//		let mutable = NSMutableAttributedString()
-//		text.forEach { formattedText in
-//			var attributes: [NSAttributedString.Key: Any] = [:]
-//			switch formattedText {
-//			case .plain:
-//				attributes[.foregroundColor] = UIColor(.text)
-//				attributes[.font] = UIFont.systemFont(ofSize: Metrics.Text.body.rawValue)
-//			case .highlight:
-//				attributes[.foregroundColor] = UIColor(.text)
-//				attributes[.font] = UIFont.boldSystemFont(ofSize: Metrics.Text.body.rawValue)
-//			case .link:
-//				attributes[.foregroundColor] = UIColor(.primary)
-//				attributes[.font] = UIFont.boldSystemFont(ofSize: Metrics.Text.body.rawValue)
-//			}
-//
-//			mutable.append(NSAttributedString(string: formattedText.string, attributes: attributes))
-//		}
-//
-//		return mutable
-//	}
-//}

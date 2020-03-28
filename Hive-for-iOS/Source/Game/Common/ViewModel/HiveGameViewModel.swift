@@ -16,6 +16,7 @@ enum HiveGameViewAction: BaseViewAction {
 	case viewContentReady
 	case viewInteractionsReady
 
+	case presentInformation(GameInformation)
 	case enquiredFromHand(Piece.Class)
 	case selectedFromHand(Piece.Class)
 	case tappedPiece(Piece)
@@ -140,6 +141,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			viewInteractionsReady = true
 			attemptSetupNewGame()
 
+		case .presentInformation(let information):
+			self.informationToPresent = information
 		case .selectedFromHand(let pieceClass):
 			placeFromHand(pieceClass)
 		case .enquiredFromHand(let pieceClass):

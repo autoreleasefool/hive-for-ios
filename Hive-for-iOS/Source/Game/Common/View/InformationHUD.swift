@@ -12,28 +12,34 @@ import HiveEngine
 struct InformationHUD: View {
 	@EnvironmentObject var viewModel: HiveGameViewModel
 
+	@State private var subtitleHeight: CGFloat = 100
+
 	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
 		switch information {
-		case .piece, .pieceClass, .rule: return maxHeight / 2
+		case .piece, .pieceClass, .rule: return subtitleHeight > 150 ? maxHeight * 0.75 : maxHeight / 2
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
 		case .none: return 0
 		}
 	}
 
 	private func header(information: GameInformation) -> some View {
-		GeometryReader { geometry in
-			VStack(spacing: Metrics.Spacing.s.rawValue) {
-				Text(information.title)
-					.title()
-					.foregroundColor(Color(.text))
-					.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-				Markdown(information.subtitle, maxWidth: geometry.size.width)
-				.scaledToFit()
+		VStack(spacing: Metrics.Spacing.s.rawValue) {
+			Text(information.title)
+				.title()
+				.foregroundColor(Color(.text))
+				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+			Markdown(
+				information.subtitle,
+				height: self.$subtitleHeight
+			) { url in
+				if let information = GameInformation(fromLink: url.absoluteString) {
+					self.viewModel.postViewAction(.presentInformation(information))
+				}
 			}
+			.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
 		}
-
 			.padding(.horizontal, length: .m)
-		.scaledToFill()
+			.scaledToFit()
 	}
 
 	private func details(information: GameInformation) -> some View {
