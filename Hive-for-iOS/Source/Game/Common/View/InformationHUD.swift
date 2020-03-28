@@ -14,22 +14,30 @@ struct InformationHUD: View {
 
 	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
 		switch information {
-		case .piece, .pieceClass: return maxHeight / 2
+		case .piece, .pieceClass, .rule: return maxHeight / 2
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
 		case .none: return 0
 		}
 	}
 
 	private func header(information: GameInformation) -> some View {
-		VStack(spacing: Metrics.Spacing.s.rawValue) {
-			Text(information.title)
-				.title()
-				.foregroundColor(Color(.text))
-				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-			Text(information.subtitle)
-				.caption()
-				.foregroundColor(Color(.textSecondary))
-				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+		GeometryReader { geometry in
+//			let height = FormattedLabel(text: information.subtitle, maxWidth: geometry.size.width).height
+
+			return VStack(spacing: Metrics.Spacing.s.rawValue) {
+				Text(information.title)
+					.title()
+					.foregroundColor(Color(.text))
+					.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+				FormattedLabel(text: information.subtitle, maxWidth: geometry.size.width)
+					.frame(height: 100, alignment: .topLeading)
+//					.frame(minHeight: 0, maxHeight: .infinity, alignment: .topLeading)
+				Spacer()
+	//			Text(information.subtitle)
+	//				.caption()
+	//				.foregroundColor(Color(.textSecondary))
+	//				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+			}
 		}
 			.padding(.horizontal, length: .m)
 	}
