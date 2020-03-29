@@ -16,44 +16,60 @@ struct InformationHUD: View {
 
 	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
 		switch information {
-		case .piece, .pieceClass, .rule: return subtitleHeight > 150 ? maxHeight * 0.75 : maxHeight / 2
+		case .piece, .pieceClass, .rule: return maxHeight * 0.75
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
 		case .none: return 0
 		}
 	}
 
 	private func header(information: GameInformation) -> some View {
-		VStack(spacing: Metrics.Spacing.s.rawValue) {
+		let subtitle = information.subtitle
+
+		return VStack(spacing: Metrics.Spacing.s.rawValue) {
 			Text(information.title)
 				.title()
 				.foregroundColor(Color(.text))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-			Markdown(
-				information.subtitle,
-				height: self.$subtitleHeight
-			) { url in
-				if let information = GameInformation(fromLink: url.absoluteString) {
-					self.viewModel.postViewAction(.presentInformation(information))
+
+			if subtitle != nil {
+				Markdown(subtitle!, height: self.$subtitleHeight) { url in
+					if let information = GameInformation(fromLink: url.absoluteString) {
+						self.viewModel.postViewAction(.presentInformation(information))
+					}
 				}
+				.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
 			}
-			.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
 		}
 			.padding(.horizontal, length: .m)
 			.scaledToFit()
 	}
 
-	private func details(information: GameInformation) -> some View {
+	private func details(information: GameInformation, state: GameState) -> some View {
 		Group { () -> AnyView in
 			switch information {
 			case .stack(let stack):
-				return AnyView(
-					PieceStack(stack: stack)
-						.padding(.horizontal, length: .m)
-				)
-			default:
-				return AnyView(EmptyView())
+				return AnyView(PieceStack(stack: stack))
+			case .pieceClass(let pieceClass):
+				return AnyView(PieceClassDetails(pieceClass: pieceClass, state: state))
+			case .piece(let piece):
+				return AnyView(PieceClassDetails(pieceClass: piece.class, state: state))
+			case .rule(let rule):
+				if rule != nil {
+					return AnyView(
+						Button(action: {
+							self.viewModel.postViewAction(.presentInformation(.rule(nil)))
+						}, label: {
+							Text("See all rules")
+								.foregroundColor(Color(.primary))
+								.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+						})
+					)
+				} else {
+					return AnyView(RuleList())
+				}
 			}
 		}
+			.padding(.horizontal, length: .m)
 	}
 
 	fileprivate func HUD(information: GameInformation, state: GameState) -> some View {
@@ -62,7 +78,7 @@ struct InformationHUD: View {
 			Divider()
 				.background(Color(ColorAsset.white))
 				.padding(.horizontal, length: .m)
-			details(information: information)
+			details(information: information, state: state)
 		}
 	}
 
@@ -96,10 +112,11 @@ struct InformationHUDPreview: PreviewProvider {
 			Piece(class: .beetle, owner: .black, index: 1),
 			Piece(class: .beetle, owner: .white, index: 1),
 			Piece(class: .beetle, owner: .black, index: 2),
-//			Piece(class: .beetle, owner: .white, index: 2),
-//			Piece(class: .mosquito, owner: .white, index: 1),
-//			Piece(class: .mosquito, owner: .black, index: 1),
+			Piece(class: .beetle, owner: .white, index: 2),
+			Piece(class: .mosquito, owner: .white, index: 1),
+			Piece(class: .mosquito, owner: .black, index: 1),
 		])
+//		let information: GameInformation = .pieceClass(.ant)
 
 		let hud = InformationHUD()
 

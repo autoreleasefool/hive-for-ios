@@ -42,6 +42,19 @@ extension Piece.Class: Identifiable {
 		default: return nil
 		}
 	}
+
+	var descriptionPlural: String {
+		switch self {
+		case .ant: return "Ants"
+		case .beetle: return "Beetles"
+		case .hopper: return "Hoppers"
+		case .ladyBug: return "Lady Bugs"
+		case .mosquito: return "Mosquitoes"
+		case .pillBug: return "Pill Bugs"
+		case .queen: return "Queens"
+		case .spider: return "Spiders"
+		}
+	}
 }
 
 extension GameState {

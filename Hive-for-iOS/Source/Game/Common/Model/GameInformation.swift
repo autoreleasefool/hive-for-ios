@@ -13,7 +13,7 @@ enum GameInformation {
 	case piece(Piece)
 	case pieceClass(Piece.Class)
 	case stack([Piece])
-	case rule(HiveRule)
+	case rule(HiveRule?)
 
 	init?(fromLink link: String) {
 		if link.starts(with: "class:"), let pieceClass = Piece.Class(fromName: String(link.substring(from: 6))) {
@@ -35,15 +35,15 @@ enum GameInformation {
 		case .piece(let piece): return GameInformation.pieceClass(piece.class).title
 		case .pieceClass(let pieceClass): return pieceClass.description
 		case .stack: return "Pieces in stack"
-		case .rule(let rule): return rule.title
+		case .rule(let rule): return rule?.title ?? "All rules"
 		}
 	}
 
-	var subtitle: String {
+	var subtitle: String? {
 		switch self {
 		case .piece(let piece): return GameInformation.pieceClass(piece.class).subtitle
 		case .pieceClass(let pieceClass): return pieceClass.rules
-		case .rule(let rule): return rule.description
+		case .rule(let rule): return rule?.description
 		case .stack: return
 			"The following pieces have been [stacked](rule:stacks). A stack's color is identical to the piece " +
 				"on top. Only the top piece can be moved, and [mosquitoes](class:Mosquito) can only copy the top piece."
