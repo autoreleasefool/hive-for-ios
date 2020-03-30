@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class HostingController: UIHostingController<AnyView> {
+class HostingController<Content>: UIHostingController<Content> where Content: View {
 	@objc override var preferredStatusBarStyle: UIStatusBarStyle {
 		return .lightContent
 	}
