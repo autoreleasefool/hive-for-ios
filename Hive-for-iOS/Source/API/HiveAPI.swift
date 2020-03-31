@@ -16,6 +16,7 @@ enum HiveAPIError: LocalizedError {
 	case invalidHTTPResponse(Int)
 	case invalidData
 	case missingData
+	case notImplemented
 
 	var errorDescription: String {
 		switch self {
@@ -31,6 +32,8 @@ enum HiveAPIError: LocalizedError {
 			}
 		case .missingData:
 			return "Could not find data"
+		case .notImplemented:
+			return "The method has not been implemented"
 		}
 	}
 
@@ -46,6 +49,31 @@ struct HiveAPI {
 	static let shared = HiveAPI()
 
 	private init() { }
+
+	// MARK: - Users
+
+	func login(email: String, password: String) -> Future<AccessToken, HiveAPIError> {
+		return Future { promise in
+			promise(.failure(.notImplemented))
+		}
+	}
+
+	func signup(
+		email: String,
+		displayName: String,
+		password: String,
+		confirmPassword: String
+	) -> Future<AccessToken, HiveAPIError> {
+		return Future { promise in
+			promise(.failure(.notImplemented))
+		}
+	}
+
+	func logout() -> Future<Void, HiveAPIError> {
+		return Future { promise in
+			promise(.failure(.notImplemented))
+		}
+	}
 
 	// MARK: - Rooms
 
