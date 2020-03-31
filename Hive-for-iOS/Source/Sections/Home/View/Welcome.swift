@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Welcome: View {
-	@Binding var isPlaying: Bool
+	@Binding var showWelcome: Bool
 
 	var body: some View {
 		VStack {
@@ -22,14 +22,14 @@ struct Welcome: View {
 				.foregroundColor(Color(ColorAsset.primary))
 
 			Button("Play") {
-				self.isPlaying = true
+				self.showWelcome = false
 			}
 			.subtitle()
 			.foregroundColor(Color(ColorAsset.text))
 			.padding(.m)
 
 			Button("Settings") {
-				self.isPlaying = true
+				self.showWelcome = false
 			}
 			.subtitle()
 			.foregroundColor(Color(ColorAsset.text))
@@ -37,7 +37,5 @@ struct Welcome: View {
 
 			Spacer()
 		}
-		.background(Color(ColorAsset.background))
-		.edgesIgnoringSafeArea(.all)
 	}
 }

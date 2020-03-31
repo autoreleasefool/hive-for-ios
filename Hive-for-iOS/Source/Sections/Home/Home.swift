@@ -9,16 +9,27 @@
 import SwiftUI
 
 struct Home: View {
-	@State var isPlaying: Bool = false
+	@State var showWelcome: Bool = true
 
 	var body: some View {
+//		GeometryReader { geometry in
+//			ZStack {
+//				Rectangle()
+//					.frame(width: geometry.size.width, height: geometry.size.height)
+//					.background(Color(.background))
+//					.edgesIgnoringSafeArea(.all)
+//
+//			}
+//		}
+
 		Group {
-			if isPlaying {
-				RoomList()
+			if self.showWelcome {
+				Welcome(showWelcome: self.$showWelcome)
 			} else {
-				Welcome(isPlaying: $isPlaying)
+				LoginSignup()
 			}
 		}
+			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
 }
 

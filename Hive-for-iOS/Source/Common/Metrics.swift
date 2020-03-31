@@ -64,6 +64,12 @@ extension View {
 	}
 }
 
+extension RoundedRectangle {
+	init(cornerRadius: Metrics.Spacing) {
+		self.init(cornerRadius: cornerRadius.rawValue)
+	}
+}
+
 // MARK: - Image
 
 extension Metrics {

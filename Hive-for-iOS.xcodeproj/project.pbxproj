@@ -33,6 +33,9 @@
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
 		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
 		CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* HiveARGameView.swift */; };
+		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
+		CAA87BC72432994D006E418B /* LoginSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC62432994D006E418B /* LoginSignup.swift */; };
+		CAA87BCB243299C8006E418B /* LoginSignupData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BCA243299C8006E418B /* LoginSignupData.swift */; };
 		CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCCC23DB73E400C697AD /* HiveGameClient.swift */; };
 		CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD123DB7FBC00C697AD /* Theme.swift */; };
 		CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD823DB89AA00C697AD /* Welcome.swift */; };
@@ -45,6 +48,9 @@
 		CABDFD1023E0C87700C697AD /* PlayerHand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0F23E0C87700C697AD /* PlayerHand.swift */; };
 		CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD1123E0C97000C697AD /* InformationHUD.swift */; };
 		CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD1323E0DADD00C697AD /* PlayerHandHUD.swift */; };
+		CAC426D224338C0E00E513BC /* LoginSignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC426D124338C0E00E513BC /* LoginSignupViewModel.swift */; };
+		CAC426D82433989800E513BC /* KeyboardAvoidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC426D72433989800E513BC /* KeyboardAvoidance.swift */; };
+		CAC426DA2433B11000E513BC /* LoginField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC426D92433B11000E513BC /* LoginField.swift */; };
 		CAC685F923CCF4D400B882D2 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685F823CCF4D400B882D2 /* Home.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
@@ -58,6 +64,7 @@
 		CAC6861823CE4E6800B882D2 /* RoomRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861723CE4E6800B882D2 /* RoomRow.swift */; };
 		CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861923CE615800B882D2 /* ImageLoader.swift */; };
 		CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */; };
+		CAC68CC824327557003CC2E6 /* AccessToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC68CC724327557003CC2E6 /* AccessToken.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
 		CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */ = {isa = PBXBuildFile; productRef = CAFA466C23D24BE7003C38AB /* Loaf */; };
@@ -100,6 +107,9 @@
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA75CE42242A98D200998719 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
 		CA75CE44242AB65300998719 /* HiveARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveARGameView.swift; sourceTree = "<group>"; };
+		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		CAA87BC62432994D006E418B /* LoginSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignup.swift; sourceTree = "<group>"; };
+		CAA87BCA243299C8006E418B /* LoginSignupData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupData.swift; sourceTree = "<group>"; };
 		CABDFCCC23DB73E400C697AD /* HiveGameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameClient.swift; sourceTree = "<group>"; };
 		CABDFCD123DB7FBC00C697AD /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		CABDFCD823DB89AA00C697AD /* Welcome.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Welcome.swift; sourceTree = "<group>"; };
@@ -112,6 +122,9 @@
 		CABDFD0F23E0C87700C697AD /* PlayerHand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHand.swift; sourceTree = "<group>"; };
 		CABDFD1123E0C97000C697AD /* InformationHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationHUD.swift; sourceTree = "<group>"; };
 		CABDFD1323E0DADD00C697AD /* PlayerHandHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandHUD.swift; sourceTree = "<group>"; };
+		CAC426D124338C0E00E513BC /* LoginSignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewModel.swift; sourceTree = "<group>"; };
+		CAC426D72433989800E513BC /* KeyboardAvoidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidance.swift; sourceTree = "<group>"; };
+		CAC426D92433B11000E513BC /* LoginField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginField.swift; sourceTree = "<group>"; };
 		CAC685F823CCF4D400B882D2 /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
@@ -125,6 +138,7 @@
 		CAC6861723CE4E6800B882D2 /* RoomRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomRow.swift; sourceTree = "<group>"; };
 		CAC6861923CE615800B882D2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
+		CAC68CC724327557003CC2E6 /* AccessToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessToken.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAFA466F23D25B21003C38AB /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		CAFA467323D8B3B1003C38AB /* HiveGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGame.swift; sourceTree = "<group>"; };
@@ -264,6 +278,22 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		CAC426D024338C0100E513BC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CAC426D124338C0E00E513BC /* LoginSignupViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CAC426D62433988600E513BC /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				CAC426D72433989800E513BC /* KeyboardAvoidance.swift */,
+			);
+			path = ViewModifier;
+			sourceTree = "<group>";
+		};
 		CAC685F623CCE9F400B882D2 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -276,6 +306,7 @@
 		CAC685F723CCE9FA00B882D2 /* Sections */ = {
 			isa = PBXGroup;
 			children = (
+				CAC68CC324327517003CC2E6 /* Login */,
 				CAC685F623CCE9F400B882D2 /* Home */,
 				CAC6860123CD1C9B00B882D2 /* Rooms */,
 			);
@@ -287,6 +318,7 @@
 			children = (
 				CAFA466E23D25B10003C38AB /* MVVM */,
 				CAC6861B23CE6AFD00B882D2 /* View */,
+				CAC426D62433988600E513BC /* ViewModifier */,
 				CAC685FD23CCF67300B882D2 /* Assets.swift */,
 				CAC6860F23CE3F3700B882D2 /* HostingController.swift */,
 				CAC6861923CE615800B882D2 /* ImageLoader.swift */,
@@ -366,6 +398,35 @@
 				CAFA91F523E958EE0087F1F0 /* PopoverSheet.swift */,
 				CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */,
 				CA0290DD23CFA08300A933F9 /* RefreshableList.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAC68CC324327517003CC2E6 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				CAC68CC424327521003CC2E6 /* Model */,
+				CAC68CC52432752B003CC2E6 /* View */,
+				CAC426D024338C0100E513BC /* ViewModel */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		CAC68CC424327521003CC2E6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CAC68CC724327557003CC2E6 /* AccessToken.swift */,
+				CAA87BCA243299C8006E418B /* LoginSignupData.swift */,
+				CAA87BC024328F53006E418B /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CAC68CC52432752B003CC2E6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAA87BC62432994D006E418B /* LoginSignup.swift */,
+				CAC426D92433B11000E513BC /* LoginField.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -521,10 +582,14 @@
 				CAC685F923CCF4D400B882D2 /* Home.swift in Sources */,
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
 				CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */,
+				CAC426D224338C0E00E513BC /* LoginSignupViewModel.swift in Sources */,
 				CA75CE43242A98D200998719 /* LoafState.swift in Sources */,
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
 				CAC6861523CE4C0C00B882D2 /* HivePlayer.swift in Sources */,
+				CAA87BC72432994D006E418B /* LoginSignup.swift in Sources */,
+				CAC68CC824327557003CC2E6 /* AccessToken.swift in Sources */,
 				CA45F9BA242B7C4C007EC94D /* ActionHUD.swift in Sources */,
+				CAA87BCB243299C8006E418B /* LoginSignupData.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveARViewController.swift in Sources */,
 				CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */,
 				CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */,
@@ -537,8 +602,10 @@
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
 				CA45F9C0242E4857007EC94D /* PieceStack.swift in Sources */,
 				CAFA91F223E77B290087F1F0 /* GameState+AR.swift in Sources */,
+				CAA87BC124328F53006E418B /* User.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
 				CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */,
+				CAC426D82433989800E513BC /* KeyboardAvoidance.swift in Sources */,
 				CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */,
 				CA0290D623CEF7B800A933F9 /* RoomDetail.swift in Sources */,
 				CA0F9396242602BA00F6E104 /* HiveGameScene.swift in Sources */,
@@ -555,6 +622,7 @@
 				CA45F9C4242E758C007EC94D /* HiveRule.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
 				CABDFD0823DD9FE300C697AD /* PlayerPreview.swift in Sources */,
+				CAC426DA2433B11000E513BC /* LoginField.swift in Sources */,
 				CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */,
 				CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
