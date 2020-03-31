@@ -75,11 +75,11 @@ struct ActionHUD: View {
 			.background(Color(.actionSheetBackground))
 		}
 			.background(
-				RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
+				RoundedRectangle(cornerRadius: .s)
 					.fill(Color(.actionSheetBackground))
 			)
 			.mask(
-				RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
+				RoundedRectangle(cornerRadius: .s)
 			)
 			.frame(maxWidth: .infinity)
 			.padding(.all, length: .m)
@@ -92,7 +92,7 @@ struct ActionHUD: View {
 				self.button(for: cancelButton!)
 					.background(Color(.actionSheetBackground))
 					.mask(
-						RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
+						RoundedRectangle(cornerRadius: .s)
 					)
 					.padding(.horizontal, length: .m)
 					.padding(.bottom, length: .xl)
@@ -154,7 +154,7 @@ struct ActionHUDPreview: PreviewProvider {
 					]
 				)))
 			}
-		}.edgesIgnoringSafeArea(.all)
+		}.edgesIgnoringSafeArea(.bottom)
 	}
 }
 #endif

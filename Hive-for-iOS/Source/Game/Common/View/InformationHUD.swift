@@ -128,7 +128,7 @@ struct InformationHUDPreview: PreviewProvider {
 			) {
 				hud.HUD(information: information, state: GameState())
 			}
-		}.edgesIgnoringSafeArea(.all)
+		}.edgesIgnoringSafeArea(.bottom)
 	}
 }
 #endif

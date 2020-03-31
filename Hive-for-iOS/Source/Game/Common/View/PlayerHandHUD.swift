@@ -84,7 +84,7 @@ struct PlayerHandHUD: View {
 					}
 						.frame(width: PlayerHandHUD.cardWidth, height: PlayerHandHUD.cardHeight)
 						.background(
-							RoundedRectangle(cornerRadius: Metrics.Spacing.s.rawValue)
+							RoundedRectangle(cornerRadius: .s)
 								.fill(Color(.backgroundLight))
 								.shadow(radius: Metrics.Spacing.s.rawValue)
 						)
@@ -164,7 +164,7 @@ struct PlayerHandHUDPreview: PreviewProvider {
 			}
 		}
 			.background(Color(.backgroundDark))
-			.edgesIgnoringSafeArea(.all)
+			.edgesIgnoringSafeArea(.bottom)
 
 	}
 }
