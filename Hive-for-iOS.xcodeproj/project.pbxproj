@@ -33,6 +33,7 @@
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
 		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
 		CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* HiveARGameView.swift */; };
+		CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAA87BC72432994D006E418B /* LoginSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC62432994D006E418B /* LoginSignup.swift */; };
 		CAA87BCB243299C8006E418B /* LoginSignupData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BCA243299C8006E418B /* LoginSignupData.swift */; };
@@ -156,6 +157,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */,
 				CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */,
 				CA40344923932603006C6BE3 /* HiveEngine in Frameworks */,
 				CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */,
@@ -493,6 +495,7 @@
 				CA40344823932603006C6BE3 /* HiveEngine */,
 				CAFA466C23D24BE7003C38AB /* Loaf */,
 				CAD75154242F5ECA0054B164 /* SwiftyMarkdown */,
+				CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */,
 			);
 			productName = "Hive for iOS";
 			productReference = CA7299A02393156100AD1285 /* Hive for iOS.app */;
@@ -526,6 +529,7 @@
 				CA40344723932603006C6BE3 /* XCRemoteSwiftPackageReference "hive-engine" */,
 				CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */,
 				CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
+				CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 			);
 			productRefGroup = CA7299A12393156100AD1285 /* Products */;
 			projectDirPath = "";
@@ -845,6 +849,14 @@
 				version = 2.4.2;
 			};
 		};
+		CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
+			requirement = {
+				kind = exactVersion;
+				version = 4.1.0;
+			};
+		};
 		CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimonFairbairn/SwiftyMarkdown.git";
@@ -868,6 +880,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA40344723932603006C6BE3 /* XCRemoteSwiftPackageReference "hive-engine" */;
 			productName = HiveEngine;
+		};
+		CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */;
+			productName = KeychainAccess;
 		};
 		CAD75154242F5ECA0054B164 /* SwiftyMarkdown */ = {
 			isa = XCSwiftPackageProductDependency;
