@@ -65,11 +65,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	var playingAs: Player!
 
 	var inGame: Bool {
-		return flowStateSubject.value.inGame
+		flowStateSubject.value.inGame
 	}
 
 	var gameState: GameState {
-		return gameStateSubject.value!
+		gameStateSubject.value!
 	}
 
 	var gameAnchor: Experience.HiveGame? {
@@ -81,7 +81,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	var showPlayerHand: Binding<Bool> {
-		return Binding(
+		Binding(
 			get: { self.handToShow != nil },
 			set: { newValue in
 				guard !newValue else { return }
@@ -91,7 +91,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	var hasInformation: Binding<Bool> {
-		return Binding(
+		Binding(
 			get: { self.informationToPresent != nil },
 			set: { newValue in
 				guard !newValue else { return }
@@ -101,7 +101,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	var hasGameAction: Binding<Bool> {
-		return Binding(
+		Binding(
 			get: { self.gameActionToPresent != nil },
 			set: { newValue in
 				guard !newValue else { return }
@@ -115,7 +115,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	var shouldHideHUDControls: Bool {
-		return showPlayerHand.wrappedValue || hasInformation.wrappedValue || hasGameAction.wrappedValue
+		showPlayerHand.wrappedValue || hasInformation.wrappedValue || hasGameAction.wrappedValue
 	}
 
 	private var selectedPieceDefaultPosition: Position {

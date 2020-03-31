@@ -30,7 +30,7 @@ struct LoginSignup: View {
 	}
 
 	private func field(id: LoginFieldID) -> some View {
-		return LoginField(
+		LoginField(
 			id.title,
 			text: self.text(for: id),
 			isActive: viewModel.isActive(field: id),

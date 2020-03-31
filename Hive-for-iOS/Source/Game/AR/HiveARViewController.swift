@@ -55,7 +55,7 @@ struct HiveARGame: UIViewControllerRepresentable {
 	@Binding var viewModel: HiveGameViewModel
 
 	func makeUIViewController(context: Context) -> HiveARViewController {
-		return HiveARViewController(viewModel: viewModel)
+		HiveARViewController(viewModel: viewModel)
 	}
 
 	func updateUIViewController(_ uiViewController: HiveARViewController, context: Context) {}

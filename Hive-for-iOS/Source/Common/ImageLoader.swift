@@ -31,20 +31,18 @@ class ImageLoader {
 
 	@discardableResult
 	func fetch(string: String) -> ImageLoaderFuture {
-		return fetch(url: URL(string: string))
+		fetch(url: URL(string: string))
 	}
 
 	@discardableResult
 	func fetch(url: URL?) -> ImageLoaderFuture {
-		return Future { [unowned self] promise in
+		Future { [unowned self] promise in
 			guard let url = url else {
-				promise(.failure(.invalidURL))
-				return
+				return promise(.failure(.invalidURL))
 			}
 
 			if let cachedImage = self.cached(url: url) {
-				promise(.success((url, cachedImage)))
-				return
+				return promise(.success((url, cachedImage)))
 			}
 
 			DispatchQueue.global(qos: .background).async { [unowned self] in
@@ -59,7 +57,7 @@ class ImageLoader {
 	}
 
 	func cached(url: URL) -> UIImage? {
-		return cache.object(forKey: url as NSURL)
+		cache.object(forKey: url as NSURL)
 	}
 
 	private func performFetch(for url: URL, promise: @escaping ImageLoaderPromise) {
@@ -85,23 +83,19 @@ class ImageLoader {
 		queryCompletionQueue[url.absoluteString] = [promise]
 		URLSession.shared.dataTask(with: url) { [unowned self] data, response, error in
 			guard error == nil else {
-				finished(.failure(.networkingError(url, error!)))
-				return
+				return finished(.failure(.networkingError(url, error!)))
 			}
 
 			guard let response = response as? HTTPURLResponse else {
-				finished(.failure(.invalidResponse(url)))
-				return
+				return finished(.failure(.invalidResponse(url)))
 			}
 
 			guard (200..<400).contains(response.statusCode) else {
-				finished(.failure(.invalidHTTPResponse(url, response.statusCode)))
-				return
+				return finished(.failure(.invalidHTTPResponse(url, response.statusCode)))
 			}
 
 			guard let data = data else {
-				finished(.failure(.invalidData(url)))
-				return
+				return finished(.failure(.invalidData(url)))
 			}
 
 			self.image(for: data, fromURL: url, completion: finished)
@@ -110,8 +104,7 @@ class ImageLoader {
 
 	private func image(for data: Data, fromURL url: URL, completion: @escaping ImageLoaderPromise) {
 		guard let image = UIImage(data: data) else {
-			completion(.failure(.invalidData(url)))
-			return
+			return completion(.failure(.invalidData(url)))
 		}
 
 		cache.setObject(image, forKey: url as NSURL)

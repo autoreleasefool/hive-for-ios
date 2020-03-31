@@ -381,7 +381,7 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 		_ gestureRecognizer: UIGestureRecognizer,
 		shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
 	) -> Bool {
-		return gestureRecognizer is UITapGestureRecognizer == false &&
+		gestureRecognizer is UITapGestureRecognizer == false &&
 			otherGestureRecognizer is UITapGestureRecognizer == false
 	}
 }

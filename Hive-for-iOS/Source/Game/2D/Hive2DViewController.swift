@@ -53,7 +53,7 @@ struct Hive2DGame: UIViewControllerRepresentable {
 	@Binding var viewModel: HiveGameViewModel
 
 	func makeUIViewController(context: Context) -> Hive2DGameViewController {
-		return Hive2DGameViewController(viewModel: viewModel)
+		Hive2DGameViewController(viewModel: viewModel)
 	}
 
 	func updateUIViewController(_ uiViewController: Hive2DGameViewController, context: Context) {}

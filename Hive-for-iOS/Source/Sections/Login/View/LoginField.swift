@@ -43,7 +43,7 @@ struct LoginField: UIViewRepresentable {
 	}
 
 	func makeCoordinator() -> LoginField.Coordinator {
-		return Coordinator(text: text)
+		Coordinator(text: text)
 	}
 
 	func updateUIView(_ textField: UITextField, context: UIViewRepresentableContext<LoginField>) {

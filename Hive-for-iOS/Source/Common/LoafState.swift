@@ -48,7 +48,7 @@ struct LoafState {
 	}
 
 	func build() -> Loaf {
-		return Loaf(
+		Loaf(
 			message,
 			state: state,
 			location: location,

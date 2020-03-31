@@ -13,7 +13,7 @@ typealias Piece = HiveEngine.Unit
 
 extension Piece.Class: Identifiable {
 	public var id: String {
-		return description
+		description
 	}
 
 	var image: UIImage {
@@ -69,7 +69,7 @@ extension GameState {
 	}
 
 	func pieceHasMoves(_ piece: Piece) -> Bool {
-		return availableMoves.contains(where: { $0.movedUnit == piece })
+		availableMoves.contains(where: { $0.movedUnit == piece })
 	}
 }
 
@@ -87,7 +87,7 @@ extension GameState.Option {
 
 extension GameState.Option: Comparable {
 	public static func < (lhs: GameState.Option, rhs: GameState.Option) -> Bool {
-		return lhs.rawValue < rhs.rawValue
+		lhs.rawValue < rhs.rawValue
 	}
 }
 

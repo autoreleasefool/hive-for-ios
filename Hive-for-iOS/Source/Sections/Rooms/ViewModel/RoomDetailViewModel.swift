@@ -27,7 +27,7 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction>, ObservableObject {
 	let roomId: String
 
 	var gameState: GameState {
-		return GameState(options: self.options.options)
+		GameState(options: self.options.options)
 	}
 
 	init(roomId: String) {
@@ -90,8 +90,8 @@ final class GameOptionData: ObservableObject {
 	}
 
 	func binding(for option: GameState.Option) -> Binding<Bool> {
-		return Binding(get: {
-			return self.options.contains(option)
+		Binding(get: {
+			self.options.contains(option)
 		}, set: {
 			if $0 {
 				self.options.insert(option)

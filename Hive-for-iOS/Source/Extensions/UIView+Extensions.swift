@@ -25,7 +25,7 @@ extension UIView {
 	}
 
 	func constraintsToFillViewVertically(_ other: UIView) -> [NSLayoutConstraint] {
-		return [
+		[
 			self.topAnchor.constraint(equalTo: other.topAnchor),
 			self.bottomAnchor.constraint(equalTo: other.bottomAnchor),
 		]
@@ -37,7 +37,7 @@ extension UIView {
 	}
 
 	func constraintsToFillViewHorizontally(_ other: UIView) -> [NSLayoutConstraint] {
-		return [
+		[
 			self.leftAnchor.constraint(equalTo: other.leftAnchor),
 			self.rightAnchor.constraint(equalTo: other.rightAnchor),
 		]

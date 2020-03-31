@@ -38,7 +38,7 @@ enum HiveAPIError: LocalizedError {
 	}
 
 	var loaf: Loaf {
-		return Loaf(self.errorDescription, state: .error)
+		Loaf(self.errorDescription, state: .error)
 	}
 }
 
@@ -53,7 +53,7 @@ struct HiveAPI {
 	// MARK: - Users
 
 	func login(email: String, password: String) -> Future<AccessToken, HiveAPIError> {
-		return Future { promise in
+		Future { promise in
 			promise(.failure(.notImplemented))
 		}
 	}
@@ -64,13 +64,19 @@ struct HiveAPI {
 		password: String,
 		confirmPassword: String
 	) -> Future<AccessToken, HiveAPIError> {
-		return Future { promise in
+		Future { promise in
+			promise(.failure(.notImplemented))
+		}
+	}
+
+	func checkToken(userId: User.ID, token: String) -> Future<Bool, HiveAPIError> {
+		Future { promise in
 			promise(.failure(.notImplemented))
 		}
 	}
 
 	func logout() -> Future<Void, HiveAPIError> {
-		return Future { promise in
+		Future { promise in
 			promise(.failure(.notImplemented))
 		}
 	}
@@ -78,7 +84,7 @@ struct HiveAPI {
 	// MARK: - Rooms
 
 	func rooms() -> Future<[Room], HiveAPIError> {
-		return Future { promise in
+		Future { promise in
 			promise(.success(Room.rooms))
 //			if Bool.random() == true {
 //				debugLog("Returning rooms")
@@ -91,7 +97,7 @@ struct HiveAPI {
 	}
 
 	func room(id: String) -> Future<Room, HiveAPIError> {
-		return Future { promise in
+		Future { promise in
 			if let room = Room.rooms.first(where: { $0.id == id }) {
 				promise(.success(room))
 			} else {
@@ -109,24 +115,20 @@ struct HiveAPI {
 		promise: HiveAPIPromise<Result>
 	) {
 		guard error == nil else {
-			promise(.failure(.networkingError(error!)))
-			return
+			return promise(.failure(.networkingError(error!)))
 		}
 
 		guard let response = response as? HTTPURLResponse else {
-			promise(.failure(.invalidResponse))
-			return
+			return promise(.failure(.invalidResponse))
 		}
 
 		guard (200..<400).contains(response.statusCode) else {
-			promise(.failure(.invalidHTTPResponse(response.statusCode)))
-			return
+			return promise(.failure(.invalidHTTPResponse(response.statusCode)))
 		}
 
 		let decoder = JSONDecoder()
 		guard let data = data, let result = try? decoder.decode(Result.self, from: data) else {
-			promise(.failure(.invalidData))
-			return
+			return promise(.failure(.invalidData))
 		}
 
 		promise(.success(result))
@@ -134,18 +136,15 @@ struct HiveAPI {
 
 	private func handleVoidResponse(data: Data?, response: URLResponse?, error: Error?, promise: HiveAPIPromise<Bool>) {
 		guard error == nil else {
-			promise(.failure(.networkingError(error!)))
-			return
+			return promise(.failure(.networkingError(error!)))
 		}
 
 		guard let response = response as? HTTPURLResponse else {
-			promise(.failure(.invalidResponse))
-			return
+			return promise(.failure(.invalidResponse))
 		}
 
 		guard (200..<400).contains(response.statusCode) else {
-			promise(.failure(.invalidHTTPResponse(response.statusCode)))
-			return
+			return promise(.failure(.invalidHTTPResponse(response.statusCode)))
 		}
 
 		promise(.success(true))

@@ -41,6 +41,6 @@ extension CGPoint {
 	}
 
 	func euclideanDistance(to other: CGPoint) -> CGFloat {
-		return sqrt(pow(self.x - other.x, 2) + pow(self.y - other.y, 2))
+		sqrt(pow(self.x - other.x, 2) + pow(self.y - other.y, 2))
 	}
 }

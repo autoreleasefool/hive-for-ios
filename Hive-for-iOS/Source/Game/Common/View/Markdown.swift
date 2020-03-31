@@ -51,7 +51,7 @@ struct MarkdownInternal: UIViewRepresentable {
 	}
 
 	func makeCoordinator() -> Coordinator {
-		return Coordinator(height: $height, didTapURL: didTapURL)
+		Coordinator(height: $height, didTapURL: didTapURL)
 	}
 
 	class Coordinator: NSObject, UITextViewDelegate {

@@ -52,15 +52,15 @@ extension Metrics {
 
 extension View {
 	func frame(width: Metrics.Spacing, height: Metrics.Spacing) -> some View {
-		return frame(width: width.rawValue, height: height.rawValue)
+		frame(width: width.rawValue, height: height.rawValue)
 	}
 
 	func padding(_ length: Metrics.Spacing) -> some View {
-		return padding(length.rawValue)
+		padding(length.rawValue)
 	}
 
 	func padding(_ edges: Edge.Set = .all, length: Metrics.Spacing) -> some View {
-		return padding(edges, length.rawValue)
+		padding(edges, length.rawValue)
 	}
 }
 
@@ -109,11 +109,11 @@ extension Metrics {
 
 extension View {
 	func squareImage(_ size: Metrics.Image) -> some View {
-		return frame(width: size.rawValue, height: size.rawValue)
+		frame(width: size.rawValue, height: size.rawValue)
 	}
 
 	func imageFrame(width: Metrics.Image, height: Metrics.Image) -> some View {
-		return frame(width: width.rawValue, height: height.rawValue)
+		frame(width: width.rawValue, height: height.rawValue)
 	}
 }
 
@@ -145,18 +145,18 @@ extension Metrics {
 
 extension View {
 	func title() -> some View {
-		return self.font(.system(size: Metrics.Text.title.rawValue))
+		self.font(.system(size: Metrics.Text.title.rawValue))
 	}
 
 	func subtitle() -> some View {
-		return self.font(.system(size: Metrics.Text.subtitle.rawValue))
+		self.font(.system(size: Metrics.Text.subtitle.rawValue))
 	}
 
 	func body() -> some View {
-		return self.font(.system(size: Metrics.Text.body.rawValue))
+		self.font(.system(size: Metrics.Text.body.rawValue))
 	}
 
 	func caption() -> some View {
-		return self.font(.system(size: Metrics.Text.caption.rawValue))
+		self.font(.system(size: Metrics.Text.caption.rawValue))
 	}
 }

@@ -11,11 +11,11 @@ import HiveEngine
 
 extension Experience.HiveGame {
 	var allPieces: [Entity?] {
-		return blackPieces + whitePieces
+		blackPieces + whitePieces
 	}
 
 	var blackPieces: [Entity?] {
-		return [
+		[
 			bA1,
 			bA2,
 			bA3,
@@ -34,7 +34,7 @@ extension Experience.HiveGame {
 	}
 
 	var whitePieces: [Entity?] {
-		return [
+		[
 			wA1,
 			wA2,
 			wA3,
@@ -99,12 +99,12 @@ extension Entity {
 	}
 
 	var gamePiece: Piece? {
-		return Piece(notation: self.name)
+		Piece(notation: self.name)
 	}
 }
 
 extension SIMD3 where Scalar == Float {
 	func euclideanDistance(to other: SIMD3<Scalar>) -> Scalar {
-		return sqrt(pow(self.x - other.x, 2) + pow(self.y - other.y, 2) + pow(self.z - other.z, 2))
+		sqrt(pow(self.x - other.x, 2) + pow(self.y - other.y, 2) + pow(self.z - other.z, 2))
 	}
 }

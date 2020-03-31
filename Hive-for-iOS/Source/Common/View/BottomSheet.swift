@@ -73,9 +73,7 @@ struct BottomSheet<Content: View>: View {
 				}.onEnded { value in
 					guard self.dragGestureEnabled else { return }
 					let snapDistance = self.maxHeight * Constants.snapRatio
-					guard abs(value.translation.height) > snapDistance else {
-						return
-					}
+					guard abs(value.translation.height) > snapDistance else { return }
 					self.isOpen = value.translation.height < 0
 				}
 			)

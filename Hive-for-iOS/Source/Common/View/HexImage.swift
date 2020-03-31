@@ -52,7 +52,7 @@ struct HexImage: View {
 	}
 
 	func squareInnerImage(_ size: Metrics.Image) -> Self {
-		return innerImageFrame(width: size, height: size)
+		innerImageFrame(width: size, height: size)
 	}
 
 	func innerImageFrame(width: Metrics.Image, height: Metrics.Image) -> Self {
