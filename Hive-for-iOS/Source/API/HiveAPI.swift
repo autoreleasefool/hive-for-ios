@@ -17,6 +17,7 @@ enum HiveAPIError: LocalizedError {
 	case invalidData
 	case missingData
 	case notImplemented
+	case unauthorized
 
 	var errorDescription: String {
 		switch self {
@@ -24,6 +25,8 @@ enum HiveAPIError: LocalizedError {
 			return "Network error"
 		case .invalidResponse, .invalidData:
 			return "Could not parse response"
+		case .unauthorized:
+			return "Unauthorized"
 		case .invalidHTTPResponse(let code):
 			if (500..<600).contains(code) {
 				return "Server error (\(code))"
@@ -123,6 +126,9 @@ struct HiveAPI {
 		}
 
 		guard (200..<400).contains(response.statusCode) else {
+			if response.statusCode == 401 {
+				return promise(.failure(.unauthorized))
+			}
 			return promise(.failure(.invalidHTTPResponse(response.statusCode)))
 		}
 
