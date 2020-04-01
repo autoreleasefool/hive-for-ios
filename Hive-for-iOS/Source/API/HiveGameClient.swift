@@ -17,9 +17,7 @@ protocol HiveGameClientDelegate: class {
 }
 
 class HiveGameClient {
-	private static var baseURL: URL {
-		return URL(string: "https://example.com")!
-	}
+	private static let baseURL = URL(string: "")!
 
 	weak var delegate: HiveGameClientDelegate?
 
