@@ -108,7 +108,7 @@ struct RefreshView: View {
 				if !isRefreshing {
 					Spinner(percentage: $status)
 				} else {
-					ActivityIndicator(isAnimating: .constant(true), style: .large)
+					ActivityIndicator(isAnimating: true, style: .large)
 				}
 			}
 			Spacer()
@@ -131,7 +131,7 @@ struct PullToRefreshView: View {
 }
 
 struct ActivityIndicator: UIViewRepresentable {
-	@Binding var isAnimating: Bool
+	var isAnimating: Bool
 
 	let style: UIActivityIndicatorView.Style
 

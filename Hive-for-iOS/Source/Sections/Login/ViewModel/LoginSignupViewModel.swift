@@ -39,12 +39,10 @@ enum LoginFieldID {
 }
 
 class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
+	@Published private(set) var validatingAccount: Bool = false
+	@Published private(set) var validationFailed: Bool = false
 	@Published private(set) var loggingIn: Bool = true
-	@Published private(set) var activeField: LoginFieldID? = .email
-
-	override init() {
-		super.init()
-	}
+	@Published private(set) var activeField: LoginFieldID?
 
 	override func postViewAction(_ viewAction: LoginSignupViewAction) {
 		switch viewAction {
@@ -74,5 +72,10 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 
 	private func performSignup(_ request: SignupData) {
 
+	}
+
+	func update(account: Account) {
+		guard let userID = account.userID, let accessToken = account.accessToken else { return }
+		validatingAccount = true
 	}
 }

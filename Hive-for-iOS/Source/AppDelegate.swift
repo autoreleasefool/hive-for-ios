@@ -21,8 +21,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		Theme.applyPrimaryTheme()
 
+		// Create Account container and attempt to load credentials
+		let account = Account()
+
+		// Create settings and load preferences
+		let settings = Settings()
+
 		// Create the SwiftUI view that provides the window contents.
 		let contentView = Home()
+			.environmentObject(account)
+			.environmentObject(settings)
 
 		// Use a UIHostingController as window root view controller.
 		let window = UIWindow(frame: UIScreen.main.bounds)

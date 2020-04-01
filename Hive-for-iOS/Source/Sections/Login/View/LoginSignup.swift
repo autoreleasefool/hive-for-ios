@@ -10,6 +10,7 @@ import SwiftUI
 
 struct LoginSignup: View {
 	@ObservedObject private var viewModel = LoginSignupViewModel()
+	@EnvironmentObject private var account: Account
 
 	@State private var email: String = ""
 	@State private var password: String = ""
@@ -19,6 +20,8 @@ struct LoginSignup: View {
 	private var loginSignupData: LoginSignupData {
 		LoginSignupData(email: email, displayName: displayName, password: password, verifyPassword: confirmPassword)
 	}
+
+	// MARK: Login Form
 
 	private func text(for id: LoginFieldID) -> Binding<String> {
 		switch id {
@@ -76,27 +79,61 @@ struct LoginSignup: View {
 		}
 	}
 
+	private var loginForm: some View {
+		VStack(spacing: Metrics.Spacing.m.rawValue) {
+			if viewModel.validationFailed {
+				Text("You have been logged out. Please, login again.")
+					.body()
+					.foregroundColor(Color(.highlight))
+					.multilineTextAlignment(.leading)
+					.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+			}
+
+			self.field(id: .email)
+			if !viewModel.loggingIn {
+				self.field(id: .displayName)
+			}
+			self.field(id: .password)
+			if !viewModel.loggingIn {
+				self.field(id: .verifyPassword)
+			}
+
+			VStack(spacing: Metrics.Spacing.m.rawValue) {
+				loginButton
+				toggleButton
+			}
+		}
+			.padding(.horizontal, length: .m)
+			.padding(.vertical, length: .xl)
+	}
+
+	// MARK: Validation
+
+	private var loadingIndicator: some View {
+		VStack(spacing: Metrics.Spacing.m.rawValue) {
+			ActivityIndicator(isAnimating: viewModel.validatingAccount, style: .whiteLarge)
+				.padding(.top, length: .xxl)
+			Text("Logging in...")
+				.body()
+				.foregroundColor(Color(.primary))
+		}
+	}
+
+	// MARK: Body
+
 	var body: some View {
 		ScrollView {
-			VStack(spacing: Metrics.Spacing.m.rawValue) {
-				self.field(id: .email)
-				if !viewModel.loggingIn {
-					self.field(id: .displayName)
-				}
-				self.field(id: .password)
-				if !viewModel.loggingIn {
-					self.field(id: .verifyPassword)
-				}
-
-				VStack(spacing: Metrics.Spacing.m.rawValue) {
-					loginButton
-					toggleButton
-				}
+			if self.viewModel.validatingAccount {
+				loadingIndicator
+					.frame(minWidth: 0, maxWidth: .infinity)
+			} else {
+				loginForm
 			}
-				.padding(.horizontal, length: .m)
-				.padding(.vertical, length: .xl)
 		}
 			.avoidingKeyboard()
+			.onAppear {
+				self.viewModel.update(account: self.account)
+			}
 	}
 }
 
@@ -104,6 +141,8 @@ struct LoginSignup: View {
 struct LoginSignup_Previews: PreviewProvider {
 	static var previews: some View {
 		LoginSignup()
+			.environmentObject(Account())
+			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif
