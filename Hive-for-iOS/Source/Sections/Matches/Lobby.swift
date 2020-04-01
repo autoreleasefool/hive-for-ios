@@ -1,5 +1,5 @@
 //
-//  RoomList.swift
+//  Lobby.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-13.
@@ -8,23 +8,23 @@
 
 import SwiftUI
 
-struct RoomList: View {
-	@ObservedObject private var viewModel = RoomListViewModel()
+struct Lobby: View {
+	@ObservedObject private var viewModel = LobbyViewModel()
 
-	var newRoomButton: some View {
-		NavigationLink(destination: RoomList()) {
+	var newMatchButton: some View {
+		NavigationLink(destination: Lobby()) {
 			Image(systemName: "plus")
 				.imageScale(.large)
-				.accessibility(label: Text("Create Room"))
+				.accessibility(label: Text("Create Match"))
 				.padding(.all, length: .m)
 		}
 	}
 
 	var body: some View {
 		NavigationView {
-			List(self.viewModel.rooms) { room in
-				NavigationLink(destination: RoomDetail(viewModel: self.viewModel.roomViewModels[room.id]!)) {
-					RoomRow(room: room)
+			List(self.viewModel.matches) { match in
+				NavigationLink(destination: MatchDetail(viewModel: self.viewModel.matchViewModels[match.id]!)) {
+					MatchRow(match: match)
 				}
 			}
 			.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.m.rawValue))
@@ -33,15 +33,15 @@ struct RoomList: View {
 	//		.loaf(self.$viewModel.errorLoaf)
 
 			.navigationBarTitle(Text("Lobby"))
-			.navigationBarItems(trailing: newRoomButton)
+			.navigationBarItems(trailing: newMatchButton)
 		}
 	}
 }
 
 #if DEBUG
-struct RoomListPreview: PreviewProvider {
+struct LobbyPreview: PreviewProvider {
 	static var previews: some View {
-		RoomList()
+		Lobby()
 	}
 }
 #endif

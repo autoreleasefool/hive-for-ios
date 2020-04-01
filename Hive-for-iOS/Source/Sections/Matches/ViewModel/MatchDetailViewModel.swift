@@ -1,5 +1,5 @@
 //
-//  RoomDetailViewModel.swift
+//  MatchDetailViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-15.
@@ -12,41 +12,41 @@ import Combine
 import Loaf
 import HiveEngine
 
-enum RoomDetailViewAction: BaseViewAction {
+enum MatchDetailViewAction: BaseViewAction {
 	case onAppear
 	case onDisappear
-	case refreshRoomDetails
+	case refreshMatchDetails
 	case modifyOptions
 }
 
-class RoomDetailViewModel: ViewModel<RoomDetailViewAction>, ObservableObject {
-	@Published private(set) var room: Room?
+class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
+	@Published private(set) var match: Match?
 	@Published private(set) var options: GameOptionData = GameOptionData(options: [])
 	@Published var errorLoaf: Loaf?
 
-	let roomId: String
+	let matchId: String
 
 	var gameState: GameState {
 		GameState(options: self.options.options)
 	}
 
-	init(roomId: String) {
-		self.roomId = roomId
+	init(matchId: String) {
+		self.matchId = matchId
 	}
 
-	init(room: Room) {
-		self.roomId = room.id
-		self.room = room
+	init(match: Match) {
+		self.matchId = match.id
+		self.match = match
 
 		super.init()
 
-		self.options.update(with: room.options)
+		self.options.update(with: match.options)
 	}
 
-	override func postViewAction(_ viewAction: RoomDetailViewAction) {
+	override func postViewAction(_ viewAction: MatchDetailViewAction) {
 		switch viewAction {
-		case .onAppear, .refreshRoomDetails:
-			fetchRoomDetails()
+		case .onAppear, .refreshMatchDetails:
+			fetchMatchDetails()
 		case .onDisappear: cleanUp()
 		case .modifyOptions: break
 		}
@@ -57,10 +57,10 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction>, ObservableObject {
 		cancelAllRequests()
 	}
 
-	private func fetchRoomDetails() {
+	private func fetchMatchDetails() {
 		HiveAPI
 			.shared
-			.room(id: roomId)
+			.match(id: matchId)
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -68,10 +68,10 @@ class RoomDetailViewModel: ViewModel<RoomDetailViewAction>, ObservableObject {
 						self?.errorLoaf = error.loaf
 					}
 				},
-				receiveValue: { [weak self] room in
+				receiveValue: { [weak self] match in
 					self?.errorLoaf = nil
-					self?.room = room
-					self?.options.update(with: room.options)
+					self?.match = match
+					self?.options.update(with: match.options)
 				}
 			)
 			.store(in: self)

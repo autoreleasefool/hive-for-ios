@@ -1,5 +1,5 @@
 //
-//  RoomView.swift
+//  MatchRow.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-14.
@@ -9,8 +9,8 @@
 import SwiftUI
 import HiveEngine
 
-struct RoomRow: View {
-	let room: Room
+struct MatchRow: View {
+	let match: Match
 
 	private func optionsPreview(for options: Set<GameState.Option>) -> some View {
 		HStack(spacing: Metrics.Spacing.s.rawValue) {
@@ -41,10 +41,10 @@ struct RoomRow: View {
 
 	var body: some View {
 		HStack(spacing: Metrics.Spacing.m.rawValue) {
-			PlayerPreview(room.host, compact: true)
-			PlayerPreview(room.opponent, compact: true)
+			PlayerPreview(match.host, compact: true)
+			PlayerPreview(match.opponent, compact: true)
 			Spacer()
-			optionsPreview(for: room.options)
+			optionsPreview(for: match.options)
 		}
 		.padding(.vertical, length: .m)
 	}
@@ -62,9 +62,9 @@ private extension GameState.Option {
 }
 
 #if DEBUG
-struct RoomRowPreview: PreviewProvider {
+struct MatchRowPreview: PreviewProvider {
 	static var previews: some View {
-		RoomRow(room: Room.rooms[0])
+		MatchRow(match: Match.matches[0])
 			.background(Color(ColorAsset.background))
 	}
 }

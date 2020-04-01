@@ -1,5 +1,5 @@
 //
-//  RoomDetailView.swift
+//  MatchDetail.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-15.
@@ -9,10 +9,10 @@
 import SwiftUI
 import HiveEngine
 
-struct RoomDetail: View {
-	@ObservedObject private var viewModel: RoomDetailViewModel
+struct MatchDetail: View {
+	@ObservedObject private var viewModel: MatchDetailViewModel
 
-	init(viewModel: RoomDetailViewModel) {
+	init(viewModel: MatchDetailViewModel) {
 		self.viewModel = viewModel
 	}
 
@@ -22,12 +22,12 @@ struct RoomDetail: View {
 		}
 	}
 
-	private func playerSection(room: Room) -> some View {
+	private func playerSection(match: Match) -> some View {
 		HStack(spacing: 0) {
 			Spacer()
-			PlayerPreview(room.host, iconSize: .l)
+			PlayerPreview(match.host, iconSize: .l)
 			Spacer()
-			PlayerPreview(room.host, alignment: .trailing, iconSize: .l)
+			PlayerPreview(match.host, alignment: .trailing, iconSize: .l)
 			Spacer()
 		}
 	}
@@ -58,16 +58,16 @@ struct RoomDetail: View {
 
 	var body: some View {
 		List {
-			if self.viewModel.room == nil {
+			if self.viewModel.match == nil {
 				Text("Loading")
 			} else {
-				self.playerSection(room: self.viewModel.room!)
+				self.playerSection(match: self.viewModel.match!)
 					.padding(.vertical, length: .m)
 				self.expansionSection(options: self.viewModel.options)
 				self.otherOptionsSection(options: self.viewModel.options)
 			}
 		}
-		.navigationBarTitle(Text("Room \(viewModel.roomId)"), displayMode: .inline)
+		.navigationBarTitle(Text("Match \(viewModel.matchId)"), displayMode: .inline)
 		.navigationBarItems(trailing: startButton)
 		.onAppear { self.viewModel.postViewAction(.onAppear) }
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
@@ -87,9 +87,9 @@ private extension GameState.Option {
 }
 
 #if DEBUG
-struct RoomDetailPreview: PreviewProvider {
+struct MatchDetailPreview: PreviewProvider {
 	static var previews: some View {
-		RoomDetail(viewModel: RoomDetailViewModel(room: Room.rooms[0]))
+		MatchDetail(viewModel: MatchDetailViewModel(match: Match.matches[0]))
 	}
 }
 #endif

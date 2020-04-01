@@ -1,5 +1,5 @@
 //
-//  RoomListViewModel.swift
+//  LobbyViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-13.
@@ -11,30 +11,30 @@ import SwiftUI
 import Combine
 import Loaf
 
-enum RoomListViewAction: BaseViewAction {
+enum LobbyViewAction: BaseViewAction {
 	case onAppear
 	case onDisappear
-	case refreshRooms
+	case refreshMatches
 }
 
-class RoomListViewModel: ViewModel<RoomListViewAction>, ObservableObject {
+class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published var errorLoaf: Loaf?
 
-	@Published private(set) var rooms: [Room] = [] {
+	@Published private(set) var matches: [Match] = [] {
 		willSet {
 			#warning("TODO: should remove view models for rooms that no longer exist")
 			newValue.forEach {
-				guard self.roomViewModels[$0.id] == nil else { return }
-				self.roomViewModels[$0.id] = RoomDetailViewModel(roomId: $0.id)
+				guard self.matchViewModels[$0.id] == nil else { return }
+				self.matchViewModels[$0.id] = MatchDetailViewModel(matchId: $0.id)
 			}
 		}
 	}
 
-	private(set) var roomViewModels: [String: RoomDetailViewModel] = [:]
+	private(set) var matchViewModels: [String: MatchDetailViewModel] = [:]
 
-	override func postViewAction(_ viewAction: RoomListViewAction) {
+	override func postViewAction(_ viewAction: LobbyViewAction) {
 		switch viewAction {
-		case .onAppear, .refreshRooms: refreshRooms()
+		case .onAppear, .refreshMatches: refreshMatches()
 		case .onDisappear: cleanUp()
 		}
 	}
@@ -44,10 +44,10 @@ class RoomListViewModel: ViewModel<RoomListViewAction>, ObservableObject {
 		cancelAllRequests()
 	}
 
-	private func refreshRooms() {
+	private func refreshMatches() {
 		HiveAPI
 			.shared
-			.rooms()
+			.openMatches()
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -55,9 +55,9 @@ class RoomListViewModel: ViewModel<RoomListViewAction>, ObservableObject {
 						self?.errorLoaf = error.loaf
 					}
 				},
-				receiveValue: { [weak self] rooms in
+				receiveValue: { [weak self] matches in
 					self?.errorLoaf = nil
-					self?.rooms = rooms
+					self?.matches = matches
 				}
 			)
 			.store(in: self)

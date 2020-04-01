@@ -75,7 +75,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	}
 
 	func update(account: Account) {
-		guard let userID = account.userID, let accessToken = account.accessToken else { return }
+		guard let userID = account.userId, let accessToken = account.accessToken else { return }
 		validatingAccount = true
 	}
 }

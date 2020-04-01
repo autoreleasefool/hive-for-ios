@@ -129,11 +129,11 @@ class HiveAPI {
 		}
 	}
 
-	// MARK: - Rooms
+	// MARK: - Matches
 
-	func rooms() -> Future<[Room], HiveAPIError> {
+	func openMatches() -> Future<[Match], HiveAPIError> {
 		Future { promise in
-			promise(.success(Room.rooms))
+			promise(.success(Match.matches))
 //			if Bool.random() == true {
 //				debugLog("Returning rooms")
 //				promise(.success(Room.rooms))
@@ -144,10 +144,10 @@ class HiveAPI {
 		}
 	}
 
-	func room(id: String) -> Future<Room, HiveAPIError> {
+	func match(id: String) -> Future<Match, HiveAPIError> {
 		Future { promise in
-			if let room = Room.rooms.first(where: { $0.id == id }) {
-				promise(.success(room))
+			if let match = Match.matches.first(where: { $0.id == id }) {
+				promise(.success(match))
 			} else {
 				promise(.failure(.invalidData))
 			}

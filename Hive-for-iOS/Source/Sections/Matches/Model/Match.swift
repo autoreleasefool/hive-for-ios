@@ -1,5 +1,5 @@
 //
-//  Room.swift
+//  Match.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-13.
@@ -9,22 +9,22 @@
 import Foundation
 import HiveEngine
 
-struct Room: Identifiable, Codable {
+struct Match: Identifiable, Codable {
 	let id: String
 	let host: HivePlayer
 	let opponent: HivePlayer?
 	let viewers: [HivePlayer]
 	let options: Set<GameState.Option>
 
-	static let rooms: [Room] = [
-		Room(
+	static let matches: [Match] = [
+		Match(
 			id: "0",
 			host: HivePlayer.players[0],
 			opponent: nil,
 			viewers: Array(HivePlayer.players.dropFirst()),
 			options: [.mosquito]
 		),
-		Room(
+		Match(
 			id: "1",
 			host: HivePlayer.players[1],
 			opponent: HivePlayer.players[2],
