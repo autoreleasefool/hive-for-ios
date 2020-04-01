@@ -8,6 +8,8 @@
 
 import Foundation
 
-struct AccessToken {
-	
+struct AccessToken: Codable {
+	let id: String
+	let userId: UUID
+	let token: String
 }

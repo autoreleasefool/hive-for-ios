@@ -12,34 +12,34 @@ import KeychainAccess
 
 class Account: ObservableObject {
 	private enum Key: String {
-		case userID
+		case userId
 		case accessToken
 	}
 
-	@Published var userID: User.ID? = nil
-	@Published var accessToken: String? = "token"
+	@Published var userId: User.ID?
+	@Published var accessToken: String?
 
 	var accountLoaded = CurrentValueSubject<Bool, Never>(false)
 
 	private let keychain = Keychain(service: "ca.josephroque.hive-for-ios")
 
 	init() {
-//		do {
-//			guard let id = try keychain.get(Key.userID.rawValue) else { return }
-//			guard let token = try keychain.get(Key.accessToken.rawValue) else { return }
-//
-//			userID = UUID(uuidString: id)
-//			accessToken = token
-//		} catch {
-//			print("Error retrieving login: \(error)")
-//		}
+		do {
+			guard let id = try keychain.get(Key.userId.rawValue) else { return }
+			guard let token = try keychain.get(Key.accessToken.rawValue) else { return }
+
+			userId = UUID(uuidString: id)
+			accessToken = token
+		} catch {
+			print("Error retrieving login: \(error)")
+		}
 	}
 
-	func store(userID: User.ID?) throws {
-		if let userID = userID {
-			try keychain.set(userID.uuidString, key: Key.userID.rawValue)
+	func store(userId: User.ID?) throws {
+		if let userId = userId {
+			try keychain.set(userId.uuidString, key: Key.userId.rawValue)
 		} else {
-			try keychain.remove(Key.userID.rawValue)
+			try keychain.remove(Key.userId.rawValue)
 		}
 	}
 

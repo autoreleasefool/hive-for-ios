@@ -47,28 +47,65 @@ enum HiveAPIError: LocalizedError {
 
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
-struct HiveAPI {
+class HiveAPI {
 
 	static let shared = HiveAPI()
 
+	private var apiGroup: URL { HiveAPI.baseURL.appendingPathComponent("api") }
+	private var userGroup: URL { apiGroup.appendingPathComponent("users") }
+	private var matchGroup: URL { apiGroup.appendingPathComponent("matches") }
+
 	private init() { }
+
+	// MARK: - Authentication
+
+	private var account: Account!
+
+	func set(account: Account) {
+		self.account = account
+	}
+
+	private func applyAuth(to request: inout URLRequest) {
+		guard let accessToken = account.accessToken else { return }
+		request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+	}
 
 	// MARK: - Users
 
-	func login(email: String, password: String) -> Future<AccessToken, HiveAPIError> {
+	func login(login: LoginData) -> Future<AccessToken, HiveAPIError> {
 		Future { promise in
-			promise(.failure(.notImplemented))
+			let url = self.userGroup.appendingPathComponent("login")
+
+			let auth = String(format: "%@:%@", login.email, login.password)
+			let authData = auth.data(using: String.Encoding.utf8)!
+			let base64Auth = authData.base64EncodedString()
+
+			var request = URLRequest(url: url)
+			request.httpMethod = "POST"
+			request.setValue("Basic \(base64Auth)", forHTTPHeaderField: "Authorization")
+
+			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+				self?.handleResponse(data: data, response: response, error: error, promise: promise)
+			}.resume()
 		}
 	}
 
-	func signup(
-		email: String,
-		displayName: String,
-		password: String,
-		confirmPassword: String
-	) -> Future<AccessToken, HiveAPIError> {
+	func signup(signup: SignupData) -> Future<UserSignup, HiveAPIError> {
 		Future { promise in
-			promise(.failure(.notImplemented))
+			let url = self.userGroup.appendingPathComponent("signup")
+
+			let encoder = JSONEncoder()
+			guard let signupData = try? encoder.encode(signup) else {
+				return promise(.failure(.invalidData))
+			}
+
+			var request = URLRequest(url: url)
+			request.httpMethod = "POST"
+			request.httpBody = signupData
+
+			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+				self?.handleResponse(data: data, response: response, error: error, promise: promise)
+			}.resume()
 		}
 	}
 
@@ -78,9 +115,17 @@ struct HiveAPI {
 		}
 	}
 
-	func logout() -> Future<Void, HiveAPIError> {
+	func logout() -> Future<Bool, HiveAPIError> {
 		Future { promise in
-			promise(.failure(.notImplemented))
+			let url = self.userGroup.appendingPathComponent("logout")
+
+			var request = URLRequest(url: url)
+			request.httpMethod = "DELETE"
+			self.applyAuth(to: &request)
+
+			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+				self?.handleVoidResponse(data: data, response: response, error: error, promise: promise)
+			}.resume()
 		}
 	}
 
