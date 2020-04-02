@@ -133,23 +133,26 @@ class HiveAPI {
 
 	func openMatches() -> Future<[Match], HiveAPIError> {
 		Future { promise in
-			promise(.success(Match.matches))
-//			if Bool.random() == true {
-//				debugLog("Returning rooms")
-//				promise(.success(Room.rooms))
-//			} else {
-//				debugLog("Returning error")
-//				promise(.failure(.invalidResponse))
-//			}
+			let url = self.matchGroup.appendingPathComponent("open")
+
+			var request = self.buildBaseRequest(to: url)
+			request.httpMethod = "GET"
+
+			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+				self?.handleResponse(data: data, response: response, error: error, promise: promise)
+			}
 		}
 	}
 
 	func match(id: UUID) -> Future<Match, HiveAPIError> {
 		Future { promise in
-			if let match = Match.matches.first(where: { $0.id == id }) {
-				promise(.success(match))
-			} else {
-				promise(.failure(.invalidData))
+			let url = self.matchGroup.appendingPathComponent(id.uuidString)
+
+			var request = self.buildBaseRequest(to: url)
+			request.httpMethod = "GET"
+
+			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
 	}
