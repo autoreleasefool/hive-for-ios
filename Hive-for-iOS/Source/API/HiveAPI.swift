@@ -81,7 +81,7 @@ class HiveAPI {
 			let authData = auth.data(using: String.Encoding.utf8)!
 			let base64Auth = authData.base64EncodedString()
 
-			var request = URLRequest(url: url)
+			var request = self.buildBaseRequest(to: url, withAuth: false)
 			request.httpMethod = "POST"
 			request.setValue("Basic \(base64Auth)", forHTTPHeaderField: "Authorization")
 
@@ -100,7 +100,7 @@ class HiveAPI {
 				return promise(.failure(.invalidData))
 			}
 
-			var request = URLRequest(url: url)
+			var request = self.buildBaseRequest(to: url, withAuth: false)
 			request.httpMethod = "POST"
 			request.httpBody = signupData
 
@@ -120,9 +120,8 @@ class HiveAPI {
 		Future { promise in
 			let url = self.userGroup.appendingPathComponent("logout")
 
-			var request = URLRequest(url: url)
+			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "DELETE"
-			self.applyAuth(to: &request)
 
 			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
 				self?.handleVoidResponse(data: data, response: response, error: error, promise: promise)
@@ -156,6 +155,16 @@ class HiveAPI {
 	}
 
 	// MARK: - Common
+
+	private func buildBaseRequest(to url: URL, withAuth: Bool = true) -> URLRequest {
+		var request = URLRequest(url: url)
+		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+		request.addValue("application/json", forHTTPHeaderField: "Accept")
+		if withAuth {
+			applyAuth(to: &request)
+		}
+		return request
+	}
 
 	private func handleResponse<Result: Codable>(
 		data: Data?,
