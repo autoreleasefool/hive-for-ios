@@ -9,6 +9,7 @@
 import Foundation
 
 struct SignupToken: Codable {
+	let id: UUID
 	let value: String
 }
 
@@ -18,4 +19,8 @@ struct UserSignup: Codable {
 	let displayName: String
 	let avatarUrl: String?
 	let token: SignupToken
+
+	var accessToken: AccessToken {
+		AccessToken(id: token.id, userId: id, token: token.value)
+	}
 }

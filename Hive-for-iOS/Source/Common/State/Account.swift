@@ -35,7 +35,17 @@ class Account: ObservableObject {
 		}
 	}
 
-	func store(userId: User.ID?) throws {
+	func clear() throws {
+		try store(userId: nil)
+		try store(accessToken: nil)
+	}
+
+	func store(accessToken: AccessToken) throws {
+		try store(userId: accessToken.userId)
+		try store(accessToken: accessToken.token)
+	}
+
+	private func store(userId: User.ID?) throws {
 		if let userId = userId {
 			try keychain.set(userId.uuidString, key: Key.userId.rawValue)
 		} else {
@@ -43,7 +53,7 @@ class Account: ObservableObject {
 		}
 	}
 
-	func store(accessToken: String?) throws {
+	private func store(accessToken: String?) throws {
 		if let accessToken = accessToken {
 			try keychain.set(accessToken, key: Key.accessToken.rawValue)
 		} else {

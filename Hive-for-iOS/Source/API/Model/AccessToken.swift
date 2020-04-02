@@ -9,7 +9,7 @@
 import Foundation
 
 struct AccessToken: Codable {
-	let id: String
+	let id: UUID
 	let userId: UUID
 	let token: String
 }
