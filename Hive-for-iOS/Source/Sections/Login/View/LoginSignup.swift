@@ -41,10 +41,10 @@ struct LoginSignup: View {
 			isActive: viewModel.isActive(field: id),
 			isSecure: id.isSecure
 		)
-			.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
-			.onTapGesture {
-				self.viewModel.postViewAction(.focusedField(id))
-			}
+		.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
+		.onTapGesture {
+			self.viewModel.postViewAction(.focusedField(id))
+		}
 	}
 
 	private var loginButton: some View {
@@ -82,72 +82,34 @@ struct LoginSignup: View {
 		}
 	}
 
-	private var loginForm: some View {
-		VStack(spacing: Metrics.Spacing.m.rawValue) {
-			if viewModel.validationFailed {
-				Text("You have been logged out. Please, login again.")
-					.body()
-					.foregroundColor(Color(.highlight))
-					.multilineTextAlignment(.leading)
-					.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-			}
-
-			self.field(id: .email)
-			if !viewModel.loggingIn {
-				self.field(id: .displayName)
-			}
-			self.field(id: .password)
-			if !viewModel.loggingIn {
-				self.field(id: .verifyPassword)
-			}
-
-			VStack(spacing: Metrics.Spacing.m.rawValue) {
-				loginButton
-				toggleButton
-			}
-		}
-			.padding(.horizontal, length: .m)
-			.padding(.vertical, length: .xl)
-	}
-
-	// MARK: Validation
-
-	private var loadingIndicator: some View {
-		VStack(spacing: Metrics.Spacing.m.rawValue) {
-			ActivityIndicator(isAnimating: viewModel.validatingAccount, style: .whiteLarge)
-				.padding(.top, length: .xxl)
-			Text("Logging in...")
-				.body()
-				.foregroundColor(Color(.primary))
-		}
-	}
-
 	// MARK: Body
 
 	var body: some View {
 		ScrollView {
-			NavigationLink(
-				destination: Lobby(),
-				isActive: $userAuthenticated,
-				label: { EmptyView() }
-			)
+			VStack(spacing: Metrics.Spacing.m.rawValue) {
+				self.field(id: .email)
+				if !viewModel.loggingIn {
+					self.field(id: .displayName)
+				}
+				self.field(id: .password)
+				if !viewModel.loggingIn {
+					self.field(id: .verifyPassword)
+				}
 
-			if self.viewModel.validatingAccount {
-				loadingIndicator
-					.frame(minWidth: 0, maxWidth: .infinity)
-			} else {
-				loginForm
+				VStack(spacing: Metrics.Spacing.m.rawValue) {
+					loginButton
+					toggleButton
+				}
 			}
+			.padding(.horizontal, length: .m)
+			.padding(.vertical, length: .xl)
 		}
-			.avoidingKeyboard()
-			.onAppear {
-				self.viewModel.update(account: self.account)
-			}
-			.onReceive(viewModel.didSuccessfullyAuthenticate) {
-				self.$userAuthenticated.wrappedValue = true
-			}
-			.navigationBarTitle("")
-			.navigationBarHidden(true)
+		.avoidingKeyboard()
+		.onAppear {
+			self.viewModel.update(account: self.account)
+		}
+		.navigationBarTitle("")
+		.navigationBarHidden(true)
 	}
 }
 

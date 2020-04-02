@@ -9,28 +9,21 @@
 import SwiftUI
 
 struct Home: View {
-	@State var showWelcome: Bool = true
+	@EnvironmentObject private var account: Account
+	@State private var showWelcome: Bool = true
 
 	var body: some View {
-//		GeometryReader { geometry in
-//			ZStack {
-//				Rectangle()
-//					.frame(width: geometry.size.width, height: geometry.size.height)
-//					.background(Color(.background))
-//					.edgesIgnoringSafeArea(.all)
-//
-//			}
-//		}
-
 		NavigationView {
 			Group {
 				if self.showWelcome {
 					Welcome(showWelcome: self.$showWelcome)
+				} else if account.isAuthenticated {
+					Lobby()
 				} else {
 					LoginSignup()
 				}
 			}
-				.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.background).edgesIgnoringSafeArea(.all))
 		}
 	}
 }

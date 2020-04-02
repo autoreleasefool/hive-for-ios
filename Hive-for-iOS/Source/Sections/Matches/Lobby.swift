@@ -29,8 +29,6 @@ struct Lobby: View {
 		.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.m.rawValue))
 		.onAppear { self.viewModel.postViewAction(.onAppear) }
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
-//		.loaf(self.$viewModel.errorLoaf)
-
 		.navigationBarTitle(Text("Lobby"))
 		.navigationBarItems(trailing: newMatchButton)
 	}

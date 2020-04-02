@@ -16,10 +16,9 @@ class Account: ObservableObject {
 		case accessToken
 	}
 
-	@Published var userId: User.ID?
-	@Published var accessToken: String?
-
-	var accountLoaded = CurrentValueSubject<Bool, Never>(false)
+	private(set) var userId: User.ID?
+	private(set) var accessToken: String?
+	@Published var isAuthenticated: Bool = false
 
 	private let keychain = Keychain(service: "ca.josephroque.hive-for-ios")
 
@@ -30,6 +29,7 @@ class Account: ObservableObject {
 
 			userId = UUID(uuidString: id)
 			accessToken = token
+			isAuthenticated = true
 		} catch {
 			print("Error retrieving login: \(error)")
 		}
@@ -38,11 +38,13 @@ class Account: ObservableObject {
 	func clear() throws {
 		try store(userId: nil)
 		try store(accessToken: nil)
+		isAuthenticated = false
 	}
 
 	func store(accessToken: AccessToken) throws {
 		try store(userId: accessToken.userId)
 		try store(accessToken: accessToken.token)
+		isAuthenticated = true
 	}
 
 	private func store(userId: User.ID?) throws {

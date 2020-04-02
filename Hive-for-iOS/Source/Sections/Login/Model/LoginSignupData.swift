@@ -12,6 +12,13 @@ struct LoginSignupData {
 	let password: String
 	let verifyPassword: String
 
+	init(email: String, displayName: String, password: String, verifyPassword: String) {
+		self.email = email.lowercased()
+		self.displayName = displayName
+		self.password = password
+		self.verifyPassword = verifyPassword
+	}
+
 	var login: LoginData {
 		LoginData(email: email, password: password)
 	}

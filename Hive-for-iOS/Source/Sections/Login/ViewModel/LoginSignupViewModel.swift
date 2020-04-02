@@ -40,8 +40,6 @@ enum LoginFieldID {
 }
 
 class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
-	@Published private(set) var validatingAccount: Bool = false
-	@Published private(set) var validationFailed: Bool = false
 	@Published private(set) var loggingIn: Bool = true
 	@Published private(set) var activeField: LoginFieldID?
 
@@ -118,10 +116,5 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 
 	func update(account: Account) {
 		self.account = account
-		guard let userID = account.userId, let accessToken = account.accessToken else { return }
-		validatingAccount = true
-		DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-			self.didSuccessfullyAuthenticate.send()
-		}
 	}
 }
