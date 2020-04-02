@@ -22,14 +22,16 @@ struct Home: View {
 //			}
 //		}
 
-		Group {
-			if self.showWelcome {
-				Welcome(showWelcome: self.$showWelcome)
-			} else {
-				LoginSignup()
+		NavigationView {
+			Group {
+				if self.showWelcome {
+					Welcome(showWelcome: self.$showWelcome)
+				} else {
+					LoginSignup()
+				}
 			}
+				.background(Color(.background).edgesIgnoringSafeArea(.all))
 		}
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
 }
 

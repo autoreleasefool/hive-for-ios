@@ -21,20 +21,18 @@ struct Lobby: View {
 	}
 
 	var body: some View {
-		NavigationView {
-			List(self.viewModel.matches) { match in
-				NavigationLink(destination: MatchDetail(viewModel: self.viewModel.matchViewModels[match.id]!)) {
-					MatchRow(match: match)
-				}
+		List(self.viewModel.matches) { match in
+			NavigationLink(destination: MatchDetail(viewModel: self.viewModel.matchViewModels[match.id]!)) {
+				MatchRow(match: match)
 			}
-			.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.m.rawValue))
-			.onAppear { self.viewModel.postViewAction(.onAppear) }
-			.onDisappear { self.viewModel.postViewAction(.onDisappear) }
-	//		.loaf(self.$viewModel.errorLoaf)
-
-			.navigationBarTitle(Text("Lobby"))
-			.navigationBarItems(trailing: newMatchButton)
 		}
+		.listRowInsets(EdgeInsets(equalTo: Metrics.Spacing.m.rawValue))
+		.onAppear { self.viewModel.postViewAction(.onAppear) }
+		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
+//		.loaf(self.$viewModel.errorLoaf)
+
+		.navigationBarTitle(Text("Lobby"))
+		.navigationBarItems(trailing: newMatchButton)
 	}
 }
 

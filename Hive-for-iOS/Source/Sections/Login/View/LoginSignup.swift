@@ -17,6 +17,8 @@ struct LoginSignup: View {
 	@State private var confirmPassword: String = ""
 	@State private var displayName: String = ""
 
+	@State private var userAuthenticated: Bool = false
+
 	private var loginSignupData: LoginSignupData {
 		LoginSignupData(email: email, displayName: displayName, password: password, verifyPassword: confirmPassword)
 	}
@@ -71,7 +73,8 @@ struct LoginSignup: View {
 			}, label: {
 				Text(self.viewModel.loggingIn
 					? "create a new account"
-					: "login to an existing account")
+					: "login to an existing account"
+				)
 					.caption()
 					.foregroundColor(Color(.primary))
 					.padding(.vertical, length: .s)
@@ -123,6 +126,12 @@ struct LoginSignup: View {
 
 	var body: some View {
 		ScrollView {
+			NavigationLink(
+				destination: Lobby(),
+				isActive: $userAuthenticated,
+				label: { EmptyView() }
+			)
+
 			if self.viewModel.validatingAccount {
 				loadingIndicator
 					.frame(minWidth: 0, maxWidth: .infinity)
@@ -134,6 +143,11 @@ struct LoginSignup: View {
 			.onAppear {
 				self.viewModel.update(account: self.account)
 			}
+			.onReceive(viewModel.didSuccessfullyAuthenticate) {
+				self.$userAuthenticated.wrappedValue = true
+			}
+			.navigationBarTitle("")
+			.navigationBarHidden(true)
 	}
 }
 

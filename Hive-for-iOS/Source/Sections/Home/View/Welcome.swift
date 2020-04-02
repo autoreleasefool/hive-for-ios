@@ -37,5 +37,7 @@ struct Welcome: View {
 
 			Spacer()
 		}
+		.navigationBarTitle("")
+		.navigationBarHidden(true)
 	}
 }
