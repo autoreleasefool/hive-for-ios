@@ -41,10 +41,10 @@ struct MatchRow: View {
 
 	var body: some View {
 		HStack(spacing: Metrics.Spacing.m.rawValue) {
-			PlayerPreview(match.host, compact: true)
-			PlayerPreview(match.opponent, compact: true)
+			MatchUserSummary(match.host, compact: true)
+			MatchUserSummary(match.opponent, compact: true)
 			Spacer()
-			optionsPreview(for: match.options)
+			optionsPreview(for: match.gameOptions)
 		}
 		.padding(.vertical, length: .m)
 	}

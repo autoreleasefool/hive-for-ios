@@ -30,7 +30,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		}
 	}
 
-	private(set) var matchViewModels: [String: MatchDetailViewModel] = [:]
+	private(set) var matchViewModels: [UUID: MatchDetailViewModel] = [:]
 
 	override func postViewAction(_ viewAction: LobbyViewAction) {
 		switch viewAction {

@@ -9,6 +9,8 @@
 import UIKit
 import HiveEngine
 
+// MARK: - Pieces
+
 typealias Piece = HiveEngine.Unit
 
 extension Piece.Class: Identifiable {
@@ -57,6 +59,8 @@ extension Piece.Class: Identifiable {
 	}
 }
 
+// MARK: - State
+
 extension GameState {
 	var allPiecesInHands: [Piece] {
 		Array((unitsInHand[.white] ?? []).union(unitsInHand[.black] ?? []))
@@ -72,6 +76,8 @@ extension GameState {
 		availableMoves.contains(where: { $0.movedUnit == piece })
 	}
 }
+
+// MARK: Options
 
 extension GameState.Option {
 	static let expansions = GameState.Option.allCases.filter { $0.isExpansion }.sorted()
@@ -90,6 +96,30 @@ extension GameState.Option: Comparable {
 		lhs.rawValue < rhs.rawValue
 	}
 }
+
+extension GameState.Option {
+	static func parse(_ string: String) -> Set<GameState.Option> {
+		var options: Set<GameState.Option> = []
+		string.split(separator: ";").forEach {
+			let optionAndValue = $0.split(separator: ":")
+			guard optionAndValue.count == 2 else { return }
+			if Bool(String(optionAndValue[1])) ?? false,
+				let option = GameState.Option(rawValue: String(optionAndValue[0])) {
+				options.insert(option)
+			}
+		}
+		return options
+	}
+
+	static func encode(_ options: Set<GameState.Option>) -> String {
+		GameState.Option.allCases
+			.map { "\($0.rawValue):\(options.contains($0))" }
+			.joined(separator: ";")
+	}
+}
+
+
+// MARK: - Players
 
 extension Player {
 	var color: ColorAsset {

@@ -46,7 +46,7 @@
 		CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCDD23DBA17200C697AD /* BottomSheet.swift */; };
 		CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCE023DBAC5700C697AD /* GameInformation.swift */; };
 		CABDFD0623DCA73500C697AD /* HexImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0523DCA73500C697AD /* HexImage.swift */; };
-		CABDFD0823DD9FE300C697AD /* PlayerPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0723DD9FE300C697AD /* PlayerPreview.swift */; };
+		CABDFD0823DD9FE300C697AD /* MatchUserSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */; };
 		CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */; };
 		CABDFD0E23DF8B4000C697AD /* Experience+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */; };
 		CABDFD1023E0C87700C697AD /* PlayerHand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0F23E0C87700C697AD /* PlayerHand.swift */; };
@@ -64,7 +64,6 @@
 		CAC6860E23CD236D00B882D2 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860D23CD236D00B882D2 /* Match.swift */; };
 		CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860F23CE3F3700B882D2 /* HostingController.swift */; };
 		CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861223CE440A00B882D2 /* HiveAPI.swift */; };
-		CAC6861523CE4C0C00B882D2 /* HivePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861423CE4C0C00B882D2 /* HivePlayer.swift */; };
 		CAC6861823CE4E6800B882D2 /* MatchRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861723CE4E6800B882D2 /* MatchRow.swift */; };
 		CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861923CE615800B882D2 /* ImageLoader.swift */; };
 		CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */; };
@@ -123,7 +122,7 @@
 		CABDFCDD23DBA17200C697AD /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
 		CABDFCE023DBAC5700C697AD /* GameInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInformation.swift; sourceTree = "<group>"; };
 		CABDFD0523DCA73500C697AD /* HexImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexImage.swift; sourceTree = "<group>"; };
-		CABDFD0723DD9FE300C697AD /* PlayerPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerPreview.swift; sourceTree = "<group>"; };
+		CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchUserSummary.swift; sourceTree = "<group>"; };
 		CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Extensions.swift"; sourceTree = "<group>"; };
 		CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Experience+Extensions.swift"; sourceTree = "<group>"; };
 		CABDFD0F23E0C87700C697AD /* PlayerHand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHand.swift; sourceTree = "<group>"; };
@@ -141,7 +140,6 @@
 		CAC6860D23CD236D00B882D2 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 		CAC6860F23CE3F3700B882D2 /* HostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingController.swift; sourceTree = "<group>"; };
 		CAC6861223CE440A00B882D2 /* HiveAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveAPI.swift; sourceTree = "<group>"; };
-		CAC6861423CE4C0C00B882D2 /* HivePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HivePlayer.swift; sourceTree = "<group>"; };
 		CAC6861723CE4E6800B882D2 /* MatchRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchRow.swift; sourceTree = "<group>"; };
 		CAC6861923CE615800B882D2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
@@ -392,7 +390,6 @@
 		CAC6860B23CD235D00B882D2 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CAC6861423CE4C0C00B882D2 /* HivePlayer.swift */,
 				CAC6860D23CD236D00B882D2 /* Match.swift */,
 			);
 			path = Model;
@@ -411,7 +408,7 @@
 		CAC6861623CE4E5D00B882D2 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CABDFD0723DD9FE300C697AD /* PlayerPreview.swift */,
+				CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */,
 				CAC6861723CE4E6800B882D2 /* MatchRow.swift */,
 				CA0290D523CEF7B800A933F9 /* MatchDetail.swift */,
 			);
@@ -615,7 +612,6 @@
 				CAC426D224338C0E00E513BC /* LoginSignupViewModel.swift in Sources */,
 				CA75CE43242A98D200998719 /* LoafState.swift in Sources */,
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
-				CAC6861523CE4C0C00B882D2 /* HivePlayer.swift in Sources */,
 				CAA87BC72432994D006E418B /* LoginSignup.swift in Sources */,
 				CAC68CC824327557003CC2E6 /* AccessToken.swift in Sources */,
 				CA45F9BA242B7C4C007EC94D /* ActionHUD.swift in Sources */,
@@ -653,7 +649,7 @@
 				CAC6861823CE4E6800B882D2 /* MatchRow.swift in Sources */,
 				CA45F9C4242E758C007EC94D /* HiveRule.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
-				CABDFD0823DD9FE300C697AD /* PlayerPreview.swift in Sources */,
+				CABDFD0823DD9FE300C697AD /* MatchUserSummary.swift in Sources */,
 				CAC426DA2433B11000E513BC /* LoginField.swift in Sources */,
 				CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */,
 				CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */,

@@ -145,7 +145,7 @@ class HiveAPI {
 		}
 	}
 
-	func match(id: String) -> Future<Match, HiveAPIError> {
+	func match(id: UUID) -> Future<Match, HiveAPIError> {
 		Future { promise in
 			if let match = Match.matches.first(where: { $0.id == id }) {
 				promise(.success(match))

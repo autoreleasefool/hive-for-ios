@@ -24,13 +24,13 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var options: GameOptionData = GameOptionData(options: [])
 	@Published var errorLoaf: Loaf?
 
-	let matchId: String
+	let matchId: UUID
 
 	var gameState: GameState {
 		GameState(options: self.options.options)
 	}
 
-	init(matchId: String) {
+	init(matchId: UUID) {
 		self.matchId = matchId
 	}
 
@@ -40,7 +40,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 		super.init()
 
-		self.options.update(with: match.options)
+		self.options.update(with: match.gameOptions)
 	}
 
 	override func postViewAction(_ viewAction: MatchDetailViewAction) {
@@ -71,7 +71,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 				receiveValue: { [weak self] match in
 					self?.errorLoaf = nil
 					self?.match = match
-					self?.options.update(with: match.options)
+					self?.options.update(with: match.gameOptions)
 				}
 			)
 			.store(in: self)

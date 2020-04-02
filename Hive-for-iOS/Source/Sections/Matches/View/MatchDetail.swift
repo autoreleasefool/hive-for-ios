@@ -25,9 +25,9 @@ struct MatchDetail: View {
 	private func playerSection(match: Match) -> some View {
 		HStack(spacing: 0) {
 			Spacer()
-			PlayerPreview(match.host, iconSize: .l)
+			MatchUserSummary(match.host, iconSize: .l)
 			Spacer()
-			PlayerPreview(match.host, alignment: .trailing, iconSize: .l)
+			MatchUserSummary(match.host, alignment: .trailing, iconSize: .l)
 			Spacer()
 		}
 	}
