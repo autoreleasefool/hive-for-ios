@@ -7,10 +7,12 @@
 //
 
 import SwiftUI
+import Loaf
 
 struct Home: View {
 	@EnvironmentObject private var account: Account
 	@State private var showWelcome: Bool = true
+	@State private var loaf: Loaf?
 
 	var body: some View {
 		NavigationView {
@@ -24,6 +26,12 @@ struct Home: View {
 				}
 			}
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.onReceive(account.$isAuthenticated) { isAuthenticated in
+				if !self.showWelcome && !isAuthenticated {
+					self.loaf = Loaf("You've been logged out", state: .error)
+				}
+			}
+			.loaf($loaf)
 		}
 	}
 }

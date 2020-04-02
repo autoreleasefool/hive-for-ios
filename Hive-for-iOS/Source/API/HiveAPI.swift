@@ -182,6 +182,7 @@ class HiveAPI {
 
 		guard (200..<400).contains(response.statusCode) else {
 			if response.statusCode == 401 {
+				try? account.clear()
 				return promise(.failure(.unauthorized))
 			}
 			return promise(.failure(.invalidHTTPResponse(response.statusCode)))
@@ -205,6 +206,10 @@ class HiveAPI {
 		}
 
 		guard (200..<400).contains(response.statusCode) else {
+			if response.statusCode == 401 {
+				try? account.clear()
+				return promise(.failure(.unauthorized))
+			}
 			return promise(.failure(.invalidHTTPResponse(response.statusCode)))
 		}
 
