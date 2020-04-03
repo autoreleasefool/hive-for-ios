@@ -36,10 +36,10 @@ struct MatchDetail: View {
 		VStack(alignment: .leading) {
 			Text("Expansions")
 				.subtitle()
-				.foregroundColor(Color(ColorAsset.text))
+				.foregroundColor(Color(.text))
 			ForEach(GameState.Option.expansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
-					.foregroundColor(Color(ColorAsset.text))
+					.foregroundColor(Color(.text))
 			}
 		}
 	}
@@ -48,10 +48,10 @@ struct MatchDetail: View {
 		VStack(alignment: .leading) {
 			Text("Other options")
 				.subtitle()
-				.foregroundColor(Color(ColorAsset.text))
+				.foregroundColor(Color(.text))
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
-					.foregroundColor(Color(ColorAsset.text))
+					.foregroundColor(Color(.text))
 			}
 		}
 	}

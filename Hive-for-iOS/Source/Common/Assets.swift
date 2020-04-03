@@ -58,7 +58,7 @@ enum ColorAsset: String {
 	case textContrasting = "Colors/TextContrasting"
 	case textContrastingSecondary = "Colors/TextContrastingSecondary"
 
-	case separator = "Colors/Separator"
+	case divider = "Colors/Divider"
 
 	case actionSheetBackground = "Colors/ActionSheet"
 

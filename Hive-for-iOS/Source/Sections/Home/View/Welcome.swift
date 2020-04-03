@@ -19,20 +19,20 @@ struct Welcome: View {
 			Spacer()
 
 			Image(uiImage: ImageAsset.glyph)
-				.foregroundColor(Color(ColorAsset.primary))
+				.foregroundColor(Color(.primary))
 
 			Button("Play") {
 				self.showWelcome = false
 			}
 			.subtitle()
-			.foregroundColor(Color(ColorAsset.text))
+			.foregroundColor(Color(.text))
 			.padding(.m)
 
 			Button("Settings") {
 				self.showWelcome = false
 			}
 			.subtitle()
-			.foregroundColor(Color(ColorAsset.text))
+			.foregroundColor(Color(.text))
 			.padding(.m)
 
 			Spacer()

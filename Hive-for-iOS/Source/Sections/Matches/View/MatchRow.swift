@@ -25,14 +25,14 @@ struct MatchRow: View {
 			Text(option.preview ?? "")
 				.caption()
 				.foregroundColor(enabled
-					? Color(ColorAsset.text)
-					: Color(ColorAsset.textSecondary)
+					? Color(.text)
+					: Color(.textSecondary)
 				)
 			Hex()
 				.stroke(
 					enabled
-						? Color(ColorAsset.primary)
-						: Color(ColorAsset.primary).opacity(0.4),
+						? Color(.primary)
+						: Color(.primary).opacity(0.4),
 					lineWidth: CGFloat(2)
 				)
 				.squareImage(.m)
@@ -65,7 +65,7 @@ private extension GameState.Option {
 struct MatchRowPreview: PreviewProvider {
 	static var previews: some View {
 		MatchRow(match: Match.matches[0])
-			.background(Color(ColorAsset.background))
+			.background(Color(.background))
 	}
 }
 #endif

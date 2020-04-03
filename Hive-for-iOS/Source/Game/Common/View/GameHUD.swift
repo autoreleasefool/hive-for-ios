@@ -68,7 +68,7 @@ struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {
 		GameHUD()
 			.environmentObject(HiveGameViewModel())
-			.background(Color(ColorAsset.backgroundDark))
+			.background(Color(.backgroundDark))
 	}
 }
 #endif

@@ -76,7 +76,7 @@ struct InformationHUD: View {
 		VStack(spacing: Metrics.Spacing.m.rawValue) {
 			header(information: information)
 			Divider()
-				.background(Color(ColorAsset.white))
+				.background(Color(.divider))
 				.padding(.horizontal, length: .m)
 			details(information: information, state: state)
 		}

@@ -45,12 +45,12 @@ struct MatchUserSummary: View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
 				.body()
-				.foregroundColor(Color(ColorAsset.text))
+				.foregroundColor(Color(.text))
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if user != nil {
 				Text(secondaryText)
 					.caption()
-					.foregroundColor(Color(ColorAsset.textSecondary))
+					.foregroundColor(Color(.textSecondary))
 			}
 		}
 	}
@@ -82,7 +82,7 @@ struct MatchUserSummaryPreview: PreviewProvider {
 			MatchUserSummary(nil, alignment: .trailing)
 			MatchUserSummary(nil, compact: true)
 		}
-		.background(Color(ColorAsset.background))
+		.background(Color(.background))
 	}
 }
 #endif

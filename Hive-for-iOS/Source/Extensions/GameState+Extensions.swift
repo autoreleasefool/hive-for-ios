@@ -118,7 +118,6 @@ extension GameState.Option {
 	}
 }
 
-
 // MARK: - Players
 
 extension Player {

@@ -44,7 +44,7 @@ struct PieceClassDetails: View {
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 					Text(self.playerPieceStatus(for: player))
 						.body()
-						.foregroundColor(Color(ColorAsset.textSecondary))
+						.foregroundColor(Color(.textSecondary))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 				}
 			}
