@@ -13,7 +13,7 @@ import Loaf
 import HiveEngine
 
 enum MatchDetailViewAction: BaseViewAction {
-	case onAppear
+	case onAppear(Match.ID?)
 	case onDisappear
 	case refreshMatchDetails
 	case modifyOptions
@@ -24,43 +24,65 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var options: GameOptionData = GameOptionData(options: [])
 	@Published var errorLoaf: Loaf?
 
-	let matchId: UUID
+	private(set) var matchId: Match.ID?
+	private var creatingNewMatch: Bool = false
 
 	var gameState: GameState {
 		GameState(options: self.options.options)
 	}
 
-	init(matchId: UUID) {
-		self.matchId = matchId
+	var navigationBarTitle: String {
+		if let host = match?.host {
+			return "\(host.displayName)'s match"
+		} else {
+			return "New match"
+		}
 	}
 
-	init(match: Match) {
-		self.matchId = match.id
+	init(_ match: Match? = nil) {
+		self.matchId = match?.id
 		self.match = match
 
 		super.init()
 
-		self.options.update(with: match.gameOptions)
+		if let match = match {
+			self.options.update(with: match.gameOptions)
+		}
 	}
 
 	override func postViewAction(_ viewAction: MatchDetailViewAction) {
 		switch viewAction {
-		case .onAppear, .refreshMatchDetails:
+		case .onAppear(let id):
+			self.matchId = id
+			if matchId == nil {
+				createNewMatch()
+			} else {
+				fetchMatchDetails()
+			}
+		case .refreshMatchDetails:
 			fetchMatchDetails()
-		case .onDisappear: cleanUp()
-		case .modifyOptions: break
+		case .onDisappear:
+			cleanUp()
+		case .modifyOptions:
+			break
 		}
 	}
 
 	private func cleanUp() {
 		errorLoaf = nil
 		cancelAllRequests()
+
+		if creatingNewMatch {
+			#warning("TODO: clean up new match and delete it")
+		}
 	}
 
 	private func fetchMatchDetails() {
+		guard let matchId = matchId else { return }
+
 		HiveAPI
 			.shared
-			.match(id: matchId)
+			.matchDetails(id: matchId)
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -69,12 +91,35 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 					}
 				},
 				receiveValue: { [weak self] match in
-					self?.errorLoaf = nil
-					self?.match = match
-					self?.options.update(with: match.gameOptions)
+					self?.handle(match: match)
 				}
 			)
 			.store(in: self)
+	}
+
+	private func createNewMatch() {
+		HiveAPI
+			.shared
+			.createMatch()
+			.receive(on: DispatchQueue.main)
+			.sink(
+				receiveCompletion: { [weak self] result in
+					if case let .failure(error) = result {
+						self?.errorLoaf = error.loaf
+					}
+				},
+				receiveValue: { [weak self] match in
+					self?.handle(match: match)
+				}
+			)
+			.store(in: self)
+	}
+
+	private func handle(match: Match) {
+		self.matchId = match.id
+		self.match = match
+		errorLoaf = nil
+		options.update(with: match.gameOptions)
 	}
 }
 

@@ -8,6 +8,6 @@
 
 import Foundation
 
-struct User {
-	typealias ID = UUID
+struct User: Identifiable {
+	let id: UUID
 }

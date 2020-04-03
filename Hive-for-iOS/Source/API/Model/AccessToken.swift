@@ -10,6 +10,6 @@ import Foundation
 
 struct AccessToken: Codable {
 	let id: UUID
-	let userId: UUID
+	let userId: User.ID
 	let token: String
 }

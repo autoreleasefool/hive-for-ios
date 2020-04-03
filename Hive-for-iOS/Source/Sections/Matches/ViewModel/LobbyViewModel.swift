@@ -20,22 +20,14 @@ enum LobbyViewAction: BaseViewAction {
 class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published var errorLoaf: Loaf?
 
-	@Published private(set) var matches: [Match] = [] {
-		willSet {
-			#warning("TODO: should remove view models for rooms that no longer exist")
-			newValue.forEach {
-				guard self.matchViewModels[$0.id] == nil else { return }
-				self.matchViewModels[$0.id] = MatchDetailViewModel(matchId: $0.id)
-			}
-		}
-	}
-
-	private(set) var matchViewModels: [UUID: MatchDetailViewModel] = [:]
+	@Published private(set) var matches: [Match] = []
 
 	override func postViewAction(_ viewAction: LobbyViewAction) {
 		switch viewAction {
-		case .onAppear, .refreshMatches: refreshMatches()
-		case .onDisappear: cleanUp()
+		case .onAppear, .refreshMatches:
+			refreshMatches()
+		case .onDisappear:
+			cleanUp()
 		}
 	}
 

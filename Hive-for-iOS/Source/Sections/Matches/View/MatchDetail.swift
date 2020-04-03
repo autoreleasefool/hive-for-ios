@@ -10,10 +10,11 @@ import SwiftUI
 import HiveEngine
 
 struct MatchDetail: View {
-	@ObservedObject private var viewModel: MatchDetailViewModel
+	private let initialId: Match.ID?
+	@ObservedObject private var viewModel = MatchDetailViewModel()
 
-	init(viewModel: MatchDetailViewModel) {
-		self.viewModel = viewModel
+	init(id: Match.ID?) {
+		self.initialId = id
 	}
 
 	var startButton: some View {
@@ -99,9 +100,9 @@ struct MatchDetail: View {
 			}
 		}
 		.padding(.horizontal, length: .m)
-		.navigationBarTitle(Text("Match \(viewModel.matchId)"), displayMode: .inline)
+		.navigationBarTitle(Text(viewModel.navigationBarTitle), displayMode: .inline)
 		.navigationBarItems(trailing: startButton)
-		.onAppear { self.viewModel.postViewAction(.onAppear) }
+		.onAppear { self.viewModel.postViewAction(.onAppear(self.initialId)) }
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 		.loaf(self.$viewModel.errorLoaf)
 	}
@@ -121,8 +122,9 @@ private extension GameState.Option {
 #if DEBUG
 struct MatchDetailPreview: PreviewProvider {
 	static var previews: some View {
-		MatchDetail(viewModel: MatchDetailViewModel(match: Match.matches[1]))
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+		EmptyView()
+//		MatchDetail(viewModel: MatchDetailViewModel(match: Match.matches[1]))
+//			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

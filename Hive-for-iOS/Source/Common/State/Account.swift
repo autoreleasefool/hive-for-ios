@@ -23,6 +23,8 @@ class Account: ObservableObject {
 	private let keychain = Keychain(service: "ca.josephroque.hive-for-ios")
 
 	init() {
+		try? clear()
+
 		do {
 			guard let id = try keychain.get(Key.userId.rawValue) else { return }
 			guard let token = try keychain.get(Key.accessToken.rawValue) else { return }

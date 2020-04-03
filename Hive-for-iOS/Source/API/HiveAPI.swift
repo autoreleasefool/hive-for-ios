@@ -140,11 +140,11 @@ class HiveAPI {
 
 			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			}.resume()
 		}
 	}
 
-	func match(id: UUID) -> Future<Match, HiveAPIError> {
+	func matchDetails(id: Match.ID) -> Future<Match, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent(id.uuidString)
 
@@ -153,7 +153,20 @@ class HiveAPI {
 
 			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			}.resume()
+		}
+	}
+
+	func createMatch() -> Future<Match, HiveAPIError> {
+		Future { promise in
+			let url = self.matchGroup.appendingPathComponent("new")
+
+			var request = self.buildBaseRequest(to: url)
+			request.httpMethod = "POST"
+
+			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+				self?.handleResponse(data: data, response: response, error: error, promise: promise)
+			}.resume()
 		}
 	}
 

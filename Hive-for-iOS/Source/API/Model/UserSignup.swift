@@ -9,12 +9,12 @@
 import Foundation
 
 struct SignupToken: Codable {
-	let id: UUID
+	let id: User.ID
 	let value: String
 }
 
 struct UserSignup: Codable {
-	let id: UUID
+	let id: User.ID
 	let email: String
 	let displayName: String
 	let avatarUrl: String?
