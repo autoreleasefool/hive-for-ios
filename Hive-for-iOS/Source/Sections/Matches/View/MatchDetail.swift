@@ -24,31 +24,59 @@ struct MatchDetail: View {
 
 	private func playerSection(match: Match) -> some View {
 		HStack(spacing: 0) {
-			Spacer()
 			MatchUserSummary(match.host, iconSize: .l)
 			Spacer()
-			MatchUserSummary(match.host, alignment: .trailing, iconSize: .l)
-			Spacer()
+			MatchUserSummary(match.opponent, alignment: .trailing, iconSize: .l)
 		}
 	}
 
 	private func expansionSection(options: GameOptionData) -> some View {
 		VStack(alignment: .leading) {
 			Text("Expansions")
-				.subtitle()
+				.bold()
+				.body()
 				.foregroundColor(Color(.text))
-			ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
-					.foregroundColor(Color(.text))
+				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+			HStack(spacing: Metrics.Spacing.l.rawValue) {
+				Spacer()
+				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
+					self.optionPreview(for: option, enabled: options.options.contains(option))
+				}
+				Spacer()
 			}
 		}
+	}
+
+	private func optionPreview(for option: GameState.Option, enabled: Bool) -> some View {
+		Button(action: {
+			self.viewModel.options.binding(for: option).wrappedValue.toggle()
+		}, label: {
+			ZStack {
+				Text(option.preview ?? "")
+					.subtitle()
+					.foregroundColor(enabled
+						? Color(.primary)
+						: Color(.textSecondary)
+					)
+				Hex()
+					.stroke(
+						enabled
+							? Color(.primary)
+							: Color(.textSecondary),
+						lineWidth: CGFloat(5)
+					)
+					.squareImage(.l)
+			}
+		})
 	}
 
 	private func otherOptionsSection(options: GameOptionData) -> some View {
 		VStack(alignment: .leading) {
 			Text("Other options")
-				.subtitle()
+				.bold()
+				.body()
 				.foregroundColor(Color(.text))
+				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
 					.foregroundColor(Color(.text))
@@ -57,16 +85,20 @@ struct MatchDetail: View {
 	}
 
 	var body: some View {
-		List {
+		ScrollView {
 			if self.viewModel.match == nil {
 				Text("Loading")
 			} else {
-				self.playerSection(match: self.viewModel.match!)
-					.padding(.vertical, length: .m)
-				self.expansionSection(options: self.viewModel.options)
-				self.otherOptionsSection(options: self.viewModel.options)
+				VStack(spacing: Metrics.Spacing.m.rawValue) {
+					self.playerSection(match: self.viewModel.match!)
+					Divider().background(Color(.divider))
+					self.expansionSection(options: self.viewModel.options)
+					Divider().background(Color(.divider))
+					self.otherOptionsSection(options: self.viewModel.options)
+				}
 			}
 		}
+		.padding(.horizontal, length: .m)
 		.navigationBarTitle(Text("Match \(viewModel.matchId)"), displayMode: .inline)
 		.navigationBarItems(trailing: startButton)
 		.onAppear { self.viewModel.postViewAction(.onAppear) }
@@ -89,7 +121,8 @@ private extension GameState.Option {
 #if DEBUG
 struct MatchDetailPreview: PreviewProvider {
 	static var previews: some View {
-		MatchDetail(viewModel: MatchDetailViewModel(match: Match.matches[0]))
+		MatchDetail(viewModel: MatchDetailViewModel(match: Match.matches[1]))
+			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

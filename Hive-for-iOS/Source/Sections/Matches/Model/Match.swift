@@ -81,7 +81,7 @@ extension Match {
 				hostElo: 1000.0,
 				opponentElo: 1200.0,
 				hostIsWhite: true,
-				options: "Mosquito;LadyBug;PillBug",
+				options: "Mosquito:true;LadyBug:true;PillBug:true",
 				createdAt: Date(),
 				duration: nil,
 				status: .notStarted,
@@ -97,13 +97,13 @@ extension Match {
 				hostElo: 10300.0,
 				opponentElo: 100.0,
 				hostIsWhite: true,
-				options: "Mosquito;LadyBug;PillBug",
+				options: "Mosquito:true",
 				createdAt: Date(),
 				duration: nil,
 				status: .notStarted,
 				isAsyncPlay: false,
 				isComplete: false
-			)
+			),
 		]
 	}
 }
