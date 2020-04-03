@@ -35,9 +35,9 @@ struct PieceClassDetails: View {
 	}
 
 	var body: some View {
-		VStack(spacing: Metrics.Spacing.m.rawValue) {
+		VStack(spacing: .m) {
 			ForEach([Player.white, Player.black], id: \.description) { player in
-				VStack(alignment: .leading, spacing: Metrics.Spacing.s.rawValue) {
+				VStack(alignment: .leading, spacing: .s) {
 					Text(player.description)
 						.body()
 						.foregroundColor(Color(player.color))

@@ -12,4 +12,8 @@ extension EdgeInsets {
 	init(equalTo equal: CGFloat) {
 		self.init(top: equal, leading: equal, bottom: equal, trailing: equal)
 	}
+
+	init(equalTo equal: Metrics.Spacing) {
+		self.init(equalTo: equal.rawValue)
+	}
 }

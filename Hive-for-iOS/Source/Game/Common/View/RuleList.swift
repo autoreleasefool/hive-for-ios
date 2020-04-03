@@ -12,7 +12,7 @@ struct RuleList: View {
 	@EnvironmentObject var viewModel: HiveGameViewModel
 
 	var body: some View {
-		VStack(spacing: Metrics.Spacing.s.rawValue) {
+		VStack(spacing: .s) {
 			ForEach(HiveRule.allCases, id: \.rawValue) { rule in
 				Button(action: {
 					self.viewModel.postViewAction(.presentInformation(.rule(rule)))

@@ -56,7 +56,7 @@ struct MatchUserSummary: View {
 	}
 
 	var body: some View {
-		HStack(spacing: Metrics.Spacing.s.rawValue) {
+		HStack(spacing: .s) {
 			if textAlignment == .leading {
 				userImage
 				userDescription

@@ -17,7 +17,7 @@ struct PieceStack: View {
 			self.viewModel.hasInformation.wrappedValue = false
 			self.viewModel.postViewAction(.tappedPiece(piece))
 		}, label: {
-			HStack(spacing: Metrics.Spacing.m.rawValue) {
+			HStack(spacing: .m) {
 				Image(uiImage: piece.class.image)
 					.renderingMode(.template)
 					.resizable()

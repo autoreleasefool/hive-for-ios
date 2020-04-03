@@ -70,6 +70,18 @@ extension RoundedRectangle {
 	}
 }
 
+extension HStack {
+	init(alignment: VerticalAlignment = .center, spacing: Metrics.Spacing, @ViewBuilder content: () -> Content) {
+		self.init(alignment: alignment, spacing: spacing.rawValue, content: content)
+	}
+}
+
+extension VStack {
+	init(alignment: HorizontalAlignment = .center, spacing: Metrics.Spacing, @ViewBuilder content: () -> Content) {
+		self.init(alignment: alignment, spacing: spacing.rawValue, content: content)
+	}
+}
+
 // MARK: - Image
 
 extension Metrics {

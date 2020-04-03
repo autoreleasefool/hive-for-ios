@@ -37,7 +37,7 @@ struct MatchDetail: View {
 				.body()
 				.foregroundColor(Color(.text))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-			HStack(spacing: Metrics.Spacing.l.rawValue) {
+			HStack(spacing: .l) {
 				Spacer()
 				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
 					self.optionPreview(for: option, enabled: options.options.contains(option))
@@ -89,7 +89,7 @@ struct MatchDetail: View {
 			if self.viewModel.match == nil {
 				Text("Loading")
 			} else {
-				VStack(spacing: Metrics.Spacing.m.rawValue) {
+				VStack(spacing: .m) {
 					self.playerSection(match: self.viewModel.match!)
 					Divider().background(Color(.divider))
 					self.expansionSection(options: self.viewModel.options)

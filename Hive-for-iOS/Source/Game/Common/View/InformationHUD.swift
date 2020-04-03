@@ -25,7 +25,7 @@ struct InformationHUD: View {
 	private func header(information: GameInformation) -> some View {
 		let subtitle = information.subtitle
 
-		return VStack(spacing: Metrics.Spacing.s.rawValue) {
+		return VStack(spacing: .s) {
 			Text(information.title)
 				.title()
 				.foregroundColor(Color(.text))
@@ -73,7 +73,7 @@ struct InformationHUD: View {
 	}
 
 	fileprivate func HUD(information: GameInformation, state: GameState) -> some View {
-		VStack(spacing: Metrics.Spacing.m.rawValue) {
+		VStack(spacing: .m) {
 			header(information: information)
 			Divider()
 				.background(Color(.divider))

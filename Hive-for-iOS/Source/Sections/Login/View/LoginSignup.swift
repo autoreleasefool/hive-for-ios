@@ -86,7 +86,7 @@ struct LoginSignup: View {
 
 	var body: some View {
 		ScrollView {
-			VStack(spacing: Metrics.Spacing.m.rawValue) {
+			VStack(spacing: .m) {
 				self.field(id: .email)
 				if !viewModel.loggingIn {
 					self.field(id: .displayName)
@@ -96,7 +96,7 @@ struct LoginSignup: View {
 					self.field(id: .verifyPassword)
 				}
 
-				VStack(spacing: Metrics.Spacing.m.rawValue) {
+				VStack(spacing: .m) {
 					loginButton
 					toggleButton
 				}

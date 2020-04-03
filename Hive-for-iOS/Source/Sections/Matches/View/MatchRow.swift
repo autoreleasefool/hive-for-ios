@@ -13,7 +13,7 @@ struct MatchRow: View {
 	let match: Match
 
 	private func optionsPreview(for options: Set<GameState.Option>) -> some View {
-		HStack(spacing: Metrics.Spacing.s.rawValue) {
+		HStack(spacing: .s) {
 			ForEach(GameState.Option.expansions, id: \.rawValue) { option in
 				self.optionPreview(for: option, enabled: options.contains(option))
 			}
@@ -40,7 +40,7 @@ struct MatchRow: View {
 	}
 
 	var body: some View {
-		HStack(spacing: Metrics.Spacing.m.rawValue) {
+		HStack(spacing: .m) {
 			MatchUserSummary(match.host, compact: true)
 			MatchUserSummary(match.opponent, compact: true)
 			Spacer()
