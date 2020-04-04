@@ -19,6 +19,8 @@ struct Home: View {
 			Group {
 				if self.showWelcome {
 					Welcome(showWelcome: self.$showWelcome)
+				} else if account.tokenStatus == .validating {
+					DelayedLoadingIndicator(timeout: 3, message: "Logging in...")
 				} else if account.isAuthenticated {
 					Lobby()
 				} else {

@@ -67,8 +67,12 @@ class HiveAPI {
 	}
 
 	private func applyAuth(to request: inout URLRequest) {
-		guard let accessToken = account.accessToken else { return }
-		request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+		guard let token = account.token else { return }
+		applyAuth(token: token, to: &request)
+	}
+
+	private func applyAuth(token: String, to request: inout URLRequest) {
+		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 	}
 
 	// MARK: - Users
@@ -112,10 +116,20 @@ class HiveAPI {
 		.eraseToAnyPublisher()
 	}
 
-	func checkToken(userId: User.ID, token: String) -> Future<Bool, HiveAPIError> {
-		Future { promise in
-			promise(.failure(.notImplemented))
+	func checkToken(userId: User.ID, token: String) -> AnyPublisher<Bool, HiveAPIError> {
+		Future<TokenValidation, HiveAPIError> { promise in
+			let url = self.userGroup.appendingPathComponent("validate")
+
+			var request = self.buildBaseRequest(to: url, withAuth: false)
+			request.httpMethod = "GET"
+			self.applyAuth(token: token, to: &request)
+
+			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+				self?.handleResponse(data: data, response: response, error: error, promise: promise)
+			}.resume()
 		}
+		.map { result in userId == result.id }
+		.eraseToAnyPublisher()
 	}
 
 	func logout() -> AnyPublisher<Bool, HiveAPIError> {

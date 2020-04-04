@@ -87,6 +87,13 @@ struct LoginSignup: View {
 	var body: some View {
 		ScrollView {
 			VStack(spacing: .m) {
+				if account.tokenStatus == .invalid {
+					Text("You've been logged out. Please login again.")
+						.body()
+						.foregroundColor(Color(.highlight))
+						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+				}
+
 				self.field(id: .email)
 				if !viewModel.loggingIn {
 					self.field(id: .displayName)

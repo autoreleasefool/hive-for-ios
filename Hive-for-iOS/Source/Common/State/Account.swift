@@ -10,6 +10,12 @@ import Foundation
 import Combine
 import KeychainAccess
 
+enum TokenStatus {
+	case validating
+	case valid
+	case invalid
+}
+
 class Account: ObservableObject {
 	private static let debugAccountEnabled: Bool = true
 
@@ -20,7 +26,11 @@ class Account: ObservableObject {
 
 	private(set) var userId: User.ID?
 	private(set) var token: String?
+
+	private var tokenValidation: AnyCancellable?
+
 	@Published var isAuthenticated: Bool = false
+	@Published var tokenStatus: TokenStatus?
 
 	private let keychain = Keychain(service: "ca.josephroque.hive-for-ios")
 
@@ -36,7 +46,7 @@ class Account: ObservableObject {
 
 			userId = UUID(uuidString: id)
 			self.token = token
-			isAuthenticated = true
+			validateTokenOnStartup()
 		} catch {
 			print("Error retrieving login: \(error)")
 		}
@@ -68,5 +78,25 @@ class Account: ObservableObject {
 		} else {
 			try keychain.remove(Key.token.rawValue)
 		}
+	}
+
+	private func validateTokenOnStartup() {
+		guard let userId = self.userId, let token = self.token else { return }
+		tokenStatus = .validating
+		tokenValidation = HiveAPI
+			.shared
+			.checkToken(userId: userId, token: token)
+			.sink(
+				receiveCompletion: { [weak self] result in
+					if case .failure = result {
+						self?.tokenStatus = .invalid
+						self?.isAuthenticated = false
+					}
+				},
+				receiveValue: { [weak self] result in
+					self?.tokenStatus = result ? .valid : .invalid
+					self?.isAuthenticated = result
+				}
+			)
 	}
 }
