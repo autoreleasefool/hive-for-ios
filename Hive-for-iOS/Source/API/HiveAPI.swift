@@ -73,7 +73,7 @@ class HiveAPI {
 
 	// MARK: - Users
 
-	func login(login: LoginData) -> Future<AccessToken, HiveAPIError> {
+	func login(login: LoginData) -> AnyPublisher<AccessToken, HiveAPIError> {
 		Future { promise in
 			let url = self.userGroup.appendingPathComponent("login")
 
@@ -89,9 +89,10 @@ class HiveAPI {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}.resume()
 		}
+		.eraseToAnyPublisher()
 	}
 
-	func signup(signup: SignupData) -> Future<UserSignup, HiveAPIError> {
+	func signup(signup: SignupData) -> AnyPublisher<UserSignup, HiveAPIError> {
 		Future { promise in
 			let url = self.userGroup.appendingPathComponent("signup")
 
@@ -108,6 +109,7 @@ class HiveAPI {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}.resume()
 		}
+		.eraseToAnyPublisher()
 	}
 
 	func checkToken(userId: User.ID, token: String) -> Future<Bool, HiveAPIError> {
@@ -116,7 +118,7 @@ class HiveAPI {
 		}
 	}
 
-	func logout() -> Future<Bool, HiveAPIError> {
+	func logout() -> AnyPublisher<Bool, HiveAPIError> {
 		Future { promise in
 			let url = self.userGroup.appendingPathComponent("logout")
 
@@ -127,11 +129,12 @@ class HiveAPI {
 				self?.handleVoidResponse(data: data, response: response, error: error, promise: promise)
 			}.resume()
 		}
+		.eraseToAnyPublisher()
 	}
 
 	// MARK: - Matches
 
-	func openMatches() -> Future<[Match], HiveAPIError> {
+	func openMatches() -> AnyPublisher<[Match], HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent("open")
 
@@ -142,9 +145,10 @@ class HiveAPI {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}.resume()
 		}
+		.eraseToAnyPublisher()
 	}
 
-	func matchDetails(id: Match.ID) -> Future<Match, HiveAPIError> {
+	func matchDetails(id: Match.ID) -> AnyPublisher<Match, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent(id.uuidString)
 
@@ -155,9 +159,10 @@ class HiveAPI {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}.resume()
 		}
+		.eraseToAnyPublisher()
 	}
 
-	func createMatch() -> Future<Match, HiveAPIError> {
+	func createMatch() -> AnyPublisher<Match, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent("new")
 
@@ -168,6 +173,7 @@ class HiveAPI {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}.resume()
 		}
+		.eraseToAnyPublisher()
 	}
 
 	// MARK: - Common
