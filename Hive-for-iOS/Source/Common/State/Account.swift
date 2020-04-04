@@ -86,6 +86,7 @@ class Account: ObservableObject {
 		tokenValidation = HiveAPI
 			.shared
 			.checkToken(userId: userId, token: token)
+			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case .failure = result {
