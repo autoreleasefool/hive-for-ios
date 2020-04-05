@@ -113,6 +113,7 @@ class Account: ObservableObject {
 		switch error {
 		case .invalidData, .invalidResponse, .missingData, .notImplemented, .unauthorized:
 			tokenStatus = .invalid
+			try? clear()
 		case .invalidHTTPResponse(let code):
 			print("Token validation failed: \(code)")
 			tokenStatus = .validationError
