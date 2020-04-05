@@ -15,6 +15,6 @@ struct AccessToken: Codable {
 }
 
 struct TokenValidation: Codable {
-	let id: UUID
+	let userId: UUID
 	let token: String
 }

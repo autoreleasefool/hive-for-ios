@@ -128,7 +128,7 @@ class HiveAPI {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}.resume()
 		}
-		.map { result in userId == result.id }
+		.map { result in userId == result.userId }
 		.eraseToAnyPublisher()
 	}
 
