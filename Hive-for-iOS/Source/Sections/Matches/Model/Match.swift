@@ -9,6 +9,12 @@
 import Foundation
 import HiveEngine
 
+struct CreateMatchResponse: Codable {
+	let id: UUID
+	let socketUrl: URL
+	let details: Match
+}
+
 struct Match: Identifiable, Codable {
 	struct User: Identifiable, Codable {
 		let id: UUID

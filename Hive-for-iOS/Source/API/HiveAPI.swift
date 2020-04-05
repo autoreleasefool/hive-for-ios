@@ -176,7 +176,7 @@ class HiveAPI {
 		.eraseToAnyPublisher()
 	}
 
-	func createMatch() -> AnyPublisher<Match, HiveAPIError> {
+	func createMatch() -> AnyPublisher<CreateMatchResponse, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent("new")
 
