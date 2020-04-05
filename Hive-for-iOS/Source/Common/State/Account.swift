@@ -14,10 +14,11 @@ enum TokenStatus {
 	case validating
 	case valid
 	case invalid
+	case validationError
 }
 
 class Account: ObservableObject {
-	private static let debugAccountEnabled: Bool = true
+	private static let debugAccountEnabled: Bool = false
 
 	private enum Key: String {
 		case userId
@@ -55,13 +56,19 @@ class Account: ObservableObject {
 	func clear() throws {
 		try store(userId: nil)
 		try store(token: nil)
-		isAuthenticated = false
+
+		DispatchQueue.main.async {
+			self.isAuthenticated = false
+		}
 	}
 
 	func store(accessToken: AccessToken) throws {
 		try store(userId: accessToken.userId)
 		try store(token: accessToken.token)
-		isAuthenticated = true
+
+		DispatchQueue.main.async {
+			self.isAuthenticated = true
+		}
 	}
 
 	private func store(userId: User.ID?) throws {
@@ -89,9 +96,8 @@ class Account: ObservableObject {
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
-					if case .failure = result {
-						self?.tokenStatus = .invalid
-						self?.isAuthenticated = false
+					if case let .failure(error) = result {
+						self?.handle(error: error)
 					}
 				},
 				receiveValue: { [weak self] result in
@@ -99,5 +105,20 @@ class Account: ObservableObject {
 					self?.isAuthenticated = result
 				}
 			)
+	}
+
+	private func handle(error: HiveAPIError) {
+		assert(Thread.isMainThread, "Account error not handled on the main thread")
+
+		switch error {
+		case .invalidData, .invalidResponse, .missingData, .notImplemented, .unauthorized:
+			tokenStatus = .invalid
+		case .invalidHTTPResponse(let code):
+			print("Token validation failed: \(code)")
+			tokenStatus = .validationError
+		case .networkingError(let networkError):
+			print("Token validation failed: \(networkError)")
+			tokenStatus = .validationError
+		}
 	}
 }

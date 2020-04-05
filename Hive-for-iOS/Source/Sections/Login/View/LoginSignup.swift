@@ -82,16 +82,24 @@ struct LoginSignup: View {
 		}
 	}
 
+	private func notice(message: String) -> some View {
+		Text(message)
+			.body()
+			.foregroundColor(Color(.highlight))
+			.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+	}
+
 	// MARK: Body
 
 	var body: some View {
 		ScrollView {
 			VStack(spacing: .m) {
 				if account.tokenStatus == .invalid {
-					Text("You've been logged out. Please login again.")
-						.body()
-						.foregroundColor(Color(.highlight))
-						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+					notice(message: "You've been logged out. Please login again.")
+				} else if account.tokenStatus == .validationError {
+					notice(
+						message: "There was an error logging in. The server might not be available. Please try again."
+					)
 				}
 
 				self.field(id: .email)
