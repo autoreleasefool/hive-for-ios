@@ -21,7 +21,7 @@ protocol HiveGameClientDelegate: class {
 class HiveGameClient {
 	weak var delegate: HiveGameClientDelegate?
 
-	var webSocketUrl: URL?
+	var webSocketURL: URL?
 	private var ws: WebSocket? {
 		didSet {
 			ws?.onClose.whenComplete { [weak self] result in
@@ -38,10 +38,10 @@ class HiveGameClient {
 	}
 
 	func openConnection() {
-		guard let url = webSocketUrl,
+		guard let url = webSocketURL,
 			let scheme = url.scheme,
 			let host = url.host else {
-				print("Cannot open WebSocket connection without fully-formed URL: \(String(describing: webSocketUrl))")
+				print("Cannot open WebSocket connection without fully-formed URL: \(String(describing: webSocketURL))")
 			return
 		}
 

@@ -52,6 +52,11 @@ struct Match: Identifiable, Codable {
 	let status: Status
 	let isAsyncPlay: Bool
 	let isComplete: Bool
+
+	var webSocketUrl: URL? {
+		guard let host = HiveAPI.baseURL.host else { return nil }
+		return URL(string: "ws://\(host)/\(id)/play")
+	}
 }
 
 // MARK: Formatting

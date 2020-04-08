@@ -11,6 +11,7 @@ import SwiftUI
 import Combine
 import Loaf
 import HiveEngine
+import NIOWebSocket
 
 enum MatchDetailViewAction: BaseViewAction {
 	case onAppear(Match.ID?)
@@ -128,23 +129,24 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func handle(match: Match) {
 		self.matchId = match.id
 		self.match = match
+		client.webSocketUrl = match.webSocketUrl
 		errorLoaf = nil
 		options.update(with: match.gameOptions)
 	}
 }
 
-// MARK: - f
+// MARK: - HiveGameClientDelegate
 
 extension MatchDetailViewModel: HiveGameClientDelegate {
 	func clientDidConnect(_ hiveGameClient: HiveGameClient) {
 
 	}
 
-	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, error: DisconnectError?) {
+	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?) {
 
 	}
 
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameClientResponse) {
+	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameServerMessage) {
 
 	}
 }
