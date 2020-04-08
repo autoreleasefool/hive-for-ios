@@ -129,7 +129,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func handle(match: Match) {
 		self.matchId = match.id
 		self.match = match
-		client.webSocketUrl = match.webSocketUrl
+		client.webSocketURL = match.webSocketURL
 		errorLoaf = nil
 		options.update(with: match.gameOptions)
 	}
