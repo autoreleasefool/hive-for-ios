@@ -390,14 +390,13 @@ extension HiveGameViewModel {
 		case playerTurn
 		case opponentTurn
 		case sendingMovement(Movement)
-		case receivingMovement(Movement)
 		case gameEnd
 		case forfeit
 
 		var inGame: Bool {
 			switch self {
 			case .begin, .gameStart, .gameEnd, .forfeit: return false
-			case .playerTurn, .opponentTurn, .sendingMovement, .receivingMovement: return true
+			case .playerTurn, .opponentTurn, .sendingMovement: return true
 			}
 		}
 	}
@@ -424,18 +423,16 @@ extension HiveGameViewModel {
 		case (.gameStart, .playerTurn), (.gameStart, .opponentTurn): return true
 		case (.gameStart, _): return false
 
-		// The player must send moves, and opponent's moves must be received
+		// The player must send moves
 		case (.playerTurn, .sendingMovement): return true
 		case (.playerTurn, _): return false
-		case (.opponentTurn, .receivingMovement): return true
-		case (.opponentTurn, _): return false
 
 		// A played move either leads to a new turn, or the end of the game
 		case (.sendingMovement, .opponentTurn), (.sendingMovement, .gameEnd): return true
-		case (.receivingMovement, .playerTurn), (.receivingMovement, .gameEnd): return true
+		case (.opponentTurn, .playerTurn), (.opponentTurn, .gameEnd): return true
+		case (.opponentTurn, _): return false
 
 		case (.sendingMovement, _), (_, .sendingMovement): return false
-		case (.receivingMovement, _), (_, .receivingMovement): return false
 		case (_, .playerTurn), (_, .opponentTurn): return false
 
 		case (_, .gameEnd): return false
