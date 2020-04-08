@@ -9,94 +9,61 @@
 import Foundation
 import HiveEngine
 import Regex
+import WebSocketKit
+import NIOWebSocket
 
 protocol HiveGameClientDelegate: class {
 	func clientDidConnect(_ hiveGameClient: HiveGameClient)
-	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, error: DisconnectError?)
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameClientResponse)
+	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?)
+	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameServerMessage)
 }
 
 class HiveGameClient {
-	private static let baseURL = URL(string: "")!
-
 	weak var delegate: HiveGameClientDelegate?
 
+	var webSocketUrl: URL?
+	private var ws: WebSocket? {
+		didSet {
+			ws?.onClose.whenComplete { [weak self] result in
+				guard let self = self else { return }
+				self.delegate?.clientDidDisconnect(self, code: self.ws?.closeCode)
+			}
+
+			ws?.onText { [weak self] ws, text in
+				guard let self = self,
+					let message = GameServerMessage(text) else { return }
+				self.delegate?.clientDidReceiveMessage(self, response: message)
+			}
+		}
+	}
+
 	func openConnection() {
-		DispatchQueue.main.async { [weak self] in
+		guard let url = webSocketUrl,
+			let scheme = url.scheme,
+			let host = url.host else {
+				print("Cannot open WebSocket connection without fully-formed URL: \(String(describing: webSocketUrl))")
+			return
+		}
+
+		let client = WebSocketClient(eventLoopGroupProvider: .createNew)
+		_ = client.connect(
+			scheme: scheme,
+			host: host,
+			port: 80,
+			path: url.path,
+			headers: HTTPHeaders()
+		) { [weak self] ws in
 			guard let self = self else { return }
+			self.ws = ws
 			self.delegate?.clientDidConnect(self)
 		}
 	}
 
-	func closeConnection() {
-		DispatchQueue.main.async { [weak self] in
-			guard let self = self else { return }
-			self.delegate?.clientDidDisconnect(self, error: nil)
-		}
+	func closeConnection(reason: WebSocketErrorCode?) {
+		_ = ws?.close(code: reason ?? .normalClosure)
 	}
 
 	func send(_ message: GameClientMessage) {
-		DispatchQueue.main.async { [weak self] in
-			guard let self = self else { return }
-			#warning("TODO: Send message to server")
-
-			#warning("TODO: remove mock response from server")
-			if let response = self.mockResponse(to: message) {
-				self.delegate?.clientDidReceiveMessage(self, response: response)
-			}
-		}
-	}
-}
-
-// MARK: - Message
-
-enum GameClientMessage {
-	case movement(Movement, GameState)
-
-	var rawValue: String {
-		switch self {
-		case .movement(let movement, let state):
-			return movement.notation(in: state)
-		}
-	}
-}
-
-// MARK: - Response
-
-enum GameClientResponse {
-	case movement(RelativeMovement)
-
-	init?(_ message: String) {
-		if message.hasPrefix("MOVE:"),
-			let movement = RelativeMovement(notation: message.substring(from: 5)) {
-			self = .movement(movement)
-		}
-
-		return nil
-	}
-}
-
-// MARK: - Error
-
-enum DisconnectError: LocalizedError {
-	case unknown
-
-	var localizedDescription: String {
-		switch self {
-		case .unknown: return "Unknown"
-		}
-	}
-}
-
-// MARK: - Mocking
-
-extension HiveGameClient {
-	fileprivate func mockResponse(to message: GameClientMessage) -> GameClientResponse? {
-		switch message {
-		case .movement(let movement, let state):
-			let copy = GameState(from: state)
-			copy.apply(movement)
-			return .movement(copy.availableMoves.randomElement()!.relative(in: copy)!)
-		}
+		ws?.send(message: message)
 	}
 }

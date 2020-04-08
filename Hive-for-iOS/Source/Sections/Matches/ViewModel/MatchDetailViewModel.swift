@@ -27,6 +27,12 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private(set) var matchId: Match.ID?
 	private var creatingNewMatch: Bool = false
 
+	private(set) lazy var client: HiveGameClient = {
+		let client = HiveGameClient()
+		client.delegate = self
+		return client
+	}()
+
 	var gameState: GameState {
 		GameState(options: self.options.options)
 	}
@@ -109,10 +115,14 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 					}
 				},
 				receiveValue: { [weak self] match in
-					self?.handle(match: match)
+					self?.handle(newMatch: match)
 				}
 			)
 			.store(in: self)
+	}
+
+	private func handle(newMatch: CreateMatchResponse) {
+		self.handle(match: newMatch.details)
 	}
 
 	private func handle(match: Match) {
@@ -122,6 +132,24 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		options.update(with: match.gameOptions)
 	}
 }
+
+// MARK: - f
+
+extension MatchDetailViewModel: HiveGameClientDelegate {
+	func clientDidConnect(_ hiveGameClient: HiveGameClient) {
+
+	}
+
+	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, error: DisconnectError?) {
+
+	}
+
+	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameClientResponse) {
+
+	}
+}
+
+// MARK: - GameOptionData
 
 final class GameOptionData: ObservableObject {
 	private(set) var options: Set<GameState.Option>
