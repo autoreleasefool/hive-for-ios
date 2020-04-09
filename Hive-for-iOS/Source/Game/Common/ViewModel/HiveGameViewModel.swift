@@ -10,6 +10,7 @@ import SwiftUI
 import Combine
 import HiveEngine
 import Loaf
+import NIOWebSocket
 
 enum HiveGameViewAction: BaseViewAction {
 	case viewContentDidLoad(GameViewContent)
@@ -38,11 +39,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	@Published var informationToPresent: GameInformation?
 	@Published var gameActionToPresent: GameAction?
 
-	private lazy var client: HiveGameClient = {
-		let client = HiveGameClient()
-		client.delegate = self
-		return client
-	}()
+	private var client: HiveGameClient
+
+	init(client: HiveGameClient) {
+		self.client = client
+	}
 
 	var loafSubject = PassthroughSubject<LoafState, Never>()
 	var animateToPosition = PassthroughSubject<Position, Never>()
@@ -70,6 +71,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	var gameState: GameState {
 		gameStateSubject.value!
+	}
+
+	var currentState: State {
+		flowStateSubject.value
 	}
 
 	var gameAnchor: Experience.HiveGame? {
@@ -157,10 +162,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			debugLog("Moving \(piece) to \(position)")
 			updatePosition(of: piece, to: position, shouldMove: true)
 		case .movementConfirmed(let movement):
-			#warning("TODO: shouldn't apply the movement here, but wait for it to be accepted by server")
 			debugLog("Sending move \(movement)")
 			apply(movement: movement)
-			client.send(.movement(movement, gameState))
 		case .cancelMovement:
 			pickUpHand()
 
@@ -180,7 +183,6 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func setupNewGame() {
-		#warning("TODO: check against the player's actual color")
 		if gameState.currentPlayer == playingAs {
 			transition(to: .playerTurn)
 		} else {
@@ -288,16 +290,32 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func apply(movement: Movement) {
-		guard inGame else { return }
-		let isOpponentMove = gameState.currentPlayer != playingAs
-		gameState.apply(movement)
-		gameStateSubject.send(gameState)
+		guard let relativeMovement = movement.relative(in: gameState) else {
+			#warning("TODO: present an error here when the move is invalid")
+			return
+		}
 
-		if isOpponentMove {
-			let opponent = playingAs.next
+		transition(to: .sendingMovement(movement))
+		client.send(.movement(relativeMovement))
+	}
+
+	private func didReceive(newState: GameState) {
+		guard inGame else { return }
+		self.gameStateSubject.send(newState)
+
+		let previousState = gameState
+		let opponent = playingAs.next
+		guard let previousUpdate = newState.previousMoves.last,
+			previousUpdate != previousState.previousMoves.last else {
+			return
+		}
+
+		let wasOpponentMove = previousUpdate.player == opponent
+
+		if wasOpponentMove {
 			let message: String
 			let image: UIImage
-			switch movement {
+			switch previousUpdate.movement {
 			case .pass:
 				message = "\(opponent) passed"
 				image = ImageAsset.Movement.pass
@@ -319,19 +337,15 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 				state: .custom(Loaf.Style(
 					backgroundColor: UIColor(.background),
 					textColor: UIColor(.text),
-					icon: image))
-			) { [weak self] dismissalReason in
-				guard let self = self,
-					dismissalReason == .tapped,
-					let position = movement.targetPosition else { return }
-				self.animateToPosition.send(position)
-			})
+					icon: image)
+				)) { [weak self] dismissalReason in
+					guard let self = self,
+						dismissalReason == .tapped,
+						let position = previousUpdate.movement.targetPosition else { return }
+					self.animateToPosition.send(position)
+				}
+			)
 		}
-	}
-
-	private func apply(movement: RelativeMovement) {
-		guard inGame else { return }
-		apply(movement: movement.movement(in: gameState))
 	}
 }
 
@@ -443,11 +457,13 @@ extension HiveGameViewModel {
 // MARK: HiveGameClientDelegate
 
 extension HiveGameViewModel: HiveGameClientDelegate {
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameClientResponse) {
+
+	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameServerMessage) {
 		switch response {
-		case .movement(let movement):
-			debugLog("Received movement: \(movement)")
-			self.apply(movement: movement)
+		case .gameState(let state):
+			self.didReceive(newState: state)
+		default:
+			debugLog("Received response: \(response)")
 		}
 	}
 
@@ -455,8 +471,8 @@ extension HiveGameViewModel: HiveGameClientDelegate {
 		debugLog("Connected to server")
 	}
 
-	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, error: DisconnectError?) {
-		debugLog("Disconnected from server, \(error)")
+	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?) {
+		debugLog("Disconnected from server, \(String(describing: code))")
 	}
 }
 
