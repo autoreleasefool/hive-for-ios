@@ -393,7 +393,7 @@ extension HiveGameScene {
 		switch newState {
 		case .gameStart:
 			prepareGame()
-		case .begin, .gameEnd, .forfeit, .opponentTurn, .sendingMovement, .receivingMovement:
+		case .begin, .gameEnd, .forfeit, .opponentTurn, .sendingMovement:
 			#warning("TODO: handle remaining state changes in view")
 		case .playerTurn:
 			startPlayerTurn()

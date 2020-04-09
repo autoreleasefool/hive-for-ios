@@ -12,9 +12,10 @@ import Loaf
 
 struct HiveGame: View {
 	@Environment(\.presentationMode) var presentationMode
-	@State var viewModel = HiveGameViewModel()
+	@ObservedObject var viewModel: HiveGameViewModel
 
-	init(state: GameState) {
+	init(state: GameState, client: HiveGameClient) {
+		viewModel = HiveGameViewModel(client: client)
 		viewModel.gameStateSubject.send(state)
 
 		#warning("TODO: set the player based on whether they are host or opponent")
@@ -25,7 +26,7 @@ struct HiveGame: View {
 		switch newState {
 		case .forfeit:
 			presentationMode.wrappedValue.dismiss()
-		case .begin, .gameEnd, .gameStart, .opponentTurn, .playerTurn, .sendingMovement, .receivingMovement:
+		case .begin, .gameEnd, .gameStart, .opponentTurn, .playerTurn, .sendingMovement:
 			break
 		}
 	}
@@ -33,10 +34,10 @@ struct HiveGame: View {
 	var body: some View {
 		ZStack {
 			#if targetEnvironment(simulator)
-			Hive2DGame(viewModel: $viewModel)
+			Hive2DGame(viewModel: viewModel)
 			#else
-			Hive2DGame(viewModel: $viewModel)
-//			HiveARGame(viewModel: $viewModel)
+			Hive2DGame(viewModel: viewModel)
+//			HiveARGame(viewModel: viewModel)
 			#endif
 			GameHUD().environmentObject(viewModel)
 		}

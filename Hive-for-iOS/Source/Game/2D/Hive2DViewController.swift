@@ -50,7 +50,7 @@ class Hive2DGameViewController: UIViewController {
 // MARK: - UIViewControllerRepresentable
 
 struct Hive2DGame: UIViewControllerRepresentable {
-	@Binding var viewModel: HiveGameViewModel
+	let viewModel: HiveGameViewModel
 
 	func makeUIViewController(context: Context) -> Hive2DGameViewController {
 		Hive2DGameViewController(viewModel: viewModel)

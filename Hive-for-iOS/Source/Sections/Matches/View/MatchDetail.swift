@@ -18,7 +18,7 @@ struct MatchDetail: View {
 	}
 
 	var startButton: some View {
-		NavigationLink(destination: HiveGame(state: self.viewModel.gameState)) {
+		NavigationLink(destination: HiveGame(state: self.viewModel.gameState, client: self.viewModel.client)) {
 			Text("Start")
 		}
 	}
