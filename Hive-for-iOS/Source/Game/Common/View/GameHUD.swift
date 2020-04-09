@@ -15,7 +15,7 @@ struct GameHUD: View {
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {
 		switch newState {
-		case .forfeit, .begin, .gameEnd, .gameStart, .opponentTurn, .playerTurn, .sendingMovement, .receivingMovement:
+		case .forfeit, .begin, .gameEnd, .gameStart, .opponentTurn, .playerTurn, .sendingMovement:
 			#warning("TODO: handle remaining state changes in hud")
 		}
 	}
@@ -67,7 +67,7 @@ struct GameHUD: View {
 struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {
 		GameHUD()
-			.environmentObject(HiveGameViewModel())
+			.environmentObject(HiveGameViewModel(client: HiveGameClient()))
 			.background(Color(.backgroundDark))
 	}
 }
