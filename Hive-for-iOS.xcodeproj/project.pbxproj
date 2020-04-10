@@ -19,6 +19,7 @@
 		CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93A02427DCE600F6E104 /* CoreGraphics+Extensions.swift */; };
 		CA0F93A32427E83500F6E104 /* SKView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93A22427E83500F6E104 /* SKView+Extensions.swift */; };
 		CA0F93A52428AEE200F6E104 /* DebugSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93A42428AEE200F6E104 /* DebugSprite.swift */; };
+		CA22022C243F800D005367B6 /* LoadingHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA22022B243F800D005367B6 /* LoadingHUD.swift */; };
 		CA40344923932603006C6BE3 /* HiveEngine in Frameworks */ = {isa = PBXBuildFile; productRef = CA40344823932603006C6BE3 /* HiveEngine */; };
 		CA45F9BA242B7C4C007EC94D /* ActionHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9B9242B7C4C007EC94D /* ActionHUD.swift */; };
 		CA45F9BC242B85C2007EC94D /* GameAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9BB242B85C2007EC94D /* GameAction.swift */; };
@@ -99,6 +100,7 @@
 		CA0F93A02427DCE600F6E104 /* CoreGraphics+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions.swift"; sourceTree = "<group>"; };
 		CA0F93A22427E83500F6E104 /* SKView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKView+Extensions.swift"; sourceTree = "<group>"; };
 		CA0F93A42428AEE200F6E104 /* DebugSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugSprite.swift; sourceTree = "<group>"; };
+		CA22022B243F800D005367B6 /* LoadingHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingHUD.swift; sourceTree = "<group>"; };
 		CA45F9B9242B7C4C007EC94D /* ActionHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionHUD.swift; sourceTree = "<group>"; };
 		CA45F9BB242B85C2007EC94D /* GameAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameAction.swift; sourceTree = "<group>"; };
 		CA45F9BF242E4857007EC94D /* PieceStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceStack.swift; sourceTree = "<group>"; };
@@ -430,6 +432,7 @@
 			children = (
 				CABDFCDD23DBA17200C697AD /* BottomSheet.swift */,
 				CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */,
+				CA22022B243F800D005367B6 /* LoadingHUD.swift */,
 				CABDFD0523DCA73500C697AD /* HexImage.swift */,
 				CAFA91F523E958EE0087F1F0 /* PopoverSheet.swift */,
 				CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */,
@@ -627,6 +630,7 @@
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
 				CAA87BC72432994D006E418B /* LoginSignup.swift in Sources */,
 				CAC68CC824327557003CC2E6 /* AccessToken.swift in Sources */,
+				CA22022C243F800D005367B6 /* LoadingHUD.swift in Sources */,
 				CA45F9BA242B7C4C007EC94D /* ActionHUD.swift in Sources */,
 				CAA87BCB243299C8006E418B /* LoginSignupData.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveARViewController.swift in Sources */,
