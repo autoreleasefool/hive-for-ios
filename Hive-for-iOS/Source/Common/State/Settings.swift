@@ -8,6 +8,4 @@
 
 import Foundation
 
-class Settings: ObservableObject {
-	
-}
+class Settings: ObservableObject { }

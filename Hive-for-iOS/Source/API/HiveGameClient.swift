@@ -15,7 +15,7 @@ import NIOWebSocket
 protocol HiveGameClientDelegate: class {
 	func clientDidConnect(_ hiveGameClient: HiveGameClient)
 	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?)
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameServerMessage)
+	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage)
 }
 
 class HiveGameClient {
@@ -32,7 +32,7 @@ class HiveGameClient {
 			ws?.onText { [weak self] ws, text in
 				guard let self = self,
 					let message = GameServerMessage(text) else { return }
-				self.delegate?.clientDidReceiveMessage(self, response: message)
+				self.delegate?.clientDidReceiveMessage(self, message: message)
 			}
 		}
 	}

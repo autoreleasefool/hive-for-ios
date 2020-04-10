@@ -457,13 +457,12 @@ extension HiveGameViewModel {
 // MARK: HiveGameClientDelegate
 
 extension HiveGameViewModel: HiveGameClientDelegate {
-
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameServerMessage) {
-		switch response {
+	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage) {
+		switch message {
 		case .gameState(let state):
 			self.didReceive(newState: state)
 		default:
-			debugLog("Received response: \(response)")
+			debugLog("Received message: \(message)")
 		}
 	}
 
