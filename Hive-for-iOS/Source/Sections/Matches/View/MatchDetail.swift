@@ -12,15 +12,10 @@ import HiveEngine
 struct MatchDetail: View {
 	private let initialId: Match.ID?
 	@ObservedObject private var viewModel = MatchDetailViewModel()
+	@State private var inGame: Bool = false
 
 	init(id: Match.ID?) {
 		self.initialId = id
-	}
-
-	var startButton: some View {
-		NavigationLink(destination: HiveGame(state: self.viewModel.gameState, client: self.viewModel.client)) {
-			Text("Start")
-		}
 	}
 
 	private func playerSection(match: Match) -> some View {
@@ -87,6 +82,12 @@ struct MatchDetail: View {
 
 	var body: some View {
 		ScrollView {
+			NavigationLink(
+				destination: HiveGame(client: self.viewModel.client) { self.viewModel.gameState },
+				isActive: self.$inGame,
+				label: { EmptyView() }
+			)
+
 			if self.viewModel.match == nil {
 				Text("Loading")
 			} else {
@@ -101,9 +102,9 @@ struct MatchDetail: View {
 		}
 		.padding(.horizontal, length: .m)
 		.navigationBarTitle(Text(viewModel.navigationBarTitle), displayMode: .inline)
-		.navigationBarItems(trailing: startButton)
 		.onAppear { self.viewModel.postViewAction(.onAppear(self.initialId)) }
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
+		.onReceive(self.viewModel.$gameState) { self.inGame = $0 != nil }
 		.loaf(self.$viewModel.errorLoaf)
 	}
 }

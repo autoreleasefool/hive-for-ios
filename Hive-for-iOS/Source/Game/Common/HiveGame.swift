@@ -13,10 +13,11 @@ import Loaf
 struct HiveGame: View {
 	@Environment(\.presentationMode) var presentationMode
 	@ObservedObject var viewModel: HiveGameViewModel
+	private let stateBuilder: () -> GameState?
 
-	init(state: GameState, client: HiveGameClient) {
+	init(client: HiveGameClient, stateBuilder: @escaping () -> GameState?) {
+		self.stateBuilder = stateBuilder
 		viewModel = HiveGameViewModel(client: client)
-		viewModel.gameStateSubject.send(state)
 
 		#warning("TODO: set the player based on whether they are host or opponent")
 		viewModel.playingAs = .white
@@ -46,5 +47,14 @@ struct HiveGame: View {
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
 		.navigationBarBackButtonHidden(true)
+		.onAppear {
+			guard let state = self.stateBuilder() else {
+				self.viewModel.postViewAction(.failedToStartGame)
+				self.presentationMode.wrappedValue.dismiss()
+				return
+			}
+
+			self.viewModel.postViewAction(.onAppear(state))
+		}
 	}
 }

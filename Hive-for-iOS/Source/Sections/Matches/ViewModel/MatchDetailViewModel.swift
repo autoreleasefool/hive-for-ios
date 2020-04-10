@@ -22,6 +22,7 @@ enum MatchDetailViewAction: BaseViewAction {
 
 class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var match: Match?
+	@Published private(set) var gameState: GameState?
 	@Published private(set) var options: GameOptionData = GameOptionData(options: [])
 	@Published var errorLoaf: Loaf?
 
@@ -33,10 +34,6 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		client.delegate = self
 		return client
 	}()
-
-	var gameState: GameState {
-		GameState(options: self.options.options)
-	}
 
 	var navigationBarTitle: String {
 		if let host = match?.host {
@@ -146,8 +143,24 @@ extension MatchDetailViewModel: HiveGameClientDelegate {
 
 	}
 
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, response: GameServerMessage) {
-
+	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage) {
+		switch message {
+		case .gameState(let state):
+			self.gameState = state
+		case .playerReady(let id, let ready):
+			break
+		case .setOption(let option, let value):
+			self.options.set(option: option, to: value)
+		case .message(let id, let string):
+			#warning("TODO: display message")
+			print(#"Received message "\#(string)" from \#(id)"#)
+		case .forfeit(let id):
+			#warning("TODO: handle forfeit")
+			print("Player has left match: \(id)")
+		case .error(let error):
+			#warning("TODO: handle error while preparing match")
+			print("Received error in Match Details: \(error)")
+		}
 	}
 }
 
@@ -162,6 +175,14 @@ final class GameOptionData: ObservableObject {
 
 	func update(with: Set<GameState.Option>) {
 		self.options = with
+	}
+
+	func set(option: GameState.Option, to value: Bool) {
+		if value {
+			self.options.insert(option)
+		} else {
+			self.options.remove(option)
+		}
 	}
 
 	func binding(for option: GameState.Option) -> Binding<Bool> {

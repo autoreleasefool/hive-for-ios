@@ -13,6 +13,8 @@ import Loaf
 import NIOWebSocket
 
 enum HiveGameViewAction: BaseViewAction {
+	case failedToStartGame
+	case onAppear(GameState)
 	case viewContentDidLoad(GameViewContent)
 	case viewContentReady
 	case viewInteractionsReady
@@ -137,6 +139,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {
+		case .failedToStartGame:
+			loafSubject.send(LoafState("Failed to start game", state: .error))
+		case .onAppear(let state):
+			initialize(withState: state)
 		case .viewContentDidLoad(let content):
 			setupView(content: content)
 		case .viewContentReady:
@@ -175,6 +181,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .toggleDebug:
 			debugEnabledSubject.send(!debugEnabledSubject.value)
 		}
+	}
+
+	private func initialize(withState state: GameState) {
+		guard flowStateSubject.value == .begin else { return }
+		gameStateSubject.send(state)
 	}
 
 	private func attemptSetupNewGame() {
