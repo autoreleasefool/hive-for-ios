@@ -129,6 +129,9 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		client.webSocketURL = match.webSocketURL
 		errorLoaf = nil
 		options.update(with: match.gameOptions)
+
+		client.openConnection()
+		LoadingHUD.shared.show()
 	}
 }
 
@@ -136,11 +139,11 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 extension MatchDetailViewModel: HiveGameClientDelegate {
 	func clientDidConnect(_ hiveGameClient: HiveGameClient) {
-
+		LoadingHUD.shared.hide()
 	}
 
 	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?) {
-
+		#warning("TODO: handle abnormal disconnects")
 	}
 
 	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage) {
