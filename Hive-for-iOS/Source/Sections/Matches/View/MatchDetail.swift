@@ -20,9 +20,18 @@ struct MatchDetail: View {
 
 	private func playerSection(match: Match) -> some View {
 		HStack(spacing: 0) {
-			MatchUserSummary(match.host, iconSize: .l)
+			MatchUserSummary(
+				match.host,
+				isReady: self.viewModel.isPlayerReady(id: match.host?.id),
+				iconSize: .l
+			)
 			Spacer()
-			MatchUserSummary(match.opponent, alignment: .trailing, iconSize: .l)
+			MatchUserSummary(
+				match.opponent,
+				isReady: self.viewModel.isPlayerReady(id: match.opponent?.id),
+				alignment: .trailing,
+				iconSize: .l
+			)
 		}
 	}
 

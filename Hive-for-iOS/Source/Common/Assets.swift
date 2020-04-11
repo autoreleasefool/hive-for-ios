@@ -52,6 +52,7 @@ enum ColorAsset: String {
 
 	case highlight = "Colors/Highlight"
 	case destructive = "Colors/Destructive"
+	case success = "Colors/Success"
 
 	case text = "Colors/Text"
 	case textSecondary = "Colors/TextSecondary"

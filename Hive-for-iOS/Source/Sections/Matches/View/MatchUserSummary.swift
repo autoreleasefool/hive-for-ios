@@ -14,12 +14,20 @@ struct MatchUserSummary: View {
 	}
 
 	let user: Match.User?
+	let isReady: Bool
 	let textAlignment: Alignment
 	let compact: Bool
 	let iconSize: Metrics.Image
 
-	init(_ user: Match.User?, alignment: Alignment = .leading, compact: Bool = false, iconSize: Metrics.Image = .m) {
+	init(
+		_ user: Match.User?,
+		isReady: Bool = false,
+		alignment: Alignment = .leading,
+		compact: Bool = false,
+		iconSize: Metrics.Image = .m
+	) {
 		self.user = user
+		self.isReady = isReady
 		self.textAlignment = alignment
 		self.compact = compact
 		self.iconSize = iconSize
@@ -36,7 +44,8 @@ struct MatchUserSummary: View {
 	}
 
 	var userImage: some View {
-		HexImage(url: user?.avatarURL, placeholder: ImageAsset.borderlessGlyph)
+		let stroke: ColorAsset = user != nil && isReady ? .success : .primary
+		return HexImage(url: user?.avatarURL, placeholder: ImageAsset.borderlessGlyph, stroke: stroke)
 			.placeholderTint(.primary)
 			.squareImage(iconSize)
 	}
@@ -74,10 +83,12 @@ struct MatchUserSummaryPreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
 			MatchUserSummary(Match.User.users[0])
+			MatchUserSummary(Match.User.users[0], isReady: true)
 			MatchUserSummary(Match.User.users[0], iconSize: .l)
 			MatchUserSummary(Match.User.users[0], alignment: .trailing)
 			MatchUserSummary(Match.User.users[0], compact: true)
 			MatchUserSummary(nil)
+			MatchUserSummary(nil, isReady: true)
 			MatchUserSummary(nil, iconSize: .l)
 			MatchUserSummary(nil, alignment: .trailing)
 			MatchUserSummary(nil, compact: true)

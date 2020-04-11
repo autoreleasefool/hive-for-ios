@@ -24,6 +24,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var match: Match?
 	@Published private(set) var gameState: GameState?
 	@Published private(set) var options: GameOptionData = GameOptionData(options: [])
+	@Published private(set) var readyPlayers: Set<UUID> = Set()
 	@Published var errorLoaf: Loaf?
 
 	private(set) var matchId: Match.ID?
@@ -133,6 +134,11 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		client.openConnection()
 		LoadingHUD.shared.show()
 	}
+
+	func isPlayerReady(id: UUID?) -> Bool {
+		guard let id = id else { return false }
+		return readyPlayers.contains(id)
+	}
 }
 
 // MARK: - HiveGameClientDelegate
@@ -151,7 +157,11 @@ extension MatchDetailViewModel: HiveGameClientDelegate {
 		case .gameState(let state):
 			self.gameState = state
 		case .playerReady(let id, let ready):
-			break
+			if ready {
+				readyPlayers.insert(id)
+			} else {
+				readyPlayers.remove(id)
+			}
 		case .setOption(let option, let value):
 			self.options.set(option: option, to: value)
 		case .message(let id, let string):
