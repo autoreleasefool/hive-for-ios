@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import Foundation
+import Loaf
 
 enum LoginSignupViewAction: BaseViewAction {
 	case loginSignup(LoginSignupData)
@@ -42,6 +43,7 @@ enum LoginFieldID {
 class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	@Published private(set) var loggingIn: Bool = true
 	@Published private(set) var activeField: LoginFieldID?
+	@Published var errorLoaf: Loaf?
 
 	private var account: Account!
 
@@ -77,7 +79,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						#warning("TODO: do something with the error")
+						self?.errorLoaf = error.loaf
 					}
 				},
 				receiveValue: { [weak self] token in
@@ -95,7 +97,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						#warning("TODO: do something with the error")
+						self?.errorLoaf = error.loaf
 					}
 				},
 				receiveValue: { [weak self] userSignup in
@@ -108,9 +110,10 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	private func handle(accessToken: AccessToken) {
 		do {
 			try account.store(accessToken: accessToken)
-			self.didSuccessfullyAuthenticate.send()
+			didSuccessfullyAuthenticate.send()
+			errorLoaf = nil
 		} catch {
-			#warning("TODO: do something with the error")
+			errorLoaf = LoafState(error.localizedDescription, state: .error).build()
 		}
 	}
 
