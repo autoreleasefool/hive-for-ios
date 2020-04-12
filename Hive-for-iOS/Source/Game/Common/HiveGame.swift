@@ -36,14 +36,15 @@ struct HiveGame: View {
 		ZStack {
 			#if targetEnvironment(simulator)
 			Hive2DGame(viewModel: viewModel)
+				.edgesIgnoringSafeArea(.all)
 			#else
 			Hive2DGame(viewModel: viewModel)
+				.edgesIgnoringSafeArea(.all)
 //			HiveARGame(viewModel: viewModel)
 			#endif
 			GameHUD().environmentObject(viewModel)
 		}
 		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }
-		.edgesIgnoringSafeArea(.all)
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
 		.navigationBarBackButtonHidden(true)

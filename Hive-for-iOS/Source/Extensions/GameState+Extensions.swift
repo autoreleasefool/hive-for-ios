@@ -75,6 +75,17 @@ extension GameState {
 	func pieceHasMoves(_ piece: Piece) -> Bool {
 		availableMoves.contains(where: { $0.movedUnit == piece })
 	}
+
+	var displayWinner: String? {
+		let winner = self.winner
+		if winner.count == 2 {
+			return "It's a tie!"
+		} else if winner.count == 1 {
+			return winner.first == .white ? "White wins!" : "Black wins!"
+		}
+
+		return nil
+	}
 }
 
 // MARK: Options

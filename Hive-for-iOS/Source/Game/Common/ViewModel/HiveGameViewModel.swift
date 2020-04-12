@@ -30,7 +30,7 @@ enum HiveGameViewAction: BaseViewAction {
 	case movementConfirmed(Movement)
 	case cancelMovement
 
-	case exitGame
+	case openSettings
 	case arViewError(Error)
 
 	case toggleDebug
@@ -121,6 +121,21 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		)
 	}
 
+	var displayState: String {
+		switch flowStateSubject.value {
+		case .playerTurn:
+			return "Your turn"
+		case .sendingMovement:
+			return "Sending movement..."
+		case .opponentTurn:
+			return "Opponent's turn"
+		case .gameEnd:
+			return gameState.displayWinner ?? ""
+		case .begin, .forfeit, .gameStart:
+			return ""
+		}
+	}
+
 	var shouldHideHUDControls: Bool {
 		showPlayerHand.wrappedValue || hasInformation.wrappedValue || hasGameAction.wrappedValue
 	}
@@ -173,8 +188,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .cancelMovement:
 			pickUpHand()
 
-		case .exitGame:
-			transition(to: .forfeit)
+		case .openSettings:
+			#warning("TODO: open game settings")
 		case .arViewError(let error):
 			loafSubject.send(LoafState(error.localizedDescription, state: .error))
 
