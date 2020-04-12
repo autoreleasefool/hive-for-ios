@@ -13,6 +13,8 @@ enum GameServerMessage {
 	case gameState(GameState)
 	case setOption(GameState.Option, Bool)
 	case playerReady(UUID, Bool)
+	case playerJoined(UUID)
+	case playerLeft(UUID)
 	case message(UUID, String)
 	case forfeit(UUID)
 	case error(GameServerError)
@@ -36,6 +38,12 @@ enum GameServerMessage {
 		} else if message.hasPrefix("FF") {
 			guard let userId = GameServerMessage.extractUserId(from: message) else { return nil }
 			self = .forfeit(userId)
+		} else if message.hasPrefix("JOIN") {
+			guard let userId = GameServerMessage.extractUserId(from: message) else { return nil}
+			self = .playerJoined(userId)
+		} else if message.hasPrefix("LEAVE") {
+			guard let userId = GameServerMessage.extractUserId(from: message) else { return nil}
+			self = .playerLeft(userId)
 		} else if message.hasPrefix(("ERR")) {
 			let error = GameServerMessage.extractError(from: message)
 			self = .error(error)

@@ -209,6 +209,11 @@ extension MatchDetailViewModel: HiveGameClientDelegate {
 
 	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage) {
 		switch message {
+		case .playerJoined:
+			fetchMatchDetails()
+		case .playerLeft(let id):
+			fetchMatchDetails()
+			readyPlayers.remove(id)
 		case .gameState(let state):
 			self.gameState = state
 		case .playerReady(let id, let ready):
