@@ -17,7 +17,7 @@ enum MatchDetailViewAction: BaseViewAction {
 	case onAppear(Match.ID?)
 	case onDisappear
 	case refreshMatchDetails
-	case modifyOptions
+	case startGame
 }
 
 class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
@@ -50,6 +50,25 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		}
 	}
 
+	var showStartButton: Bool {
+		match?.host != nil && match?.opponent != nil
+	}
+
+	var startButtonText: String {
+		if let hostId = match?.host?.id, let opponentId = match?.opponent?.id {
+			let user = userIsHost ? hostId : opponentId
+			let opponent = userIsHost ? opponentId : hostId
+
+			if readyPlayers.contains(user) {
+				return "Not ready"
+			} else if readyPlayers.contains(opponent) {
+				return readyPlayers.contains(user) ? "Start" : "Ready"
+			}
+		}
+
+		return ""
+	}
+
 	init(_ match: Match? = nil) {
 		self.matchId = match?.id
 		self.match = match
@@ -72,10 +91,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			}
 		case .refreshMatchDetails:
 			fetchMatchDetails()
+		case .startGame:
+			toggleReadiness()
 		case .onDisappear:
 			cleanUp()
-		case .modifyOptions:
-			break
 		}
 	}
 
@@ -128,6 +147,17 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	private func handle(newMatch: CreateMatchResponse) {
 		self.handle(match: newMatch.details)
+	}
+
+	private func toggleReadiness() {
+		guard let id = userIsHost ? match?.host?.id : match?.opponent?.id else { return }
+		if isPlayerReady(id: id) {
+			readyPlayers.remove(id)
+			client.send(.readyToPlay)
+		} else {
+			readyPlayers.insert(id)
+			client.send(.readyToPlay)
+		}
 	}
 
 	private func handle(match: Match) {

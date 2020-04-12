@@ -79,7 +79,7 @@ struct MatchDetail: View {
 		.disabled(!viewModel.userIsHost)
 	}
 
-	var otherOptionsSection: some View {
+	private var otherOptionsSection: some View {
 		VStack(alignment: .leading) {
 			Text("Other options")
 				.bold()
@@ -93,6 +93,19 @@ struct MatchDetail: View {
 
 			}
 		}
+	}
+
+	private var startButton: some View {
+		if viewModel.showStartButton {
+			return AnyView(Button(action: {
+				self.viewModel.postViewAction(.startGame)
+			}, label: {
+				Text(viewModel.startButtonText)
+			}))
+		} else {
+			return AnyView(EmptyView())
+		}
+
 	}
 
 	var body: some View {
@@ -117,6 +130,7 @@ struct MatchDetail: View {
 		}
 		.padding(.horizontal, length: .m)
 		.navigationBarTitle(Text(viewModel.navigationBarTitle), displayMode: .inline)
+		.navigationBarItems(trailing: startButton)
 		.onAppear {
 			self.viewModel.setAccount(to: self.account)
 			self.viewModel.postViewAction(.onAppear(self.initialId))
