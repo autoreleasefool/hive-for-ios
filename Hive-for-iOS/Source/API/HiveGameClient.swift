@@ -24,12 +24,12 @@ class HiveGameClient {
 	var webSocketURL: URL?
 	private var ws: WebSocket? {
 		didSet {
-			ws?.onClose.whenComplete { [weak self] result in
+			ws?.onClose.whenComplete { [weak self] _ in
 				guard let self = self else { return }
 				self.delegate?.clientDidDisconnect(self, code: self.ws?.closeCode)
 			}
 
-			ws?.onText { [weak self] ws, text in
+			ws?.onText { [weak self] _, text in
 				guard let self = self,
 					let message = GameServerMessage(text) else { return }
 				self.delegate?.clientDidReceiveMessage(self, message: message)

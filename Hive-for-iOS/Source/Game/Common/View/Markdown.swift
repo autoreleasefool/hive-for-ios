@@ -105,22 +105,21 @@ struct MarkdownPreview: PreviewProvider {
 	@State static var height: CGFloat = 90
 
 	static var previews: some View {
-		GeometryReader { geometry in
-			return Markdown(
-				"On 2 your turn you can either move a piece or [place a piece](rule:placement). " +
-				"Each type of piece moves in a unique way, and can be learned by looking through the rules, " +
-				"or by tapping on any piece on the board or in your hand. Moving a piece must always " +
-				"respect the [freedom of movement](rule:freedomOfMovement) rule and the [one hive](rule:oneHive) " +
-				"rule. A player cannot move their pieces until they have [placed](rule:placement) their " +
-				"[queen](class:Queen). If a player is ever unable to move or place a piece, they must " +
-				"[pass their turn](rule:passing). If they have any moves available, then they **must** move. " +
-				"The [pill bug](class:Pill Bug) adds additional complexity to moving pieces and should be " +
-				"explored separately.",
-				height: $height
-			)
-				.frame(minHeight: height, maxHeight: height)
-				.background(Color(.background))
-		}.background(Color(.primary))
+		Markdown(
+			"On 2 your turn you can either move a piece or [place a piece](rule:placement). " +
+			"Each type of piece moves in a unique way, and can be learned by looking through the rules, " +
+			"or by tapping on any piece on the board or in your hand. Moving a piece must always " +
+			"respect the [freedom of movement](rule:freedomOfMovement) rule and the [one hive](rule:oneHive) " +
+			"rule. A player cannot move their pieces until they have [placed](rule:placement) their " +
+			"[queen](class:Queen). If a player is ever unable to move or place a piece, they must " +
+			"[pass their turn](rule:passing). If they have any moves available, then they **must** move. " +
+			"The [pill bug](class:Pill Bug) adds additional complexity to moving pieces and should be " +
+			"explored separately.",
+			height: $height
+		)
+		.frame(minHeight: height, maxHeight: height)
+		.background(Color(.background))
+		.background(Color(.primary).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif
