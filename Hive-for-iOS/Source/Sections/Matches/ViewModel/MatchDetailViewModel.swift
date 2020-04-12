@@ -27,6 +27,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
 	@Published var errorLoaf: Loaf?
 
+	private var account: Account!
+
 	private(set) var matchId: Match.ID?
 	private var creatingNewMatch: Bool = false
 
@@ -35,6 +37,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		client.delegate = self
 		return client
 	}()
+
+	var userIsHost: Bool {
+		account.userId == match?.host?.id
+	}
 
 	var navigationBarTitle: String {
 		if let host = match?.host {
@@ -144,6 +150,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		Binding(
 			get: { self.gameOptions.contains(option) },
 			set: {
+				guard self.userIsHost else { return }
 				if $0 {
 					self.gameOptions.insert(option)
 				} else {
@@ -152,6 +159,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 				self.client.send(.setOption(option, $0))
 			}
 		)
+	}
+
+	func setAccount(to account: Account) {
+		self.account = account
 	}
 }
 

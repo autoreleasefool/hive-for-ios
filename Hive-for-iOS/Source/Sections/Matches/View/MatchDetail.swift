@@ -11,6 +11,8 @@ import HiveEngine
 
 struct MatchDetail: View {
 	private let initialId: Match.ID?
+
+	@EnvironmentObject private var account: Account
 	@ObservedObject private var viewModel = MatchDetailViewModel()
 	@State private var inGame: Bool = false
 
@@ -74,6 +76,7 @@ struct MatchDetail: View {
 					.squareImage(.l)
 			}
 		})
+		.disabled(!viewModel.userIsHost)
 	}
 
 	var otherOptionsSection: some View {
@@ -85,7 +88,9 @@ struct MatchDetail: View {
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
 				Toggle(option.rawValue, isOn: self.viewModel.optionEnabled(option: option))
+					.disabled(!self.viewModel.userIsHost)
 					.foregroundColor(Color(.text))
+
 			}
 		}
 	}
@@ -112,7 +117,10 @@ struct MatchDetail: View {
 		}
 		.padding(.horizontal, length: .m)
 		.navigationBarTitle(Text(viewModel.navigationBarTitle), displayMode: .inline)
-		.onAppear { self.viewModel.postViewAction(.onAppear(self.initialId)) }
+		.onAppear {
+			self.viewModel.setAccount(to: self.account)
+			self.viewModel.postViewAction(.onAppear(self.initialId))
+		}
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 		.onReceive(self.viewModel.$gameState) { self.inGame = $0 != nil }
 		.loaf(self.$viewModel.errorLoaf)
