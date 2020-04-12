@@ -48,7 +48,7 @@ enum HiveAPIError: LocalizedError {
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
 class HiveAPI {
-	static let baseURL = URL(string: "")!
+	static let baseURL = URL(string: "https://example.com")!
 
 	static let shared = HiveAPI()
 
