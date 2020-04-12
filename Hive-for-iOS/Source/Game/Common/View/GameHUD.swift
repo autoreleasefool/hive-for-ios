@@ -38,8 +38,8 @@ struct GameHUD: View {
 		Button(action: {
 			self.viewModel.postViewAction(.openSettings)
 		}, label: {
-			HexImage(ImageAsset.Icon.info, stroke: .backgroundLight)
-				.placeholderTint(.backgroundLight)
+			HexImage(ImageAsset.Icon.info, stroke: .textSecondary)
+				.placeholderTint(.textSecondary)
 				.squareInnerImage(.s)
 		})
 		.squareImage(buttonSize)
