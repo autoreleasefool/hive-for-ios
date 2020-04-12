@@ -185,6 +185,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	private func initialize(withState state: GameState) {
 		guard flowStateSubject.value == .begin else { return }
+		client.delegate = self
 		gameStateSubject.send(state)
 	}
 
