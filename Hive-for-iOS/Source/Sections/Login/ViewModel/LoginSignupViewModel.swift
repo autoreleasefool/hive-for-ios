@@ -117,7 +117,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 		}
 	}
 
-	func update(account: Account) {
+	func setAccount(to account: Account) {
 		self.account = account
 	}
 }

@@ -62,7 +62,7 @@ class HiveAPI {
 
 	private var account: Account!
 
-	func set(account: Account) {
+	func setAccount(to account: Account) {
 		self.account = account
 	}
 

@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		// Create Account container and attempt to load credentials
 		let account = Account()
-		HiveAPI.shared.set(account: account)
+		HiveAPI.shared.setAccount(to: account)
 
 		// Create settings and load preferences
 		let settings = Settings()

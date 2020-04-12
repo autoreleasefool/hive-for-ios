@@ -120,7 +120,7 @@ struct LoginSignup: View {
 			.padding(.vertical, length: .xl)
 		}
 		.avoidingKeyboard()
-		.onAppear { self.viewModel.update(account: self.account) }
+		.onAppear { self.viewModel.setAccount(to: self.account) }
 		.loaf($viewModel.errorLoaf)
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
