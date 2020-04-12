@@ -23,7 +23,7 @@ enum MatchDetailViewAction: BaseViewAction {
 class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var match: Match?
 	@Published private(set) var gameState: GameState?
-	@Published private(set) var options: GameOptionData = GameOptionData(options: [])
+	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
 	@Published var errorLoaf: Loaf?
 
@@ -51,7 +51,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		super.init()
 
 		if let match = match {
-			self.options.update(with: match.gameOptions)
+			self.gameOptions = match.gameOptions
 		}
 	}
 
@@ -127,9 +127,9 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func handle(match: Match) {
 		self.matchId = match.id
 		self.match = match
+		self.gameOptions = match.gameOptions
 		client.webSocketURL = match.webSocketURL
 		errorLoaf = nil
-		options.update(with: match.gameOptions)
 
 		client.openConnection()
 		LoadingHUD.shared.show()
@@ -138,6 +138,20 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	func isPlayerReady(id: UUID?) -> Bool {
 		guard let id = id else { return false }
 		return readyPlayers.contains(id)
+	}
+
+	func optionEnabled(option: GameState.Option) -> Binding<Bool> {
+		Binding(
+			get: { self.gameOptions.contains(option) },
+			set: {
+				if $0 {
+					self.gameOptions.insert(option)
+				} else {
+					self.gameOptions.remove(option)
+				}
+				self.client.send(.setOption(option, $0))
+			}
+		)
 	}
 }
 
@@ -163,7 +177,11 @@ extension MatchDetailViewModel: HiveGameClientDelegate {
 				readyPlayers.remove(id)
 			}
 		case .setOption(let option, let value):
-			self.options.set(option: option, to: value)
+			if value {
+				self.gameOptions.insert(option)
+			} else {
+				self.gameOptions.remove(option)
+			}
 		case .message(let id, let string):
 			#warning("TODO: display message")
 			print(#"Received message "\#(string)" from \#(id)"#)
@@ -174,39 +192,5 @@ extension MatchDetailViewModel: HiveGameClientDelegate {
 			#warning("TODO: handle error while preparing match")
 			print("Received error in Match Details: \(error)")
 		}
-	}
-}
-
-// MARK: - GameOptionData
-
-final class GameOptionData: ObservableObject {
-	private(set) var options: Set<GameState.Option>
-
-	init(options: Set<GameState.Option>) {
-		self.options = options
-	}
-
-	func update(with: Set<GameState.Option>) {
-		self.options = with
-	}
-
-	func set(option: GameState.Option, to value: Bool) {
-		if value {
-			self.options.insert(option)
-		} else {
-			self.options.remove(option)
-		}
-	}
-
-	func binding(for option: GameState.Option) -> Binding<Bool> {
-		Binding(get: {
-			self.options.contains(option)
-		}, set: {
-			if $0 {
-				self.options.insert(option)
-			} else {
-				self.options.remove(option)
-			}
-		})
 	}
 }

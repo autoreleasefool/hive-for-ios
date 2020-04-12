@@ -35,7 +35,7 @@ struct MatchDetail: View {
 		}
 	}
 
-	private func expansionSection(options: GameOptionData) -> some View {
+	var expansionSection: some View {
 		VStack(alignment: .leading) {
 			Text("Expansions")
 				.bold()
@@ -45,23 +45,24 @@ struct MatchDetail: View {
 			HStack(spacing: .l) {
 				Spacer()
 				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-					self.optionPreview(for: option, enabled: options.options.contains(option))
+					self.expansionOption(for: option, enabled: self.viewModel.gameOptions.contains(option))
 				}
 				Spacer()
 			}
 		}
 	}
 
-	private func optionPreview(for option: GameState.Option, enabled: Bool) -> some View {
+	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
 		Button(action: {
-			self.viewModel.options.binding(for: option).wrappedValue.toggle()
+			self.viewModel.optionEnabled(option: option).wrappedValue.toggle()
 		}, label: {
 			ZStack {
 				Text(option.preview ?? "")
 					.subtitle()
-					.foregroundColor(enabled
-						? Color(.primary)
-						: Color(.textSecondary)
+					.foregroundColor(
+						enabled
+							? Color(.primary)
+							: Color(.textSecondary)
 					)
 				Hex()
 					.stroke(
@@ -75,7 +76,7 @@ struct MatchDetail: View {
 		})
 	}
 
-	private func otherOptionsSection(options: GameOptionData) -> some View {
+	var otherOptionsSection: some View {
 		VStack(alignment: .leading) {
 			Text("Other options")
 				.bold()
@@ -83,7 +84,7 @@ struct MatchDetail: View {
 				.foregroundColor(Color(.text))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
-				Toggle(option.rawValue, isOn: self.viewModel.options.binding(for: option))
+				Toggle(option.rawValue, isOn: self.viewModel.optionEnabled(option: option))
 					.foregroundColor(Color(.text))
 			}
 		}
@@ -103,9 +104,9 @@ struct MatchDetail: View {
 				VStack(spacing: .m) {
 					self.playerSection(match: self.viewModel.match!)
 					Divider().background(Color(.divider))
-					self.expansionSection(options: self.viewModel.options)
+					self.expansionSection
 					Divider().background(Color(.divider))
-					self.otherOptionsSection(options: self.viewModel.options)
+					self.otherOptionsSection
 				}
 			}
 		}
