@@ -12,15 +12,11 @@ import Loaf
 
 struct HiveGame: View {
 	@Environment(\.presentationMode) var presentationMode
-	@ObservedObject var viewModel: HiveGameViewModel
+	@EnvironmentObject var viewModel: HiveGameViewModel
 	private let stateBuilder: () -> GameState?
 
-	init(client: HiveGameClient, stateBuilder: @escaping () -> GameState?) {
+	init(stateBuilder: @escaping () -> GameState?) {
 		self.stateBuilder = stateBuilder
-		viewModel = HiveGameViewModel(client: client)
-
-		#warning("TODO: set the player based on whether they are host or opponent")
-		viewModel.playingAs = .white
 	}
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {
@@ -57,5 +53,6 @@ struct HiveGame: View {
 
 			self.viewModel.postViewAction(.onAppear(state))
 		}
+		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 	}
 }

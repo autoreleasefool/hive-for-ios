@@ -65,7 +65,6 @@ class HiveGameClient {
 				}
 			}
 
-
 			do {
 				try self.client.connect(
 					scheme: scheme,
@@ -96,5 +95,9 @@ class HiveGameClient {
 
 	func send(_ message: GameClientMessage) {
 		currentConnection?.ws.send(message: message)
+	}
+
+	func close() throws {
+		try client.syncShutdown()
 	}
 }

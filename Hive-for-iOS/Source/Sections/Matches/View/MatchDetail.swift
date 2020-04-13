@@ -15,6 +15,8 @@ struct MatchDetail: View {
 	@Environment(\.presentationMode) var presentationMode
 	@EnvironmentObject private var account: Account
 	@ObservedObject private var viewModel = MatchDetailViewModel()
+	private var gameViewModel = HiveGameViewModel()
+
 	@State private var inGame: Bool = false
 	@State private var exiting: Bool = false
 
@@ -92,7 +94,6 @@ struct MatchDetail: View {
 				Toggle(option.rawValue, isOn: self.viewModel.optionEnabled(option: option))
 					.disabled(!self.viewModel.userIsHost)
 					.foregroundColor(Color(.text))
-
 			}
 		}
 	}
@@ -120,7 +121,9 @@ struct MatchDetail: View {
 	var body: some View {
 		ScrollView {
 			NavigationLink(
-				destination: HiveGame(client: self.viewModel.client) { self.viewModel.gameState },
+				destination: HiveGame(
+					stateBuilder: { self.viewModel.gameState }
+				).environmentObject(gameViewModel),
 				isActive: self.$inGame,
 				label: { EmptyView() }
 			)
@@ -146,7 +149,10 @@ struct MatchDetail: View {
 			self.viewModel.postViewAction(.onAppear(self.initialId))
 		}
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
-		.onReceive(self.viewModel.$gameState) { self.inGame = $0 != nil }
+		.onReceive(self.viewModel.$gameState) {
+			self.gameViewModel.client = self.viewModel.client
+			self.inGame = $0 != nil
+		}
 		.onReceive(self.viewModel.$match) {
 			if $0 == nil {
 				self.presentationMode.wrappedValue.dismiss()

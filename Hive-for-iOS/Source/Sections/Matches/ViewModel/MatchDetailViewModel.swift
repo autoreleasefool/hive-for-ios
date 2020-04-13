@@ -104,6 +104,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func cleanUp() {
 		errorLoaf = nil
 		cancelAllRequests()
+		try? client.close()
 	}
 
 	private func fetchMatchDetails() {

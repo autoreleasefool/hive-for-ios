@@ -34,18 +34,15 @@ enum HiveGameViewAction: BaseViewAction {
 	case arViewError(Error)
 
 	case toggleDebug
+	case onDisappear
 }
 
 class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
+	var client: HiveGameClient!
+
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
 	@Published var gameActionToPresent: GameAction?
-
-	private var client: HiveGameClient
-
-	init(client: HiveGameClient) {
-		self.client = client
-	}
 
 	var loafSubject = PassthroughSubject<LoafState, Never>()
 	var animateToPosition = PassthroughSubject<Position, Never>()
@@ -195,6 +192,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		case .toggleDebug:
 			debugEnabledSubject.send(!debugEnabledSubject.value)
+		case .onDisappear:
+			cleanUp()
 		}
 	}
 
@@ -202,6 +201,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		guard flowStateSubject.value == .begin else { return }
 		client.delegate = self
 		gameStateSubject.send(state)
+	}
+
+	private func cleanUp() {
+		try? client.close()
 	}
 
 	private func attemptSetupNewGame() {
