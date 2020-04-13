@@ -65,6 +65,7 @@ class Account: ObservableObject {
 	}
 
 	private func store(userId: User.ID?) throws {
+		self.userId = userId
 		if let userId = userId {
 			try keychain.set(userId.uuidString, key: Key.userId.rawValue)
 		} else {
@@ -73,6 +74,7 @@ class Account: ObservableObject {
 	}
 
 	private func store(token: String?) throws {
+		self.token = token
 		if let token = token {
 			try keychain.set(token, key: Key.token.rawValue)
 		} else {
