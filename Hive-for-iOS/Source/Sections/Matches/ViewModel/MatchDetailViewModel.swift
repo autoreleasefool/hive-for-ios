@@ -194,6 +194,19 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	func setAccount(to account: Account) {
 		self.account = account
 	}
+
+	private func playerJoined(id: UUID) {
+		fetchMatchDetails()
+	}
+
+	private func playerLeft(id: UUID) {
+		readyPlayers.remove(id)
+		if userIsHost {
+			fetchMatchDetails()
+		} else {
+			match = nil
+		}
+	}
 }
 
 // MARK: - HiveGameClientDelegate
@@ -209,11 +222,10 @@ extension MatchDetailViewModel: HiveGameClientDelegate {
 
 	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage) {
 		switch message {
-		case .playerJoined:
-			fetchMatchDetails()
+		case .playerJoined(let id):
+			playerJoined(id: id)
 		case .playerLeft(let id):
-			fetchMatchDetails()
-			readyPlayers.remove(id)
+			playerLeft(id: id)
 		case .gameState(let state):
 			self.gameState = state
 		case .playerReady(let id, let ready):

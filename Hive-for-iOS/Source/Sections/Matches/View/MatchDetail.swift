@@ -12,6 +12,7 @@ import HiveEngine
 struct MatchDetail: View {
 	private let initialId: Match.ID?
 
+	@Environment(\.presentationMode) var presentationMode
 	@EnvironmentObject private var account: Account
 	@ObservedObject private var viewModel = MatchDetailViewModel()
 	@State private var inGame: Bool = false
@@ -137,6 +138,11 @@ struct MatchDetail: View {
 		}
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 		.onReceive(self.viewModel.$gameState) { self.inGame = $0 != nil }
+		.onReceive(self.viewModel.$match) {
+			if $0 == nil {
+				self.presentationMode.wrappedValue.dismiss()
+			}
+		}
 		.loaf(self.$viewModel.errorLoaf)
 	}
 }
