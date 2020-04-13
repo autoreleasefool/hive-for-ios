@@ -22,7 +22,6 @@ enum MatchDetailViewAction: BaseViewAction {
 }
 
 class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
-	@Published private(set) var match: Match?
 	@Published private(set) var gameState: GameState?
 	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
@@ -31,7 +30,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private var account: Account!
 
 	private(set) var matchId: Match.ID?
+	private(set) var match: Match?
 	private var creatingNewMatch: Bool = false
+
+	private(set) var leavingMatch = PassthroughSubject<Void, Never>()
 
 	private(set) lazy var client: HiveGameClient = {
 		let client = HiveGameClient()
@@ -104,7 +106,6 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func cleanUp() {
 		errorLoaf = nil
 		cancelAllRequests()
-		try? client.close()
 	}
 
 	private func fetchMatchDetails() {
@@ -163,7 +164,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func exitGame() {
 		client.send(.forfeit)
 		client.closeConnection(reason: .normalClosure)
-		match = nil
+		leavingMatch.send()
 	}
 
 	private func handle(match: Match) {
@@ -177,8 +178,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 				client.openConnection(to: url)
 				LoadingHUD.shared.show()
 			} else {
-				self.errorLoaf = LoafState("Failed to join match", state: .error).build()
-				self.match = nil
+				errorLoaf = LoafState("Failed to join match", state: .error).build()
+				leavingMatch.send()
 			}
 		}
 	}
@@ -217,7 +218,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			fetchMatchDetails()
 		} else {
 			client.closeConnection(reason: .normalClosure)
-			match = nil
+			leavingMatch.send()
 		}
 	}
 }

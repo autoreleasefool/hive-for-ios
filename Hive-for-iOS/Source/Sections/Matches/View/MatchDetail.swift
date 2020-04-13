@@ -153,10 +153,8 @@ struct MatchDetail: View {
 			self.gameViewModel.client = self.viewModel.client
 			self.inGame = $0 != nil
 		}
-		.onReceive(self.viewModel.$match) {
-			if $0 == nil {
-				self.presentationMode.wrappedValue.dismiss()
-			}
+		.onReceive(self.viewModel.leavingMatch) {
+			self.presentationMode.wrappedValue.dismiss()
 		}
 		.alert(isPresented: $exiting) {
 			Alert(
