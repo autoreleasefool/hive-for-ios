@@ -225,6 +225,7 @@ class HiveAPI {
 		}
 
 		let decoder = JSONDecoder()
+		decoder.dateDecodingStrategy = .iso8601
 		guard let data = data, let result = try? decoder.decode(Result.self, from: data) else {
 			return promise(.failure(.invalidData))
 		}
