@@ -134,6 +134,10 @@ struct GameServerError {
 		code = Code(rawValue: Int(String(components[2])) ?? 999) ?? .unknownError
 		description = components[3...].joined(separator: " ")
 	}
+
+	var loaf: LoafState {
+		return LoafState("\(description) (\(code))", state: .error)
+	}
 }
 
 extension GameServerMessage {

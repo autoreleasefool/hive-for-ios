@@ -231,12 +231,10 @@ extension MatchDetailViewModel: HiveGameClientDelegate {
 		case .message(let id, let string):
 			#warning("TODO: display message")
 			print(#"Received message "\#(string)" from \#(id)"#)
-		case .forfeit(let id):
-			#warning("TODO: handle forfeit")
-			print("Player has left match: \(id)")
 		case .error(let error):
-			#warning("TODO: handle error while preparing match")
-			print("Received error in Match Details: \(error)")
+			errorLoaf = error.loaf.build()
+		case .forfeit:
+			print("Received invalid forfeit message in Match Details")
 		}
 	}
 }
