@@ -202,7 +202,7 @@ class HiveAPI {
 		return request
 	}
 
-	private func handleResponse<Result: Codable>(
+	private func handleResponse<Result: Decodable>(
 		data: Data?,
 		response: URLResponse?,
 		error: Error?,

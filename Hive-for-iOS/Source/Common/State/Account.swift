@@ -18,8 +18,6 @@ enum TokenStatus {
 }
 
 class Account: ObservableObject {
-	private static let debugAccountEnabled: Bool = false
-
 	private enum Key: String {
 		case userId
 		case token
@@ -36,11 +34,6 @@ class Account: ObservableObject {
 	private let keychain = Keychain(service: "ca.josephroque.hive-for-ios")
 
 	init() {
-		if Account.debugAccountEnabled {
-			try? store(userId: UUID(uuidString: "60448917-d472-4099-b1c8-956935245d6e"))
-			try? store(token: "w6d9J8nap70BhiB63ZTyAQ==")
-		}
-
 		do {
 			guard let id = try keychain.get(Key.userId.rawValue) else { return }
 			guard let token = try keychain.get(Key.token.rawValue) else { return }

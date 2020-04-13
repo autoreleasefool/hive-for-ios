@@ -8,13 +8,13 @@
 
 import Foundation
 
-struct AccessToken: Codable {
+struct AccessToken: Decodable {
 	let id: UUID
 	let userId: User.ID
 	let token: String
 }
 
-struct TokenValidation: Codable {
+struct TokenValidation: Decodable {
 	let userId: UUID
 	let token: String
 }

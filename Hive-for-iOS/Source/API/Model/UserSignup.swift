@@ -8,12 +8,12 @@
 
 import Foundation
 
-struct SignupToken: Codable {
+struct SignupToken: Decodable {
 	let id: User.ID
 	let value: String
 }
 
-struct UserSignup: Codable {
+struct UserSignup: Decodable {
 	let id: User.ID
 	let email: String
 	let displayName: String

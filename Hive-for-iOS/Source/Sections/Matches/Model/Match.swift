@@ -9,27 +9,27 @@
 import Foundation
 import HiveEngine
 
-struct CreateMatchResponse: Codable {
+struct CreateMatchResponse: Decodable {
 	let id: UUID
 	let socketUrl: URL
 	let details: Match
 }
 
-struct Match: Identifiable, Codable {
-	struct User: Identifiable, Codable {
+struct Match: Identifiable, Decodable {
+	struct User: Identifiable, Decodable {
 		let id: UUID
 		let displayName: String
 		let elo: Double
 		let avatarUrl: String?
 	}
 
-	enum Status: Int, Codable {
+	enum Status: Int, Decodable {
 		case notStarted = 1
 		case active = 2
 		case ended = 3
 	}
 
-	struct Move: Identifiable, Codable {
+	struct Move: Identifiable, Decodable {
 		let id: UUID
 		let notation: String
 		let ordinal: Int
