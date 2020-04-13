@@ -169,12 +169,16 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		self.matchId = match.id
 		self.match = match
 		self.gameOptions = match.gameOptions
-		client.webSocketURL = match.webSocketURL
 		errorLoaf = nil
 
 		if !client.isConnected {
-			client.openConnection()
-			LoadingHUD.shared.show()
+			if let url = match.webSocketURL {
+				client.openConnection(to: url)
+				LoadingHUD.shared.show()
+			} else {
+				self.errorLoaf = LoafState("Failed to join match", state: .error).build()
+				self.match = nil
+			}
 		}
 	}
 
