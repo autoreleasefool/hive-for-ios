@@ -22,6 +22,7 @@ enum MatchDetailViewAction: BaseViewAction {
 }
 
 class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
+	@Published private(set) var match: Match?
 	@Published private(set) var gameState: GameState?
 	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
@@ -30,7 +31,6 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private var account: Account!
 
 	private(set) var matchId: Match.ID?
-	private(set) var match: Match?
 	private var creatingNewMatch: Bool = false
 
 	private(set) var leavingMatch = PassthroughSubject<Void, Never>()
@@ -113,7 +113,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 		HiveAPI
 			.shared
-			.matchDetails(id: matchId)
+			.joinMatch(id: matchId)
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -121,8 +121,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 						self?.errorLoaf = error.loaf
 					}
 				},
-				receiveValue: { [weak self] match in
-					self?.handle(match: match)
+				receiveValue: { [weak self] joinedMatch in
+					self?.handle(match: joinedMatch.details)
 				}
 			)
 			.store(in: self)
@@ -234,7 +234,10 @@ extension MatchDetailViewModel: HiveGameClientDelegate {
 	}
 
 	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?) {
-		#warning("TODO: handle abnormal disconnects")
+		guard code != .normalClosure else { return }
+		print("Client disconnected: \(String(describing: code))")
+		try? client.close()
+		leavingMatch.send()
 	}
 
 	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage) {

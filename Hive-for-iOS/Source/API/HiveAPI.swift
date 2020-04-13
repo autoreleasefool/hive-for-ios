@@ -176,6 +176,22 @@ class HiveAPI {
 		.eraseToAnyPublisher()
 	}
 
+	func joinMatch(id: Match.ID) -> AnyPublisher<JoinMatchResponse, HiveAPIError> {
+		Future { promise in
+			let url = self.matchGroup
+				.appendingPathComponent(id.uuidString)
+				.appendingPathComponent("join")
+
+			var request = self.buildBaseRequest(to: url)
+			request.httpMethod = "POST"
+
+			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+				self?.handleResponse(data: data, response: response, error: error, promise: promise)
+			}.resume()
+		}
+		.eraseToAnyPublisher()
+	}
+
 	func createMatch() -> AnyPublisher<CreateMatchResponse, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent("new")

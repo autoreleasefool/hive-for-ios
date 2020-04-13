@@ -15,6 +15,8 @@ struct CreateMatchResponse: Decodable {
 	let details: Match
 }
 
+typealias JoinMatchResponse = CreateMatchResponse
+
 struct Match: Identifiable, Decodable {
 	struct User: Identifiable, Decodable {
 		let id: UUID
