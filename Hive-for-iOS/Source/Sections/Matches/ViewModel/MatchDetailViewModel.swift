@@ -18,6 +18,7 @@ enum MatchDetailViewAction: BaseViewAction {
 	case onDisappear
 	case refreshMatchDetails
 	case startGame
+	case exitGame
 }
 
 class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
@@ -93,6 +94,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			fetchMatchDetails()
 		case .startGame:
 			toggleReadiness()
+		case .exitGame:
+			exitGame()
 		case .onDisappear:
 			cleanUp()
 		}
@@ -158,6 +161,11 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			readyPlayers.insert(id)
 			client.send(.readyToPlay)
 		}
+	}
+
+	private func exitGame() {
+		client.send(.forfeit)
+		match = nil
 	}
 
 	private func handle(match: Match) {

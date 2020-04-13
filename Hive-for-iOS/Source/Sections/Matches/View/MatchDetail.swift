@@ -16,6 +16,7 @@ struct MatchDetail: View {
 	@EnvironmentObject private var account: Account
 	@ObservedObject private var viewModel = MatchDetailViewModel()
 	@State private var inGame: Bool = false
+	@State private var exiting: Bool = false
 
 	init(id: Match.ID?) {
 		self.initialId = id
@@ -96,6 +97,14 @@ struct MatchDetail: View {
 		}
 	}
 
+	private var exitButton: some View {
+		Button(action: {
+			self.exiting = true
+		}, label: {
+			Text("Leave")
+		})
+	}
+
 	private var startButton: some View {
 		if viewModel.showStartButton {
 			return AnyView(Button(action: {
@@ -106,7 +115,6 @@ struct MatchDetail: View {
 		} else {
 			return AnyView(EmptyView())
 		}
-
 	}
 
 	var body: some View {
@@ -131,6 +139,7 @@ struct MatchDetail: View {
 		}
 		.padding(.horizontal, length: .m)
 		.navigationBarTitle(Text(viewModel.navigationBarTitle), displayMode: .inline)
+		.navigationBarItems(leading: exitButton)
 		.navigationBarItems(trailing: startButton)
 		.onAppear {
 			self.viewModel.setAccount(to: self.account)
@@ -142,6 +151,14 @@ struct MatchDetail: View {
 			if $0 == nil {
 				self.presentationMode.wrappedValue.dismiss()
 			}
+		}
+		.alert(isPresented: $exiting) {
+			Alert(
+				title: Text("Leave match?"),
+				message: Text("Are you sure you want to leave this match?"),
+				primaryButton: .default(Text("Stay")) { self.exiting = false },
+				secondaryButton: .destructive(Text("Leave")) { self.viewModel.postViewAction(.exitGame) }
+			)
 		}
 		.loaf(self.$viewModel.errorLoaf)
 	}
