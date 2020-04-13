@@ -164,6 +164,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func exitGame() {
 		client.send(.forfeit)
 		client.closeConnection(reason: .normalClosure)
+		try? client.close()
 		leavingMatch.send()
 	}
 
@@ -179,6 +180,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 				LoadingHUD.shared.show()
 			} else {
 				errorLoaf = LoafState("Failed to join match", state: .error).build()
+				try? client.close()
 				leavingMatch.send()
 			}
 		}
@@ -218,6 +220,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			fetchMatchDetails()
 		} else {
 			client.closeConnection(reason: .normalClosure)
+			try? client.close()
 			leavingMatch.send()
 		}
 	}
