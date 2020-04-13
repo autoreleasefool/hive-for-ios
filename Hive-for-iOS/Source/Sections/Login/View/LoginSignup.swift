@@ -122,7 +122,7 @@ struct LoginSignup: View {
 		.avoidingKeyboard()
 		.onAppear { self.viewModel.setAccount(to: self.account) }
 		.loaf($viewModel.errorLoaf)
-		.navigationBarTitle("")
+		.navigationBarTitle("", displayMode: .inline)
 		.navigationBarHidden(true)
 	}
 }

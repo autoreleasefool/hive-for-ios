@@ -104,10 +104,6 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func cleanUp() {
 		errorLoaf = nil
 		cancelAllRequests()
-
-		if creatingNewMatch {
-			#warning("TODO: clean up new match and delete it")
-		}
 	}
 
 	private func fetchMatchDetails() {
@@ -165,6 +161,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	private func exitGame() {
 		client.send(.forfeit)
+		client.closeConnection(reason: .normalClosure)
 		match = nil
 	}
 
@@ -175,8 +172,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		client.webSocketURL = match.webSocketURL
 		errorLoaf = nil
 
-		client.openConnection()
-		LoadingHUD.shared.show()
+		if !client.isConnected {
+			client.openConnection()
+			LoadingHUD.shared.show()
+		}
 	}
 
 	func isPlayerReady(id: UUID?) -> Bool {
@@ -212,6 +211,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		if userIsHost {
 			fetchMatchDetails()
 		} else {
+			client.closeConnection(reason: .normalClosure)
 			match = nil
 		}
 	}

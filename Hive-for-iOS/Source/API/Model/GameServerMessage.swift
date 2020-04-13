@@ -49,6 +49,7 @@ enum GameServerMessage {
 			self = .error(error)
 		}
 
+		print("Failed to parse GameServerMessage: \(message)")
 		return nil
 	}
 }
