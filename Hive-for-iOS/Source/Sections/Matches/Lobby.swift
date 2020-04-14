@@ -12,7 +12,7 @@ struct Lobby: View {
 	@ObservedObject private var viewModel = LobbyViewModel()
 
 	var newMatchButton: some View {
-		NavigationLink(destination: MatchDetail(id: nil)) {
+		NavigationLink(destination: MatchDetail(id: nil, client: self.viewModel.client)) {
 			Image(systemName: "plus")
 				.imageScale(.large)
 				.accessibility(label: Text("Create Match"))
@@ -22,7 +22,7 @@ struct Lobby: View {
 
 	var body: some View {
 		List(self.viewModel.matches) { match in
-			NavigationLink(destination: MatchDetail(id: match.id)) {
+			NavigationLink(destination: MatchDetail(id: match.id, client: self.viewModel.client)) {
 				MatchRow(match: match)
 			}
 		}

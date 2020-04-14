@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import Combine
 import Loaf
+import WebSocketKit
 
 enum LobbyViewAction: BaseViewAction {
 	case onAppear
@@ -22,6 +23,8 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
 	@Published private(set) var matches: [Match] = []
 
+	let client = WebSocketClient(eventLoopGroupProvider: .createNew)
+
 	override func postViewAction(_ viewAction: LobbyViewAction) {
 		switch viewAction {
 		case .onAppear, .refreshMatches:
@@ -32,6 +35,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	}
 
 	private func cleanUp() {
+		try? client.syncShutdown()
 		errorLoaf = nil
 		cancelAllRequests()
 	}

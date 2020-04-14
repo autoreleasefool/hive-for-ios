@@ -6,98 +6,102 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import Foundation
 import HiveEngine
 import Regex
 import WebSocketKit
 import NIOWebSocket
 
-protocol HiveGameClientDelegate: class {
-	func clientDidConnect(_ hiveGameClient: HiveGameClient)
-	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?)
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage)
+enum GameClientEvent {
+	case message(GameServerMessage)
+	case connected
+	case closed(WebSocketErrorCode?)
+}
+
+enum GameClientError: LocalizedError {
+	case invalidURL
+	case failedToConnect
 }
 
 class HiveGameClient {
-	private struct OpenConnection {
-		let url: URL
-		let ws: WebSocket
-	}
+	var url: URL!
+	private let webSocketClient: WebSocketClient
+	private var webSocket: WebSocket?
+	private var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
-	weak var delegate: HiveGameClientDelegate?
-
-	private let client = WebSocketClient(eventLoopGroupProvider: .createNew)
-
-	private var currentConnection: OpenConnection? {
-		didSet {
-			guard let connection = currentConnection else { return }
-			connection.ws.onClose.whenComplete { [weak self] _ in
-				guard let self = self else { return }
-				self.delegate?.clientDidDisconnect(self, code: connection.ws.closeCode)
-			}
-
-			connection.ws.onText { [weak self] _, text in
-				guard let self = self, let message = GameServerMessage(text) else { return }
-				self.delegate?.clientDidReceiveMessage(self, message: message)
-			}
-		}
+	init(webSocketClient: WebSocketClient) {
+		self.webSocketClient = webSocketClient
 	}
 
 	var isConnected: Bool {
-		return !(currentConnection?.ws.isClosed ?? true)
+		!(webSocket?.isClosed ?? true)
 	}
 
-	func openConnection(to url: URL) {
-		guard let scheme = url.scheme,
-			let host = url.host else {
-				print("Cannot open WebSocket connection without fully-formed URL: \(url)")
-			return
+	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
+		if let subject = subject {
+			return subject.eraseToAnyPublisher()
 		}
 
-		DispatchQueue.global(qos: .userInitiated).async {
-			if let connection = self.currentConnection {
-				guard connection.url != url else { return }
+		let publisher = PassthroughSubject<GameClientEvent, GameClientError>()
+		self.subject = publisher
 
-				do {
-					try connection.ws.close().wait()
-				} catch {
-					print("Failed to close previous WebSocket: \(error)")
-				}
+		guard let scheme = url.scheme,
+			let host = url.host else {
+			print("Cannot open WebSocket connection without fully-formed URL: \(url)")
+			DispatchQueue.main.async { [weak self] in
+				publisher.send(completion: .failure(.invalidURL))
+				self?.subject = nil
 			}
+			return publisher.eraseToAnyPublisher()
+		}
+
+		DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+			guard let self = self else { return }
 
 			do {
-				try self.client.connect(
+				try self.webSocketClient.connect(
 					scheme: scheme,
 					host: host,
 					port: 80,
-					path: url.path,
+					path: self.url.path,
 					headers: HTTPHeaders()
 				) { [weak self] ws in
 					guard let self = self else { return }
-					self.currentConnection = OpenConnection(url: url, ws: ws)
-					self.delegate?.clientDidConnect(self)
+					self.webSocket = ws
+					self.setupHandlers()
+					publisher.send(.connected)
+					self.setupHandlers()
 				}.wait()
 			} catch {
 				print("Failed to connect to WebSocket: \(error)")
+				publisher.send(completion: .failure(.failedToConnect))
+				self.subject = nil
 			}
+		}
+
+		return publisher.eraseToAnyPublisher()
+	}
+
+	func setupHandlers() {
+		webSocket?.onClose.whenComplete { [weak self] _ in
+			self?.subject?.send(.closed(self?.webSocket?.closeCode))
+		}
+
+		webSocket?.onText { [weak self] _, text in
+			guard let self = self, let message = GameServerMessage(text) else { return }
+			self.subject?.send(.message(message))
 		}
 	}
 
-	func closeConnection(reason: WebSocketErrorCode?) {
-		DispatchQueue.global(qos: .userInitiated).async {
-			do {
-				try self.currentConnection?.ws.close(code: reason ?? .normalClosure).wait()
-			} catch {
-				print("Failed to close WebSocket: \(error)")
-			}
-		}
+	@discardableResult
+	func close(code: WebSocketErrorCode? = nil) -> EventLoopFuture<Void>? {
+		let future = webSocket?.close(code: code ?? .normalClosure)
+		subject?.send(completion: .finished)
+		return future
 	}
 
 	func send(_ message: GameClientMessage) {
-		currentConnection?.ws.send(message: message)
-	}
-
-	func close() throws {
-		try client.syncShutdown()
+		webSocket?.send(message: message)
 	}
 }

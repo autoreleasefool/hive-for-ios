@@ -199,12 +199,24 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	private func initialize(withState state: GameState) {
 		guard flowStateSubject.value == .begin else { return }
-		client.delegate = self
 		gameStateSubject.send(state)
+
+		client.openConnection()
+			.receive(on: DispatchQueue.main)
+			.sink(
+				receiveCompletion: { [weak self] result in
+					if case let .failure(error) = result {
+						self?.didReceive(error: error)
+					}
+				},
+				receiveValue: { [weak self] event in
+					self?.didReceive(event: event)
+				}
+			).store(in: self)
 	}
 
 	private func cleanUp() {
-		try? client.close()
+		client.close()
 	}
 
 	private func attemptSetupNewGame() {
@@ -377,6 +389,30 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			)
 		}
 	}
+
+	private func didReceive(error: GameClientError) {
+		print("Client did not connect: \(error)")
+	}
+
+	private func didReceive(event: GameClientEvent) {
+		switch event {
+		case .connected:
+			debugLog("Connected to client.")
+		case .closed(let code):
+			debugLog("Connection to client closed: \(String(describing: code))")
+		case .message(let message):
+			didReceive(message: message)
+		}
+	}
+
+	private func didReceive(message: GameServerMessage) {
+		switch message {
+		case .gameState(let state):
+			self.didReceive(newState: state)
+		default:
+			debugLog("Received message: \(message)")
+		}
+	}
 }
 
 // MARK: - Position
@@ -481,27 +517,6 @@ extension HiveGameViewModel {
 
 		case (_, .gameEnd): return false
 		}
-	}
-}
-
-// MARK: HiveGameClientDelegate
-
-extension HiveGameViewModel: HiveGameClientDelegate {
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage) {
-		switch message {
-		case .gameState(let state):
-			self.didReceive(newState: state)
-		default:
-			debugLog("Received message: \(message)")
-		}
-	}
-
-	func clientDidConnect(_ hiveGameClient: HiveGameClient) {
-		debugLog("Connected to server")
-	}
-
-	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?) {
-		debugLog("Disconnected from server, \(String(describing: code))")
 	}
 }
 

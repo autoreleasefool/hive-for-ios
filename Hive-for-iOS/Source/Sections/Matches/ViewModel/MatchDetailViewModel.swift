@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import NIOWebSocket
 import SwiftUI
 import Combine
 import Loaf
 import HiveEngine
-import NIOWebSocket
+import WebSocketKit
 
 enum MatchDetailViewAction: BaseViewAction {
 	case onAppear(Match.ID?)
@@ -29,17 +30,12 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published var errorLoaf: Loaf?
 
 	private var account: Account!
+	let client: HiveGameClient
 
 	private(set) var matchId: Match.ID?
 	private var creatingNewMatch: Bool = false
 
 	private(set) var leavingMatch = PassthroughSubject<Void, Never>()
-
-	private(set) lazy var client: HiveGameClient = {
-		let client = HiveGameClient()
-		client.delegate = self
-		return client
-	}()
 
 	var userIsHost: Bool {
 		account.userId == match?.host?.id
@@ -72,9 +68,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		return ""
 	}
 
-	init(_ match: Match? = nil) {
+	init(_ match: Match? = nil, client: WebSocketClient) {
 		self.matchId = match?.id
 		self.match = match
+		self.client = HiveGameClient(webSocketClient: client)
 
 		super.init()
 
@@ -163,8 +160,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	private func exitGame() {
 		client.send(.forfeit)
-		client.closeConnection(reason: .normalClosure)
-		try? client.close()
+		client.close()
 		leavingMatch.send()
 	}
 
@@ -176,11 +172,9 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 		if !client.isConnected {
 			if let url = match.webSocketURL {
-				client.openConnection(to: url)
-				LoadingHUD.shared.show()
+				openConnection(to: url)
 			} else {
 				errorLoaf = LoafState("Failed to join match", state: .error).build()
-				try? client.close()
 				leavingMatch.send()
 			}
 		}
@@ -206,10 +200,6 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		)
 	}
 
-	func setAccount(to account: Account) {
-		self.account = account
-	}
-
 	private func playerJoined(id: UUID) {
 		fetchMatchDetails()
 	}
@@ -219,28 +209,56 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		if userIsHost {
 			fetchMatchDetails()
 		} else {
-			client.closeConnection(reason: .normalClosure)
-			try? client.close()
+			client.close()
 			leavingMatch.send()
 		}
 	}
+
+	func setAccount(to account: Account) {
+		self.account = account
+	}
 }
 
-// MARK: - HiveGameClientDelegate
+// MARK: - HiveGameClient
 
-extension MatchDetailViewModel: HiveGameClientDelegate {
-	func clientDidConnect(_ hiveGameClient: HiveGameClient) {
+extension MatchDetailViewModel {
+	private func openConnection(to url: URL) {
+		client.url = url
+		LoadingHUD.shared.show()
+
+		client.openConnection()
+			.receive(on: DispatchQueue.main)
+			.sink(
+				receiveCompletion: { [weak self] result in
+					if case let .failure(error) = result {
+						self?.didReceive(error: error)
+					}
+				},
+				receiveValue: { [weak self] event in
+					self?.didReceive(event: event)
+				}
+			).store(in: self)
+	}
+
+	private func didReceive(error: GameClientError) {
 		LoadingHUD.shared.hide()
-	}
-
-	func clientDidDisconnect(_ hiveGameClient: HiveGameClient, code: WebSocketErrorCode?) {
-		guard code != .normalClosure else { return }
-		print("Client disconnected: \(String(describing: code))")
-		try? client.close()
 		leavingMatch.send()
+		print("Client did not connect: \(error)")
 	}
 
-	func clientDidReceiveMessage(_ hiveGameClient: HiveGameClient, message: GameServerMessage) {
+	private func didReceive(event: GameClientEvent) {
+		switch event {
+		case .connected:
+			LoadingHUD.shared.hide()
+		case .closed(let code):
+			print("Connection to client closed: \(String(describing: code))")
+			leavingMatch.send()
+		case .message(let message):
+			didReceive(message: message)
+		}
+	}
+
+	private func didReceive(message: GameServerMessage) {
 		switch message {
 		case .playerJoined(let id):
 			playerJoined(id: id)

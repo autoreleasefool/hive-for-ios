@@ -8,20 +8,22 @@
 
 import SwiftUI
 import HiveEngine
+import WebSocketKit
 
 struct MatchDetail: View {
 	private let initialId: Match.ID?
 
 	@Environment(\.presentationMode) var presentationMode
 	@EnvironmentObject private var account: Account
-	@ObservedObject private var viewModel = MatchDetailViewModel()
+	@ObservedObject private var viewModel: MatchDetailViewModel
 	private var gameViewModel = HiveGameViewModel()
 
 	@State private var inGame: Bool = false
 	@State private var exiting: Bool = false
 
-	init(id: Match.ID?) {
+	init(id: Match.ID?, client: WebSocketClient) {
 		self.initialId = id
+		self.viewModel = MatchDetailViewModel(nil, client: client)
 	}
 
 	private func playerSection(match: Match) -> some View {
