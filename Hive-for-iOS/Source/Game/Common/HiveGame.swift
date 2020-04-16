@@ -51,8 +51,12 @@ struct HiveGame: View {
 				return
 			}
 
+			UIApplication.shared.isIdleTimerDisabled = true
 			self.viewModel.postViewAction(.onAppear(state))
 		}
-		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
+		.onDisappear {
+			UIApplication.shared.isIdleTimerDisabled = true
+			self.viewModel.postViewAction(.onDisappear)
+		}
 	}
 }
