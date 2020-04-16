@@ -48,7 +48,7 @@ class HiveGameClient {
 
 		guard let scheme = url.scheme,
 			let host = url.host else {
-			print("Cannot open WebSocket connection without fully-formed URL: \(url)")
+			print("Cannot open WebSocket connection without fully-formed URL: \(String(describing: url))")
 			DispatchQueue.main.async { [weak self] in
 				publisher.send(completion: .failure(.invalidURL))
 				self?.subject = nil

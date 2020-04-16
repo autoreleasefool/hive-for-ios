@@ -6,12 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-enum GameAction {
-	case confirmMovement(PopoverSheetConfig)
-
-	var config: PopoverSheetConfig {
-		switch self {
-		case .confirmMovement(let config): return config
-		}
-	}
+struct GameAction {
+	let config: PopoverSheetConfig
+	let onClose: (() -> Void)?
 }

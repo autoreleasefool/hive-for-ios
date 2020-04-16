@@ -31,6 +31,8 @@ enum HiveGameViewAction: BaseViewAction {
 	case cancelMovement
 
 	case openSettings
+	case forfeit
+	case forfeitConfirmed
 	case arViewError(Error)
 
 	case toggleDebug
@@ -86,34 +88,31 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	var showPlayerHand: Binding<Bool> {
 		Binding(
-			get: { self.handToShow != nil },
-			set: { newValue in
+			get: { [weak self] in self?.handToShow != nil },
+			set: { [weak self] newValue in
 				guard !newValue else { return }
-				self.handToShow = nil
+				self?.handToShow = nil
 			}
 		)
 	}
 
 	var hasInformation: Binding<Bool> {
 		Binding(
-			get: { self.informationToPresent != nil },
-			set: { newValue in
+			get: { [weak self] in self?.informationToPresent != nil },
+			set: { [weak self] newValue in
 				guard !newValue else { return }
-				self.informationToPresent = nil
+				self?.informationToPresent = nil
 			}
 		)
 	}
 
 	var hasGameAction: Binding<Bool> {
 		Binding(
-			get: { self.gameActionToPresent != nil },
-			set: { newValue in
+			get: { [weak self] in self?.gameActionToPresent != nil },
+			set: { [weak self] newValue in
 				guard !newValue else { return }
-				switch self.gameActionToPresent {
-				case .confirmMovement: self.postViewAction(.cancelMovement)
-				case .none: break
-				}
-				self.gameActionToPresent = nil
+				self?.gameActionToPresent?.onClose?()
+				self?.gameActionToPresent = nil
 			}
 		)
 	}
@@ -187,6 +186,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		case .openSettings:
 			#warning("TODO: open game settings")
+		case .forfeit:
+			promptForfeit()
+		case .forfeitConfirmed:
+			forfeitGame()
 		case .arViewError(let error):
 			loafSubject.send(LoafState(error.localizedDescription, state: .error))
 
@@ -285,6 +288,39 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		self.gameState.unitsInHand[playingAs]?.forEach { updatePosition(of: $0, to: nil, shouldMove: true) }
 	}
 
+	private func forfeitGame() {
+		guard inGame else { return }
+
+		client.send(.forfeit)
+		transition(to: .forfeit)
+	}
+
+	private func promptForfeit() {
+		guard inGame else { return }
+
+		let popoverSheet = PopoverSheetConfig(
+			title: "Forfeit match?",
+			message: "This will count as a loss in your statistics. Are you sure?",
+			buttons: [
+				PopoverSheetConfig.ButtonConfig(
+					title: "Forfeit",
+					type: .destructive
+				) { [weak self] in
+					self?.postViewAction(.forfeitConfirmed)
+					self?.gameActionToPresent = nil
+				},
+				PopoverSheetConfig.ButtonConfig(
+					title: "Cancel",
+					type: .cancel
+				) { [weak self] in
+					self?.gameActionToPresent = nil
+				},
+			]
+		)
+
+		gameActionToPresent = GameAction(config: popoverSheet, onClose: nil)
+	}
+
 	private func updatePosition(of piece: Piece, to position: Position?, shouldMove: Bool) {
 		guard inGame else { return }
 		guard let targetPosition = position else {
@@ -328,7 +364,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 				},
 			]
 		)
-		gameActionToPresent = .confirmMovement(popoverSheet)
+
+		gameActionToPresent = GameAction(config: popoverSheet) { [weak self] in
+			self?.postViewAction(.cancelMovement)
+		}
 	}
 
 	private func apply(movement: Movement) {

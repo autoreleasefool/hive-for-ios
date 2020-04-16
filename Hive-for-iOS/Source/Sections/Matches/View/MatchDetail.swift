@@ -158,12 +158,18 @@ struct MatchDetail: View {
 		.onReceive(self.viewModel.leavingMatch) {
 			self.presentationMode.wrappedValue.dismiss()
 		}
-		.alert(isPresented: $exiting) {
-			Alert(
-				title: Text("Leave match?"),
-				message: Text("Are you sure you want to leave this match?"),
-				primaryButton: .default(Text("Stay")) { self.exiting = false },
-				secondaryButton: .destructive(Text("Leave")) { self.viewModel.postViewAction(.exitGame) }
+		.popoverSheet(isPresented: self.$exiting) {
+			PopoverSheetConfig(
+				title: "Leave match?",
+				message: "Are you sure you want to leave this match?",
+				buttons: [
+					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .default) {
+						self.exiting = false
+					},
+					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .default) {
+						self.viewModel.postViewAction(.exitGame)
+					},
+				]
 			)
 		}
 		.loaf(self.$viewModel.errorLoaf)
