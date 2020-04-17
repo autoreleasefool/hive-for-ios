@@ -187,9 +187,9 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	func optionEnabled(option: GameState.Option) -> Binding<Bool> {
 		Binding(
-			get: { self.gameOptions.contains(option) },
-			set: {
-				guard self.userIsHost else { return }
+			get: { [weak self] in self?.gameOptions.contains(option) ?? false },
+			set: { [weak self] in
+				guard let self = self, self.userIsHost else { return }
 				if $0 {
 					self.gameOptions.insert(option)
 				} else {
