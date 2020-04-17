@@ -124,6 +124,7 @@ struct MatchDetail: View {
 		ScrollView {
 			NavigationLink(
 				destination: HiveGame(
+					onGameEnd: { self.presentationMode.wrappedValue.dismiss() },
 					stateBuilder: { self.viewModel.gameState }
 				).environmentObject(gameViewModel),
 				isActive: self.$inGame,

@@ -7,23 +7,27 @@
 //
 
 import SwiftUI
+import Combine
 import HiveEngine
 import Loaf
 
 struct HiveGame: View {
 	@Environment(\.presentationMode) var presentationMode
 	@EnvironmentObject var viewModel: HiveGameViewModel
+	private let onGameEnd: () -> Void
 	private let stateBuilder: () -> GameState?
 
-	init(stateBuilder: @escaping () -> GameState?) {
+	init(onGameEnd: @escaping () -> Void, stateBuilder: @escaping () -> GameState?) {
+		self.onGameEnd = onGameEnd
 		self.stateBuilder = stateBuilder
 	}
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {
 		switch newState {
-		case .forfeit:
+		case .forfeit, .gameEnd:
 			presentationMode.wrappedValue.dismiss()
-		case .begin, .gameEnd, .gameStart, .opponentTurn, .playerTurn, .sendingMovement:
+			onGameEnd()
+		case .begin, .gameStart, .opponentTurn, .playerTurn, .sendingMovement:
 			break
 		}
 	}
