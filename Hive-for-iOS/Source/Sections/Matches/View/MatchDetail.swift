@@ -163,11 +163,11 @@ struct MatchDetail: View {
 				title: "Leave match?",
 				message: "Are you sure you want to leave this match?",
 				buttons: [
-					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .default) {
-						self.exiting = false
-					},
-					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .default) {
+					PopoverSheetConfig.ButtonConfig(title: "Leave", type: .destructive) {
 						self.viewModel.postViewAction(.exitGame)
+					},
+					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {
+						self.exiting = false
 					},
 				]
 			)
