@@ -17,6 +17,7 @@ enum GameServerMessage {
 	case playerLeft(UUID)
 	case message(UUID, String)
 	case forfeit(UUID)
+	case gameOver(UUID?)
 	case error(GameServerError)
 
 	init?(_ message: String) {
@@ -44,7 +45,10 @@ enum GameServerMessage {
 		} else if message.hasPrefix("LEAVE") {
 			guard let userId = GameServerMessage.extractUserId(from: message) else { return nil}
 			self = .playerLeft(userId)
-		} else if message.hasPrefix(("ERR")) {
+		} else if message.hasPrefix("WINNER") {
+			let userId = GameServerMessage.extractUserId(from: message)
+			self = .gameOver(userId)
+		} else if message.hasPrefix("ERR") {
 			let error = GameServerMessage.extractError(from: message)
 			self = .error(error)
 		}
@@ -94,7 +98,6 @@ extension GameServerMessage {
 		guard let idStart = message.firstIndex(of: " ") else { return nil }
 		let idEnd = message[message.index(idStart, offsetBy: 1)...].firstIndex(of: " ") ?? message.endIndex
 		return UUID(uuidString: String(message[idStart...idEnd]).trimmingCharacters(in: .whitespaces))
-
 	}
 }
 

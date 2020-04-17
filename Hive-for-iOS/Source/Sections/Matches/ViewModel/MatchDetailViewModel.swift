@@ -283,8 +283,8 @@ extension MatchDetailViewModel {
 			print(#"Received message "\#(string)" from \#(id)"#)
 		case .error(let error):
 			errorLoaf = error.loaf.build()
-		case .forfeit:
-			print("Received invalid forfeit message in Match Details")
+		case .forfeit, .gameOver:
+			print("Received invalid message in Match Details: \(message)")
 		}
 	}
 }

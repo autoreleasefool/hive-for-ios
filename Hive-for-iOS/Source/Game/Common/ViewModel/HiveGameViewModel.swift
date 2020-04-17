@@ -448,7 +448,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		switch message {
 		case .gameState(let state):
 			self.didReceive(newState: state)
-		default:
+		case .error, .forfeit, .gameOver, .message, .playerJoined, .playerLeft, .playerReady, .setOption:
+			#warning("TODO: handle remaining messages in game")
 			debugLog("Received message: \(message)")
 		}
 	}
