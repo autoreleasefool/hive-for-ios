@@ -153,7 +153,8 @@ struct MatchDetail: View {
 		}
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 		.onReceive(self.viewModel.$gameState) {
-			self.gameViewModel.client = self.viewModel.client
+			self.gameViewModel.setAccount(to: self.account)
+			self.gameViewModel.setClient(to: self.viewModel.client)
 			self.inGame = $0 != nil
 		}
 		.onReceive(self.viewModel.leavingMatch) {

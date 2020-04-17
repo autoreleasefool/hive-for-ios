@@ -9,11 +9,25 @@
 import SwiftUI
 import HiveEngine
 
+struct EndState {
+	let winner: Player?
+	let playingAs: Player
+
+	var playerIsWinner: Bool {
+		playingAs == winner
+	}
+
+	var isTied: Bool {
+		winner == nil
+	}
+}
+
 enum GameInformation {
 	case piece(Piece)
 	case pieceClass(Piece.Class)
 	case stack([Piece])
 	case rule(HiveRule?)
+	case gameEnd(EndState)
 
 	init?(fromLink link: String) {
 		if link.starts(with: "class:"), let pieceClass = Piece.Class(fromName: String(link.substring(from: 6))) {
@@ -36,6 +50,12 @@ enum GameInformation {
 		case .pieceClass(let pieceClass): return pieceClass.description
 		case .stack: return "Pieces in stack"
 		case .rule(let rule): return rule?.title ?? "All rules"
+		case .gameEnd(let state):
+			if let player = state.winner {
+				return "\(player) wins!"
+			} else {
+				return "It's a tie!"
+			}
 		}
 	}
 
@@ -47,6 +67,15 @@ enum GameInformation {
 		case .stack: return
 			"The following pieces have been [stacked](rule:stacks). A stack's color is identical to the piece " +
 				"on top. Only the top piece can be moved, and [mosquitoes](class:Mosquito) can only copy the top piece."
+		case .gameEnd(let state):
+			if state.isTied {
+				return "Both queens have been surrounded in the same turn, which means it's a tie! " +
+					"Return to the lobby to play another game."
+			} else {
+				return "\(state.playerIsWinner ? "You have" : "Your opponent has") surrounded " +
+					"\(state.playerIsWinner ? "your opponent's" : "your") queen and won the game! " +
+					"Return to the lobby to play another game."
+			}
 		}
 	}
 }

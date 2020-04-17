@@ -33,6 +33,7 @@ enum HiveGameViewAction: BaseViewAction {
 	case openSettings
 	case forfeit
 	case forfeitConfirmed
+	case returnToLobby
 	case arViewError(Error)
 
 	case toggleDebug
@@ -40,7 +41,8 @@ enum HiveGameViewAction: BaseViewAction {
 }
 
 class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
-	var client: HiveGameClient!
+	private var account: Account!
+	private var client: HiveGameClient!
 
 	@Published var handToShow: PlayerHand?
 	@Published var informationToPresent: GameInformation?
@@ -190,6 +192,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			promptForfeit()
 		case .forfeitConfirmed:
 			forfeitGame()
+		case .returnToLobby:
+			endGame()
 		case .arViewError(let error):
 			loafSubject.send(LoafState(error.localizedDescription, state: .error))
 
@@ -293,6 +297,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		client.send(.forfeit)
 		transition(to: .forfeit)
+	}
+
+	private func endGame() {
+		guard inGame else { return }
+		transition(to: .gameEnd)
 	}
 
 	private func promptForfeit() {
@@ -448,10 +457,33 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		switch message {
 		case .gameState(let state):
 			self.didReceive(newState: state)
-		case .error, .forfeit, .gameOver, .message, .playerJoined, .playerLeft, .playerReady, .setOption:
+		case .gameOver(let winner):
+			self.informationToPresent = .gameEnd(EndState(
+				winner: winner == nil
+					? nil
+					: (
+						winner == account.userId
+							? self.playingAs
+							: self.playingAs.next
+					),
+				playingAs: self.playingAs
+			))
+		case .error, .forfeit, .message, .playerJoined, .playerLeft, .playerReady, .setOption:
 			#warning("TODO: handle remaining messages in game")
 			debugLog("Received message: \(message)")
 		}
+	}
+}
+
+// MARK: - Modifiers
+
+extension HiveGameViewModel {
+	func setAccount(to account: Account) {
+		self.account = account
+	}
+
+	func setClient(to client: HiveGameClient) {
+		self.client = client
 	}
 }
 

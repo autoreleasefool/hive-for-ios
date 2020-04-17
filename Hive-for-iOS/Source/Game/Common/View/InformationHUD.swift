@@ -18,6 +18,7 @@ struct InformationHUD: View {
 		switch information {
 		case .piece, .pieceClass, .rule: return maxHeight * 0.75
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
+		case .gameEnd: return maxHeight * 0.25
 		case .none: return 0
 		}
 	}
@@ -67,6 +68,10 @@ struct InformationHUD: View {
 				} else {
 					return AnyView(RuleList())
 				}
+			case .gameEnd:
+				return AnyView(
+					Button("Return to lobby") { self.viewModel.postViewAction(.returnToLobby) }
+				)
 			}
 		}
 			.padding(.horizontal, length: .m)
