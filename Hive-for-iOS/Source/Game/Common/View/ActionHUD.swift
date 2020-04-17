@@ -144,7 +144,7 @@ struct ActionHUDPreview: PreviewProvider {
 				dragGestureEnabled: false,
 				backgroundColor: .clear
 			) {
-				ActionHUD().HUD(action: .confirmMovement(PopoverSheetConfig(
+				ActionHUD().HUD(action: GameAction(config: PopoverSheetConfig(
 					title: "Move Ant?",
 					message: "From in hand to (0, 0, 0)",
 					buttons: [
@@ -152,7 +152,7 @@ struct ActionHUDPreview: PreviewProvider {
 						PopoverSheetConfig.ButtonConfig(title: "Destroy", type: .destructive) { },
 						PopoverSheetConfig.ButtonConfig(title: "Cancel", type: .cancel) { },
 					]
-				)))
+				), onClose: nil))
 			}
 		}.edgesIgnoringSafeArea(.bottom)
 	}
