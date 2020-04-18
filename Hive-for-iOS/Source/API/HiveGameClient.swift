@@ -63,7 +63,7 @@ class HiveGameClient {
 			print("Cannot open WebSocket connection without fully-formed URL: \(String(describing: url))")
 			defer {
 				publisher.send(completion: .failure(.invalidURL))
-				self?.subject = nil
+				self.subject = nil
 			}
 			return publisher.eraseToAnyPublisher()
 		}

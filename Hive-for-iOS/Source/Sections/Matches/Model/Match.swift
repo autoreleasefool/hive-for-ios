@@ -57,7 +57,7 @@ struct Match: Identifiable, Decodable {
 
 	var webSocketURL: URL? {
 		guard let host = HiveAPI.baseURL.host else { return nil }
-		return URL(string: "ws://\(host)/\(id)/play")
+		return URL(string: "wss://\(host)/\(id)/play")
 	}
 }
 
