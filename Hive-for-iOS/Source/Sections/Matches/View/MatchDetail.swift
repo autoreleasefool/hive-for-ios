@@ -26,6 +26,11 @@ struct MatchDetail: View {
 		self.viewModel = MatchDetailViewModel(nil)
 	}
 
+	init(match: Match) {
+		self.initialId = match.id
+		self.viewModel = MatchDetailViewModel(match)
+	}
+
 	private func playerSection(match: Match) -> some View {
 		HStack(spacing: 0) {
 			MatchUserSummary(
@@ -198,7 +203,7 @@ struct MatchDetailPreview: PreviewProvider {
 		let account = Account()
 		let api = HiveAPI(account: account)
 
-		return MatchDetail(id: nil)
+		return MatchDetail(match: Match.matches[0])
 			.environmentObject(account)
 			.environmentObject(api)
 			.background(Color(.background).edgesIgnoringSafeArea(.all))

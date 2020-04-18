@@ -41,7 +41,10 @@ struct Lobby: View {
 #if DEBUG
 struct LobbyPreview: PreviewProvider {
 	static var previews: some View {
-		Lobby()
+		let account = Account()
+		let api = HiveAPI(account: account)
+
+		return Lobby().environmentObject(api)
 	}
 }
 #endif
