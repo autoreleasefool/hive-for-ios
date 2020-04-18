@@ -29,6 +29,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
 	@Published var errorLoaf: Loaf?
 
+	private var api: HiveAPI!
 	private var account: Account!
 	let client: HiveGameClient
 
@@ -83,6 +84,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	override func postViewAction(_ viewAction: MatchDetailViewAction) {
 		switch viewAction {
 		case .onAppear(let id):
+			self.client.setAccount(to: account)
 			self.matchId = id
 			if matchId == nil {
 				createNewMatch()
@@ -108,9 +110,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func fetchMatchDetails() {
 		guard let matchId = matchId else { return }
 
-		HiveAPI
-			.shared
-			.joinMatch(id: matchId)
+		api.joinMatch(id: matchId)
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -126,9 +126,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	}
 
 	private func createNewMatch() {
-		HiveAPI
-			.shared
-			.createMatch()
+		api.createMatch()
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -216,6 +214,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	func setAccount(to account: Account) {
 		self.account = account
+	}
+
+	func setAPI(to api: HiveAPI) {
+		self.api = api
 	}
 }
 

@@ -11,6 +11,7 @@ import SwiftUI
 struct LoginSignup: View {
 	@ObservedObject private var viewModel = LoginSignupViewModel()
 	@EnvironmentObject private var account: Account
+	@EnvironmentObject private var api: HiveAPI
 
 	@State private var email: String = ""
 	@State private var password: String = ""
@@ -120,7 +121,10 @@ struct LoginSignup: View {
 			.padding(.vertical, length: .xl)
 		}
 		.avoidingKeyboard()
-		.onAppear { self.viewModel.setAccount(to: self.account) }
+		.onAppear {
+			self.viewModel.setAccount(to: self.account)
+			self.viewModel.setAPI(to: self.api)
+		}
 		.loaf($viewModel.errorLoaf)
 		.navigationBarTitle("", displayMode: .inline)
 		.navigationBarHidden(true)

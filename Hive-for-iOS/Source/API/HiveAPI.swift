@@ -9,6 +9,7 @@
 import Foundation
 import Combine
 import Loaf
+import WebSocketKit
 
 enum HiveAPIError: LocalizedError {
 	case networkingError(Error)
@@ -47,23 +48,21 @@ enum HiveAPIError: LocalizedError {
 
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
-class HiveAPI {
-	static let baseURL = URL(string: "https://example.com")!
-
-	static let shared = HiveAPI()
+class HiveAPI: ObservableObject {
+	static let baseURL = URL(string: "https://db8560f4.ngrok.io")!
 
 	private var apiGroup: URL { HiveAPI.baseURL.appendingPathComponent("api") }
 	private var userGroup: URL { apiGroup.appendingPathComponent("users") }
 	private var matchGroup: URL { apiGroup.appendingPathComponent("matches") }
 
-	private init() { }
-
 	// MARK: - Authentication
 
 	private var account: Account!
+	private var tokenValidation: AnyCancellable?
 
 	func setAccount(to account: Account) {
 		self.account = account
+		self.validateToken(in: account)
 	}
 
 	private func applyAuth(to request: inout URLRequest) {
@@ -73,6 +72,40 @@ class HiveAPI {
 
 	private func applyAuth(token: String, to request: inout URLRequest) {
 		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+	}
+
+	private func validateToken(in account: Account) {
+		guard let userId = account.userId, let token = account.token else { return }
+		account.tokenStatus = .validating
+		tokenValidation = checkToken(userId: userId, token: token)
+			.receive(on: DispatchQueue.main)
+			.sink(
+				receiveCompletion: { [weak self] result in
+					if case let .failure(error) = result {
+						self?.handleValidationError(account: account, error: error)
+					}
+				},
+				receiveValue: { result in
+					account.tokenStatus = result ? .valid : .invalid
+					account.isAuthenticated = result
+				}
+			)
+	}
+
+	private func handleValidationError(account: Account, error: HiveAPIError) {
+		assert(Thread.isMainThread, "Account error not handled on the main thread")
+
+		switch error {
+		case .invalidData, .invalidResponse, .missingData, .notImplemented, .unauthorized:
+			account.tokenStatus = .invalid
+			try? account.clear()
+		case .invalidHTTPResponse(let code):
+			print("Token validation failed: \(code)")
+			account.tokenStatus = .validationError
+		case .networkingError(let networkError):
+			print("Token validation failed: \(networkError)")
+			account.tokenStatus = .validationError
+		}
 	}
 
 	// MARK: - Users
@@ -269,3 +302,39 @@ class HiveAPI {
 		promise(.success(true))
 	}
 }
+
+//#if DEBUG
+//class MockHiveAPI: HiveAPI {
+//	func login(login: LoginData) -> AnyPublisher<AccessToken, HiveAPIError> {
+//		PassthroughSubject().eraseToAnyPublisher()
+//	}
+//
+//	func signup(signup: SignupData) -> AnyPublisher<UserSignup, HiveAPIError> {
+//		PassthroughSubject().eraseToAnyPublisher()
+//	}
+//
+//	func checkToken(userId: User.ID, token: String) -> AnyPublisher<Bool, HiveAPIError> {
+//		PassthroughSubject().eraseToAnyPublisher()
+//	}
+//
+//	func logout() -> AnyPublisher<Bool, HiveAPIError> {
+//		PassthroughSubject().eraseToAnyPublisher()
+//	}
+//
+//	func openMatches() -> AnyPublisher<[Match], HiveAPIError> {
+//		PassthroughSubject().eraseToAnyPublisher()
+//	}
+//
+//	func matchDetails(id: Match.ID) -> AnyPublisher<Match, HiveAPIError> {
+//		PassthroughSubject().eraseToAnyPublisher()
+//	}
+//
+//	func joinMatch(id: Match.ID) -> AnyPublisher<JoinMatchResponse, HiveAPIError> {
+//		PassthroughSubject().eraseToAnyPublisher()
+//	}
+//
+//	func createMatch() -> AnyPublisher<CreateMatchResponse, HiveAPIError> {
+//		PassthroughSubject().eraseToAnyPublisher()
+//	}
+//}
+//#endif

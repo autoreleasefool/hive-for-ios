@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct Lobby: View {
+	@EnvironmentObject private var api: HiveAPI
 	@ObservedObject private var viewModel = LobbyViewModel()
 
 	var newMatchButton: some View {
@@ -27,7 +28,10 @@ struct Lobby: View {
 			}
 		}
 		.listRowInsets(EdgeInsets(equalTo: .m))
-		.onAppear { self.viewModel.postViewAction(.onAppear) }
+		.onAppear {
+			self.viewModel.setAPI(to: self.api)
+			self.viewModel.postViewAction(.onAppear)
+		}
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 		.navigationBarTitle(Text("Lobby"))
 		.navigationBarItems(trailing: newMatchButton)

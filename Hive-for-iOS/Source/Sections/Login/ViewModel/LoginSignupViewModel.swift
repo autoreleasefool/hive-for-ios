@@ -46,6 +46,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	@Published var errorLoaf: Loaf?
 
 	private var account: Account!
+	private var api: HiveAPI!
 
 	private(set) var didSuccessfullyAuthenticate = PassthroughSubject<Void, Never>()
 
@@ -72,9 +73,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	}
 
 	private func performLogin(_ request: LoginData) {
-		HiveAPI
-			.shared
-			.login(login: request)
+		api.login(login: request)
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -90,9 +89,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	}
 
 	private func performSignup(_ request: SignupData) {
-		HiveAPI
-			.shared
-			.signup(signup: request)
+		api.signup(signup: request)
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -119,5 +116,9 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 
 	func setAccount(to account: Account) {
 		self.account = account
+	}
+
+	func setAPI(to api: HiveAPI) {
+		self.api = api
 	}
 }

@@ -26,8 +26,6 @@ class Account: ObservableObject {
 	private(set) var userId: User.ID?
 	private(set) var token: String?
 
-	private var tokenValidation: AnyCancellable?
-
 	@Published var isAuthenticated: Bool = false
 	@Published var tokenStatus: TokenStatus?
 
@@ -35,12 +33,11 @@ class Account: ObservableObject {
 
 	init() {
 		do {
-			guard let id = try keychain.get(Key.userId.rawValue) else { return }
-			guard let token = try keychain.get(Key.token.rawValue) else { return }
+			guard let id = try keychain.get(Key.userId.rawValue),
+				let token = try keychain.get(Key.token.rawValue) else { return }
 
-			userId = UUID(uuidString: id)
+			self.userId = UUID(uuidString: id)
 			self.token = token
-			validateTokenOnStartup()
 		} catch {
 			print("Error retrieving login: \(error)")
 		}
@@ -79,42 +76,6 @@ class Account: ObservableObject {
 			try keychain.set(token, key: Key.token.rawValue)
 		} else {
 			try keychain.remove(Key.token.rawValue)
-		}
-	}
-
-	private func validateTokenOnStartup() {
-		guard let userId = self.userId, let token = self.token else { return }
-		tokenStatus = .validating
-		tokenValidation = HiveAPI
-			.shared
-			.checkToken(userId: userId, token: token)
-			.receive(on: DispatchQueue.main)
-			.sink(
-				receiveCompletion: { [weak self] result in
-					if case let .failure(error) = result {
-						self?.handle(error: error)
-					}
-				},
-				receiveValue: { [weak self] result in
-					self?.tokenStatus = result ? .valid : .invalid
-					self?.isAuthenticated = result
-				}
-			)
-	}
-
-	private func handle(error: HiveAPIError) {
-		assert(Thread.isMainThread, "Account error not handled on the main thread")
-
-		switch error {
-		case .invalidData, .invalidResponse, .missingData, .notImplemented, .unauthorized:
-			tokenStatus = .invalid
-			try? clear()
-		case .invalidHTTPResponse(let code):
-			print("Token validation failed: \(code)")
-			tokenStatus = .validationError
-		case .networkingError(let networkError):
-			print("Token validation failed: \(networkError)")
-			tokenStatus = .validationError
 		}
 	}
 }

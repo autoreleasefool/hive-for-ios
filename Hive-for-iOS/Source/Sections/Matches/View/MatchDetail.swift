@@ -15,6 +15,7 @@ struct MatchDetail: View {
 
 	@Environment(\.presentationMode) var presentationMode
 	@EnvironmentObject private var account: Account
+	@EnvironmentObject private var api: HiveAPI
 	@ObservedObject private var viewModel: MatchDetailViewModel
 	private var gameViewModel = HiveGameViewModel()
 
@@ -149,6 +150,7 @@ struct MatchDetail: View {
 		.navigationBarItems(trailing: startButton)
 		.onAppear {
 			self.viewModel.setAccount(to: self.account)
+			self.viewModel.setAPI(to: self.api)
 			self.viewModel.postViewAction(.onAppear(self.initialId))
 		}
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
@@ -192,7 +194,8 @@ private extension GameState.Option {
 #if DEBUG
 struct MatchDetailPreview: PreviewProvider {
 	static var previews: some View {
-		EmptyView()
+		MatchDetail(id: nil, client: WebSocketClient(eventLoopGroupProvider: .createNew))
+			.background(Color(.background).edgesIgnoringSafeArea(.all))
 //		MatchDetail(viewModel: MatchDetailViewModel(match: Match.matches[1]))
 //			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}

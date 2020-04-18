@@ -26,7 +26,10 @@ enum GameClientError: LocalizedError {
 
 class HiveGameClient {
 	var url: URL!
+
 	private let webSocketClient: WebSocketClient
+	private var account: Account!
+
 	private var webSocket: WebSocket?
 	private var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
@@ -36,6 +39,15 @@ class HiveGameClient {
 
 	var isConnected: Bool {
 		!(webSocket?.isClosed ?? true)
+	}
+
+	func setAccount(to account: Account) {
+		self.account = account
+	}
+
+	private func applyAuth(to headers: inout HTTPHeaders) {
+		guard let token = account.token else { return }
+		headers.add(name: "Authorization", value: "Bearer \(token)")
 	}
 
 	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
@@ -49,35 +61,32 @@ class HiveGameClient {
 		guard let scheme = url.scheme,
 			let host = url.host else {
 			print("Cannot open WebSocket connection without fully-formed URL: \(String(describing: url))")
-			DispatchQueue.main.async { [weak self] in
+			defer {
 				publisher.send(completion: .failure(.invalidURL))
 				self?.subject = nil
 			}
 			return publisher.eraseToAnyPublisher()
 		}
 
-		DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-			guard let self = self else { return }
+		var headers = HTTPHeaders()
+		applyAuth(to: &headers)
 
-			do {
-				try self.webSocketClient.connect(
-					scheme: scheme,
-					host: host,
-					port: 80,
-					path: self.url.path,
-					headers: HTTPHeaders()
-				) { [weak self] ws in
-					guard let self = self else { return }
-					self.webSocket = ws
-					self.setupHandlers()
-					publisher.send(.connected)
-					self.setupHandlers()
-				}.wait()
-			} catch {
-				print("Failed to connect to WebSocket: \(error)")
-				publisher.send(completion: .failure(.failedToConnect))
-				self.subject = nil
-			}
+		self.webSocketClient.connect(
+			scheme: scheme,
+			host: host,
+			port: 443,
+			path: self.url.path,
+			headers: headers
+		) { [weak self] ws in
+			guard let self = self else { return }
+			self.webSocket = ws
+			self.setupHandlers()
+			publisher.send(.connected)
+			self.setupHandlers()
+		}.whenFailure { [weak self] error in
+			print("Failed to connect to WebSocket: \(error)")
+			publisher.send(completion: .failure(.failedToConnect))
+			self?.subject = nil
 		}
 
 		return publisher.eraseToAnyPublisher()

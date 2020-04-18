@@ -21,15 +21,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		Theme.applyPrimaryTheme()
 
+		// Create API access instance
+		let api = HiveAPI()
+
 		// Create Account container and attempt to load credentials
 		let account = Account()
-		HiveAPI.shared.setAccount(to: account)
+		api.setAccount(to: account)
 
 		// Create settings and load preferences
 		let settings = Settings()
 
 		// Create the SwiftUI view that provides the window contents.
 		let contentView = Home()
+			.environmentObject(api)
 			.environmentObject(account)
 			.environmentObject(settings)
 

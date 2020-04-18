@@ -20,10 +20,14 @@ enum LobbyViewAction: BaseViewAction {
 
 class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published var errorLoaf: Loaf?
-
 	@Published private(set) var matches: [Match] = []
 
+	private var api: HiveAPI!
 	let client = WebSocketClient(eventLoopGroupProvider: .createNew)
+
+	deinit {
+		try? client.syncShutdown()
+	}
 
 	override func postViewAction(_ viewAction: LobbyViewAction) {
 		switch viewAction {
@@ -35,15 +39,12 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	}
 
 	private func cleanUp() {
-		try? client.syncShutdown()
 		errorLoaf = nil
 		cancelAllRequests()
 	}
 
 	private func refreshMatches() {
-		HiveAPI
-			.shared
-			.openMatches()
+		api.openMatches()
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
@@ -57,5 +58,9 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 				}
 			)
 			.store(in: self)
+	}
+
+	func setAPI(to api: HiveAPI) {
+		self.api = api
 	}
 }
