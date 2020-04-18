@@ -154,8 +154,10 @@ struct MatchDetail: View {
 		}
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 		.onReceive(self.viewModel.$gameState) {
-			self.gameViewModel.setAccount(to: self.account)
-			self.gameViewModel.setClient(to: self.viewModel.client)
+			if $0 != nil {
+				self.gameViewModel.setAccount(to: self.account)
+				self.gameViewModel.setClient(to: self.viewModel.client)
+			}
 			self.inGame = $0 != nil
 		}
 		.onReceive(self.viewModel.leavingMatch) {
@@ -200,8 +202,6 @@ struct MatchDetailPreview: PreviewProvider {
 			.environmentObject(account)
 			.environmentObject(api)
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
-//		MatchDetail(viewModel: MatchDetailViewModel(match: Match.matches[1]))
-//			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

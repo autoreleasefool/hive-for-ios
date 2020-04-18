@@ -29,7 +29,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	private var api: HiveAPI!
 	private var account: Account!
-	let client = HiveGameClient()
+	var client: HiveGameClient!
 
 	private(set) var matchId: Match.ID?
 	private var creatingNewMatch: Bool = false
@@ -81,7 +81,6 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	override func postViewAction(_ viewAction: MatchDetailViewAction) {
 		switch viewAction {
 		case .onAppear(let id):
-			self.client.setAccount(to: account)
 			self.matchId = id
 			if matchId == nil {
 				createNewMatch()
@@ -211,6 +210,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	func setAccount(to account: Account) {
 		self.account = account
+		self.client = HiveGameClient(account: account)
 	}
 
 	func setAPI(to api: HiveAPI) {
@@ -279,7 +279,7 @@ extension MatchDetailViewModel {
 			}
 		case .message(let id, let string):
 			#warning("TODO: display message")
-			print(#"Received message "\#(string)" from \#(id)"#)
+			print("Received message '\(string)' from \(id)")
 		case .error(let error):
 			errorLoaf = error.loaf.build()
 		case .forfeit, .gameOver:

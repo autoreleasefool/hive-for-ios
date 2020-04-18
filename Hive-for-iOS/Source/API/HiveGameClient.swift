@@ -26,15 +26,13 @@ enum GameClientError: LocalizedError {
 class HiveGameClient {
 	var url: URL!
 
-	private var account: Account!
+	private let account: Account
 
 	private var webSocket: WebSocket?
 	private var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 	private(set) var isConnected: Bool = false
 
-	init() { }
-
-	func setAccount(to account: Account) {
+	init(account: Account) {
 		self.account = account
 	}
 

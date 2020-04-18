@@ -122,8 +122,8 @@ struct LoginSignup: View {
 		}
 		.avoidingKeyboard()
 		.onAppear {
-			self.viewModel.setAccount(to: self.account)
-			self.viewModel.setAPI(to: self.api)
+			self.viewModel.account = self.account
+			self.viewModel.api = self.api
 		}
 		.loaf($viewModel.errorLoaf)
 		.navigationBarTitle("", displayMode: .inline)

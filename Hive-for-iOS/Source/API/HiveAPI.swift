@@ -295,39 +295,3 @@ class HiveAPI: ObservableObject {
 		promise(.success(true))
 	}
 }
-
-//#if DEBUG
-//class MockHiveAPI: HiveAPI {
-//	func login(login: LoginData) -> AnyPublisher<AccessToken, HiveAPIError> {
-//		PassthroughSubject().eraseToAnyPublisher()
-//	}
-//
-//	func signup(signup: SignupData) -> AnyPublisher<UserSignup, HiveAPIError> {
-//		PassthroughSubject().eraseToAnyPublisher()
-//	}
-//
-//	func checkToken(userId: User.ID, token: String) -> AnyPublisher<Bool, HiveAPIError> {
-//		PassthroughSubject().eraseToAnyPublisher()
-//	}
-//
-//	func logout() -> AnyPublisher<Bool, HiveAPIError> {
-//		PassthroughSubject().eraseToAnyPublisher()
-//	}
-//
-//	func openMatches() -> AnyPublisher<[Match], HiveAPIError> {
-//		PassthroughSubject().eraseToAnyPublisher()
-//	}
-//
-//	func matchDetails(id: Match.ID) -> AnyPublisher<Match, HiveAPIError> {
-//		PassthroughSubject().eraseToAnyPublisher()
-//	}
-//
-//	func joinMatch(id: Match.ID) -> AnyPublisher<JoinMatchResponse, HiveAPIError> {
-//		PassthroughSubject().eraseToAnyPublisher()
-//	}
-//
-//	func createMatch() -> AnyPublisher<CreateMatchResponse, HiveAPIError> {
-//		PassthroughSubject().eraseToAnyPublisher()
-//	}
-//}
-//#endif
