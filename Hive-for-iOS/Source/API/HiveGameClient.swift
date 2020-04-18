@@ -39,7 +39,7 @@ class HiveGameClient {
 	}
 
 	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
-		if let subject = subject {
+		if isConnected, let subject = subject {
 			return subject.eraseToAnyPublisher()
 		}
 
@@ -54,7 +54,6 @@ class HiveGameClient {
 		return publisher.eraseToAnyPublisher()
 	}
 
-	@discardableResult
 	func close(code: CloseCode? = nil) {
 		webSocket?.disconnect(closeCode: code?.rawValue ?? CloseCode.normal.rawValue)
 		subject?.send(completion: .finished)
