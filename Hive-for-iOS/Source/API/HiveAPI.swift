@@ -48,21 +48,24 @@ enum HiveAPIError: LocalizedError {
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
 class HiveAPI: ObservableObject {
-	static let baseURL = URL(string: "https://db8560f4.ngrok.io")!
+	static let baseURL = URL(string: "https://hiveforios.josephroque.dev")!
 
 	private var apiGroup: URL { HiveAPI.baseURL.appendingPathComponent("api") }
 	private var userGroup: URL { apiGroup.appendingPathComponent("users") }
 	private var matchGroup: URL { apiGroup.appendingPathComponent("matches") }
 
-	// MARK: - Authentication
+	private let session: NetworkSession
 
-	private var account: Account!
-	private var tokenValidation: AnyCancellable?
-
-	func setAccount(to account: Account) {
+	init(account: Account, session: NetworkSession = URLSession.shared) {
 		self.account = account
+		self.session = session
 		self.validateToken(in: account)
 	}
+
+	// MARK: - Authentication
+
+	private let account: Account
+	private var tokenValidation: AnyCancellable?
 
 	private func validateToken(in account: Account) {
 		guard let userId = account.userId, let token = account.token else { return }

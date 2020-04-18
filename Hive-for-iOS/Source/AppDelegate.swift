@@ -21,12 +21,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 		Theme.applyPrimaryTheme()
 
-		// Create API access instance
-		let api = HiveAPI()
-
-		// Create Account container and attempt to load credentials
+		// Create account storage
 		let account = Account()
-		api.setAccount(to: account)
+
+		// Create API access instance
+		let api = HiveAPI(account: account)
 
 		// Create settings and load preferences
 		let settings = Settings()
