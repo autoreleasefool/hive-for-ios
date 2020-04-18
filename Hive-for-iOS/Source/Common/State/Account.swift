@@ -78,4 +78,9 @@ class Account: ObservableObject {
 			try keychain.remove(Key.token.rawValue)
 		}
 	}
+
+	func applyAuth(to request: inout URLRequest, overridingTokenWith token: String? = nil) {
+		guard let token = token ?? self.token else { return }
+		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+	}
 }

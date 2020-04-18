@@ -10,7 +10,6 @@ import Foundation
 import SwiftUI
 import Combine
 import Loaf
-import WebSocketKit
 
 enum LobbyViewAction: BaseViewAction {
 	case onAppear
@@ -23,11 +22,6 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published private(set) var matches: [Match] = []
 
 	private var api: HiveAPI!
-	let client = WebSocketClient(eventLoopGroupProvider: .createNew)
-
-	deinit {
-		try? client.syncShutdown()
-	}
 
 	override func postViewAction(_ viewAction: LobbyViewAction) {
 		switch viewAction {

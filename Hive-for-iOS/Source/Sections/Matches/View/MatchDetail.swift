@@ -8,7 +8,6 @@
 
 import SwiftUI
 import HiveEngine
-import WebSocketKit
 
 struct MatchDetail: View {
 	private let initialId: Match.ID?
@@ -22,9 +21,9 @@ struct MatchDetail: View {
 	@State private var inGame: Bool = false
 	@State private var exiting: Bool = false
 
-	init(id: Match.ID?, client: WebSocketClient) {
+	init(id: Match.ID?) {
 		self.initialId = id
-		self.viewModel = MatchDetailViewModel(nil, client: client)
+		self.viewModel = MatchDetailViewModel(nil)
 	}
 
 	private func playerSection(match: Match) -> some View {
@@ -194,7 +193,7 @@ private extension GameState.Option {
 #if DEBUG
 struct MatchDetailPreview: PreviewProvider {
 	static var previews: some View {
-		MatchDetail(id: nil, client: WebSocketClient(eventLoopGroupProvider: .createNew))
+		MatchDetail(id: nil)
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 //		MatchDetail(viewModel: MatchDetailViewModel(match: Match.matches[1]))
 //			.background(Color(.background).edgesIgnoringSafeArea(.all))

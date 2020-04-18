@@ -9,7 +9,6 @@
 import Foundation
 import Combine
 import Loaf
-import WebSocketKit
 
 enum HiveAPIError: LocalizedError {
 	case networkingError(Error)
@@ -63,15 +62,6 @@ class HiveAPI: ObservableObject {
 	func setAccount(to account: Account) {
 		self.account = account
 		self.validateToken(in: account)
-	}
-
-	private func applyAuth(to request: inout URLRequest) {
-		guard let token = account.token else { return }
-		applyAuth(token: token, to: &request)
-	}
-
-	private func applyAuth(token: String, to request: inout URLRequest) {
-		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 	}
 
 	private func validateToken(in account: Account) {
@@ -155,7 +145,7 @@ class HiveAPI: ObservableObject {
 
 			var request = self.buildBaseRequest(to: url, withAuth: false)
 			request.httpMethod = "GET"
-			self.applyAuth(token: token, to: &request)
+			self.account.applyAuth(to: &request, overridingTokenWith: token)
 
 			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
@@ -246,7 +236,7 @@ class HiveAPI: ObservableObject {
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")
 		if withAuth {
-			applyAuth(to: &request)
+			account.applyAuth(to: &request)
 		}
 		return request
 	}

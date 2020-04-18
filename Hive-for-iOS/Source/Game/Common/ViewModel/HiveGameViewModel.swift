@@ -10,7 +10,6 @@ import SwiftUI
 import Combine
 import HiveEngine
 import Loaf
-import NIOWebSocket
 
 enum HiveGameViewAction: BaseViewAction {
 	case failedToStartGame

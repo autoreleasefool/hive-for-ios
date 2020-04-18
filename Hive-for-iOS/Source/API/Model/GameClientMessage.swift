@@ -7,7 +7,7 @@
 //
 
 import HiveEngine
-import WebSocketKit
+import Starscream
 
 enum GameClientMessage {
 	case movement(RelativeMovement)
@@ -21,15 +21,15 @@ extension WebSocket {
 	func send(message: GameClientMessage) {
 		switch message {
 		case .movement(let movement):
-			self.send("MOV \(movement.notation)")
+			self.write(string: "MOV \(movement.notation)")
 		case .setOption(let option, let value):
-			self.send("SET \(option) \(value)")
+			self.write(string: "SET \(option) \(value)")
 		case .message(let string):
-			self.send("MSG \(string)")
+			self.write(string: "MSG \(string)")
 		case .readyToPlay:
-			self.send("GLHF")
+			self.write(string: "GLHF")
 		case .forfeit:
-			self.send("FF")
+			self.write(string: "FF")
 		}
 	}
 }

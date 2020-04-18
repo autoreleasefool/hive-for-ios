@@ -7,12 +7,10 @@
 //
 
 import Foundation
-import NIOWebSocket
 import SwiftUI
 import Combine
 import Loaf
 import HiveEngine
-import WebSocketKit
 
 enum MatchDetailViewAction: BaseViewAction {
 	case onAppear(Match.ID?)
@@ -31,7 +29,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	private var api: HiveAPI!
 	private var account: Account!
-	let client: HiveGameClient
+	let client = HiveGameClient()
 
 	private(set) var matchId: Match.ID?
 	private var creatingNewMatch: Bool = false
@@ -69,10 +67,9 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		return ""
 	}
 
-	init(_ match: Match? = nil, client: WebSocketClient) {
+	init(_ match: Match? = nil) {
 		self.matchId = match?.id
 		self.match = match
-		self.client = HiveGameClient(webSocketClient: client)
 
 		super.init()
 
@@ -245,15 +242,15 @@ extension MatchDetailViewModel {
 	private func didReceive(error: GameClientError) {
 		LoadingHUD.shared.hide()
 		leavingMatch.send()
-		print("Client did not connect: \(error)")
+		#warning("TODO: add a reconnect mechanism")
+		print("Client disconnected: \(error)")
 	}
 
 	private func didReceive(event: GameClientEvent) {
 		switch event {
 		case .connected:
 			LoadingHUD.shared.hide()
-		case .closed(let code):
-			print("Connection to client closed: \(String(describing: code))")
+		case .closed:
 			leavingMatch.send()
 		case .message(let message):
 			didReceive(message: message)

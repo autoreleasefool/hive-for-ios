@@ -10,44 +10,32 @@ import Combine
 import Foundation
 import HiveEngine
 import Regex
-import WebSocketKit
-import NIOWebSocket
+import Starscream
 
 enum GameClientEvent {
 	case message(GameServerMessage)
 	case connected
-	case closed(WebSocketErrorCode?)
+	case closed(String, UInt16)
 }
 
 enum GameClientError: LocalizedError {
-	case invalidURL
 	case failedToConnect
+	case webSocketError(Error?)
 }
 
 class HiveGameClient {
 	var url: URL!
 
-	private let webSocketClient: WebSocketClient
 	private var account: Account!
 
 	private var webSocket: WebSocket?
 	private var subject: PassthroughSubject<GameClientEvent, GameClientError>?
+	private(set) var isConnected: Bool = false
 
-	init(webSocketClient: WebSocketClient) {
-		self.webSocketClient = webSocketClient
-	}
-
-	var isConnected: Bool {
-		!(webSocket?.isClosed ?? true)
-	}
+	init() { }
 
 	func setAccount(to account: Account) {
 		self.account = account
-	}
-
-	private func applyAuth(to headers: inout HTTPHeaders) {
-		guard let token = account.token else { return }
-		headers.add(name: "Authorization", value: "Bearer \(token)")
 	}
 
 	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
@@ -58,59 +46,53 @@ class HiveGameClient {
 		let publisher = PassthroughSubject<GameClientEvent, GameClientError>()
 		self.subject = publisher
 
-		guard let scheme = url.scheme,
-			let host = url.host else {
-			print("Cannot open WebSocket connection without fully-formed URL: \(String(describing: url))")
-			defer {
-				publisher.send(completion: .failure(.invalidURL))
-				self.subject = nil
-			}
-			return publisher.eraseToAnyPublisher()
-		}
-
-		var headers = HTTPHeaders()
-		applyAuth(to: &headers)
-
-		self.webSocketClient.connect(
-			scheme: scheme,
-			host: host,
-			port: 443,
-			path: self.url.path,
-			headers: headers
-		) { [weak self] ws in
-			guard let self = self else { return }
-			self.webSocket = ws
-			self.setupHandlers()
-			publisher.send(.connected)
-			self.setupHandlers()
-		}.whenFailure { [weak self] error in
-			print("Failed to connect to WebSocket: \(error)")
-			publisher.send(completion: .failure(.failedToConnect))
-			self?.subject = nil
-		}
-
+		var request = URLRequest(url: url)
+		account.applyAuth(to: &request)
+		webSocket = WebSocket(request: request)
+		webSocket?.delegate = self
+		webSocket?.connect()
 		return publisher.eraseToAnyPublisher()
 	}
 
-	func setupHandlers() {
-		webSocket?.onClose.whenComplete { [weak self] _ in
-			self?.subject?.send(.closed(self?.webSocket?.closeCode))
-		}
-
-		webSocket?.onText { [weak self] _, text in
-			guard let self = self, let message = GameServerMessage(text) else { return }
-			self.subject?.send(.message(message))
-		}
-	}
-
 	@discardableResult
-	func close(code: WebSocketErrorCode? = nil) -> EventLoopFuture<Void>? {
-		let future = webSocket?.close(code: code ?? .normalClosure)
+	func close(code: CloseCode? = nil) {
+		webSocket?.disconnect(closeCode: code?.rawValue ?? CloseCode.normal.rawValue)
 		subject?.send(completion: .finished)
-		return future
 	}
 
 	func send(_ message: GameClientMessage) {
 		webSocket?.send(message: message)
+	}
+}
+
+// MARK: - WebSocketDelegate
+
+extension HiveGameClient: WebSocketDelegate {
+	func didReceive(event: WebSocketEvent, client: WebSocket) {
+		switch event {
+		case .connected:
+			isConnected = true
+			subject?.send(.connected)
+		case .disconnected(let reason, let code):
+			isConnected = false
+			print("WebSocket disconnected: \(reason) with code: \(code)")
+			subject?.send(.closed(reason, code))
+			subject?.send(completion: .finished)
+		case .cancelled:
+			isConnected = false
+			subject?.send(completion: .failure(.failedToConnect))
+		case .error(let error):
+			isConnected = false
+			subject?.send(completion: .failure(.webSocketError(error)))
+		case .text(let text):
+			guard let message = GameServerMessage(text) else { return }
+			subject?.send(.message(message))
+		case .binary, .ping, .pong:
+			// Ignore non-text responses
+			break
+		case .viabilityChanged, .reconnectSuggested:
+			// No idea what these are for
+			break
+		}
 	}
 }
