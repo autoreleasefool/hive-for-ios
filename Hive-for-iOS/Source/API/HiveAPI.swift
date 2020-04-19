@@ -115,9 +115,9 @@ class HiveAPI: ObservableObject {
 			request.httpMethod = "POST"
 			request.setValue("Basic \(base64Auth)", forHTTPHeaderField: "Authorization")
 
-			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}.resume()
+			}
 		}
 		.eraseToAnyPublisher()
 	}
@@ -135,9 +135,9 @@ class HiveAPI: ObservableObject {
 			request.httpMethod = "POST"
 			request.httpBody = signupData
 
-			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}.resume()
+			}
 		}
 		.eraseToAnyPublisher()
 	}
@@ -150,9 +150,9 @@ class HiveAPI: ObservableObject {
 			request.httpMethod = "GET"
 			self.account.applyAuth(to: &request, overridingTokenWith: token)
 
-			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}.resume()
+			}
 		}
 		.map { result in userId == result.userId }
 		.eraseToAnyPublisher()
@@ -165,9 +165,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "DELETE"
 
-			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleVoidResponse(data: data, response: response, error: error, promise: promise)
-			}.resume()
+			}
 		}
 		.eraseToAnyPublisher()
 	}
@@ -181,9 +181,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "GET"
 
-			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}.resume()
+			}
 		}
 		.eraseToAnyPublisher()
 	}
@@ -195,9 +195,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "GET"
 
-			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}.resume()
+			}
 		}
 		.eraseToAnyPublisher()
 	}
@@ -211,9 +211,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "POST"
 
-			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}.resume()
+			}
 		}
 		.eraseToAnyPublisher()
 	}
@@ -225,9 +225,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "POST"
 
-			URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}.resume()
+			}
 		}
 		.eraseToAnyPublisher()
 	}
@@ -275,7 +275,12 @@ class HiveAPI: ObservableObject {
 		promise(.success(result))
 	}
 
-	private func handleVoidResponse(data: Data?, response: URLResponse?, error: Error?, promise: HiveAPIPromise<Bool>) {
+	private func handleVoidResponse(
+		data: Data?,
+		response: URLResponse?,
+		error: Error?,
+		promise: HiveAPIPromise<Bool>
+	) {
 		guard error == nil else {
 			return promise(.failure(.networkingError(error!)))
 		}

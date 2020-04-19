@@ -9,7 +9,6 @@
 import Combine
 import Foundation
 import HiveEngine
-import Regex
 import Starscream
 
 enum GameClientEvent {
