@@ -285,6 +285,7 @@
 		CABDFCD723DB899E00C697AD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CAC685F823CCF4D400B882D2 /* Home.swift */,
 				CABDFCD823DB89AA00C697AD /* Welcome.swift */,
 			);
 			path = View;
@@ -345,7 +346,6 @@
 			isa = PBXGroup;
 			children = (
 				CABDFCD723DB899E00C697AD /* View */,
-				CAC685F823CCF4D400B882D2 /* Home.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
