@@ -98,7 +98,7 @@ class HiveGameScene: SKScene {
 	}
 
 	override func didChangeSize(_ oldSize: CGSize) {
-		guard !viewModel.flowStateSubject.value.inGame, size.equalTo(.zero) == false else { return }
+		guard !viewModel.stateStore.value.inGame, size.equalTo(.zero) == false else { return }
 		currentOffset = CGPoint(x: size.width / 2, y: size.height / 2)
 
 		hasChangedSize = true
@@ -108,13 +108,13 @@ class HiveGameScene: SKScene {
 	}
 
 	private func subscribeToPublishers() {
-		viewModel.flowStateSubject
+		viewModel.stateStore
 			.sink { [weak self] receivedValue in
 				self?.handleTransition(to: receivedValue)
 			}
 			.store(in: viewModel)
 
-		viewModel.gameStateSubject
+		viewModel.gameStateStore
 			.sink { [weak self] receivedValue in
 				guard let gameState = receivedValue else { return }
 				self?.present(gameState: gameState)
@@ -127,7 +127,7 @@ class HiveGameScene: SKScene {
 			}
 			.store(in: viewModel)
 
-		viewModel.debugEnabledSubject
+		viewModel.debugModeStore
 			.sink { [weak self] receivedValue in
 				self?.debugEnabled = receivedValue
 			}
@@ -402,7 +402,7 @@ extension HiveGameScene {
 
 	private func prepareGame() {
 		resetGame()
-		debugEnabled = viewModel.debugEnabledSubject.value
+		debugEnabled = viewModel.debugModeStore.value
 		viewModel.postViewAction(.viewContentReady)
 	}
 
@@ -441,7 +441,7 @@ extension HiveGameScene {
 extension HiveGameScene {
 	private var debugEnabled: Bool {
 		get {
-			viewModel.debugEnabledSubject.value
+			viewModel.debugModeStore.value
 		}
 		set {
 			spriteManager.debugEnabled = newValue

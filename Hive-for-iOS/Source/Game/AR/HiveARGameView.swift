@@ -56,13 +56,13 @@ class HiveARGameView: UIView {
 	}
 
 	private func subscribeToPublishers() {
-		viewModel.flowStateSubject
+		viewModel.stateStore
 			.sink { [weak self] receivedValue in
 				self?.handleTransition(to: receivedValue)
 			}
 			.store(in: viewModel)
 
-		viewModel.gameStateSubject
+		viewModel.gameStateStore
 			.sink { [weak self] receivedValue in
 				guard let gameState = receivedValue else { return }
 				self?.present(gameState: gameState)
@@ -75,7 +75,7 @@ class HiveARGameView: UIView {
 			}
 			.store(in: viewModel)
 
-		viewModel.debugEnabledSubject
+		viewModel.debugModeStore
 			.sink { [weak self] receivedValue in
 				self?.debugEnabled = receivedValue
 			}
@@ -302,7 +302,7 @@ extension HiveARGameView: ARCoachingOverlayViewDelegate {
 extension HiveARGameView {
 	private var debugEnabled: Bool {
 		get {
-			viewModel.debugEnabledSubject.value
+			viewModel.debugModeStore.value
 		}
 		set {
 			DispatchQueue.main.async {

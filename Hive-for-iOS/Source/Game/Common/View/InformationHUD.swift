@@ -90,15 +90,15 @@ struct InformationHUD: View {
 	var body: some View {
 		GeometryReader { geometry in
 			BottomSheet(
-				isOpen: self.viewModel.hasInformation,
+				isOpen: self.viewModel.presentingGameInformation,
 				minHeight: 0,
 				maxHeight: self.hudHeight(
 					maxHeight: geometry.size.height,
-					information: self.viewModel.informationToPresent
+					information: self.viewModel.presentedGameInformation
 				)
 			) {
-				if self.viewModel.hasInformation.wrappedValue {
-					self.HUD(information: self.viewModel.informationToPresent!, state: self.viewModel.gameState)
+				if self.viewModel.presentingGameInformation.wrappedValue {
+					self.HUD(information: self.viewModel.presentedGameInformation!, state: self.viewModel.gameState)
 				} else {
 					EmptyView()
 				}

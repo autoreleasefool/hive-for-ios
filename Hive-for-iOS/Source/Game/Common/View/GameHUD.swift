@@ -53,7 +53,7 @@ struct GameHUD: View {
 		let xOffset = (buttonDistanceFromEdge.rawValue + buttonSize.rawValue / 2) * (player == .white ? -1 : 1)
 
 		return Button(action: {
-			self.viewModel.handToShow = PlayerHand(player: player, state: self.viewModel.gameState)
+			self.viewModel.presentedPlayerHand = PlayerHand(player: player, state: self.viewModel.gameState)
 		}, label: {
 			HexImage(ImageAsset.Icon.hand, stroke: player.color)
 				.placeholderTint(player.color)
@@ -83,7 +83,7 @@ struct GameHUD: View {
 				.edgesIgnoringSafeArea(.bottom)
 		}
 		.padding(.top, length: .l)
-		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }
+		.onReceive(viewModel.stateStore) { receivedValue in self.handleTransition(to: receivedValue) }
 	}
 }
 

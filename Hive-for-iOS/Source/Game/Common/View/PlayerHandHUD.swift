@@ -133,13 +133,13 @@ struct PlayerHandHUD: View {
 	var body: some View {
 		GeometryReader { geometry in
 			BottomSheet(
-				isOpen: self.viewModel.showPlayerHand,
+				isOpen: self.viewModel.presentingPlayerHand,
 				minHeight: 0,
 				maxHeight: geometry.size.height / 3.0,
 				backgroundColor: .clear
 			) {
-				if self.viewModel.showPlayerHand.wrappedValue {
-					self.HUD(hand: self.viewModel.handToShow!, playingAs: self.viewModel.playingAs)
+				if self.viewModel.presentingPlayerHand.wrappedValue {
+					self.HUD(hand: self.viewModel.presentedPlayerHand!, playingAs: self.viewModel.playingAs)
 				} else {
 					EmptyView()
 				}

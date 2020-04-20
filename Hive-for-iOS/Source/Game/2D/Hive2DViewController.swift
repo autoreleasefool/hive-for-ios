@@ -40,7 +40,7 @@ class Hive2DGameViewController: UIViewController {
 	}
 
 	private func subscribeToPublishers() {
-		viewModel.loafSubject.sink { [weak self] receivedValue in
+		viewModel.loafState.sink { [weak self] receivedValue in
 			guard let self = self else { return }
 			receivedValue.show(withSender: self)
 		}.store(in: viewModel)

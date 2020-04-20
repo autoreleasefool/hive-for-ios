@@ -43,11 +43,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private var account: Account!
 	private var client: HiveGameClient!
 
-	@Published var handToShow: PlayerHand?
-	@Published var informationToPresent: GameInformation?
-	@Published var gameActionToPresent: GameAction?
+	@Published var presentedPlayerHand: PlayerHand?
+	@Published var presentedGameInformation: GameInformation?
+	@Published var presentedGameAction: GameAction?
 
-	var loafSubject = PassthroughSubject<LoafState, Never>()
+	var loafState = PassthroughSubject<LoafState, Never>()
 	var animateToPosition = PassthroughSubject<Position, Never>()
 
 	struct SelectedPiece {
@@ -57,26 +57,26 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	typealias DeselectedPiece = SelectedPiece
 
-	var selectedPiece = CurrentValueSubject<(DeselectedPiece?, SelectedPiece?), Never>((nil, nil))
+	var selectedPiece = Store<(DeselectedPiece?, SelectedPiece?)>((nil, nil))
 	var currentSelectedPiece: SelectedPiece? { selectedPiece.value.1 }
 
-	var flowStateSubject = CurrentValueSubject<State, Never>(State.begin)
-	var gameStateSubject = CurrentValueSubject<GameState?, Never>(nil)
-	var debugEnabledSubject = CurrentValueSubject<Bool, Never>(false)
+	var stateStore = Store<State>(State.begin)
+	var gameStateStore = Store<GameState?>(nil)
+	var debugModeStore = Store<Bool>(false)
 
 	var gameContent: GameViewContent!
 	var playingAs: Player!
 
 	var inGame: Bool {
-		flowStateSubject.value.inGame
+		stateStore.value.inGame
 	}
 
 	var gameState: GameState {
-		gameStateSubject.value!
+		gameStateStore.value!
 	}
 
 	var currentState: State {
-		flowStateSubject.value
+		stateStore.value
 	}
 
 	var gameAnchor: Experience.HiveGame? {
@@ -87,39 +87,39 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		}
 	}
 
-	var showPlayerHand: Binding<Bool> {
+	var presentingPlayerHand: Binding<Bool> {
 		Binding(
-			get: { [weak self] in self?.handToShow != nil },
+			get: { [weak self] in self?.presentedPlayerHand != nil },
 			set: { [weak self] newValue in
 				guard !newValue else { return }
-				self?.handToShow = nil
+				self?.presentedPlayerHand = nil
 			}
 		)
 	}
 
-	var hasInformation: Binding<Bool> {
+	var presentingGameInformation: Binding<Bool> {
 		Binding(
-			get: { [weak self] in self?.informationToPresent != nil },
+			get: { [weak self] in self?.presentedGameInformation != nil },
 			set: { [weak self] newValue in
 				guard !newValue else { return }
-				self?.informationToPresent = nil
+				self?.presentedGameInformation = nil
 			}
 		)
 	}
 
-	var hasGameAction: Binding<Bool> {
+	var presentingGameAction: Binding<Bool> {
 		Binding(
-			get: { [weak self] in self?.gameActionToPresent != nil },
+			get: { [weak self] in self?.presentedGameAction != nil },
 			set: { [weak self] newValue in
 				guard !newValue else { return }
-				self?.gameActionToPresent?.onClose?()
-				self?.gameActionToPresent = nil
+				self?.presentedGameAction?.onClose?()
+				self?.presentedGameAction = nil
 			}
 		)
 	}
 
 	var displayState: String {
-		switch flowStateSubject.value {
+		switch stateStore.value {
 		case .playerTurn:
 			return "Your turn"
 		case .sendingMovement:
@@ -134,7 +134,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	var shouldHideHUDControls: Bool {
-		showPlayerHand.wrappedValue || hasInformation.wrappedValue || hasGameAction.wrappedValue
+		presentingPlayerHand.wrappedValue || presentingGameInformation.wrappedValue || presentingGameAction.wrappedValue
 	}
 
 	private var selectedPieceDefaultPosition: Position {
@@ -152,7 +152,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {
 		case .failedToStartGame:
-			loafSubject.send(LoafState("Failed to start game", state: .error))
+			loafState.send(LoafState("Failed to start game", state: .error))
 		case .onAppear(let state):
 			initialize(withState: state)
 		case .viewContentDidLoad(let content):
@@ -165,7 +165,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			attemptSetupNewGame()
 
 		case .presentInformation(let information):
-			self.informationToPresent = information
+			self.presentedGameInformation = information
 		case .selectedFromHand(let pieceClass):
 			placeFromHand(pieceClass)
 		case .enquiredFromHand(let pieceClass):
@@ -194,18 +194,18 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .returnToLobby:
 			endGame()
 		case .arViewError(let error):
-			loafSubject.send(LoafState(error.localizedDescription, state: .error))
+			loafState.send(LoafState(error.localizedDescription, state: .error))
 
 		case .toggleDebug:
-			debugEnabledSubject.send(!debugEnabledSubject.value)
+			debugModeStore.send(!debugModeStore.value)
 		case .onDisappear:
 			cleanUp()
 		}
 	}
 
 	private func initialize(withState state: GameState) {
-		guard flowStateSubject.value == .begin else { return }
-		gameStateSubject.send(state)
+		guard stateStore.value == .begin else { return }
+		gameStateStore.send(state)
 
 		client.openConnection()
 			.receive(on: DispatchQueue.main)
@@ -248,7 +248,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func placeFromHand(_ pieceClass: Piece.Class) {
 		guard inGame else { return }
 
-		if handToShow?.player == playingAs,
+		if presentedPlayerHand?.player == playingAs,
 			let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
 			let position = selectedPieceDefaultPosition
 			selectedPiece.send((
@@ -260,31 +260,31 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			))
 			animateToPosition.send(position)
 		}
-		handToShow = nil
+		presentedPlayerHand = nil
 	}
 
 	private func enquireFromHand(_ pieceClass: Piece.Class) {
 		guard inGame else { return }
-		handToShow = nil
-		informationToPresent = .pieceClass(pieceClass)
+		presentedPlayerHand = nil
+		presentedGameInformation = .pieceClass(pieceClass)
 	}
 
 	private func tappedPiece(_ piece: Piece, showStack: Bool = false) {
 		if showStack {
 			let position = self.position(of: piece)
 			guard let stack = gameState.stacks[position] else {
-				informationToPresent = .piece(piece)
+				presentedGameInformation = .piece(piece)
 				return
 			}
 
 			let (_, stackCount) = self.positionInStack(of: piece)
 			if stackCount > 1 {
 				let stackAddition = stackCount > stack.count ? [selectedPiece.value.1?.piece].compactMap { $0 } : []
-				informationToPresent = .stack(stack + stackAddition)
+				presentedGameInformation = .stack(stack + stackAddition)
 				return
 			}
 		}
-		informationToPresent = .piece(piece)
+		presentedGameInformation = .piece(piece)
 	}
 
 	private func pickUpHand() {
@@ -315,18 +315,18 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 					type: .destructive
 				) { [weak self] in
 					self?.postViewAction(.forfeitConfirmed)
-					self?.gameActionToPresent = nil
+					self?.presentedGameAction = nil
 				},
 				PopoverSheetConfig.ButtonConfig(
 					title: "Cancel",
 					type: .cancel
 				) { [weak self] in
-					self?.gameActionToPresent = nil
+					self?.presentedGameAction = nil
 				},
 			]
 		)
 
-		gameActionToPresent = GameAction(config: popoverSheet, onClose: nil)
+		presentedGameAction = GameAction(config: popoverSheet, onClose: nil)
 	}
 
 	private func updatePosition(of piece: Piece, to position: Position?, shouldMove: Bool) {
@@ -361,19 +361,19 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 					type: .default
 				) { [weak self] in
 					self?.postViewAction(.movementConfirmed(movement))
-					self?.gameActionToPresent = nil
+					self?.presentedGameAction = nil
 				},
 				PopoverSheetConfig.ButtonConfig(
 					title: "Cancel",
 					type: .cancel
 				) { [weak self] in
 					self?.postViewAction(.cancelMovement)
-					self?.gameActionToPresent = nil
+					self?.presentedGameAction = nil
 				},
 			]
 		)
 
-		gameActionToPresent = GameAction(config: popoverSheet) { [weak self] in
+		presentedGameAction = GameAction(config: popoverSheet) { [weak self] in
 			self?.postViewAction(.cancelMovement)
 		}
 	}
@@ -390,7 +390,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	private func didReceive(newState: GameState) {
 		guard inGame else { return }
-		self.gameStateSubject.send(newState)
+		self.gameStateStore.send(newState)
 
 		let previousState = gameState
 		let opponent = playingAs.next
@@ -421,7 +421,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 				image = ImageAsset.Movement.place
 			}
 
-			loafSubject.send(LoafState(
+			loafState.send(LoafState(
 				message,
 				state: .custom(Loaf.Style(
 					backgroundColor: UIColor(.background),
@@ -457,7 +457,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .gameState(let state):
 			self.didReceive(newState: state)
 		case .gameOver(let winner):
-			self.informationToPresent = .gameEnd(EndState(
+			self.presentedGameInformation = .gameEnd(EndState(
 				winner: winner == nil
 					? nil
 					: (
@@ -553,8 +553,8 @@ extension HiveGameViewModel {
 	}
 
 	func transition(to nextState: State) {
-		guard canTransition(from: flowStateSubject.value, to: nextState) else { return }
-		flowStateSubject.send(nextState)
+		guard canTransition(from: stateStore.value, to: nextState) else { return }
+		stateStore.send(nextState)
 	}
 
 	private func canTransition(from currentState: State, to nextState: State) -> Bool {
@@ -595,7 +595,7 @@ extension HiveGameViewModel {
 
 extension HiveGameViewModel {
 	func debugLog(_ message: String) {
-		guard debugEnabledSubject.value else { return }
+		guard debugModeStore.value else { return }
 		print("HIVE_DEBUG: \(message)")
 	}
 }

@@ -44,7 +44,7 @@ struct HiveGame: View {
 			#endif
 			GameHUD().environmentObject(viewModel)
 		}
-		.onReceive(viewModel.flowStateSubject) { receivedValue in self.handleTransition(to: receivedValue) }
+		.onReceive(viewModel.stateStore) { receivedValue in self.handleTransition(to: receivedValue) }
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
 		.navigationBarBackButtonHidden(true)
