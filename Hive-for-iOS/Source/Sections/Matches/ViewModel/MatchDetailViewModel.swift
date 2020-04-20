@@ -115,7 +115,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 					}
 				},
 				receiveValue: { [weak self] joinedMatch in
-					self?.handle(match: joinedMatch.details)
+					self?.handle(match: joinedMatch)
 				}
 			)
 			.store(in: self)
@@ -138,7 +138,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	}
 
 	private func handle(newMatch: CreateMatchResponse) {
-		self.handle(match: newMatch.details)
+		self.handle(match: newMatch)
 	}
 
 	private func toggleReadiness() {

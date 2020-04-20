@@ -9,13 +9,8 @@
 import Foundation
 import HiveEngine
 
-struct CreateMatchResponse: Decodable {
-	let id: UUID
-	let socketUrl: URL
-	let details: Match
-}
-
-typealias JoinMatchResponse = CreateMatchResponse
+typealias CreateMatchResponse = Match
+typealias JoinMatchResponse = Match
 
 struct Match: Identifiable, Decodable {
 	struct User: Identifiable, Decodable {
