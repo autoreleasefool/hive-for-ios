@@ -21,6 +21,8 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published var errorLoaf: Loaf?
 	@Published private(set) var matches: [Match] = []
 
+	private(set) var refreshComplete = PassthroughSubject<Void, Never>()
+
 	private var api: HiveAPI!
 
 	override func postViewAction(_ viewAction: LobbyViewAction) {
@@ -42,6 +44,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
+					self?.refreshComplete.send()
 					if case let .failure(error) = result {
 						self?.errorLoaf = error.loaf
 					}

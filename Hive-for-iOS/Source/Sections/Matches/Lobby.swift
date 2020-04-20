@@ -7,10 +7,13 @@
 //
 
 import SwiftUI
+import SwiftUIRefresh
 
 struct Lobby: View {
 	@EnvironmentObject private var api: HiveAPI
 	@ObservedObject private var viewModel = LobbyViewModel()
+
+	@State private var refreshing: Bool = false
 
 	var newMatchButton: some View {
 		NavigationLink(destination: MatchDetail(id: nil)) {
@@ -27,6 +30,10 @@ struct Lobby: View {
 				MatchRow(match: match)
 			}
 		}
+		.pullToRefresh(isShowing: self.$refreshing) {
+			self.viewModel.postViewAction(.refreshMatches)
+		}
+		.onReceive(self.viewModel.refreshComplete) { _ in self.refreshing = false }
 		.listRowInsets(EdgeInsets(equalTo: .m))
 		.onAppear {
 			self.viewModel.setAPI(to: self.api)
