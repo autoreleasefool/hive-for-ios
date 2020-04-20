@@ -15,6 +15,7 @@ struct MatchDetail: View {
 	@Environment(\.presentationMode) var presentationMode
 	@EnvironmentObject private var account: Account
 	@EnvironmentObject private var api: HiveAPI
+
 	@ObservedObject private var viewModel: MatchDetailViewModel
 	private var gameViewModel = HiveGameViewModel()
 
@@ -126,30 +127,38 @@ struct MatchDetail: View {
 	}
 
 	var body: some View {
-		ScrollView {
-			NavigationLink(
-				destination: HiveGame(
-					onGameEnd: { self.presentationMode.wrappedValue.dismiss() },
-					stateBuilder: { self.viewModel.gameState }
-				).environmentObject(gameViewModel),
-				isActive: self.$inGame,
-				label: { EmptyView() }
-			)
+		GeometryReader { geometry in
+			ScrollView {
+				NavigationLink(
+					destination: HiveGame(
+						onGameEnd: { self.presentationMode.wrappedValue.dismiss() },
+						stateBuilder: { self.viewModel.gameState }
+					).environmentObject(self.gameViewModel),
+					isActive: self.$inGame,
+					label: { EmptyView() }
+				)
 
-			if self.viewModel.match == nil {
-				Text("Loading")
-			} else {
-				VStack(spacing: .m) {
-					self.playerSection(match: self.viewModel.match!)
-					Divider().background(Color(.divider))
-					self.expansionSection
-					Divider().background(Color(.divider))
-					self.otherOptionsSection
+				Group {
+					if self.viewModel.match == nil {
+						Text("Loading")
+					} else {
+						VStack(spacing: .m) {
+							self.playerSection(match: self.viewModel.match!)
+							Divider().background(Color(.divider))
+							self.expansionSection
+							Divider().background(Color(.divider))
+							self.otherOptionsSection
+						}
+					}
 				}
+				.padding(.horizontal, length: .m)
+				.padding(.top, length: .m)
+				.frame(width: geometry.size.width)
 			}
 		}
-		.padding(.horizontal, length: .m)
+		.background(Color(.background).edgesIgnoringSafeArea(.all))
 		.navigationBarTitle(Text(viewModel.navigationBarTitle), displayMode: .inline)
+		.navigationBarBackButtonHidden(true)
 		.navigationBarItems(leading: exitButton)
 		.navigationBarItems(trailing: startButton)
 		.onAppear {

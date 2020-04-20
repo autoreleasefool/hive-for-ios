@@ -29,11 +29,12 @@ class MockURLSession: NetworkSession {
 	}()
 
 	func mock<Object: Codable>(_ request: MockableRequest, with object: Object) {
-		mocks[request] = [try! encoder.encode(object)]
+		guard let data = try? encoder.encode(object) else { return }
+		mocks[request] = [data]
 	}
 
 	func appendMock<Object: Codable>(object: Object, to request: MockableRequest) {
-		let data = try! encoder.encode(object)
+		guard let data = try? encoder.encode(object) else { return }
 
 		if var mocks = self.mocks[request] {
 			mocks.append(data)
