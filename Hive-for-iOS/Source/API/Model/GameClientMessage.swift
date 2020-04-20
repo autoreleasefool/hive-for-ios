@@ -23,7 +23,7 @@ extension WebSocket {
 		case .movement(let movement):
 			self.write(string: "MOV \(movement.notation)")
 		case .setOption(let option, let value):
-			self.write(string: "SET \(option) \(value)")
+			self.write(string: "SET \(option.rawValue) \(value)")
 		case .message(let string):
 			self.write(string: "MSG \(string)")
 		case .readyToPlay:

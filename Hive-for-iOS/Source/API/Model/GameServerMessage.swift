@@ -51,10 +51,10 @@ enum GameServerMessage {
 		} else if message.hasPrefix("ERR") {
 			let error = GameServerMessage.extractError(from: message)
 			self = .error(error)
+		} else {
+			print("Failed to parse GameServerMessage: \(message)")
+			return nil
 		}
-
-		print("Failed to parse GameServerMessage: \(message)")
-		return nil
 	}
 }
 

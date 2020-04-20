@@ -107,10 +107,12 @@ class MockURLSession: NetworkSession {
 					self = .joinMatch(UUID(uuidString: id.captures[0]!)!)
 				} else if let id = MockableRequest.matchId.firstMatch(in: string) {
 					self = .matchDetails(UUID(uuidString: id.captures[0]!)!)
+				} else {
+					return nil
 				}
+			} else {
+				return nil
 			}
-
-			return nil
 		}
 	}
 }
