@@ -55,6 +55,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 		case .toggleMethod:
 			loggingIn.toggle()
 		case .loginSignup(let data):
+			LoadingHUD.shared.show()
 			if loggingIn {
 				performLogin(data.login)
 			} else {
@@ -80,6 +81,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 					if case let .failure(error) = result {
 						self?.errorLoaf = error.loaf
 					}
+					LoadingHUD.shared.hide()
 				},
 				receiveValue: { [weak self] token in
 					self?.handle(accessToken: token)
@@ -96,6 +98,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 					if case let .failure(error) = result {
 						self?.errorLoaf = error.loaf
 					}
+					LoadingHUD.shared.hide()
 				},
 				receiveValue: { [weak self] userSignup in
 					self?.handle(accessToken: userSignup.accessToken)
