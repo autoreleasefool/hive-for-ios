@@ -87,7 +87,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			if matchId == nil {
 				createNewMatch()
 			} else {
-				fetchMatchDetails()
+				joinMatch()
 			}
 		case .refreshMatchDetails:
 			fetchMatchDetails()
@@ -106,6 +106,28 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	}
 
 	private func fetchMatchDetails() {
+		guard let matchId = matchId else {
+			refreshComplete.send()
+			return
+		}
+
+		api?.matchDetails(id: matchId)
+			.receive(on: DispatchQueue.main)
+			.sink(
+				receiveCompletion: { [weak self] result in
+					self?.refreshComplete.send()
+					if case let .failure(error) = result {
+						self?.errorLoaf = error.loaf
+					}
+				},
+				receiveValue: { [weak self] match in
+					self?.handle(match: match)
+				}
+			)
+			.store(in: self)
+	}
+
+	private func joinMatch() {
 		guard let matchId = matchId else { return }
 
 		api?.joinMatch(id: matchId)
@@ -133,14 +155,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 					}
 				},
 				receiveValue: { [weak self] match in
-					self?.handle(newMatch: match)
+					self?.handle(match: match)
 				}
 			)
 			.store(in: self)
-	}
-
-	private func handle(newMatch: CreateMatchResponse) {
-		self.handle(match: newMatch)
 	}
 
 	private func toggleReadiness() {
