@@ -27,6 +27,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
 	@Published var errorLoaf: Loaf?
 
+	private(set) var refreshComplete = PassthroughSubject<Void, Never>()
+
 	private var api: HiveAPI?
 	private var account: Account?
 	var client: HiveGameClient!

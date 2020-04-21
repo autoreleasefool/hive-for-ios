@@ -21,6 +21,7 @@ struct MatchDetail: View {
 
 	@State private var inGame: Bool = false
 	@State private var exiting: Bool = false
+	@State private var refreshing: Bool = false
 
 	init(id: Match.ID?) {
 		self.initialId = id
@@ -128,32 +129,39 @@ struct MatchDetail: View {
 
 	var body: some View {
 		GeometryReader { geometry in
-			ScrollView {
-				NavigationLink(
-					destination: HiveGame(
-						onGameEnd: { self.presentationMode.wrappedValue.dismiss() },
-						stateBuilder: { self.viewModel.gameState }
-					).environmentObject(self.gameViewModel),
-					isActive: self.$inGame,
-					label: { EmptyView() }
-				)
+			NavigationLink(
+				destination: HiveGame(
+					onGameEnd: { self.presentationMode.wrappedValue.dismiss() },
+					stateBuilder: { self.viewModel.gameState }
+				).environmentObject(self.gameViewModel),
+				isActive: self.$inGame,
+				label: { EmptyView() }
+			)
 
-				Group {
-					if self.viewModel.match == nil {
-						Text("Loading")
-					} else {
-						VStack(spacing: .m) {
-							self.playerSection(match: self.viewModel.match!)
-							Divider().background(Color(.divider))
-							self.expansionSection
-							Divider().background(Color(.divider))
-							self.otherOptionsSection
-						}
-					}
+			if self.viewModel.match == nil {
+				HStack {
+					Spacer()
+					ActivityIndicator(isAnimating: true, style: .whiteLarge)
+					Spacer()
 				}
-				.padding(.horizontal, length: .m)
 				.padding(.top, length: .m)
 				.frame(width: geometry.size.width)
+			} else {
+				ScrollView {
+					VStack(spacing: .m) {
+						self.playerSection(match: self.viewModel.match!)
+						Divider().background(Color(.divider))
+						self.expansionSection
+						Divider().background(Color(.divider))
+						self.otherOptionsSection
+					}
+					.padding(.horizontal, length: .m)
+					.padding(.top, length: .m)
+					.frame(width: geometry.size.width)
+				}
+				.pullToRefresh(isShowing: self.$refreshing) {
+					self.viewModel.postViewAction(.refreshMatchDetails)
+				}
 			}
 		}
 		.background(Color(.background).edgesIgnoringSafeArea(.all))
@@ -174,6 +182,7 @@ struct MatchDetail: View {
 			}
 			self.inGame = $0 != nil
 		}
+		.onReceive(self.viewModel.refreshComplete) { self.refreshing = false }
 		.onReceive(self.viewModel.leavingMatch) {
 			self.presentationMode.wrappedValue.dismiss()
 		}
