@@ -73,7 +73,7 @@ extension GameServerMessage {
 		guard let optionStart = message.firstIndex(of: " "),
 			let optionEnd = message.lastIndex(of: " "),
 			let option = GameState.Option(
-				rawValue: String(message[optionStart...optionEnd]).trimmingCharacters(in: .whitespaces)
+				rawValue: String(message[optionStart..<optionEnd]).trimmingCharacters(in: .whitespaces)
 			) else {
 			return nil
 		}
@@ -97,7 +97,7 @@ extension GameServerMessage {
 	static func extractUserId(from message: String) -> UUID? {
 		guard let idStart = message.firstIndex(of: " ") else { return nil }
 		let idEnd = message[message.index(idStart, offsetBy: 1)...].firstIndex(of: " ") ?? message.endIndex
-		return UUID(uuidString: String(message[idStart...idEnd]).trimmingCharacters(in: .whitespaces))
+		return UUID(uuidString: String(message[idStart..<idEnd]).trimmingCharacters(in: .whitespaces))
 	}
 }
 
