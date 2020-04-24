@@ -394,8 +394,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		let previousState = gameState
 		let opponent = playingAs.next
-		guard let previousUpdate = newState.previousMoves.last,
-			previousUpdate != previousState.previousMoves.last else {
+		guard let previousUpdate = newState.updates.last,
+			previousUpdate != previousState.updates.last else {
 			return
 		}
 

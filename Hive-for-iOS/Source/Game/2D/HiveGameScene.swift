@@ -151,7 +151,8 @@ class HiveGameScene: SKScene {
 			addUnownedChild(sprite)
 		}
 
-		viewModel.gameState.playableSpaces().forEach {
+		// Show border of the field
+		viewModel.gameState.hiveBorder.forEach {
 			let sprite = self.sprite(for: $0)
 			addUnownedChild(sprite)
 		}

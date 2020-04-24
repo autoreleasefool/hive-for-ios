@@ -86,6 +86,14 @@ extension GameState {
 
 		return nil
 	}
+
+	var hiveBorder: Set<Position> {
+		Set(self.stacks
+			.filter { $0.value.count > 0 }
+			.flatMap { $0.key.adjacent() }
+			.filter { (self.stacks[$0]?.count ?? 0) == 0}
+		)
+	}
 }
 
 // MARK: Options
