@@ -14,10 +14,6 @@ class ViewModel<ViewAction> where ViewAction: BaseViewAction {
 
 	private var cancellables: [AnyCancellable] = []
 
-	deinit {
-		cancellables.removeAll()
-	}
-
 	func postViewAction(_ viewAction: ViewAction) {
 		fatalError("Classes extending ViewModel must override postViewAction(_:)")
 	}

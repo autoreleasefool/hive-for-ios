@@ -21,6 +21,9 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published var errorLoaf: Loaf?
 	@Published private(set) var matches: [Match] = []
 
+	private(set) var newMatchViewModel = MatchDetailViewModel(id: nil)
+	private(set) var detailViewModels: [Match.ID: MatchDetailViewModel] = [:]
+
 	private(set) var refreshComplete = PassthroughSubject<Void, Never>()
 
 	private var api: HiveAPI!
@@ -30,13 +33,8 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		case .onAppear, .refreshMatches:
 			refreshMatches()
 		case .onDisappear:
-			cleanUp()
+			cancelAllRequests()
 		}
-	}
-
-	private func cleanUp() {
-		errorLoaf = nil
-		cancelAllRequests()
 	}
 
 	private func refreshMatches() {
@@ -50,8 +48,12 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 					}
 				},
 				receiveValue: { [weak self] matches in
-					self?.errorLoaf = nil
-					self?.matches = matches
+					guard let self = self else { return }
+					matches.forEach {
+						self.detailViewModels[$0.id] = MatchDetailViewModel(match: $0)
+					}
+					self.errorLoaf = nil
+					self.matches = matches
 				}
 			)
 			.store(in: self)

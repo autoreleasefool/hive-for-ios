@@ -13,7 +13,7 @@ import Loaf
 import HiveEngine
 
 enum MatchDetailViewAction: BaseViewAction {
-	case onAppear(Match.ID?)
+	case onAppear
 	case onDisappear
 	case refreshMatchDetails
 	case startGame
@@ -69,21 +69,19 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		return ""
 	}
 
-	init(_ match: Match? = nil) {
-		self.matchId = match?.id
+	init(id: Match.ID?) {
+		self.matchId = id
+	}
+
+	init(match: Match) {
+		self.matchId = match.id
 		self.match = match
-
-		super.init()
-
-		if let match = match {
-			self.gameOptions = match.gameOptions
-		}
+		self.gameOptions = match.gameOptions
 	}
 
 	override func postViewAction(_ viewAction: MatchDetailViewAction) {
 		switch viewAction {
-		case .onAppear(let id):
-			self.matchId = id
+		case .onAppear:
 			if matchId == nil {
 				createNewMatch()
 			} else {
@@ -96,13 +94,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		case .exitGame:
 			exitGame()
 		case .onDisappear:
-			cleanUp()
+			cancelAllRequests()
 		}
-	}
-
-	private func cleanUp() {
-		errorLoaf = nil
-		cancelAllRequests()
 	}
 
 	private func fetchMatchDetails() {

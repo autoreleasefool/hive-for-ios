@@ -10,8 +10,6 @@ import SwiftUI
 import HiveEngine
 
 struct MatchDetail: View {
-	private let initialId: Match.ID?
-
 	@Environment(\.presentationMode) var presentationMode
 	@EnvironmentObject private var account: Account
 	@EnvironmentObject private var api: HiveAPI
@@ -23,14 +21,8 @@ struct MatchDetail: View {
 	@State private var exiting: Bool = false
 	@State private var refreshing: Bool = false
 
-	init(id: Match.ID?) {
-		self.initialId = id
-		self.viewModel = MatchDetailViewModel(nil)
-	}
-
-	init(match: Match) {
-		self.initialId = match.id
-		self.viewModel = MatchDetailViewModel(match)
+	init(viewModel: MatchDetailViewModel) {
+		self.viewModel = viewModel
 	}
 
 	private func playerSection(match: Match) -> some View {
@@ -172,7 +164,7 @@ struct MatchDetail: View {
 		.onAppear {
 			self.viewModel.setAccount(to: self.account)
 			self.viewModel.setAPI(to: self.api)
-			self.viewModel.postViewAction(.onAppear(self.initialId))
+			self.viewModel.postViewAction(.onAppear)
 		}
 		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
 		.onReceive(self.viewModel.$gameState) {
@@ -220,8 +212,9 @@ struct MatchDetailPreview: PreviewProvider {
 	static var previews: some View {
 		let account = Account()
 		let api = HiveAPI(account: account)
+		let viewModel = MatchDetailViewModel(match: Match.matches[0])
 
-		return MatchDetail(match: Match.matches[0])
+		return MatchDetail(viewModel: viewModel)
 			.environmentObject(account)
 			.environmentObject(api)
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
