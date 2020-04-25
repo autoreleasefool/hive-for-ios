@@ -159,8 +159,7 @@ struct MatchDetail: View {
 		.background(Color(.background).edgesIgnoringSafeArea(.all))
 		.navigationBarTitle(Text(viewModel.navigationBarTitle), displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
-		.navigationBarItems(leading: exitButton)
-		.navigationBarItems(trailing: startButton)
+		.navigationBarItems(leading: exitButton, trailing: startButton)
 		.onAppear {
 			self.viewModel.setAccount(to: self.account)
 			self.viewModel.setAPI(to: self.api)
@@ -184,6 +183,7 @@ struct MatchDetail: View {
 				message: "Are you sure you want to leave this match?",
 				buttons: [
 					PopoverSheetConfig.ButtonConfig(title: "Leave", type: .destructive) {
+						self.exiting = false
 						self.viewModel.postViewAction(.exitGame)
 					},
 					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {

@@ -34,7 +34,6 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	var client: HiveGameClient!
 
 	private(set) var matchId: Match.ID?
-	private var creatingNewMatch: Bool = false
 
 	private(set) var leavingMatch = PassthroughSubject<Void, Never>()
 
@@ -129,10 +128,12 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
 						self?.errorLoaf = error.loaf
+						self?.resetAndLeave()
 					}
 				},
 				receiveValue: { [weak self] joinedMatch in
 					self?.handle(match: joinedMatch)
+
 				}
 			)
 			.store(in: self)
@@ -145,6 +146,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
 						self?.errorLoaf = error.loaf
+						self?.resetAndLeave()
 					}
 				},
 				receiveValue: { [weak self] match in
@@ -168,6 +170,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func exitGame() {
 		client.send(.forfeit)
 		client.close()
+
+		resetState()
 		leavingMatch.send()
 	}
 
@@ -182,9 +186,14 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 				openConnection(to: url)
 			} else {
 				errorLoaf = LoafState("Failed to join match", state: .error).build()
-				leavingMatch.send()
+				resetAndLeave()
 			}
 		}
+	}
+
+	private func resetAndLeave() {
+		resetState()
+		leavingMatch.send()
 	}
 
 	func isPlayerReady(id: UUID?) -> Bool {
@@ -214,8 +223,11 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func playerLeft(id: UUID) {
 		readyPlayers.remove(id)
 		if userIsHost {
+			errorLoaf = LoafState("Your opponent has left!", state: .warning).build()
 			fetchMatchDetails()
 		} else {
+			errorLoaf = LoafState("The host has left!", state: .warning).build()
+			resetState()
 			client.close()
 			leavingMatch.send()
 		}
@@ -228,6 +240,17 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	func setAPI(to api: HiveAPI) {
 		self.api = api
+	}
+
+	func resetState() {
+		if userIsHost {
+			self.matchId = nil
+		}
+
+		self.match = nil
+		self.gameState = nil
+		self.readyPlayers.removeAll()
+		self.errorLoaf = nil
 	}
 }
 
