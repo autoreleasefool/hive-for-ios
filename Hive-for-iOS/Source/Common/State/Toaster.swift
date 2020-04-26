@@ -28,19 +28,22 @@ extension EnvironmentValues {
 struct LoafModifier: ViewModifier {
 	@Environment(\.toaster) private var toaster: Toaster
 	@State private var loaf: Loaf?
+	@State private var presentedLoafs: Set<LoafState> = []
 
 	func body(content: Content) -> some View {
 		content
 			.loaf($loaf)
 			.onReceive(loafUpdate) {
-				self.loaf = $0
+				guard !self.presentedLoafs.contains($0) else { return }
+				self.presentedLoafs.insert($0)
+				self.loaf = $0.build()
 			}
 	}
 
-	private var loafUpdate: AnyPublisher<Loaf, Never> {
+	private var loafUpdate: AnyPublisher<LoafState, Never> {
 		toaster.loaf
 			.filter { $0 != nil }
-			.map { $0!.build() }
+			.map { $0! }
 			.eraseToAnyPublisher()
 	}
 }

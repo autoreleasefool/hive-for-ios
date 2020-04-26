@@ -9,7 +9,14 @@
 import UIKit
 import Loaf
 
-struct LoafState {
+struct LoafState: Hashable, Equatable {
+	private static var lastId = 0
+	private static func nextId() -> Int {
+		lastId += 1
+		return lastId
+	}
+
+	private let id: Int
 	let message: String
 	let state: Loaf.State
 	let location: Loaf.Location
@@ -27,6 +34,7 @@ struct LoafState {
 		duration: Loaf.Duration? = nil,
 		onDismiss: Loaf.LoafCompletionHandler = nil
 	) {
+		self.id = Self.nextId()
 		self.message = message
 		self.state = state
 		self.location = location
@@ -56,5 +64,13 @@ struct LoafState {
 			dismissingDirection: dismissingDirection,
 			duration: duration ?? .average
 		)
+	}
+
+	static func == (lhs: Self, rhs: Self) -> Bool {
+		lhs.id == rhs.id
+	}
+
+	func hash(into hasher: inout Hasher) {
+		hasher.combine(id)
 	}
 }
