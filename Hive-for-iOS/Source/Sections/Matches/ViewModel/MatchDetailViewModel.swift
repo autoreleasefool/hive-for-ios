@@ -27,7 +27,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
 
 	private(set) var refreshComplete = PassthroughSubject<Void, Never>()
-	private(set) var error = PassthroughSubject<LoafState, Never>()
+	private(set) var breadBox = PassthroughSubject<LoafState, Never>()
 
 	private var api: HiveAPI?
 	private var account: Account?
@@ -109,7 +109,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 				receiveCompletion: { [weak self] result in
 					self?.refreshComplete.send()
 					if case let .failure(error) = result {
-						self?.error.send(error.loaf)
+						self?.breadBox.send(error.loaf)
 					}
 				},
 				receiveValue: { [weak self] match in
@@ -127,7 +127,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						self?.error.send(error.loaf)
+						self?.breadBox.send(error.loaf)
 						self?.resetAndLeave()
 					}
 				},
@@ -145,7 +145,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						self?.error.send(error.loaf)
+						self?.breadBox.send(error.loaf)
 						self?.resetAndLeave()
 					}
 				},
@@ -184,7 +184,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			if let url = match.webSocketURL {
 				openConnection(to: url)
 			} else {
-				self.error.send(LoafState("Failed to join match", state: .error))
+				breadBox.send(LoafState("Failed to join match", state: .error))
 				resetAndLeave()
 			}
 		}
@@ -217,7 +217,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 
 	private func playerJoined(id: UUID) {
 		if userIsHost {
-			self.error.send(LoafState("An opponent has joined!", state: .success))
+			breadBox.send(LoafState("An opponent has joined!", state: .success))
 		}
 		fetchMatchDetails()
 	}
@@ -225,10 +225,10 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func playerLeft(id: UUID) {
 		readyPlayers.remove(id)
 		if userIsHost && id == match?.opponent?.id {
-			self.error.send(LoafState("Your opponent has left!", state: .warning))
+			breadBox.send(LoafState("Your opponent has left!", state: .warning))
 			fetchMatchDetails()
 		} else if !userIsHost && id == match?.host?.id {
-			self.error.send(LoafState("The host has left!", state: .warning))
+			breadBox.send(LoafState("The host has left!", state: .warning))
 			resetState()
 			client.close()
 			leavingMatch.send()
@@ -318,7 +318,7 @@ extension MatchDetailViewModel {
 			#warning("TODO: display message")
 			print("Received message '\(string)' from \(id)")
 		case .error(let error):
-			self.error.send(error.loaf)
+			breadBox.send(error.loaf)
 		case .forfeit, .gameOver:
 			print("Received invalid message in Match Details: \(message)")
 		}

@@ -34,7 +34,7 @@ struct Lobby: View {
 		.pullToRefresh(isShowing: self.$refreshing) {
 			self.viewModel.postViewAction(.refreshMatches)
 		}
-		.onReceive(self.viewModel.error) { self.toaster.loaf.send($0) }
+		.onReceive(self.viewModel.breadBox) { self.toaster.loaf.send($0) }
 		.onReceive(self.viewModel.refreshComplete) { _ in self.refreshing = false }
 		.listRowInsets(EdgeInsets(equalTo: .m))
 		.onAppear {

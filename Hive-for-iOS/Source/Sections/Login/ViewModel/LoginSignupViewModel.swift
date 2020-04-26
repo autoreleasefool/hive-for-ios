@@ -44,7 +44,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	@Published private(set) var loggingIn: Bool = true
 	@Published private(set) var activeField: LoginFieldID?
 
-	private(set) var error = PassthroughSubject<LoafState, Never>()
+	private(set) var breadBox = PassthroughSubject<LoafState, Never>()
 
 	var account: Account?
 	var api: HiveAPI?
@@ -80,7 +80,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						self?.error.send(error.loaf)
+						self?.breadBox.send(error.loaf)
 					}
 					LoadingHUD.shared.hide()
 				},
@@ -97,7 +97,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						self?.error.send(error.loaf)
+						self?.breadBox.send(error.loaf)
 					}
 					LoadingHUD.shared.hide()
 				},
@@ -113,7 +113,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			try account?.store(accessToken: accessToken)
 			didSuccessfullyAuthenticate.send()
 		} catch {
-			self.error.send(LoafState(error.localizedDescription, state: .error))
+			self.breadBox.send(LoafState(error.localizedDescription, state: .error))
 		}
 	}
 }

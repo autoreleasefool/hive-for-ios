@@ -23,7 +23,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	private(set) var newMatchViewModel = MatchDetailViewModel(id: nil)
 	private(set) var detailViewModels: [Match.ID: MatchDetailViewModel] = [:]
 
-	private(set) var error = PassthroughSubject<LoafState, Never>()
+	private(set) var breadBox = PassthroughSubject<LoafState, Never>()
 	private(set) var refreshComplete = PassthroughSubject<Void, Never>()
 
 	private var api: HiveAPI!
@@ -44,7 +44,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 				receiveCompletion: { [weak self] result in
 					self?.refreshComplete.send()
 					if case let .failure(error) = result {
-						self?.error.send(error.loaf)
+						self?.breadBox.send(error.loaf)
 					}
 				},
 				receiveValue: { [weak self] matches in

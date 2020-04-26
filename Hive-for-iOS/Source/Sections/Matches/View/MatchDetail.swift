@@ -174,7 +174,7 @@ struct MatchDetail: View {
 			}
 			self.inGame = $0 != nil
 		}
-		.onReceive(self.viewModel.error) { self.toaster.loaf.send($0) }
+		.onReceive(self.viewModel.breadBox) { self.toaster.loaf.send($0) }
 		.onReceive(self.viewModel.refreshComplete) { self.refreshing = false }
 		.onReceive(self.viewModel.leavingMatch) {
 			self.presentationMode.wrappedValue.dismiss()

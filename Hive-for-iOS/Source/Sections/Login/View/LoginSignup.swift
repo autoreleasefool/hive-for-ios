@@ -124,7 +124,7 @@ struct LoginSignup: View {
 			self.viewModel.account = self.account
 			self.viewModel.api = self.api
 		}
-		.onReceive(self.viewModel.error) {
+		.onReceive(self.viewModel.breadBox) {
 			self.toaster.loaf.send($0)
 		}
 		.navigationBarTitle("", displayMode: .inline)
