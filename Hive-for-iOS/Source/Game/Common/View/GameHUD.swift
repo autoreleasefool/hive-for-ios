@@ -53,7 +53,7 @@ struct GameHUD: View {
 		let xOffset = (buttonDistanceFromEdge.rawValue + buttonSize.rawValue / 2) * (player == .white ? -1 : 1)
 
 		return Button(action: {
-			self.viewModel.presentedPlayerHand = PlayerHand(player: player, state: self.viewModel.gameState)
+			self.viewModel.postViewAction(.presentPlayerHand(player))
 		}, label: {
 			HexImage(ImageAsset.Icon.hand, stroke: player.color)
 				.placeholderTint(player.color)

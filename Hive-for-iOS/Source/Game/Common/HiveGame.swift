@@ -48,7 +48,7 @@ struct HiveGame: View {
 		.navigationBarBackButtonHidden(true)
 		.onAppear {
 			UIApplication.shared.isIdleTimerDisabled = true
-			self.viewModel.postViewAction(.onAppear(state))
+			self.viewModel.postViewAction(.onAppear)
 		}
 		.onDisappear {
 			UIApplication.shared.isIdleTimerDisabled = true

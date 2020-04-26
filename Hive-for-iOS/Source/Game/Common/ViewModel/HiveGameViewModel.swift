@@ -12,12 +12,12 @@ import HiveEngine
 import Loaf
 
 enum HiveGameViewAction: BaseViewAction {
-	case failedToStartGame
-	case onAppear(GameState)
+	case onAppear
 	case viewContentDidLoad(GameViewContent)
 	case viewContentReady
 	case viewInteractionsReady
 
+	case presentPlayerHand(Player)
 	case presentInformation(GameInformation)
 	case enquiredFromHand(Piece.Class)
 	case selectedFromHand(Piece.Class)
@@ -43,12 +43,12 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private var account: Account!
 	private var client: HiveGameClient!
 
-	@Published var presentedPlayerHand: PlayerHand?
-	@Published var presentedGameInformation: GameInformation?
-	@Published var presentedGameAction: GameAction?
+	@Published private(set) var presentedPlayerHand: PlayerHand?
+	@Published private(set) var presentedGameInformation: GameInformation?
+	@Published private(set) var presentedGameAction: GameAction?
 
-	var loafState = PassthroughSubject<LoafState, Never>()
-	var animateToPosition = PassthroughSubject<Position, Never>()
+	private(set) var loafState = PassthroughSubject<LoafState, Never>()
+	private(set) var animateToPosition = PassthroughSubject<Position, Never>()
 
 	struct SelectedPiece {
 		let piece: Piece
@@ -57,15 +57,15 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	typealias DeselectedPiece = SelectedPiece
 
-	var selectedPiece = Store<(DeselectedPiece?, SelectedPiece?)>((nil, nil))
+	private(set) var selectedPiece = Store<(DeselectedPiece?, SelectedPiece?)>((nil, nil))
 	var currentSelectedPiece: SelectedPiece? { selectedPiece.value.1 }
 
-	var stateStore = Store<State>(State.begin)
-	var gameStateStore = Store<GameState?>(nil)
-	var debugModeStore = Store<Bool>(false)
+	private(set) var stateStore = Store<State>(State.begin)
+	private(set) var gameStateStore = Store<GameState?>(nil)
+	private(set) var debugModeStore = Store<Bool>(false)
 
-	var gameContent: GameViewContent!
-	var playingAs: Player!
+	private(set) var gameContent: GameViewContent!
+	private(set) var playingAs: Player!
 
 	var inGame: Bool {
 		stateStore.value.inGame
@@ -151,10 +151,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {
-		case .failedToStartGame:
-			loafState.send(LoafState("Failed to start game", state: .error))
-		case .onAppear(let state):
-			initialize(withState: state)
+		case .onAppear:
+			initialize()
 		case .viewContentDidLoad(let content):
 			setupView(content: content)
 		case .viewContentReady:
@@ -164,6 +162,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			viewInteractionsReady = true
 			attemptSetupNewGame()
 
+		case .presentPlayerHand(let player):
+			self.presentedPlayerHand = PlayerHand(player: player, state: gameState)
 		case .presentInformation(let information):
 			self.presentedGameInformation = information
 		case .selectedFromHand(let pieceClass):
@@ -203,9 +203,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		}
 	}
 
-	private func initialize(withState state: GameState) {
+	private func initialize() {
 		guard stateStore.value == .begin else { return }
-		gameStateStore.send(state)
+		gameStateStore.send(gameStateStore.value)
 
 		client.openConnection()
 			.receive(on: DispatchQueue.main)
