@@ -12,6 +12,7 @@ struct LoginSignup: View {
 	@ObservedObject private var viewModel = LoginSignupViewModel()
 	@EnvironmentObject private var account: Account
 	@EnvironmentObject private var api: HiveAPI
+	@Environment(\.toaster) private var toaster: Toaster
 
 	@State private var email: String = ""
 	@State private var password: String = ""
@@ -90,8 +91,6 @@ struct LoginSignup: View {
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 	}
 
-	// MARK: Body
-
 	var body: some View {
 		ScrollView {
 			VStack(spacing: .m) {
@@ -125,7 +124,9 @@ struct LoginSignup: View {
 			self.viewModel.account = self.account
 			self.viewModel.api = self.api
 		}
-		.loaf($viewModel.errorLoaf)
+		.onReceive(self.viewModel.error) {
+			self.toaster.loaf.send($0)
+		}
 		.navigationBarTitle("", displayMode: .inline)
 		.navigationBarHidden(true)
 	}

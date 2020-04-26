@@ -43,7 +43,8 @@ enum LoginFieldID {
 class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	@Published private(set) var loggingIn: Bool = true
 	@Published private(set) var activeField: LoginFieldID?
-	@Published var errorLoaf: Loaf?
+
+	private(set) var error = PassthroughSubject<LoafState, Never>()
 
 	var account: Account?
 	var api: HiveAPI?
@@ -79,7 +80,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						self?.errorLoaf = error.loaf
+						self?.error.send(error.loaf)
 					}
 					LoadingHUD.shared.hide()
 				},
@@ -96,7 +97,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						self?.errorLoaf = error.loaf
+						self?.error.send(error.loaf)
 					}
 					LoadingHUD.shared.hide()
 				},
@@ -111,9 +112,8 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 		do {
 			try account?.store(accessToken: accessToken)
 			didSuccessfullyAuthenticate.send()
-			errorLoaf = nil
 		} catch {
-			errorLoaf = LoafState(error.localizedDescription, state: .error).build()
+			self.error.send(LoafState(error.localizedDescription, state: .error))
 		}
 	}
 }

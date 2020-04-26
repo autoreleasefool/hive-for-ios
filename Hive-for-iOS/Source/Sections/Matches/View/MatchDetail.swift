@@ -11,6 +11,7 @@ import HiveEngine
 
 struct MatchDetail: View {
 	@Environment(\.presentationMode) var presentationMode
+	@Environment(\.toaster) private var toaster: Toaster
 	@EnvironmentObject private var account: Account
 	@EnvironmentObject private var api: HiveAPI
 
@@ -173,6 +174,7 @@ struct MatchDetail: View {
 			}
 			self.inGame = $0 != nil
 		}
+		.onReceive(self.viewModel.error) { self.toaster.loaf.send($0) }
 		.onReceive(self.viewModel.refreshComplete) { self.refreshing = false }
 		.onReceive(self.viewModel.leavingMatch) {
 			self.presentationMode.wrappedValue.dismiss()
@@ -192,7 +194,6 @@ struct MatchDetail: View {
 				]
 			)
 		}
-		.loaf(self.$viewModel.errorLoaf)
 	}
 }
 

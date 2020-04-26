@@ -11,6 +11,7 @@ import Loaf
 
 struct Home: View {
 	@EnvironmentObject private var account: Account
+	@Environment(\.toaster) private var toaster: Toaster
 	@State private var showWelcome: Bool = true
 	@State private var loaf: Loaf?
 
@@ -30,10 +31,10 @@ struct Home: View {
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 			.onReceive(account.$isAuthenticated) { isAuthenticated in
 				if !self.showWelcome && !isAuthenticated {
-					self.loaf = Loaf("You've been logged out", state: .error)
+					self.toaster.loaf.send(LoafState("You've been logged out", state: .error))
 				}
 			}
-			.loaf($loaf)
+			.plugInToaster()
 		}
 	}
 }

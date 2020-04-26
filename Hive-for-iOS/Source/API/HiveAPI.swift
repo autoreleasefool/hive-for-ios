@@ -40,8 +40,8 @@ enum HiveAPIError: LocalizedError {
 		}
 	}
 
-	var loaf: Loaf {
-		Loaf(self.errorDescription, state: .error)
+	var loaf: LoafState {
+		LoafState(self.errorDescription, state: .error)
 	}
 }
 

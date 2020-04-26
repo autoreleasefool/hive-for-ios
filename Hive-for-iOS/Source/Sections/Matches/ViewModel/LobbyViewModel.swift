@@ -18,12 +18,12 @@ enum LobbyViewAction: BaseViewAction {
 }
 
 class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
-	@Published var errorLoaf: Loaf?
 	@Published private(set) var matches: [Match] = []
 
 	private(set) var newMatchViewModel = MatchDetailViewModel(id: nil)
 	private(set) var detailViewModels: [Match.ID: MatchDetailViewModel] = [:]
 
+	private(set) var error = PassthroughSubject<LoafState, Never>()
 	private(set) var refreshComplete = PassthroughSubject<Void, Never>()
 
 	private var api: HiveAPI!
@@ -44,7 +44,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 				receiveCompletion: { [weak self] result in
 					self?.refreshComplete.send()
 					if case let .failure(error) = result {
-						self?.errorLoaf = error.loaf
+						self?.error.send(error.loaf)
 					}
 				},
 				receiveValue: { [weak self] matches in
@@ -52,7 +52,6 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 					matches.forEach {
 						self.detailViewModels[$0.id] = MatchDetailViewModel(match: $0)
 					}
-					self.errorLoaf = nil
 					self.matches = matches
 				}
 			)
