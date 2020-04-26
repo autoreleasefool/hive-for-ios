@@ -61,7 +61,7 @@ struct MatchDetail: View {
 
 	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
 		Button(action: {
-			self.viewModel.optionEnabled(option: option).wrappedValue.toggle()
+			self.viewModel.gameOptionEnabled(option: option).wrappedValue.toggle()
 		}, label: {
 			ZStack {
 				Text(option.preview ?? "")
@@ -84,15 +84,30 @@ struct MatchDetail: View {
 		.disabled(!viewModel.userIsHost)
 	}
 
+	private func optionSectionHeader(title: String) -> some View {
+		Text(title)
+			.bold()
+			.body()
+			.foregroundColor(Color(.text))
+			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+	}
+
+	private var matchOptionsSection: some View {
+		VStack(alignment: .leading) {
+			self.optionSectionHeader(title: "Match options")
+			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
+				Toggle(self.viewModel.name(forOption: option), isOn: self.viewModel.optionEnabled(option: option))
+					.disabled(!self.viewModel.userIsHost)
+					.foregroundColor(Color(.text))
+			}
+		}
+	}
+
 	private var otherOptionsSection: some View {
 		VStack(alignment: .leading) {
-			Text("Other options")
-				.bold()
-				.body()
-				.foregroundColor(Color(.text))
-				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+			self.optionSectionHeader(title: "Other options")
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
-				Toggle(option.rawValue, isOn: self.viewModel.optionEnabled(option: option))
+				Toggle(self.viewModel.name(forOption: option), isOn: self.viewModel.gameOptionEnabled(option: option))
 					.disabled(!self.viewModel.userIsHost)
 					.foregroundColor(Color(.text))
 			}

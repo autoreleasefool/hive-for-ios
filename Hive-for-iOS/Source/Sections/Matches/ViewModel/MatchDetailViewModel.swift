@@ -198,7 +198,29 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		return readyPlayers.contains(id)
 	}
 
-	func optionEnabled(option: GameState.Option) -> Binding<Bool> {
+	func name(forOption option: Match.Option) -> String {
+		switch option {
+		case .asyncPlay: return "Asynchronous play"
+		case .hostIsWhite: return "\(match?.host?.displayName ?? "Host") is white"
+		}
+	}
+
+	func name(forOption option: GameState.Option) -> String {
+		return option.displayName
+	}
+
+	func optionEnabled(option: Match.Option) -> Binding<Bool> {
+		Binding(
+			get: { [weak self] in self?.matchOptions.contains(option) ?? false },
+			set: { [weak self] in
+				guard let self = self, self.userIsHost else { return }
+				self.matchOptions.set(option, to: $0)
+				self.client.send(.setOption(.matchOption(option), $0))
+			}
+		)
+	}
+
+	func gameOptionEnabled(option: GameState.Option) -> Binding<Bool> {
 		Binding(
 			get: { [weak self] in self?.gameOptions.contains(option) ?? false },
 			set: { [weak self] in

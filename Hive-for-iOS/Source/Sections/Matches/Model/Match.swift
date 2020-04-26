@@ -42,6 +42,10 @@ struct Match: Identifiable, Decodable {
 			case .asyncPlay: return false
 			}
 		}
+
+		static var enabledOptions: [Option] {
+			allCases.filter { $0.enabled }
+		}
 	}
 
 	let id: UUID

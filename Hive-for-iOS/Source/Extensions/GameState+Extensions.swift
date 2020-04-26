@@ -108,6 +108,16 @@ extension GameState.Option {
 		default: return false
 		}
 	}
+
+	var displayName: String {
+		switch self {
+		case .allowSpecialAbilityAfterYoink: return "Allow special ability after yoink"
+		case .noFirstMoveQueen: return "Disable Queen on first move"
+		case .ladyBug: return "Lady Bug"
+		case .mosquito: return "Mosquito"
+		case .pillBug: return "Pill Bug"
+		}
+	}
 }
 
 extension GameState.Option: Comparable {
