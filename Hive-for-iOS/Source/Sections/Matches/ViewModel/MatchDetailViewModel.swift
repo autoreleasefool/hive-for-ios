@@ -298,7 +298,8 @@ extension MatchDetailViewModel {
 		case .playerLeft(let id):
 			playerLeft(id: id)
 		case .gameState(let state):
-			self.gameViewModel.gameStateStore.send(state)
+			gameViewModel.gameStateStore.send(state)
+			beginGame.send()
 		case .playerReady(let id, let ready):
 			if ready {
 				readyPlayers.insert(id)
