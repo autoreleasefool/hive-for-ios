@@ -216,15 +216,18 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	}
 
 	private func playerJoined(id: UUID) {
+		if userIsHost {
+			self.error.send(LoafState("An opponent has joined!", state: .success))
+		}
 		fetchMatchDetails()
 	}
 
 	private func playerLeft(id: UUID) {
 		readyPlayers.remove(id)
-		if userIsHost {
+		if userIsHost && id == match?.opponent?.id {
 			self.error.send(LoafState("Your opponent has left!", state: .warning))
 			fetchMatchDetails()
-		} else {
+		} else if !userIsHost && id == match?.host?.id {
 			self.error.send(LoafState("The host has left!", state: .warning))
 			resetState()
 			client.close()
