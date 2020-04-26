@@ -10,8 +10,13 @@ import Foundation
 import HiveEngine
 
 enum GameServerMessage {
+	enum Option {
+		case gameOption(GameState.Option)
+		case matchOption(Match.Option)
+	}
+
 	case gameState(GameState)
-	case setOption(GameState.Option, Bool)
+	case setOption(Option, Bool)
 	case playerReady(UUID, Bool)
 	case playerJoined(UUID)
 	case playerLeft(UUID)
@@ -25,9 +30,15 @@ enum GameServerMessage {
 			guard let state = GameServerMessage.extractState(from: message) else { return nil }
 			self = .gameState(state)
 		} else if message.hasPrefix("SET") {
-			guard let option = GameServerMessage.extractOption(from: message),
-				let value = GameServerMessage.extractBoolean(from: message) else { return nil }
-			self = .setOption(option, value)
+			guard let value = GameServerMessage.extractBoolean(from: message) else { return nil }
+
+			if let option = GameServerMessage.extractOption(from: message) {
+				self = .setOption(.matchOption(option), value)
+			} else if let gameOption = GameServerMessage.extractGameOption(from: message) {
+				self = .setOption(.gameOption(gameOption), value)
+			} else {
+				return nil
+			}
 		} else if message.hasPrefix("READY") {
 			guard let userId = GameServerMessage.extractUserId(from: message),
 				let isReady = GameServerMessage.extractBoolean(from: message) else { return nil }
@@ -69,7 +80,19 @@ extension GameServerMessage {
 // MARK: - GameState.Option
 
 extension GameServerMessage {
-	static func extractOption(from message: String) -> GameState.Option? {
+	static func extractOption(from message: String) -> Match.Option? {
+		guard let optionStart = message.firstIndex(of: " "),
+			let optionEnd = message.lastIndex(of: " "),
+			let option = Match.Option(
+				rawValue: String(message[optionStart..<optionEnd]).trimmingCharacters(in: .whitespaces)
+			) else {
+			return nil
+		}
+
+		return option
+	}
+
+	static func extractGameOption(from message: String) -> GameState.Option? {
 		guard let optionStart = message.firstIndex(of: " "),
 			let optionEnd = message.lastIndex(of: " "),
 			let option = GameState.Option(

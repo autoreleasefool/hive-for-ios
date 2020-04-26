@@ -22,6 +22,7 @@ enum MatchDetailViewAction: BaseViewAction {
 
 class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var match: Match?
+	@Published private(set) var matchOptions: Set<Match.Option> = Set()
 	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
 
@@ -70,7 +71,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	init(match: Match) {
 		self.matchId = match.id
 		self.match = match
-		self.gameOptions = match.gameOptions
+		self.matchOptions = match.optionSet
+		self.gameOptions = match.gameOptionSet
 	}
 
 	override func postViewAction(_ viewAction: MatchDetailViewAction) {
@@ -173,7 +175,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	private func handle(match: Match) {
 		self.matchId = match.id
 		self.match = match
-		self.gameOptions = match.gameOptions
+		self.matchOptions = match.optionSet
+		self.gameOptions = match.gameOptionSet
 
 		if !client.isConnected {
 			if let url = match.webSocketURL {
@@ -200,12 +203,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			get: { [weak self] in self?.gameOptions.contains(option) ?? false },
 			set: { [weak self] in
 				guard let self = self, self.userIsHost else { return }
-				if $0 {
-					self.gameOptions.insert(option)
-				} else {
-					self.gameOptions.remove(option)
-				}
-				self.client.send(.setOption(option, $0))
+				self.gameOptions.set(option, to: $0)
+				self.client.send(.setOption(.gameOption(option), $0))
 			}
 		)
 	}
@@ -227,6 +226,13 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 			resetState()
 			client.close()
 			leavingMatch.send()
+		}
+	}
+
+	private func setOption(_ option: GameServerMessage.Option, to value: Bool) {
+		switch option {
+		case .gameOption(let option): self.gameOptions.set(option, to: value)
+		case .matchOption(let option): self.matchOptions.set(option, to: value)
 		}
 	}
 
@@ -307,11 +313,7 @@ extension MatchDetailViewModel {
 				readyPlayers.remove(id)
 			}
 		case .setOption(let option, let value):
-			if value {
-				self.gameOptions.insert(option)
-			} else {
-				self.gameOptions.remove(option)
-			}
+			self.setOption(option, to: value)
 		case .message(let id, let string):
 			#warning("TODO: display message")
 			print("Received message '\(string)' from \(id)")

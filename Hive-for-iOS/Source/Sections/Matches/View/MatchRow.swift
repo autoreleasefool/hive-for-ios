@@ -44,7 +44,7 @@ struct MatchRow: View {
 			MatchUserSummary(match.host, compact: true)
 			MatchUserSummary(match.opponent, compact: true)
 			Spacer()
-			optionsPreview(for: match.gameOptions)
+			optionsPreview(for: match.gameOptionSet)
 		}
 		.padding(.vertical, length: .m)
 	}

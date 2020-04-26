@@ -32,6 +32,18 @@ struct Match: Identifiable, Decodable {
 		let ordinal: Int
 	}
 
+	enum Option: String, CaseIterable {
+		case hostIsWhite = "HostIsWhite"
+		case asyncPlay = "AsyncPlay"
+
+		var enabled: Bool {
+			switch self {
+			case .hostIsWhite: return true
+			case .asyncPlay: return false
+			}
+		}
+	}
+
 	let id: UUID
 
 	let host: User?
@@ -42,12 +54,11 @@ struct Match: Identifiable, Decodable {
 	let hostElo: Double?
 	let opponentElo: Double?
 
-	let hostIsWhite: Bool
 	let options: String
+	let gameOptions: String
 	let createdAt: Date?
 	let duration: TimeInterval?
 	let status: Status
-	let isAsyncPlay: Bool
 	let isComplete: Bool
 
 	var webSocketURL: URL? {
@@ -59,8 +70,12 @@ struct Match: Identifiable, Decodable {
 // MARK: Formatting
 
 extension Match {
-	var gameOptions: Set<GameState.Option> {
-		GameState.Option.parse(options)
+	var optionSet: Set<Match.Option> {
+		OptionSet.parse(options)
+	}
+
+	var gameOptionSet: Set<GameState.Option> {
+		OptionSet.parse(gameOptions)
 	}
 }
 
@@ -88,12 +103,11 @@ extension Match {
 				moves: [],
 				hostElo: 1000.0,
 				opponentElo: 1200.0,
-				hostIsWhite: true,
-				options: "Mosquito:true;LadyBug:true;PillBug:true",
+				options: "HostIsWhite:true",
+				gameOptions: "Mosquito:true;LadyBug:true;PillBug:true",
 				createdAt: Date(),
 				duration: nil,
 				status: .notStarted,
-				isAsyncPlay: false,
 				isComplete: false
 			),
 			Match(
@@ -104,12 +118,11 @@ extension Match {
 				moves: [],
 				hostElo: 10300.0,
 				opponentElo: 100.0,
-				hostIsWhite: true,
-				options: "Mosquito:true",
+				options: "HostIsWhite:true",
+				gameOptions: "Mosquito:true",
 				createdAt: Date(),
 				duration: nil,
 				status: .notStarted,
-				isAsyncPlay: false,
 				isComplete: false
 			),
 		]

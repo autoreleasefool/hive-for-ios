@@ -10,8 +10,20 @@ import HiveEngine
 import Starscream
 
 enum GameClientMessage {
+	enum Option {
+		case gameOption(GameState.Option)
+		case matchOption(Match.Option)
+
+		var optionName: String {
+			switch self {
+			case .gameOption(let option): return option.rawValue
+			case .matchOption(let option): return option.rawValue
+			}
+		}
+	}
+
 	case movement(RelativeMovement)
-	case setOption(GameState.Option, Bool)
+	case setOption(Option, Bool)
 	case message(String)
 	case readyToPlay
 	case forfeit
@@ -23,7 +35,7 @@ extension WebSocket {
 		case .movement(let movement):
 			self.write(string: "MOV \(movement.notation)")
 		case .setOption(let option, let value):
-			self.write(string: "SET \(option.rawValue) \(value)")
+			self.write(string: "SET \(option.optionName) \(value)")
 		case .message(let string):
 			self.write(string: "MSG \(string)")
 		case .readyToPlay:
