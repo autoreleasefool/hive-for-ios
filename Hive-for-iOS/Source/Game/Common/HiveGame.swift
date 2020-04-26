@@ -15,11 +15,9 @@ struct HiveGame: View {
 	@Environment(\.presentationMode) var presentationMode
 	@EnvironmentObject var viewModel: HiveGameViewModel
 	private let onGameEnd: () -> Void
-	private let stateBuilder: () -> GameState?
 
-	init(onGameEnd: @escaping () -> Void, stateBuilder: @escaping () -> GameState?) {
+	init(onGameEnd: @escaping () -> Void) {
 		self.onGameEnd = onGameEnd
-		self.stateBuilder = stateBuilder
 	}
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {
@@ -49,12 +47,6 @@ struct HiveGame: View {
 		.navigationBarHidden(true)
 		.navigationBarBackButtonHidden(true)
 		.onAppear {
-			guard let state = self.stateBuilder() else {
-				self.viewModel.postViewAction(.failedToStartGame)
-				self.presentationMode.wrappedValue.dismiss()
-				return
-			}
-
 			UIApplication.shared.isIdleTimerDisabled = true
 			self.viewModel.postViewAction(.onAppear(state))
 		}

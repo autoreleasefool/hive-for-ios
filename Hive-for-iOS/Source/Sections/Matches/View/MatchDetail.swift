@@ -16,7 +16,6 @@ struct MatchDetail: View {
 	@EnvironmentObject private var api: HiveAPI
 
 	@ObservedObject private var viewModel: MatchDetailViewModel
-	private var gameViewModel = HiveGameViewModel()
 
 	@State private var inGame: Bool = false
 	@State private var exiting: Bool = false
@@ -109,24 +108,18 @@ struct MatchDetail: View {
 	}
 
 	private var startButton: some View {
-		if viewModel.showStartButton {
-			return AnyView(Button(action: {
-				self.viewModel.postViewAction(.startGame)
-			}, label: {
-				Text(viewModel.startButtonText)
-			}))
-		} else {
-			return AnyView(EmptyView())
-		}
+		Button(action: {
+			self.viewModel.postViewAction(.startGame)
+		}, label: {
+			Text(viewModel.startButtonText)
+		})
 	}
 
 	var body: some View {
 		GeometryReader { geometry in
 			NavigationLink(
-				destination: HiveGame(
-					onGameEnd: { self.presentationMode.wrappedValue.dismiss() },
-					stateBuilder: { self.viewModel.gameState }
-				).environmentObject(self.gameViewModel),
+				destination: HiveGame { self.presentationMode.wrappedValue.dismiss() }
+					.environmentObject(self.viewModel.gameViewModel),
 				isActive: self.$inGame,
 				label: { EmptyView() }
 			)
@@ -166,14 +159,8 @@ struct MatchDetail: View {
 			self.viewModel.setAPI(to: self.api)
 			self.viewModel.postViewAction(.onAppear)
 		}
-		.onDisappear { self.viewModel.postViewAction(.onDisappear) }
-		.onReceive(self.viewModel.$gameState) {
-			if $0 != nil {
-				self.gameViewModel.setAccount(to: self.account)
-				self.gameViewModel.setClient(to: self.viewModel.client)
-			}
-			self.inGame = $0 != nil
-		}
+		.onDisappear {self.viewModel.postViewAction(.onDisappear) }
+		.onReceive(self.viewModel.beginGame) { self.inGame = true }
 		.onReceive(self.viewModel.breadBox) { self.toaster.loaf.send($0) }
 		.onReceive(self.viewModel.refreshComplete) { self.refreshing = false }
 		.onReceive(self.viewModel.leavingMatch) {

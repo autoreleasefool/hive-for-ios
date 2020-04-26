@@ -22,16 +22,17 @@ enum MatchDetailViewAction: BaseViewAction {
 
 class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	@Published private(set) var match: Match?
-	@Published private(set) var gameState: GameState?
 	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
 
 	private(set) var refreshComplete = PassthroughSubject<Void, Never>()
 	private(set) var breadBox = PassthroughSubject<LoafState, Never>()
+	private(set) var beginGame = PassthroughSubject<Void, Never>()
 
 	private var api: HiveAPI?
 	private var account: Account?
-	var client: HiveGameClient!
+	private var client: HiveGameClient!
+	private(set) var gameViewModel = HiveGameViewModel()
 
 	private(set) var matchId: Match.ID?
 
@@ -49,23 +50,17 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		}
 	}
 
-	var showStartButton: Bool {
-		match?.host != nil && match?.opponent != nil
-	}
-
 	var startButtonText: String {
-		if let hostId = match?.host?.id, let opponentId = match?.opponent?.id {
-			let user = userIsHost ? hostId : opponentId
-			let opponent = userIsHost ? opponentId : hostId
+		guard let hostId = match?.host?.id, let opponentId = match?.opponent?.id else { return "" }
 
-			if readyPlayers.contains(user) {
-				return "Not ready"
-			} else if readyPlayers.contains(opponent) {
-				return readyPlayers.contains(user) ? "Start" : "Ready"
-			}
+		let user = userIsHost ? hostId : opponentId
+		let opponent = userIsHost ? opponentId : hostId
+
+		if readyPlayers.contains(user) {
+			return "Cancel"
+		} else {
+			return readyPlayers.contains(opponent) ? "Start" : "Ready"
 		}
-
-		return ""
 	}
 
 	init(id: Match.ID?) {
@@ -238,6 +233,8 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 	func setAccount(to account: Account) {
 		self.account = account
 		self.client = HiveGameClient(account: account)
+		self.gameViewModel.setAccount(to: account)
+		self.gameViewModel.setClient(to: client)
 	}
 
 	func setAPI(to api: HiveAPI) {
@@ -250,7 +247,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		}
 
 		self.match = nil
-		self.gameState = nil
+		self.gameViewModel.gameStateStore.send(nil)
 		self.readyPlayers.removeAll()
 	}
 }
@@ -301,7 +298,7 @@ extension MatchDetailViewModel {
 		case .playerLeft(let id):
 			playerLeft(id: id)
 		case .gameState(let state):
-			self.gameState = state
+			self.gameViewModel.gameStateStore.send(state)
 		case .playerReady(let id, let ready):
 			if ready {
 				readyPlayers.insert(id)
