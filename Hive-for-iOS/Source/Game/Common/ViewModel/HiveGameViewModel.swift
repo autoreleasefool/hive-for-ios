@@ -484,6 +484,10 @@ extension HiveGameViewModel {
 	func setClient(to client: HiveGameClient) {
 		self.client = client
 	}
+
+	func setPlayer(to player: Player) {
+		self.playingAs = player
+	}
 }
 
 // MARK: - Position

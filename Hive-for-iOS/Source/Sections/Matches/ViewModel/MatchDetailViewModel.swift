@@ -251,6 +251,19 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		}
 	}
 
+	private func receivedGameState(_ state: GameState) {
+		let player: Player
+		if userIsHost {
+			player = matchOptions.contains(.hostIsWhite) ? .white : .black
+		} else {
+			player = matchOptions.contains(.hostIsWhite) ? .black : .white
+		}
+
+		gameViewModel.setPlayer(to: player)
+		gameViewModel.gameStateStore.send(state)
+		beginGame.send()
+	}
+
 	private func setOption(_ option: GameServerMessage.Option, to value: Bool) {
 		switch option {
 		case .gameOption(let option): self.gameOptions.set(option, to: value)
@@ -326,14 +339,9 @@ extension MatchDetailViewModel {
 		case .playerLeft(let id):
 			playerLeft(id: id)
 		case .gameState(let state):
-			gameViewModel.gameStateStore.send(state)
-			beginGame.send()
+			receivedGameState(state)
 		case .playerReady(let id, let ready):
-			if ready {
-				readyPlayers.insert(id)
-			} else {
-				readyPlayers.remove(id)
-			}
+			readyPlayers.set(id, to: ready)
 		case .setOption(let option, let value):
 			self.setOption(option, to: value)
 		case .message(let id, let string):
