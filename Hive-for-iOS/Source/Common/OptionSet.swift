@@ -24,8 +24,7 @@ enum OptionSet {
 		where T: Hashable,
 		T: RawRepresentable,
 		T: CaseIterable,
-		T.RawValue == String
-	{
+		T.RawValue == String {
 		T.allCases
 			.map { "\($0.rawValue):\(options.contains($0))" }
 			.joined(separator: ";")

@@ -445,8 +445,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		switch event {
 		case .connected:
 			debugLog("Connected to client.")
-		case .closed(let code):
-			debugLog("Connection to client closed: \(String(describing: code))")
+		case .closed(let reason, let code):
+			debugLog("Connection to client closed: \(reason) (\(String(describing: code)))")
 		case .message(let message):
 			didReceive(message: message)
 		}
