@@ -29,7 +29,7 @@ struct GameHUD: View {
 			.foregroundColor(Color(.text))
 			.position(
 				x: geometry.size.width / 2,
-				y: geometry.size.height - (buttonSize + Metrics.Spacing.xl)
+				y: geometry.size.height - (buttonSize + Metrics.Spacing.xl + Metrics.Spacing.m.rawValue)
 			)
 			.frame(alignment: .center)
 	}
@@ -62,7 +62,7 @@ struct GameHUD: View {
 		.squareImage(buttonSize)
 		.position(
 			x: geometry.size.width / 2 + xOffset,
-			y: geometry.size.height - buttonDistanceFromEdge.rawValue
+			y: geometry.size.height - (buttonDistanceFromEdge.rawValue + Metrics.Spacing.m.rawValue)
 		)
 	}
 
