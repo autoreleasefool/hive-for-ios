@@ -289,7 +289,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func pickUpHand() {
-		gameState.unitsInHand[playingAs]?.forEach { updatePosition(of: $0, to: nil, shouldMove: true) }
+		gameState.unitsInHand[playingAs]?.forEach {
+			updatePosition(of: $0, to: nil, shouldMove: true)
+		}
 	}
 
 	private func forfeitGame() {
@@ -389,7 +391,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		client.send(.movement(relativeMovement))
 	}
 
-	private func didReceive(newState: GameState) {
+	private func updateGameState(to newState: GameState) {
 		guard inGame else { return }
 		self.gameStateStore.send(newState)
 
@@ -467,7 +469,7 @@ extension HiveGameViewModel {
 	private func handleGameClientMessage(_ message: GameServerMessage) {
 		switch message {
 		case .gameState(let state):
-			didReceive(newState: state)
+			updateGameState(to: state)
 		case .gameOver(let winner):
 			endGame()
 			presentedGameInformation = .gameEnd(EndState(

@@ -251,7 +251,7 @@ class MatchDetailViewModel: ViewModel<MatchDetailViewAction>, ObservableObject {
 		}
 	}
 
-	private func receivedGameState(_ state: GameState) {
+	private func updateGameState(to state: GameState) {
 		let player: Player
 		if userIsHost {
 			player = matchOptions.contains(.hostIsWhite) ? .white : .black
@@ -305,41 +305,41 @@ extension MatchDetailViewModel {
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						self?.didReceive(error: error)
+						self?.handleGameClientError(error)
 					}
 				},
 				receiveValue: { [weak self] event in
-					self?.didReceive(event: event)
+					self?.handleGameClientEvent(event)
 				}
 			).store(in: self)
 	}
 
-	private func didReceive(error: GameClientError) {
+	private func handleGameClientError(_ error: GameClientError) {
 		LoadingHUD.shared.hide()
 		leavingMatch.send()
 		#warning("TODO: add a reconnect mechanism")
 		print("Client disconnected: \(error)")
 	}
 
-	private func didReceive(event: GameClientEvent) {
+	private func handleGameClientEvent(_ event: GameClientEvent) {
 		switch event {
 		case .connected:
 			LoadingHUD.shared.hide()
 		case .closed:
 			leavingMatch.send()
 		case .message(let message):
-			didReceive(message: message)
+			handleGameClientMessage(message)
 		}
 	}
 
-	private func didReceive(message: GameServerMessage) {
+	private func handleGameClientMessage(_ message: GameServerMessage) {
 		switch message {
 		case .playerJoined(let id):
 			playerJoined(id: id)
 		case .playerLeft(let id):
 			playerLeft(id: id)
 		case .gameState(let state):
-			receivedGameState(state)
+			updateGameState(to: state)
 		case .playerReady(let id, let ready):
 			readyPlayers.set(id, to: ready)
 		case .setOption(let option, let value):
