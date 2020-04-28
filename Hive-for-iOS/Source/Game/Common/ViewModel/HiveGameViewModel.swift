@@ -67,16 +67,16 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private(set) var gameContent: GameViewContent!
 	private(set) var playingAs: Player!
 
-	var inGame: Bool {
-		stateStore.value.inGame
-	}
-
 	var gameState: GameState {
 		gameStateStore.value!
 	}
 
 	var currentState: State {
 		stateStore.value
+	}
+
+	var inGame: Bool {
+		currentState.inGame
 	}
 
 	var gameAnchor: Experience.HiveGame? {
@@ -119,7 +119,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	var displayState: String {
-		switch stateStore.value {
+		switch currentState {
 		case .playerTurn:
 			return "Your turn"
 		case .sendingMovement:
@@ -146,13 +146,14 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		return Position(x: x, y: -x - z, z: z)
 	}
 
+	private var connectionOpened: Bool = false
 	private var viewContentReady: Bool = false
 	private var viewInteractionsReady: Bool = false
 
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {
 		case .onAppear:
-			initialize()
+			openConnection()
 		case .viewContentDidLoad(let content):
 			setupView(content: content)
 		case .viewContentReady:
@@ -163,9 +164,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			attemptSetupNewGame()
 
 		case .presentPlayerHand(let player):
-			self.presentedPlayerHand = PlayerHand(player: player, state: gameState)
+			presentedPlayerHand = PlayerHand(player: player, state: gameState)
 		case .presentInformation(let information):
-			self.presentedGameInformation = information
+			presentedGameInformation = information
 		case .selectedFromHand(let pieceClass):
 			placeFromHand(pieceClass)
 		case .enquiredFromHand(let pieceClass):
@@ -203,20 +204,19 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		}
 	}
 
-	private func initialize() {
-		guard stateStore.value == .begin else { return }
-		gameStateStore.send(gameStateStore.value)
-
+	private func openConnection() {
+		guard !connectionOpened else { return }
+		connectionOpened = true
 		client.openConnection()
 			.receive(on: DispatchQueue.main)
 			.sink(
 				receiveCompletion: { [weak self] result in
 					if case let .failure(error) = result {
-						self?.didReceive(error: error)
+						self?.handleGameClientError(error)
 					}
 				},
 				receiveValue: { [weak self] event in
-					self?.didReceive(event: event)
+					self?.handleGameClientEvent(event)
 				}
 			).store(in: self)
 	}
@@ -231,6 +231,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func setupNewGame() {
+		guard !inGame else { return }
 		if gameState.currentPlayer == playingAs {
 			transition(to: .playerTurn)
 		} else {
@@ -288,7 +289,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func pickUpHand() {
-		self.gameState.unitsInHand[playingAs]?.forEach { updatePosition(of: $0, to: nil, shouldMove: true) }
+		gameState.unitsInHand[playingAs]?.forEach { updatePosition(of: $0, to: nil, shouldMove: true) }
 	}
 
 	private func forfeitGame() {
@@ -401,71 +402,83 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 		let wasOpponentMove = previousUpdate.player == opponent
 
-		if wasOpponentMove {
-			let message: String
-			let image: UIImage
-			switch previousUpdate.movement {
-			case .pass:
-				message = "\(opponent) passed"
-				image = ImageAsset.Movement.pass
-			case .move(let unit, _), .yoink(_, let unit, _):
-				if unit.owner == opponent {
-					message = "\(opponent) moved their \(unit.class)"
-					image = ImageAsset.Movement.move
-				} else {
-					message = "\(opponent) yoinked your \(unit.class)"
-					image = ImageAsset.Movement.yoink
-				}
-			case .place(let unit, _):
-				message = "\(opponent) placed their \(unit.class)"
-				image = ImageAsset.Movement.place
-			}
-
-			loafState.send(LoafState(
-				message,
-				state: .custom(Loaf.Style(
-					backgroundColor: UIColor(.background),
-					textColor: UIColor(.text),
-					icon: image)
-				)) { [weak self] dismissalReason in
-					guard let self = self,
-						dismissalReason == .tapped,
-						let position = previousUpdate.movement.targetPosition else { return }
-					self.animateToPosition.send(position)
-				}
-			)
+		if newState.isEndGame {
+			endGame()
+		} else {
+			transition(to: wasOpponentMove ? .playerTurn : .opponentTurn)
 		}
-	}
 
-	private func didReceive(error: GameClientError) {
+		guard wasOpponentMove else { return }
+
+		let message: String
+		let image: UIImage
+		switch previousUpdate.movement {
+		case .pass:
+			message = "\(opponent) passed"
+			image = ImageAsset.Movement.pass
+		case .move(let unit, _), .yoink(_, let unit, _):
+			if unit.owner == opponent {
+				message = "\(opponent) moved their \(unit.class)"
+				image = ImageAsset.Movement.move
+			} else {
+				message = "\(opponent) yoinked your \(unit.class)"
+				image = ImageAsset.Movement.yoink
+			}
+		case .place(let unit, _):
+			message = "\(opponent) placed their \(unit.class)"
+			image = ImageAsset.Movement.place
+		}
+
+		loafState.send(LoafState(
+			message,
+			state: .custom(Loaf.Style(
+				backgroundColor: UIColor(.background),
+				textColor: UIColor(.text),
+				icon: image)
+			)) { [weak self] dismissalReason in
+				guard let self = self,
+					dismissalReason == .tapped,
+					let position = previousUpdate.movement.targetPosition else { return }
+				self.animateToPosition.send(position)
+			}
+		)
+	}
+}
+
+// MARK: - HiveGameClient
+
+extension HiveGameViewModel {
+	private func handleGameClientError(_ error: GameClientError) {
 		print("Client did not connect: \(error)")
 	}
 
-	private func didReceive(event: GameClientEvent) {
+	private func handleGameClientEvent(_ event: GameClientEvent) {
 		switch event {
 		case .connected:
 			debugLog("Connected to client.")
 		case .closed(let reason, let code):
 			debugLog("Connection to client closed: \(reason) (\(String(describing: code)))")
+			self.connectionOpened = false
 		case .message(let message):
-			didReceive(message: message)
+			handleGameClientMessage(message)
 		}
 	}
 
-	private func didReceive(message: GameServerMessage) {
+	private func handleGameClientMessage(_ message: GameServerMessage) {
 		switch message {
 		case .gameState(let state):
-			self.didReceive(newState: state)
+			didReceive(newState: state)
 		case .gameOver(let winner):
-			self.presentedGameInformation = .gameEnd(EndState(
+			endGame()
+			presentedGameInformation = .gameEnd(EndState(
 				winner: winner == nil
 					? nil
 					: (
 						winner == account.userId
-							? self.playingAs
-							: self.playingAs.next
+							? playingAs
+							: playingAs.next
 					),
-				playingAs: self.playingAs
+				playingAs: playingAs
 			))
 		case .error, .forfeit, .message, .playerJoined, .playerLeft, .playerReady, .setOption:
 			#warning("TODO: handle remaining messages in game")
@@ -557,7 +570,7 @@ extension HiveGameViewModel {
 	}
 
 	func transition(to nextState: State) {
-		guard canTransition(from: stateStore.value, to: nextState) else { return }
+		guard canTransition(from: currentState, to: nextState) else { return }
 		stateStore.send(nextState)
 	}
 
