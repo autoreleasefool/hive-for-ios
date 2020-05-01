@@ -101,7 +101,7 @@ class HiveAPI: ObservableObject {
 		}
 	}
 
-	// MARK: - Users
+	// MARK: - Account
 
 	func login(login: LoginData) -> AnyPublisher<AccessToken, HiveAPIError> {
 		Future { promise in
@@ -167,6 +167,22 @@ class HiveAPI: ObservableObject {
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleVoidResponse(data: data, response: response, error: error, promise: promise)
+			}
+		}
+		.eraseToAnyPublisher()
+	}
+
+	// MARK: - Users
+
+	func user(id: User.ID) -> AnyPublisher<User, HiveAPIError> {
+		Future { promise in
+			let url = self.userGroup.appendingPathComponent("details")
+
+			var request = self.buildBaseRequest(to: url)
+			request.httpMethod = "GET"
+
+			self.session.loadData(from: request) { [weak self] data, response, error in
+				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
 		.eraseToAnyPublisher()

@@ -91,6 +91,9 @@
 		CAFA91F223E77B290087F1F0 /* GameState+AR.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA91F123E77B290087F1F0 /* GameState+AR.swift */; };
 		CAFA91F623E958EE0087F1F0 /* PopoverSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA91F523E958EE0087F1F0 /* PopoverSheet.swift */; };
 		CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA91F923EA1B410087F1F0 /* String+Extensions.swift */; };
+		CAFC7A62245C527400747E82 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC7A61245C527400747E82 /* RootTabView.swift */; };
+		CAFC7A65245C54EE00747E82 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC7A64245C54EE00747E82 /* Profile.swift */; };
+		CAFC7A68245C5CAA00747E82 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC7A67245C5CAA00747E82 /* ProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -174,6 +177,9 @@
 		CAFA91F123E77B290087F1F0 /* GameState+AR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+AR.swift"; sourceTree = "<group>"; };
 		CAFA91F523E958EE0087F1F0 /* PopoverSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverSheet.swift; sourceTree = "<group>"; };
 		CAFA91F923EA1B410087F1F0 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		CAFC7A61245C527400747E82 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		CAFC7A64245C54EE00747E82 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		CAFC7A67245C5CAA00747E82 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -297,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC685F823CCF4D400B882D2 /* Home.swift */,
+				CAFC7A61245C527400747E82 /* RootTabView.swift */,
 				CABDFCD823DB89AA00C697AD /* Welcome.swift */,
 			);
 			path = View;
@@ -367,6 +374,7 @@
 				CAC68CC324327517003CC2E6 /* Login */,
 				CAC685F623CCE9F400B882D2 /* Home */,
 				CAC6860123CD1C9B00B882D2 /* Matches */,
+				CAFC7A63245C54DE00747E82 /* Profile */,
 			);
 			path = Sections;
 			sourceTree = "<group>";
@@ -535,6 +543,23 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		CAFC7A63245C54DE00747E82 /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				CAFC7A66245C5CA100747E82 /* ViewModel */,
+				CAFC7A64245C54EE00747E82 /* Profile.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		CAFC7A66245C5CA100747E82 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CAFC7A67245C5CAA00747E82 /* ProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -689,11 +714,13 @@
 				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Match.swift in Sources */,
 				CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */,
+				CAFC7A62245C527400747E82 /* RootTabView.swift in Sources */,
 				CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */,
 				CA7D5E4F2433FEB000D12A8C /* Account.swift in Sources */,
 				CA0F93A52428AEE200F6E104 /* DebugSprite.swift in Sources */,
 				CA7D5E512433FEBD00D12A8C /* Settings.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
+				CAFC7A65245C54EE00747E82 /* Profile.swift in Sources */,
 				CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* MatchRow.swift in Sources */,
@@ -717,6 +744,7 @@
 				CA0F93A32427E83500F6E104 /* SKView+Extensions.swift in Sources */,
 				CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */,
 				CA0290D823CEF7FE00A933F9 /* MatchDetailViewModel.swift in Sources */,
+				CAFC7A68245C5CAA00747E82 /* ProfileViewModel.swift in Sources */,
 				CAFA91F623E958EE0087F1F0 /* PopoverSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

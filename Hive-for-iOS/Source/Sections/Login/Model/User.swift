@@ -8,6 +8,11 @@
 
 import Foundation
 
-struct User: Identifiable {
+struct User: Identifiable, Decodable {
 	let id: UUID
+	let displayName: String
+	let elo: Double
+	let avatarUrl: URL?
+	let activeMatches: [Match]
+	let pastMatches: [Match]
 }

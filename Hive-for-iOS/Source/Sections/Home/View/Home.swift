@@ -23,6 +23,7 @@ struct Home: View {
 				} else if account.tokenStatus == .validating {
 					DelayedLoadingIndicator(timeout: 3, message: "Logging in...")
 				} else if account.isAuthenticated {
+					RootTabView()
 					Lobby()
 				} else {
 					LoginSignup()
