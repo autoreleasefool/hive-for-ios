@@ -55,53 +55,17 @@ class HiveAPI: ObservableObject {
 	private var matchGroup: URL { apiGroup.appendingPathComponent("matches") }
 
 	private let session: NetworkSession
+	private var account: AccountV2?
 
-	init(account: Account, session: NetworkSession = URLSession.shared) {
-		self.account = account
+	init(session: NetworkSession = URLSession.shared) {
 		self.session = session
-		self.validateToken(in: account)
-	}
-
-	// MARK: - Authentication
-
-	private let account: Account
-	private var tokenValidation: AnyCancellable?
-
-	private func validateToken(in account: Account) {
-		guard let userId = account.userId, let token = account.token else { return }
-		account.tokenStatus = .validating
-		tokenValidation = checkToken(userId: userId, token: token)
-			.receive(on: DispatchQueue.main)
-			.sink(
-				receiveCompletion: { [weak self] result in
-					if case let .failure(error) = result {
-						self?.handleValidationError(account: account, error: error)
-					}
-				},
-				receiveValue: { result in
-					account.tokenStatus = result ? .valid : .invalid
-					account.isAuthenticated = result
-				}
-			)
-	}
-
-	private func handleValidationError(account: Account, error: HiveAPIError) {
-		assert(Thread.isMainThread, "Account error not handled on the main thread")
-
-		switch error {
-		case .invalidData, .invalidResponse, .missingData, .notImplemented, .unauthorized:
-			account.tokenStatus = .invalid
-			try? account.clear()
-		case .invalidHTTPResponse(let code):
-			print("Token validation failed: \(code)")
-			account.tokenStatus = .validationError
-		case .networkingError(let networkError):
-			print("Token validation failed: \(networkError)")
-			account.tokenStatus = .validationError
-		}
 	}
 
 	// MARK: - Account
+
+	func updateAccount(to account: AccountV2?) {
+		self.account = account
+	}
 
 	func login(login: LoginData) -> AnyPublisher<AccessToken, HiveAPIError> {
 		Future { promise in
@@ -148,7 +112,7 @@ class HiveAPI: ObservableObject {
 
 			var request = self.buildBaseRequest(to: url, withAuth: false)
 			request.httpMethod = "GET"
-			self.account.applyAuth(to: &request, overridingTokenWith: token)
+			AccountV2.apply(auth: nil, to: &request, overridingTokenWith: token)
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
@@ -255,7 +219,7 @@ class HiveAPI: ObservableObject {
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")
 		if withAuth {
-			account.applyAuth(to: &request)
+			account?.applyAuth(to: &request)
 		}
 		return request
 	}
@@ -276,7 +240,8 @@ class HiveAPI: ObservableObject {
 
 		guard (200..<400).contains(response.statusCode) else {
 			if response.statusCode == 401 {
-				try? account.clear()
+//				try? account.clear()
+				#warning("TODO: remove account when request is unauthorized")
 				return promise(.failure(.unauthorized))
 			}
 			return promise(.failure(.invalidHTTPResponse(response.statusCode)))
@@ -307,7 +272,8 @@ class HiveAPI: ObservableObject {
 
 		guard (200..<400).contains(response.statusCode) else {
 			if response.statusCode == 401 {
-				try? account.clear()
+				#warning("TODO: remove account when request is unauthorized")
+//				try? account.clear()
 				return promise(.failure(.unauthorized))
 			}
 			return promise(.failure(.invalidHTTPResponse(response.statusCode)))

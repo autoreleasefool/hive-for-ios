@@ -25,16 +25,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let account = Account()
 
 		// Create API access instance
-		let api = HiveAPI(account: account)
+		let api = HiveAPI()
 
-		// Create settings and load preferences
-		let settings = Settings()
+		let environment = AppEnvironment.bootstrap()
 
 		// Create the SwiftUI view that provides the window contents.
-		let contentView = Home()
+		let contentView = ContentView(container: environment.container)
 			.environmentObject(api)
 			.environmentObject(account)
-			.environmentObject(settings)
 
 		// Use a UIHostingController as window root view controller.
 		let window = UIWindow(frame: UIScreen.main.bounds)

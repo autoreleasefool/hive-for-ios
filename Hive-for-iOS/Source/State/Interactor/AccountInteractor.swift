@@ -8,6 +8,7 @@
 
 protocol AccountInteractor {
 	func loadAccount()
+	func clearAccount()
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -20,16 +21,24 @@ struct LiveAccountInteractor: AccountInteractor {
 	}
 
 	func loadAccount() {
+		// Only allow the account to be loaded once
+		guard case .notLoaded = appState[\.account] else { return }
+
 		let cancelBag = CancelBag()
-		appState.value.account.detail = .loading(cached: nil, cancelBag: cancelBag)
+		appState[\.account] = .loading(cached: nil, cancelBag: cancelBag)
 
 		weak var weakState = appState
 		repository.loadAccount()
-			.sinkToLoadable { weakState?.value.account.detail = $0 }
+			.sinkToLoadable { weakState?[\.account] = $0 }
 			.store(in: cancelBag)
+	}
+
+	func clearAccount() {
+		appState[\.account] = .failed(AccountRepositoryError.loggedOut)
 	}
 }
 
 struct StubAccountInteractor: AccountInteractor {
 	func loadAccount() { }
+	func clearAccount() { }
 }

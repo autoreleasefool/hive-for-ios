@@ -6,11 +6,18 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import Foundation
+
 struct AccountV2: Equatable {
-	struct Detail: Equatable {
-		var userId: User.ID
-		var token: String
+	var userId: User.ID
+	var token: String
+
+	func applyAuth(to request: inout URLRequest, overridingTokenWith token: String? = nil) {
+		AccountV2.apply(auth: self, to: &request, overridingTokenWith: token)
 	}
 
-	var detail: Loadable<Detail> = .notLoaded
+	static func apply(auth: AccountV2?, to request: inout URLRequest, overridingTokenWith token: String? = nil) {
+		guard let token = token ?? auth?.token else { return }
+		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+	}
 }

@@ -213,12 +213,10 @@ private extension GameState.Option {
 #if DEBUG
 struct MatchDetailPreview: PreviewProvider {
 	static var previews: some View {
-		let account = Account()
-		let api = HiveAPI(account: account)
+		let api = HiveAPI()
 		let viewModel = MatchDetailViewModel(match: Match.matches[0])
 
 		return MatchDetail(viewModel: viewModel)
-			.environmentObject(account)
 			.environmentObject(api)
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
