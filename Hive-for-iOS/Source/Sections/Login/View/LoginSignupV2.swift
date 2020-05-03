@@ -18,26 +18,18 @@ struct LoginSignupV2: View {
 			.padding(.all, length: .m)
 			.avoidingKeyboard()
 			.onReceive(viewModel.loginSubject) {
-				self.container.interactors.accountInteractor.login($0)
-					.receive(on: DispatchQueue.main)
-					.sinkToLoadable {
-						self.viewModel.account = $0
-						if case let .loaded(account) = $0 {
-							self.container.interactors.accountInteractor.updateAccount(to: account)
-						}
-					}
-					.store(in: self.viewModel)
+				self.container.interactors.accountInteractor
+					.login($0, account: self.$viewModel.account)
 			}
 			.onReceive(viewModel.signupSubject) {
-				self.container.interactors.accountInteractor.signup($0)
-					.receive(on: DispatchQueue.main)
-					.sinkToLoadable {
-						self.viewModel.account = $0
-						if case let .loaded(account) = $0 {
-							self.container.interactors.accountInteractor.updateAccount(to: account)
-						}
-					}
-					.store(in: self.viewModel)
+				self.container.interactors.accountInteractor
+					.signup($0, account: self.$viewModel.account)
+			}
+			.onReceive(viewModel.$account) {
+				if case let .loaded(account) = $0 {
+					self.container.interactors.accountInteractor
+						.updateAccount(to: account)
+				}
 			}
 	}
 

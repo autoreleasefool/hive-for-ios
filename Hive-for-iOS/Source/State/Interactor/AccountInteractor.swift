@@ -13,9 +13,9 @@ protocol AccountInteractor {
 	func loadAccount()
 	func clearAccount()
 	func updateAccount(to account: AccountV2)
-	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError>
-	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError>
-	func logout() -> AnyPublisher<Bool, AccountRepositoryError>
+	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>)
+	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>)
+	func logout(result: LoadableSubject<Bool>)
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -48,21 +48,35 @@ struct LiveAccountInteractor: AccountInteractor {
 		appState[\.account] = .loaded(account)
 	}
 
-	func logout() -> AnyPublisher<Bool, AccountRepositoryError> {
+	func logout(result: LoadableSubject<Bool>) {
+		let cancelBag = CancelBag()
+		result.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
+
 		repository.logout()
-			.map {
-				self.clearAccount()
-				return $0
-			}
-			.eraseToAnyPublisher()
+			.receive(on: DispatchQueue.main)
+			.sinkToLoadable { result.wrappedValue = $0 }
+			.store(in: cancelBag)
 	}
 
-	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>) {
+		let cancelBag = CancelBag()
+		account.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
+
 		repository.login(loginData)
+			.receive(on: DispatchQueue.main)
+			.sinkToLoadable { account.wrappedValue = $0 }
+			.store(in: cancelBag)
+
 	}
 
-	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>) {
+		let cancelBag = CancelBag()
+		account.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
+
 		repository.signup(signupData)
+			.receive(on: DispatchQueue.main)
+			.sinkToLoadable { account.wrappedValue = $0 }
+			.store(in: cancelBag)
 	}
 }
 
@@ -70,21 +84,7 @@ struct StubAccountInteractor: AccountInteractor {
 	func loadAccount() { }
 	func clearAccount() { }
 	func updateAccount(to account: AccountV2) { }
-	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
-		Just(AccountV2(userId: UUID(), token: ""))
-			.mapError { _ in .loggedOut }
-			.eraseToAnyPublisher()
-	}
-
-	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
-		Just(AccountV2(userId: UUID(), token: ""))
-			.mapError { _ in .loggedOut }
-			.eraseToAnyPublisher()
-	}
-
-	func logout() -> AnyPublisher<Bool, AccountRepositoryError> {
-		Just(true)
-			.mapError { _ in .loggedOut }
-			.eraseToAnyPublisher()
-	}
+	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>) { }
+	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>) { }
+	func logout(result: LoadableSubject<Bool>) { }
 }
