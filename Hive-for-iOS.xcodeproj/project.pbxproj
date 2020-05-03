@@ -45,6 +45,8 @@
 		CA88B80C244D89B600C4A276 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
 		CA88BA69244E383500C4A276 /* SwiftUIRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = CA88BA68244E383500C4A276 /* SwiftUIRefresh */; };
 		CA88BA6B244E39A800C4A276 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */; };
+		CA8F46DD245DD27600B136D0 /* LoginSignupV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DC245DD27600B136D0 /* LoginSignupV2.swift */; };
+		CA8F46DF245DE4D600B136D0 /* LoginSignupViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DE245DE4D600B136D0 /* LoginSignupViewModelV2.swift */; };
 		CA91C32224350CEA007E7D55 /* UserSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA91C32124350CEA007E7D55 /* UserSignup.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAA87BC72432994D006E418B /* LoginSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC62432994D006E418B /* LoginSignup.swift */; };
@@ -142,6 +144,8 @@
 		CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedLoadingIndicator.swift; sourceTree = "<group>"; };
 		CA88B80B244D89B600C4A276 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		CA8F46DC245DD27600B136D0 /* LoginSignupV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupV2.swift; sourceTree = "<group>"; };
+		CA8F46DE245DE4D600B136D0 /* LoginSignupViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewModelV2.swift; sourceTree = "<group>"; };
 		CA91C32124350CEA007E7D55 /* UserSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSignup.swift; sourceTree = "<group>"; };
 		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CAA87BC62432994D006E418B /* LoginSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignup.swift; sourceTree = "<group>"; };
@@ -365,6 +369,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC426D124338C0E00E513BC /* LoginSignupViewModel.swift */,
+				CA8F46DE245DE4D600B136D0 /* LoginSignupViewModelV2.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -519,6 +524,7 @@
 			children = (
 				CAA87BC62432994D006E418B /* LoginSignup.swift */,
 				CAC426D92433B11000E513BC /* LoginField.swift */,
+				CA8F46DC245DD27600B136D0 /* LoginSignupV2.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -747,6 +753,7 @@
 				CA41ACB2245616F500B6F88E /* Set+Extensions.swift in Sources */,
 				CAA87BCB243299C8006E418B /* LoginSignupData.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveARViewController.swift in Sources */,
+				CA8F46DF245DE4D600B136D0 /* LoginSignupViewModelV2.swift in Sources */,
 				CAF82570245D59730064359E /* AppEnvironment.swift in Sources */,
 				CAF8255C245C6C640064359E /* Loadable.swift in Sources */,
 				CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */,
@@ -796,6 +803,7 @@
 				CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */,
 				CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */,
 				CAF82558245C6B2B0064359E /* AccountV2.swift in Sources */,
+				CA8F46DD245DD27600B136D0 /* LoginSignupV2.swift in Sources */,
 				CA68BBC4244B20BC00879060 /* NetworkSession.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
 				CAF8256C245C87340064359E /* Publisher+Extensions.swift in Sources */,

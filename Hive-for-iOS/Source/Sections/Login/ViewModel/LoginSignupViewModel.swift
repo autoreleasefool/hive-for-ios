@@ -67,11 +67,8 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 		}
 	}
 
-	func isActive(field: LoginFieldID) -> Binding<Bool> {
-		Binding(
-			get: { [weak self] in field == self?.activeField },
-			set: { [weak self] newValue in self?.activeField = newValue ? field : nil }
-		)
+	func isActive(field: LoginFieldID) -> Bool {
+		field == self.activeField
 	}
 
 	private func performLogin(_ request: LoginData) {

@@ -12,14 +12,28 @@ import SwiftUI
 struct LoginField: UIViewRepresentable {
 	let title: String
 	var text: Binding<String>
-	var isFirstResponder: Binding<Bool>
+	let keyboardType: UIKeyboardType
+	let returnKeyType: UIReturnKeyType
+	var isFirstResponder: Bool
 	let isSecure: Bool
+	let onReturn: () -> Void
 
-	init(_ title: String, text: Binding<String>, isActive: Binding<Bool>, isSecure: Bool) {
+	init(
+		_ title: String,
+		text: Binding<String>,
+		keyboardType: UIKeyboardType,
+		returnKeyType: UIReturnKeyType,
+		isActive: Bool,
+		isSecure: Bool,
+		onReturn: @escaping () -> Void
+	) {
 		self.title = title
 		self.text = text
+		self.keyboardType = keyboardType
+		self.returnKeyType = returnKeyType
 		self.isFirstResponder = isActive
 		self.isSecure = isSecure
+		self.onReturn = onReturn
 	}
 
 	func makeUIView(context: UIViewRepresentableContext<LoginField>) -> UITextField {
@@ -43,37 +57,46 @@ struct LoginField: UIViewRepresentable {
 	}
 
 	func makeCoordinator() -> LoginField.Coordinator {
-		Coordinator(text: text)
+		Coordinator(text: text, onReturn: onReturn)
 	}
 
 	func updateUIView(_ textField: UITextField, context: UIViewRepresentableContext<LoginField>) {
-		let color = UIColor(isFirstResponder.wrappedValue ? .primary : .textSecondary)
+		let color = UIColor(isFirstResponder ? .primary : .textSecondary)
 		textField.isSecureTextEntry = isSecure
 		let attributes = [NSAttributedString.Key.foregroundColor: color.withAlphaComponent(0.5)]
 		textField.attributedPlaceholder = NSAttributedString(string: title, attributes: attributes)
 		textField.textColor = color
 		textField.layer.borderColor = color.cgColor
 		textField.text = text.wrappedValue
+		textField.keyboardType = keyboardType
+		textField.returnKeyType = returnKeyType
 
 		guard textField.window != nil else { return }
-		if isFirstResponder.wrappedValue && !context.coordinator.didBecomeFirstResponder {
+		if isFirstResponder && !context.coordinator.didBecomeFirstResponder {
 			textField.becomeFirstResponder()
 			context.coordinator.didBecomeFirstResponder = true
-		} else if !isFirstResponder.wrappedValue {
+		} else if !isFirstResponder {
 			context.coordinator.didBecomeFirstResponder = false
 		}
 	}
 
 	class Coordinator: NSObject, UITextFieldDelegate {
 		var text: Binding<String>
+		var onReturn: () -> Void
 		var didBecomeFirstResponder = false
 
-		init(text: Binding<String>) {
+		init(text: Binding<String>, onReturn: @escaping () -> Void) {
 			self.text = text
+			self.onReturn = onReturn
 		}
 
 		func textFieldDidChangeSelection(_ textField: UITextField) {
 			text.wrappedValue = textField.text ?? ""
+		}
+
+		func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+			onReturn()
+			return true
 		}
 	}
 }
@@ -84,7 +107,15 @@ struct LoginField_Previews: PreviewProvider {
 	@State static var isActive: Bool = true
 
 	static var previews: some View {
-		LoginField("Email", text: $text, isActive: $isActive, isSecure: false)
+		LoginField(
+			"Email",
+			text: $text,
+			keyboardType: .default,
+			returnKeyType: .default,
+			isActive: isActive,
+			isSecure: false,
+			onReturn: { }
+		)
 			.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
 			.padding(.all, length: .m)
 			.background(Color(.background))

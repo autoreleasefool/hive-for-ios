@@ -21,26 +21,22 @@ struct ContentView: View {
 	}
 
 	var body: some View {
-		NavigationView {
-			Group {
-				if self.showWelcome {
-					Welcome(showWelcome: $showWelcome)
-				} else {
-					content
-				}
+		Group {
+			if self.showWelcome {
+				Welcome(showWelcome: $showWelcome)
+			} else {
+				content
 			}
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
-			.onReceive(accountUpdate) {
-				self.account = $0
-				if case let .failed(error) = $0 {
-					self.handleAccountError(error)
-				}
-			}
-			.onAppear {
-				self.container.interactors.accountInteractor.loadAccount()
-			}
-			.plugInToaster()
 		}
+		.background(Color(.background).edgesIgnoringSafeArea(.all))
+		.onReceive(accountUpdate) {
+			self.account = $0
+			if case let .failed(error) = $0 {
+				self.handleAccountError(error)
+			}
+		}
+		.inject(container)
+		.plugInToaster()
 	}
 
 	private var content: AnyView {
@@ -64,13 +60,14 @@ struct ContentView: View {
 			}
 		}
 	}
-}
 
-// MARK: - Content
+	// MARK: - Content
 
-private extension ContentView {
 	private var notLoadedView: some View {
-		EmptyView()
+		Text("")
+			.onAppear {
+				self.container.interactors.accountInteractor.loadAccount()
+			}
 	}
 
 	private var loadingView: some View {
@@ -82,13 +79,11 @@ private extension ContentView {
 	}
 
 	private var noAccountView: some View {
-		LoginSignup()
+		LoginSignupV2()
 	}
-}
 
-// MARK: - Updates
+	// MARK: - Updates
 
-private extension ContentView {
 	var accountUpdate: AnyPublisher<Loadable<AccountV2>, Never> {
 		container.appState.updates(for: \.account)
 	}

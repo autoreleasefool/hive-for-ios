@@ -6,9 +6,16 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import Combine
+import Foundation
+
 protocol AccountInteractor {
 	func loadAccount()
 	func clearAccount()
+	func updateAccount(to account: AccountV2)
+	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError>
+	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError>
+	func logout() -> AnyPublisher<Bool, AccountRepositoryError>
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -36,9 +43,48 @@ struct LiveAccountInteractor: AccountInteractor {
 	func clearAccount() {
 		appState[\.account] = .failed(AccountRepositoryError.loggedOut)
 	}
+
+	func updateAccount(to account: AccountV2) {
+		appState[\.account] = .loaded(account)
+	}
+
+	func logout() -> AnyPublisher<Bool, AccountRepositoryError> {
+		repository.logout()
+			.map {
+				self.clearAccount()
+				return $0
+			}
+			.eraseToAnyPublisher()
+	}
+
+	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+		repository.login(loginData)
+	}
+
+	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+		repository.signup(signupData)
+	}
 }
 
 struct StubAccountInteractor: AccountInteractor {
 	func loadAccount() { }
 	func clearAccount() { }
+	func updateAccount(to account: AccountV2) { }
+	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+		Just(AccountV2(userId: UUID(), token: ""))
+			.mapError { _ in .loggedOut }
+			.eraseToAnyPublisher()
+	}
+
+	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+		Just(AccountV2(userId: UUID(), token: ""))
+			.mapError { _ in .loggedOut }
+			.eraseToAnyPublisher()
+	}
+
+	func logout() -> AnyPublisher<Bool, AccountRepositoryError> {
+		Just(true)
+			.mapError { _ in .loggedOut }
+			.eraseToAnyPublisher()
+	}
 }

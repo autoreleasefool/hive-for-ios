@@ -40,8 +40,11 @@ struct LoginSignup: View {
 		LoginField(
 			id.title,
 			text: self.text(for: id),
+			keyboardType: .default,
+			returnKeyType: .default,
 			isActive: viewModel.isActive(field: id),
-			isSecure: id.isSecure
+			isSecure: id.isSecure,
+			onReturn: { }
 		)
 		.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
 		.onTapGesture {

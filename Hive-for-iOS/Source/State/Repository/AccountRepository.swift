@@ -19,6 +19,9 @@ enum AccountRepositoryError: Error {
 
 protocol AccountRepository {
 	func loadAccount() -> AnyPublisher<AccountV2, AccountRepositoryError>
+	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError>
+	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError>
+	func logout() -> AnyPublisher<Bool, AccountRepositoryError>
 }
 
 struct LiveAccountRepository: AccountRepository {
@@ -59,5 +62,33 @@ struct LiveAccountRepository: AccountRepository {
 				}
 		}
 		.eraseToAnyPublisher()
+	}
+
+	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+		self.api.login(login: loginData)
+			.mapError { .apiError($0) }
+			.map {
+				let account = AccountV2(userId: $0.userId, token: $0.token)
+				self.api.updateAccount(to: account)
+				return account
+			}
+			.eraseToAnyPublisher()
+	}
+
+	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+		self.api.signup(signup: signupData)
+			.mapError { .apiError($0) }
+			.map {
+				let account = AccountV2(userId: $0.accessToken.userId, token: $0.accessToken.token)
+				self.api.updateAccount(to: account)
+				return account
+			}
+			.eraseToAnyPublisher()
+	}
+
+	func logout() -> AnyPublisher<Bool, AccountRepositoryError> {
+		self.api.logout()
+			.mapError { .apiError($0) }
+			.eraseToAnyPublisher()
 	}
 }
