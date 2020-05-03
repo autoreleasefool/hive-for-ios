@@ -95,6 +95,7 @@ struct LoginField: UIViewRepresentable {
 		}
 
 		func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+			textField.resignFirstResponder()
 			onReturn()
 			return true
 		}

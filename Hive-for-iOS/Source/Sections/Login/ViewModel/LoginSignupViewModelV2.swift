@@ -12,7 +12,7 @@ import UIKit
 enum LoginSignupViewActionV2: BaseViewAction {
 	case submit
 	case toggleForm
-	case focusField(LoginSignupViewModelV2.FieldItem)
+	case focusField(LoginSignupViewModelV2.FieldItem?)
 	case fieldDidReturn(LoginSignupViewModelV2.FieldItem)
 }
 
@@ -52,7 +52,7 @@ class LoginSignupViewModelV2: ViewModel<LoginSignupViewActionV2>, ObservableObje
 	}
 
 	@Published private(set) var form: Form = .login
-	@Published private(set) var activeField: FieldItem = .email
+	@Published private(set) var activeField: FieldItem?
 	@Published var account: Loadable<AccountV2> = .notLoaded
 
 	@Published var email: String = ""
@@ -97,6 +97,7 @@ class LoginSignupViewModelV2: ViewModel<LoginSignupViewActionV2>, ObservableObje
 		if let field = nextField(after: id) {
 			postViewAction(.focusField(field))
 		} else {
+			postViewAction(.focusField(nil))
 			submitForm()
 		}
 	}
