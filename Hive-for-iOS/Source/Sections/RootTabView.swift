@@ -32,7 +32,7 @@ struct RootTabView: View {
 
 	var body: some View {
 		TabView(selection: $currentTab) {
-			Lobby()
+			LobbyV2()
 				.tabItem {
 					Tab.lobby.tabItem(isSelected: currentTab == Tab.lobby.rawValue)
 				}

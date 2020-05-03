@@ -11,9 +11,13 @@ import Foundation
 extension AppContainer {
 	struct Interactors {
 		let accountInteractor: AccountInteractor
+		let matchInteractor: MatchInteractor
 
 		static var stub: Interactors {
-			Interactors(accountInteractor: StubAccountInteractor())
+			Interactors(
+				accountInteractor: StubAccountInteractor(),
+				matchInteractor: StubMatchInteractor()
+			)
 		}
 	}
 }

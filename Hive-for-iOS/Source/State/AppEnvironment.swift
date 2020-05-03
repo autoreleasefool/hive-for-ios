@@ -43,7 +43,11 @@ extension AppEnvironment {
 
 	private static func configuredRepositories(keychain: Keychain, api: HiveAPI) -> RepositoryContainer {
 		let accountRepository = LiveAccountRepository(keychain: keychain, api: api)
-		return RepositoryContainer(accountRepository: accountRepository)
+		let matchRepository = LiveMatchRepository(api: api)
+		return RepositoryContainer(
+			accountRepository: accountRepository,
+			matchRepository: matchRepository
+		)
 	}
 
 	private static func configuredInteractors(
@@ -55,12 +59,18 @@ extension AppEnvironment {
 			appState: appState
 		)
 
-		return AppContainer.Interactors(accountInteractor: accountInteractor)
+		let matchInteractor = LiveMatchInteractor(repository: repositories.matchRepository)
+
+		return AppContainer.Interactors(
+			accountInteractor: accountInteractor,
+			matchInteractor: matchInteractor
+		)
 	}
 }
 
 private extension AppEnvironment {
 	struct RepositoryContainer {
 		let accountRepository: AccountRepository
+		let matchRepository: MatchRepository
 	}
 }

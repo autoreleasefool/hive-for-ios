@@ -47,6 +47,10 @@
 		CA88BA6B244E39A800C4A276 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */; };
 		CA8F46DD245DD27600B136D0 /* LoginSignupV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DC245DD27600B136D0 /* LoginSignupV2.swift */; };
 		CA8F46DF245DE4D600B136D0 /* LoginSignupViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DE245DE4D600B136D0 /* LoginSignupViewModelV2.swift */; };
+		CA8F46E1245EBD0D00B136D0 /* LobbyV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E0245EBD0D00B136D0 /* LobbyV2.swift */; };
+		CA8F46E3245EBD2100B136D0 /* LobbyViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E2245EBD2100B136D0 /* LobbyViewModelV2.swift */; };
+		CA8F46E5245EC35800B136D0 /* MatchInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */; };
+		CA8F46E7245EC36200B136D0 /* MatchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E6245EC36200B136D0 /* MatchRepository.swift */; };
 		CA91C32224350CEA007E7D55 /* UserSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA91C32124350CEA007E7D55 /* UserSignup.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAA87BC72432994D006E418B /* LoginSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC62432994D006E418B /* LoginSignup.swift */; };
@@ -146,6 +150,10 @@
 		CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		CA8F46DC245DD27600B136D0 /* LoginSignupV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupV2.swift; sourceTree = "<group>"; };
 		CA8F46DE245DE4D600B136D0 /* LoginSignupViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewModelV2.swift; sourceTree = "<group>"; };
+		CA8F46E0245EBD0D00B136D0 /* LobbyV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyV2.swift; sourceTree = "<group>"; };
+		CA8F46E2245EBD2100B136D0 /* LobbyViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyViewModelV2.swift; sourceTree = "<group>"; };
+		CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchInteractor.swift; sourceTree = "<group>"; };
+		CA8F46E6245EC36200B136D0 /* MatchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchRepository.swift; sourceTree = "<group>"; };
 		CA91C32124350CEA007E7D55 /* UserSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSignup.swift; sourceTree = "<group>"; };
 		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CAA87BC62432994D006E418B /* LoginSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignup.swift; sourceTree = "<group>"; };
@@ -428,7 +436,6 @@
 				CAC6860B23CD235D00B882D2 /* Model */,
 				CAC6861623CE4E5D00B882D2 /* View */,
 				CAC6860723CD233F00B882D2 /* ViewModel */,
-				CAC6860223CD1CA500B882D2 /* Lobby.swift */,
 			);
 			path = Matches;
 			sourceTree = "<group>";
@@ -453,6 +460,7 @@
 			children = (
 				CA0290D723CEF7FE00A933F9 /* MatchDetailViewModel.swift */,
 				CAC6860923CD235100B882D2 /* LobbyViewModel.swift */,
+				CA8F46E2245EBD2100B136D0 /* LobbyViewModelV2.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -479,6 +487,8 @@
 		CAC6861623CE4E5D00B882D2 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CAC6860223CD1CA500B882D2 /* Lobby.swift */,
+				CA8F46E0245EBD0D00B136D0 /* LobbyV2.swift */,
 				CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */,
 				CAC6861723CE4E6800B882D2 /* MatchRow.swift */,
 				CA0290D523CEF7B800A933F9 /* MatchDetail.swift */,
@@ -546,6 +556,7 @@
 			children = (
 				CAF8255F245C76EA0064359E /* Interactors.swift */,
 				CAF82564245C78060064359E /* AccountInteractor.swift */,
+				CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -563,6 +574,7 @@
 			isa = PBXGroup;
 			children = (
 				CAF82567245C7A1D0064359E /* AccountRepository.swift */,
+				CA8F46E6245EC36200B136D0 /* MatchRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -739,6 +751,7 @@
 				CA88B80C244D89B600C4A276 /* Store.swift in Sources */,
 				CAC6860323CD1CA500B882D2 /* Lobby.swift in Sources */,
 				CA41ACB02456144200B6F88E /* OptionSet.swift in Sources */,
+				CA8F46E7245EC36200B136D0 /* MatchRepository.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,
 				CA45F9BC242B85C2007EC94D /* GameAction.swift in Sources */,
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
@@ -759,6 +772,8 @@
 				CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */,
 				CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */,
 				CA45F9C2242E6119007EC94D /* PieceClassDetails.swift in Sources */,
+				CA8F46E1245EBD0D00B136D0 /* LobbyV2.swift in Sources */,
+				CA8F46E3245EBD2100B136D0 /* LobbyViewModelV2.swift in Sources */,
 				CAC961E3243B105E00B3FC8D /* GameClientMessage.swift in Sources */,
 				CAFA469A23DAD13B003C38AB /* HiveGameViewModel.swift in Sources */,
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
@@ -787,6 +802,7 @@
 				CA7D5E4F2433FEB000D12A8C /* Account.swift in Sources */,
 				CA0F93A52428AEE200F6E104 /* DebugSprite.swift in Sources */,
 				CA7D5E512433FEBD00D12A8C /* Settings.swift in Sources */,
+				CA8F46E5245EC35800B136D0 /* MatchInteractor.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
 				CAF82560245C76EA0064359E /* Interactors.swift in Sources */,
 				CAFC7A65245C54EE00747E82 /* Profile.swift in Sources */,

@@ -36,6 +36,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 		weak var weakState = appState
 		repository.loadAccount()
+			.receive(on: DispatchQueue.main)
 			.sinkToLoadable { weakState?[\.account] = $0 }
 			.store(in: cancelBag)
 	}
