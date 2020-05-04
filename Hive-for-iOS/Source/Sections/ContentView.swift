@@ -35,6 +35,9 @@ struct ContentView: View {
 				self.handleAccountError(error)
 			}
 		}
+		.onReceive(NotificationCenter.default.publisher(for: NSNotification.Name.Account.Unauthorized)) { _ in
+			self.container.interactors.accountInteractor.clearAccount()
+		}
 		.inject(container)
 		.plugInToaster()
 	}

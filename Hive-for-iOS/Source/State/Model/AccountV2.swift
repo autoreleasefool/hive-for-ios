@@ -8,6 +8,12 @@
 
 import Foundation
 
+extension NSNotification.Name {
+	enum Account {
+		static let Unauthorized = Notification.Name("Account.Unauthorized")
+	}
+}
+
 struct AccountV2: Equatable {
 	var userId: User.ID
 	var token: String

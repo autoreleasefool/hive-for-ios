@@ -240,8 +240,7 @@ class HiveAPI: ObservableObject {
 
 		guard (200..<400).contains(response.statusCode) else {
 			if response.statusCode == 401 {
-//				try? account.clear()
-				#warning("TODO: remove account when request is unauthorized")
+				clearAccount()
 				return promise(.failure(.unauthorized))
 			}
 			return promise(.failure(.invalidHTTPResponse(response.statusCode)))
@@ -272,13 +271,17 @@ class HiveAPI: ObservableObject {
 
 		guard (200..<400).contains(response.statusCode) else {
 			if response.statusCode == 401 {
-				#warning("TODO: remove account when request is unauthorized")
-//				try? account.clear()
+				clearAccount()
 				return promise(.failure(.unauthorized))
 			}
 			return promise(.failure(.invalidHTTPResponse(response.statusCode)))
 		}
 
 		promise(.success(true))
+	}
+
+	private func clearAccount() {
+		self.account = nil
+		NotificationCenter.default.post(name: NSNotification.Name.Account.Unauthorized, object: nil)
 	}
 }
