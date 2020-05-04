@@ -10,6 +10,8 @@ import Combine
 
 protocol BaseViewAction { }
 
+protocol BaseAction { }
+
 class ViewModel<ViewAction> where ViewAction: BaseViewAction {
 
 	private var cancellables: [AnyCancellable] = []

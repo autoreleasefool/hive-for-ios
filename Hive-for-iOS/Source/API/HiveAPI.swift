@@ -48,7 +48,7 @@ enum HiveAPIError: LocalizedError {
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
 class HiveAPI: ObservableObject {
-	static let baseURL = URL(string: "https://hiveforios.josephroque.dev")!
+	static let baseURL = URL(string: "https://52970f6c.ngrok.io")!
 
 	private var apiGroup: URL { HiveAPI.baseURL.appendingPathComponent("api") }
 	private var userGroup: URL { apiGroup.appendingPathComponent("users") }
