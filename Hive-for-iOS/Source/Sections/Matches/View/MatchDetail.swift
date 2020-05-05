@@ -1,5 +1,5 @@
 //
-//  MatchDetailV2.swift
+//  MatchDetail.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-03.
@@ -24,7 +24,7 @@ private final class MatchDetailState: ObservableObject {
 	@Published var readyPlayers: Set<UUID> = Set()
 }
 
-struct MatchDetailV2: View {
+struct MatchDetail: View {
 	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster: Toaster
 	@Environment(\.container) private var container: AppContainer
@@ -242,7 +242,7 @@ struct MatchDetailV2: View {
 
 // MARK: - Actions
 
-extension MatchDetailV2 {
+extension MatchDetail {
 	var userIsHost: Bool {
 		container.account?.userId == matchState.match.value?.host?.id
 	}
@@ -365,15 +365,15 @@ extension MatchDetailV2 {
 
 // MARK: - Updates
 
-extension MatchDetailV2 {
-	var accountUpdate: AnyPublisher<Loadable<AccountV2>, Never> {
+extension MatchDetail {
+	var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
 	}
 }
 
 // MARK: - HiveGameClient
 
-extension MatchDetailV2 {
+extension MatchDetail {
 	private func openClientConnection(to: Match) {
 //		if !client.isConnected {
 //			if let url = match.webSocketURL {
@@ -446,7 +446,7 @@ extension MatchDetailV2 {
 
 // MARK: - Strings
 
-extension MatchDetailV2 {
+extension MatchDetail {
 	var title: String {
 		if let host = matchState.match.value?.host?.displayName {
 			return "\(host)'s match"

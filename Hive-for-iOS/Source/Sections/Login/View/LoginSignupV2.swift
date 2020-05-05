@@ -1,5 +1,5 @@
 //
-//  LoginSignupV2.swift
+//  LoginSignup.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-02.
@@ -9,10 +9,10 @@
 import Combine
 import SwiftUI
 
-struct LoginSignupV2: View {
+struct LoginSignup: View {
 	@Environment(\.container) private var container: AppContainer
 
-	@State private var account: Loadable<AccountV2> = .notLoaded
+	@State private var account: Loadable<Account> = .notLoaded
 	@State private var form: Form = .login
 	@State private var activeField: FieldItem?
 
@@ -139,7 +139,7 @@ struct LoginSignupV2: View {
 
 // MARK: - Actions
 
-extension LoginSignupV2 {
+extension LoginSignup {
 	var loginData: LoginData {
 		LoginData(email: email, password: password)
 	}
@@ -190,7 +190,7 @@ extension LoginSignupV2 {
 
 // MARK: - Form
 
-extension LoginSignupV2 {
+extension LoginSignup {
 	enum Form {
 		case login
 		case signup
@@ -199,7 +199,7 @@ extension LoginSignupV2 {
 
 // MARK: - FieldItem
 
-extension LoginSignupV2 {
+extension LoginSignup {
 	enum FieldItem {
 		case email
 		case password
@@ -232,7 +232,7 @@ extension LoginSignupV2 {
 
 // MARK: - Strings
 
-extension LoginSignupV2 {
+extension LoginSignup {
 	var submitButtonText: String {
 		switch form {
 		case .login: return "Login"
@@ -270,7 +270,7 @@ extension LoginSignupV2 {
 	}
 }
 
-extension LoginSignupV2.FieldItem {
+extension LoginSignup.FieldItem {
 	var title: String {
 		switch self {
 		case .email: return "Email"

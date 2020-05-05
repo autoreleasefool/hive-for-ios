@@ -7,5 +7,5 @@
 //
 
 struct AppState: Equatable {
-	var account: Loadable<AccountV2> = .notLoaded
+	var account: Loadable<Account> = .notLoaded
 }

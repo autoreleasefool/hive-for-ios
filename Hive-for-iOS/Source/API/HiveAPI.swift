@@ -105,7 +105,7 @@ class HiveAPI: ObservableObject {
 
 			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "GET"
-			AccountV2.apply(auth: nil, to: &request, overridingTokenWith: token)
+			Account.apply(auth: nil, to: &request, overridingTokenWith: token)
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
@@ -115,7 +115,7 @@ class HiveAPI: ObservableObject {
 		.eraseToAnyPublisher()
 	}
 
-	func logout(fromAccount account: AccountV2) -> AnyPublisher<Bool, HiveAPIError> {
+	func logout(fromAccount account: Account) -> AnyPublisher<Bool, HiveAPIError> {
 		Future { promise in
 			let url = self.userGroup.appendingPathComponent("logout")
 
@@ -131,7 +131,7 @@ class HiveAPI: ObservableObject {
 
 	// MARK: - Users
 
-	func user(id: User.ID, withAccount account: AccountV2?) -> AnyPublisher<User, HiveAPIError> {
+	func user(id: User.ID, withAccount account: Account?) -> AnyPublisher<User, HiveAPIError> {
 		Future { promise in
 			let url = self.userGroup.appendingPathComponent("details")
 
@@ -147,7 +147,7 @@ class HiveAPI: ObservableObject {
 
 	// MARK: - Matches
 
-	func openMatches(withAccount account: AccountV2?) -> AnyPublisher<[Match], HiveAPIError> {
+	func openMatches(withAccount account: Account?) -> AnyPublisher<[Match], HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent("open")
 
@@ -161,7 +161,7 @@ class HiveAPI: ObservableObject {
 		.eraseToAnyPublisher()
 	}
 
-	func matchDetails(id: Match.ID, withAccount account: AccountV2?) -> AnyPublisher<Match, HiveAPIError> {
+	func matchDetails(id: Match.ID, withAccount account: Account?) -> AnyPublisher<Match, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent(id.uuidString)
 
@@ -175,7 +175,7 @@ class HiveAPI: ObservableObject {
 		.eraseToAnyPublisher()
 	}
 
-	func joinMatch(id: Match.ID, withAccount account: AccountV2?) -> AnyPublisher<JoinMatchResponse, HiveAPIError> {
+	func joinMatch(id: Match.ID, withAccount account: Account?) -> AnyPublisher<JoinMatchResponse, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup
 				.appendingPathComponent(id.uuidString)
@@ -191,7 +191,7 @@ class HiveAPI: ObservableObject {
 		.eraseToAnyPublisher()
 	}
 
-	func createMatch(withAccount account: AccountV2?) -> AnyPublisher<CreateMatchResponse, HiveAPIError> {
+	func createMatch(withAccount account: Account?) -> AnyPublisher<CreateMatchResponse, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent("new")
 
@@ -207,7 +207,7 @@ class HiveAPI: ObservableObject {
 
 	// MARK: - Common
 
-	private func buildBaseRequest(to url: URL, withAccount account: AccountV2? = nil) -> URLRequest {
+	private func buildBaseRequest(to url: URL, withAccount account: Account? = nil) -> URLRequest {
 		var request = URLRequest(url: url)
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")

@@ -14,9 +14,9 @@ struct ContentView: View {
 
 	@Environment(\.toaster) private var toaster: Toaster
 	@State private var showWelcome = true
-	@State private var account: Loadable<AccountV2> = .notLoaded
+	@State private var account: Loadable<Account> = .notLoaded
 
-	init(container: AppContainer, account: Loadable<AccountV2> = .notLoaded) {
+	init(container: AppContainer, account: Loadable<Account> = .notLoaded) {
 		self.container = container
 		self.account = account
 	}
@@ -73,7 +73,7 @@ struct ContentView: View {
 	}
 
 	private var noAccountView: some View {
-		LoginSignupV2()
+		LoginSignup()
 	}
 }
 
@@ -97,7 +97,7 @@ extension ContentView {
 // MARK: - Updates
 
 extension ContentView {
-	var accountUpdate: AnyPublisher<Loadable<AccountV2>, Never> {
+	var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
 	}
 }

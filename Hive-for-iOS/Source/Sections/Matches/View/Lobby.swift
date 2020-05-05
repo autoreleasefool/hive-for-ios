@@ -1,5 +1,5 @@
 //
-//  LobbyV2.swift
+//  Lobby.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-03.
@@ -9,7 +9,7 @@
 import SwiftUI
 import SwiftUIRefresh
 
-struct LobbyV2: View {
+struct Lobby: View {
 	@Environment(\.container) private var container: AppContainer
 
 	@State private var matches: Loadable<[Match]> = .notLoaded
@@ -44,7 +44,7 @@ struct LobbyV2: View {
 
 	private func loadedView(_ matches: [Match]) -> some View {
 		List(matches) { match in
-			NavigationLink(destination: MatchDetailV2(id: match.id)) {
+			NavigationLink(destination: MatchDetail(id: match.id)) {
 				MatchRow(match: match)
 			}
 		}
@@ -72,7 +72,7 @@ struct LobbyV2: View {
 	// MARK: Lobby
 
 	private var newMatchButton: some View {
-		NavigationLink(destination: MatchDetailV2(id: nil)) {
+		NavigationLink(destination: MatchDetail(id: nil)) {
 			Image(systemName: "plus")
 				.imageScale(.large)
 				.accessibility(label: Text("Create Match"))
@@ -83,7 +83,7 @@ struct LobbyV2: View {
 
 // MARK: - Actions
 
-extension LobbyV2 {
+extension Lobby {
 	var isRefreshing: Binding<Bool> {
 		Binding(
 			get: {

@@ -18,10 +18,10 @@ enum AccountRepositoryError: Error {
 }
 
 protocol AccountRepository {
-	func loadAccount() -> AnyPublisher<AccountV2, AccountRepositoryError>
-	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError>
-	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError>
-	func logout(fromAccount account: AccountV2) -> AnyPublisher<Bool, AccountRepositoryError>
+	func loadAccount() -> AnyPublisher<Account, AccountRepositoryError>
+	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError>
+	func signup(_ signupData: SignupData) -> AnyPublisher<Account, AccountRepositoryError>
+	func logout(fromAccount account: Account) -> AnyPublisher<Bool, AccountRepositoryError>
 }
 
 struct LiveAccountRepository: AccountRepository {
@@ -38,8 +38,8 @@ struct LiveAccountRepository: AccountRepository {
 		self.api = api
 	}
 
-	func loadAccount() -> AnyPublisher<AccountV2, AccountRepositoryError> {
-		Future<AccountV2, AccountRepositoryError> { promise in
+	func loadAccount() -> AnyPublisher<Account, AccountRepositoryError> {
+		Future<Account, AccountRepositoryError> { promise in
 			do {
 				guard let id = try self.keychain.get(Key.userId.rawValue),
 					let userId = UUID(uuidString: id),
@@ -47,7 +47,7 @@ struct LiveAccountRepository: AccountRepository {
 						return promise(.failure(AccountRepositoryError.notFound))
 				}
 
-				promise(.success(AccountV2(userId: userId, token: token)))
+				promise(.success(Account(userId: userId, token: token)))
 			} catch {
 				print("Error retrieving login: \(error)")
 				promise(.failure(.keychainError(error)))
@@ -61,21 +61,21 @@ struct LiveAccountRepository: AccountRepository {
 		.eraseToAnyPublisher()
 	}
 
-	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError> {
 		self.api.login(login: loginData)
 			.mapError { .apiError($0) }
-			.map { AccountV2(userId: $0.userId, token: $0.token) }
+			.map { Account(userId: $0.userId, token: $0.token) }
 			.eraseToAnyPublisher()
 	}
 
-	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
+	func signup(_ signupData: SignupData) -> AnyPublisher<Account, AccountRepositoryError> {
 		self.api.signup(signup: signupData)
 			.mapError { .apiError($0) }
-			.map { AccountV2(userId: $0.accessToken.userId, token: $0.accessToken.token) }
+			.map { Account(userId: $0.accessToken.userId, token: $0.accessToken.token) }
 			.eraseToAnyPublisher()
 	}
 
-	func logout(fromAccount account: AccountV2) -> AnyPublisher<Bool, AccountRepositoryError> {
+	func logout(fromAccount account: Account) -> AnyPublisher<Bool, AccountRepositoryError> {
 		self.api.logout(fromAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()

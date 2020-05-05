@@ -12,7 +12,7 @@ struct AppContainer: EnvironmentKey {
 	let appState: Store<AppState>
 	let interactors: Interactors
 
-	var account: AccountV2? {
+	var account: Account? {
 		appState.value.account.value
 	}
 

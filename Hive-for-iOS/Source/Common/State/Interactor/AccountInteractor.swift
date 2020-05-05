@@ -12,9 +12,9 @@ import Foundation
 protocol AccountInteractor {
 	func loadAccount()
 	func clearAccount()
-	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>)
-	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>)
-	func logout(fromAccount account: AccountV2, result: LoadableSubject<Bool>)
+	func login(_ loginData: LoginData, account: LoadableSubject<Account>)
+	func signup(_ signupData: SignupData, account: LoadableSubject<Account>)
+	func logout(fromAccount account: Account, result: LoadableSubject<Bool>)
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -44,11 +44,11 @@ struct LiveAccountInteractor: AccountInteractor {
 		appState[\.account] = .failed(AccountRepositoryError.loggedOut)
 	}
 
-	func updateAccount(to account: AccountV2) {
+	func updateAccount(to account: Account) {
 		appState[\.account] = .loaded(account)
 	}
 
-	func logout(fromAccount account: AccountV2, result: LoadableSubject<Bool>) {
+	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) {
 		let cancelBag = CancelBag()
 		result.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
 
@@ -58,7 +58,7 @@ struct LiveAccountInteractor: AccountInteractor {
 			.store(in: cancelBag)
 	}
 
-	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>) {
+	func login(_ loginData: LoginData, account: LoadableSubject<Account>) {
 		let cancelBag = CancelBag()
 		account.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
 
@@ -75,7 +75,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 	}
 
-	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>) {
+	func signup(_ signupData: SignupData, account: LoadableSubject<Account>) {
 		let cancelBag = CancelBag()
 		account.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
 
@@ -95,7 +95,7 @@ struct LiveAccountInteractor: AccountInteractor {
 struct StubAccountInteractor: AccountInteractor {
 	func loadAccount() { }
 	func clearAccount() { }
-	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>) { }
-	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>) { }
-	func logout(fromAccount account: AccountV2, result: LoadableSubject<Bool>) { }
+	func login(_ loginData: LoginData, account: LoadableSubject<Account>) { }
+	func signup(_ signupData: SignupData, account: LoadableSubject<Account>) { }
+	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) { }
 }
