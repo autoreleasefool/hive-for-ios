@@ -12,7 +12,6 @@ import Foundation
 protocol AccountInteractor {
 	func loadAccount()
 	func clearAccount()
-	func updateAccount(to account: AccountV2)
 	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>)
 	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>)
 	func logout(fromAccount account: AccountV2, result: LoadableSubject<Bool>)
@@ -63,9 +62,15 @@ struct LiveAccountInteractor: AccountInteractor {
 		let cancelBag = CancelBag()
 		account.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
 
+		weak var weakState = appState
 		repository.login(loginData)
 			.receive(on: DispatchQueue.main)
-			.sinkToLoadable { account.wrappedValue = $0 }
+			.sinkToLoadable {
+				if case .loaded = $0 {
+					weakState?[\.account] = $0
+				}
+				account.wrappedValue = $0
+		}
 			.store(in: cancelBag)
 
 	}
@@ -74,9 +79,15 @@ struct LiveAccountInteractor: AccountInteractor {
 		let cancelBag = CancelBag()
 		account.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
 
+		weak var weakState = appState
 		repository.signup(signupData)
 			.receive(on: DispatchQueue.main)
-			.sinkToLoadable { account.wrappedValue = $0 }
+			.sinkToLoadable {
+				if case .loaded = $0 {
+					weakState?[\.account] = $0
+				}
+				account.wrappedValue = $0
+			}
 			.store(in: cancelBag)
 	}
 }
@@ -84,7 +95,6 @@ struct LiveAccountInteractor: AccountInteractor {
 struct StubAccountInteractor: AccountInteractor {
 	func loadAccount() { }
 	func clearAccount() { }
-	func updateAccount(to account: AccountV2) { }
 	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>) { }
 	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>) { }
 	func logout(fromAccount account: AccountV2, result: LoadableSubject<Bool>) { }

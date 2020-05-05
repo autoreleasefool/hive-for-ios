@@ -16,30 +16,34 @@ struct ContentView: View {
 	@State private var showWelcome = true
 	@State private var account: Loadable<AccountV2> = .notLoaded
 
-	init(container: AppContainer) {
+	init(container: AppContainer, account: Loadable<AccountV2> = .notLoaded) {
 		self.container = container
+		self.account = account
 	}
 
 	var body: some View {
-		Group {
-			if self.showWelcome {
-				Welcome(showWelcome: $showWelcome)
-			} else {
-				content
+		GeometryReader { geometry in
+			Group {
+				if self.showWelcome {
+					Welcome(showWelcome: self.$showWelcome)
+				} else {
+					self.content
+				}
 			}
-		}
-		.background(Color(.background).edgesIgnoringSafeArea(.all))
-		.onReceive(accountUpdate) {
-			self.account = $0
-			if case let .failed(error) = $0 {
-				self.handleAccountError(error)
+			.frame(width: geometry.size.width, height: geometry.size.height)
+			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.onReceive(self.accountUpdate) {
+				self.account = $0
+				if case let .failed(error) = $0 {
+					self.handleAccountError(error)
+				}
 			}
+			.onReceive(NotificationCenter.default.publisher(for: NSNotification.Name.Account.Unauthorized)) { _ in
+				self.container.interactors.accountInteractor.clearAccount()
+			}
+			.inject(self.container)
+			.plugInToaster()
 		}
-		.onReceive(NotificationCenter.default.publisher(for: NSNotification.Name.Account.Unauthorized)) { _ in
-			self.container.interactors.accountInteractor.clearAccount()
-		}
-		.inject(container)
-		.plugInToaster()
 	}
 
 	private var content: AnyView {
@@ -91,3 +95,11 @@ struct ContentView: View {
 		container.appState.updates(for: \.account)
 	}
 }
+
+#if DEBUG
+struct ContentViewPreview: PreviewProvider {
+	static var previews: some View {
+		ContentView(container: .defaultValue, account: .loading(cached: nil, cancelBag: CancelBag()))
+	}
+}
+#endif

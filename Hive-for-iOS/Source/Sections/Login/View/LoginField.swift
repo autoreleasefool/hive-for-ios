@@ -95,9 +95,11 @@ struct LoginField: UIViewRepresentable {
 		}
 
 		func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-			textField.resignFirstResponder()
+			if textField.returnKeyType == .done {
+				textField.resignFirstResponder()
+			}
 			onReturn()
-			return true
+			return false
 		}
 	}
 }

@@ -11,67 +11,61 @@ import SwiftUI
 
 struct LoginSignupV2: View {
 	@Environment(\.container) private var container: AppContainer
-	@ObservedObject private var viewModel = LoginSignupViewModelV2()
+
+	@State private var account: Loadable<AccountV2> = .notLoaded
+	@State private var form: Form = .login
+	@State private var activeField: FieldItem?
+
+	@State private var email: String = ""
+	@State private var password: String = ""
+	@State private var confirmPassword: String = ""
+	@State private var displayName: String = ""
 
 	var body: some View {
 		content
 			.padding(.all, length: .m)
 			.avoidingKeyboard()
-			.onReceive(viewModel.loginSubject) {
-				self.container.interactors.accountInteractor
-					.login($0, account: self.$viewModel.account)
-			}
-			.onReceive(viewModel.signupSubject) {
-				self.container.interactors.accountInteractor
-					.signup($0, account: self.$viewModel.account)
-			}
-			.onReceive(viewModel.$account) {
-				if case let .loaded(account) = $0 {
-					self.container.interactors.accountInteractor
-						.updateAccount(to: account)
-				}
-			}
 	}
 
 	private var content: AnyView {
-		switch viewModel.account {
+		switch account {
 		case .notLoaded, .failed: return AnyView(formView)
 		case .loading, .loaded: return AnyView(loadingView)
 		}
 	}
 
-	private func text(for id: LoginSignupViewModelV2.FieldItem) -> Binding<String> {
+	private func text(for id: FieldItem) -> Binding<String> {
 		switch id {
-		case .email: return $viewModel.email
-		case .password: return $viewModel.password
-		case .confirmPassword: return $viewModel.confirmPassword
-		case .displayName: return $viewModel.displayName
+		case .email: return $email
+		case .password: return $password
+		case .confirmPassword: return $confirmPassword
+		case .displayName: return $displayName
 		}
 	}
 
 	// MARK: - Content
 
-	private func field(for id: LoginSignupViewModelV2.FieldItem) -> some View {
+	private func field(for id: FieldItem) -> some View {
 		LoginField(
 			id.title,
 			text: text(for: id),
 			keyboardType: id.keyboardType,
-			returnKeyType: id.returnKeyType(forForm: viewModel.form),
-			isActive: viewModel.activeField == id,
+			returnKeyType: id.returnKeyType(forForm: form),
+			isActive: activeField == id,
 			isSecure: id.isSecure,
-			onReturn: { self.viewModel.postViewAction(.fieldDidReturn(id)) }
+			onReturn: { self.handleReturn(from: id) }
 		)
 		.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
 		.onTapGesture {
-			self.viewModel.postViewAction(.focusField(id))
+			self.activeField = id
 		}
 	}
 
 	private var submitButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.submit)
+			self.submitForm()
 		}, label: {
-			Text(self.viewModel.submitButtonText)
+			Text(submitButtonText)
 				.body()
 				.foregroundColor(Color(.background))
 				.padding(.vertical, length: .m)
@@ -89,9 +83,9 @@ struct LoginSignupV2: View {
 				.caption()
 				.foregroundColor(Color(.text))
 			Button(action: {
-				self.viewModel.postViewAction(.toggleForm)
+				self.toggleForm()
 			}, label: {
-				Text(self.viewModel.toggleButtonText)
+				Text(toggleButtonText)
 					.caption()
 					.foregroundColor(Color(.primary))
 					.padding(.vertical, length: .s)
@@ -109,17 +103,17 @@ struct LoginSignupV2: View {
 	private var formView: some View {
 		ScrollView {
 			VStack(spacing: .m) {
-				if self.viewModel.shouldShowNotice {
-					notice(message: self.viewModel.noticeMessage)
+				if shouldShowNotice {
+					notice(message: noticeMessage)
 				}
 
-				self.field(for: .email)
-				if self.viewModel.form == .signup {
-					self.field(for: .displayName)
+				field(for: .email)
+				if form == .signup {
+					field(for: .displayName)
 				}
-				self.field(for: .password)
-				if self.viewModel.form == .signup {
-					self.field(for: .confirmPassword)
+				field(for: .password)
+				if form == .signup {
+					field(for: .confirmPassword)
 				}
 
 				submitButton
@@ -137,6 +131,150 @@ struct LoginSignupV2: View {
 			}
 			.padding(.top, length: .m)
 			.frame(width: geometry.size.width)
+		}
+	}
+}
+
+// MARK: - Actions
+
+extension LoginSignupV2 {
+	var loginData: LoginData {
+		LoginData(email: email, password: password)
+	}
+
+	var signupData: SignupData {
+		SignupData(email: email, displayName: displayName, password: password, verifyPassword: confirmPassword)
+	}
+
+	private func nextField(after id: FieldItem) -> FieldItem? {
+		switch id {
+		case .email: return form == .login ? .password : .displayName
+		case .displayName: return .password
+		case .password: return form == .login ? nil : .confirmPassword
+		case .confirmPassword: return nil
+		}
+	}
+
+	private func handleReturn(from id: FieldItem) {
+		if let field = nextField(after: id) {
+			activeField = field
+		} else {
+			activeField = nil
+			submitForm()
+		}
+	}
+
+	private func toggleForm() {
+		form = form == .login ? .signup : .login
+	}
+
+	private func submitForm() {
+		switch form {
+		case .login: login()
+		case .signup: signup()
+		}
+	}
+
+	private func login() {
+		container.interactors.accountInteractor
+			.login(loginData, account: $account)
+	}
+
+	private func signup() {
+		container.interactors.accountInteractor
+			.signup(signupData, account: $account)
+	}
+}
+
+// MARK: - Form
+
+extension LoginSignupV2 {
+	enum Form {
+		case login
+		case signup
+	}
+}
+
+// MARK: - FieldItem
+
+extension LoginSignupV2 {
+	enum FieldItem {
+		case email
+		case password
+		case confirmPassword
+		case displayName
+
+		var isSecure: Bool {
+			switch self {
+			case .email, .displayName: return false
+			case .password, .confirmPassword: return true
+			}
+		}
+
+		var keyboardType: UIKeyboardType {
+			switch self {
+			case .email: return .emailAddress
+			case .confirmPassword, .password, .displayName: return .default
+			}
+		}
+
+		func returnKeyType(forForm form: Form) -> UIReturnKeyType {
+			switch self {
+			case .email, .displayName: return .next
+			case .confirmPassword: return .done
+			case .password: return form == .login ? .done : .next
+			}
+		}
+	}
+}
+
+// MARK: - Strings
+
+extension LoginSignupV2 {
+	var submitButtonText: String {
+		switch form {
+		case .login: return "Login"
+		case .signup: return "Signup"
+		}
+	}
+
+	var toggleButtonText: String {
+		switch form {
+		case .login: return "create a new account"
+		case .signup: return "login to an existing account"
+		}
+	}
+
+	var shouldShowNotice: Bool {
+		switch account {
+		case .failed: return true
+		case .loaded, .loading, .notLoaded: return false
+		}
+	}
+
+	var noticeMessage: String {
+		switch account {
+		case .failed(let error):
+			if let accountError = error as? AccountRepositoryError {
+				switch accountError {
+				case .loggedOut: return "You've been logged out. Please login again."
+				case .apiError(let apiError): return apiError.errorDescription ?? error.localizedDescription
+				case .notFound, .keychainError: return ""
+				}
+			}
+			return error.localizedDescription
+		case .loaded, .loading, .notLoaded: return ""
+		}
+	}
+}
+
+extension LoginSignupV2.FieldItem {
+	var title: String {
+		switch self {
+		case .email: return "Email"
+		case .password: return "Password"
+		case .confirmPassword: return "Confirm password"
+		case .displayName: return "Display name"
 		}
 	}
 }
