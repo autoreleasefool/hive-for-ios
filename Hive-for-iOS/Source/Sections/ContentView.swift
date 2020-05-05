@@ -55,20 +55,7 @@ struct ContentView: View {
 		}
 	}
 
-	private func handleAccountError(_ error: Error) {
-		if let error = error as? AccountRepositoryError {
-			switch error {
-			case .loggedOut:
-				toaster.loaf.send(LoafState("You've been logged out", state: .error))
-			case .apiError, .keychainError:
-				toaster.loaf.send(LoafState("Failed to log in", state: .error))
-			case .notFound:
-				break
-			}
-		}
-	}
-
-	// MARK: - Content
+	// MARK: Content
 
 	private var notLoadedView: some View {
 		Text("")
@@ -88,13 +75,34 @@ struct ContentView: View {
 	private var noAccountView: some View {
 		LoginSignupV2()
 	}
+}
 
-	// MARK: - Updates
+// MARK: - Actions
 
+extension ContentView {
+	private func handleAccountError(_ error: Error) {
+		if let error = error as? AccountRepositoryError {
+			switch error {
+			case .loggedOut:
+				toaster.loaf.send(LoafState("You've been logged out", state: .error))
+			case .apiError, .keychainError:
+				toaster.loaf.send(LoafState("Failed to log in", state: .error))
+			case .notFound:
+				break
+			}
+		}
+	}
+}
+
+// MARK: - Updates
+
+extension ContentView {
 	var accountUpdate: AnyPublisher<Loadable<AccountV2>, Never> {
 		container.appState.updates(for: \.account)
 	}
 }
+
+// MARK: - Preview
 
 #if DEBUG
 struct ContentViewPreview: PreviewProvider {

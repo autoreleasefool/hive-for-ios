@@ -34,6 +34,44 @@ struct LoginSignupV2: View {
 		}
 	}
 
+	// MARK: Content
+
+	private var formView: some View {
+		ScrollView {
+			VStack(spacing: .m) {
+				if shouldShowNotice {
+					notice(message: noticeMessage)
+				}
+
+				field(for: .email)
+				if form == .signup {
+					field(for: .displayName)
+				}
+				field(for: .password)
+				if form == .signup {
+					field(for: .confirmPassword)
+				}
+
+				submitButton
+				toggleButton
+			}
+		}
+	}
+
+	private var loadingView: some View {
+		GeometryReader { geometry in
+			HStack {
+				Spacer()
+				ActivityIndicator(isAnimating: true, style: .large)
+				Spacer()
+			}
+			.padding(.top, length: .m)
+			.frame(width: geometry.size.width)
+		}
+	}
+
+	// MARK: Form
+
 	private func text(for id: FieldItem) -> Binding<String> {
 		switch id {
 		case .email: return $email
@@ -42,8 +80,6 @@ struct LoginSignupV2: View {
 		case .displayName: return $displayName
 		}
 	}
-
-	// MARK: - Content
 
 	private func field(for id: FieldItem) -> some View {
 		LoginField(
@@ -98,40 +134,6 @@ struct LoginSignupV2: View {
 			.body()
 			.foregroundColor(Color(.highlight))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-	}
-
-	private var formView: some View {
-		ScrollView {
-			VStack(spacing: .m) {
-				if shouldShowNotice {
-					notice(message: noticeMessage)
-				}
-
-				field(for: .email)
-				if form == .signup {
-					field(for: .displayName)
-				}
-				field(for: .password)
-				if form == .signup {
-					field(for: .confirmPassword)
-				}
-
-				submitButton
-				toggleButton
-			}
-		}
-	}
-
-	private var loadingView: some View {
-		GeometryReader { geometry in
-			HStack {
-				Spacer()
-				ActivityIndicator(isAnimating: true, style: .large)
-				Spacer()
-			}
-			.padding(.top, length: .m)
-			.frame(width: geometry.size.width)
-		}
 	}
 }
 

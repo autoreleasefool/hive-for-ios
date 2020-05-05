@@ -31,16 +31,7 @@ struct LobbyV2: View {
 		}
 	}
 
-	// MARK: - Content
-
-	private var newMatchButton: some View {
-		NavigationLink(destination: MatchDetailV2(id: nil)) {
-			Image(systemName: "plus")
-				.imageScale(.large)
-				.accessibility(label: Text("Create Match"))
-				.padding(.all, length: .m)
-		}
-	}
+	// MARK: Content
 
 	private var notLoadedView: some View {
 		Text("")
@@ -78,8 +69,21 @@ struct LobbyV2: View {
 		}
 	}
 
-	// MARK: - Actions
+	// MARK: Lobby
 
+	private var newMatchButton: some View {
+		NavigationLink(destination: MatchDetailV2(id: nil)) {
+			Image(systemName: "plus")
+				.imageScale(.large)
+				.accessibility(label: Text("Create Match"))
+				.padding(.all, length: .m)
+		}
+	}
+}
+
+// MARK: - Actions
+
+extension LobbyV2 {
 	var isRefreshing: Binding<Bool> {
 		Binding(
 			get: {
