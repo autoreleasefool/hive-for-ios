@@ -63,6 +63,7 @@
 		CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD1323E0DADD00C697AD /* PlayerHandHUD.swift */; };
 		CAC426D82433989800E513BC /* KeyboardAvoidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC426D72433989800E513BC /* KeyboardAvoidance.swift */; };
 		CAC426DA2433B11000E513BC /* LoginField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC426D92433B11000E513BC /* LoginField.swift */; };
+		CAC650AC2461FC1900835209 /* ClientInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC650AB2461FC1900835209 /* ClientInteractor.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
 		CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */; };
@@ -156,6 +157,7 @@
 		CABDFD1323E0DADD00C697AD /* PlayerHandHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandHUD.swift; sourceTree = "<group>"; };
 		CAC426D72433989800E513BC /* KeyboardAvoidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidance.swift; sourceTree = "<group>"; };
 		CAC426D92433B11000E513BC /* LoginField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginField.swift; sourceTree = "<group>"; };
+		CAC650AB2461FC1900835209 /* ClientInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientInteractor.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
 		CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EdgeInsets+Extensions.swift"; sourceTree = "<group>"; };
@@ -519,6 +521,7 @@
 				CAF8255F245C76EA0064359E /* Interactors.swift */,
 				CAF82564245C78060064359E /* AccountInteractor.swift */,
 				CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */,
+				CAC650AB2461FC1900835209 /* ClientInteractor.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -745,6 +748,7 @@
 				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Match.swift in Sources */,
 				CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */,
+				CAC650AC2461FC1900835209 /* ClientInteractor.swift in Sources */,
 				CA8F46E9245F3D4500B136D0 /* MatchDetail.swift in Sources */,
 				CAFC7A62245C527400747E82 /* RootTabView.swift in Sources */,
 				CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */,

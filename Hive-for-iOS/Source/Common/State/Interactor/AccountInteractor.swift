@@ -70,7 +70,7 @@ struct LiveAccountInteractor: AccountInteractor {
 					weakState?[\.account] = $0
 				}
 				account.wrappedValue = $0
-		}
+			 }
 			.store(in: cancelBag)
 
 	}

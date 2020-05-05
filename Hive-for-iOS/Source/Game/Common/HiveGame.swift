@@ -13,8 +13,8 @@ import Loaf
 
 struct HiveGame: View {
 	@Environment(\.presentationMode) var presentationMode
-	@EnvironmentObject var viewModel: HiveGameViewModel
 	private let onGameEnd: () -> Void
+	private let viewModel = HiveGameViewModel()
 
 	init(onGameEnd: @escaping () -> Void) {
 		self.onGameEnd = onGameEnd
@@ -40,7 +40,8 @@ struct HiveGame: View {
 				.edgesIgnoringSafeArea(.all)
 //			HiveARGame(viewModel: viewModel)
 			#endif
-			GameHUD().environmentObject(viewModel)
+			GameHUD()
+				.environmentObject(viewModel)
 		}
 		.onReceive(viewModel.stateStore) { receivedValue in self.handleTransition(to: receivedValue) }
 		.navigationBarTitle("")

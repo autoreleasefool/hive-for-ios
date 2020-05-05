@@ -12,11 +12,13 @@ extension AppContainer {
 	struct Interactors {
 		let accountInteractor: AccountInteractor
 		let matchInteractor: MatchInteractor
+		let clientInteractor: ClientInteractor
 
 		static var stub: Interactors {
 			Interactors(
 				accountInteractor: StubAccountInteractor(),
-				matchInteractor: StubMatchInteractor()
+				matchInteractor: StubMatchInteractor(),
+				clientInteractor: StubClientInteractor()
 			)
 		}
 	}

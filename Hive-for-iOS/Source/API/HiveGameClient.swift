@@ -23,28 +23,26 @@ enum GameClientError: LocalizedError {
 }
 
 class HiveGameClient {
-	var url: URL!
-
-	private let account: Account
-
 	private var webSocket: WebSocket?
 	private var subject: PassthroughSubject<GameClientEvent, GameClientError>?
+	private var url: URL?
 	private(set) var isConnected: Bool = false
 
-	init(account: Account) {
-		self.account = account
-	}
-
-	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
+	func openConnection(to url: URL, withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
 		if isConnected, let subject = subject {
-			return subject.eraseToAnyPublisher()
+			if self.url == url {
+				return subject.eraseToAnyPublisher()
+			} else {
+				close()
+			}
 		}
 
+		self.url = url
 		let publisher = PassthroughSubject<GameClientEvent, GameClientError>()
 		self.subject = publisher
 
 		var request = URLRequest(url: url)
-		account.applyAuth(to: &request)
+		account?.applyAuth(to: &request)
 		webSocket = WebSocket(request: request)
 		webSocket?.delegate = self
 		webSocket?.connect()

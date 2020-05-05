@@ -19,9 +19,10 @@ extension AppEnvironment {
 		let appState = Store(AppState())
 		let session = configuredNetworkSession()
 		let api = configuredAPI(session: session)
+		let client = configuredClient()
 		let keychain = configuredKeychain()
 
-		let repositories = configuredRepositories(keychain: keychain, api: api)
+		let repositories = configuredRepositories(keychain: keychain, api: api, client: client)
 		let interactors = configuredInteractors(repositories: repositories, appState: appState)
 
 		let container = AppContainer(appState: appState, interactors: interactors)
@@ -37,16 +38,26 @@ extension AppEnvironment {
 		HiveAPI(session: session)
 	}
 
+	private static func configuredClient() -> HiveGameClient {
+		HiveGameClient()
+	}
+
 	private static func configuredKeychain() -> Keychain {
 		Keychain(service: "ca.josephroque.hive-for-ios")
 	}
 
-	private static func configuredRepositories(keychain: Keychain, api: HiveAPI) -> RepositoryContainer {
+	private static func configuredRepositories(
+		keychain: Keychain,
+		api: HiveAPI,
+		client: HiveGameClient
+	) -> RepositoryContainer {
 		let accountRepository = LiveAccountRepository(keychain: keychain, api: api)
 		let matchRepository = LiveMatchRepository(api: api)
+
 		return RepositoryContainer(
 			accountRepository: accountRepository,
-			matchRepository: matchRepository
+			matchRepository: matchRepository,
+			client: client
 		)
 	}
 
@@ -61,9 +72,15 @@ extension AppEnvironment {
 
 		let matchInteractor = LiveMatchInteractor(repository: repositories.matchRepository)
 
+		let clientInteractor = LiveClientInteractor(
+			client: repositories.client,
+			appState: appState
+		)
+
 		return AppContainer.Interactors(
 			accountInteractor: accountInteractor,
-			matchInteractor: matchInteractor
+			matchInteractor: matchInteractor,
+			clientInteractor: clientInteractor
 		)
 	}
 }
@@ -72,5 +89,6 @@ private extension AppEnvironment {
 	struct RepositoryContainer {
 		let accountRepository: AccountRepository
 		let matchRepository: MatchRepository
+		let client: HiveGameClient
 	}
 }

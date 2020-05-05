@@ -9,6 +9,7 @@
 import Combine
 import SwiftUI
 import HiveEngine
+import Starscream
 import SwiftUIRefresh
 
 private final class MatchDetailState: ObservableObject {
@@ -374,74 +375,82 @@ extension MatchDetail {
 // MARK: - HiveGameClient
 
 extension MatchDetail {
-	private func openClientConnection(to: Match) {
-//		if !client.isConnected {
-//			if let url = match.webSocketURL {
-//				openClientConnection(to: url)
-//			} else {
-//				actions.send(.presentLoaf(LoafState("Failed to join match", state: .error)))
-//				actions.send(.leftMatch)
-//			}
-//		}
+	private func send(_ message: GameClientMessage) {
+		container.interactors.clientInteractor
+			.send(message)
 	}
 
-//	private func openClientConnection(to url: URL) {
-//		client.url = url
-//		LoadingHUD.shared.show()
+	private func close(code: CloseCode?) {
+		container.interactors.clientInteractor
+			.closeConnection(code: code)
+	}
+
+	private func openClientConnection(to: Match) {
+		if let url = matchState.match.value?.webSocketURL {
+			openClientConnection(to: url)
+		} else {
+			toaster.loaf.send(LoafState("Failed to join match", state: .error))
+			presentationMode.wrappedValue.dismiss()
+		}
+	}
+
+	private func openClientConnection(to url: URL) {
+		LoadingHUD.shared.show()
+
+		container.interactors.clientInteractor
+			.openConnection(to: url, subscriber: AnySubscriber(
+				receiveSubscription: nil,
+				receiveValue: {
+					self.handleGameClientEvent($0)
+					return Subscribers.Demand.unlimited
+				},
+				receiveCompletion: {
+					if case let .failure(error) = $0 {
+						self.handleGameClientError(error)
+					}
+				}
+			))
+	}
 //
-//		client.openConnection()
-//			.receive(on: DispatchQueue.main)
-//			.sink(
-//				receiveCompletion: { [weak self] result in
-//					if case let .failure(error) = result {
-//						self?.handleGameClientError(error)
-//					}
-//				},
-//				receiveValue: { [weak self] event in
-//					self?.handleGameClientEvent(event)
-//				}
-//			).store(in: self)
-//	}
+	private func handleGameClientError(_ error: GameClientError) {
+		LoadingHUD.shared.hide()
+		presentationMode.wrappedValue.dismiss()
+		#warning("TODO: add a reconnect mechanism")
+		print("Client disconnected: \(error)")
+	}
 //
-//	private func handleGameClientError(_ error: GameClientError) {
-//		LoadingHUD.shared.hide()
-//		actions.send(.leftMatch)
-//		#warning("TODO: add a reconnect mechanism")
-//		print("Client disconnected: \(error)")
-//	}
-//
-//	private func handleGameClientEvent(_ event: GameClientEvent) {
-//		switch event {
-//		case .connected:
-//			LoadingHUD.shared.hide()
-//		case .closed:
-//			actions.send(.leftMatch)
-//		case .message(let message):
-//			handleGameClientMessage(message)
-//		}
-//	}
-//
-//	private func handleGameClientMessage(_ message: GameServerMessage) {
-//		switch message {
-//		case .playerJoined(let id):
-//			playerJoined(id: id)
-//		case .playerLeft(let id):
-//			playerLeft(id: id)
-//		case .gameState(let state):
-//			updateGameState(to: state)
-//		case .playerReady(let id, let ready):
-//			readyPlayers.set(id, to: ready)
-//		case .setOption(let option, let value):
-//			setOption(option, to: value)
-//		case .message(let id, let string):
-//			#warning("TODO: display message")
-//			print("Received message '\(string)' from \(id)")
-//		case .error(let error):
-//			actions.send(.presentLoaf(error.loaf))
-//		case .forfeit, .gameOver:
-//			print("Received invalid message in Match Details: \(message)")
-//		}
-//	}
+	private func handleGameClientEvent(_ event: GameClientEvent) {
+		switch event {
+		case .connected:
+			LoadingHUD.shared.hide()
+		case .closed:
+			presentationMode.wrappedValue.dismiss()
+		case .message(let message):
+			handleGameClientMessage(message)
+		}
+	}
+
+	private func handleGameClientMessage(_ message: GameServerMessage) {
+		switch message {
+		case .playerJoined(let id):
+			playerJoined(id: id)
+		case .playerLeft(let id):
+			playerLeft(id: id)
+		case .gameState(let state):
+			updateGameState(to: state)
+		case .playerReady(let id, let ready):
+			matchState.readyPlayers.set(id, to: ready)
+		case .setOption(let option, let value):
+			setOption(option, to: value)
+		case .message(let id, let string):
+			#warning("TODO: display message")
+			print("Received message '\(string)' from \(id)")
+		case .error(let error):
+			toaster.loaf.send(error.loaf)
+		case .forfeit, .gameOver:
+			print("Received invalid message in Match Details: \(message)")
+		}
+	}
 }
 
 // MARK: - Strings
