@@ -11,7 +11,8 @@ import SwiftUIRefresh
 
 struct LobbyV2: View {
 	@Environment(\.container) private var container: AppContainer
-	@ObservedObject private var viewModel = LobbyViewModelV2()
+
+	@State private var matches: Loadable<[Match]> = .notLoaded
 
 	var body: some View {
 		NavigationView {
@@ -22,7 +23,7 @@ struct LobbyV2: View {
 	}
 
 	private var content: AnyView {
-		switch viewModel.matches {
+		switch matches {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let cached, _): return AnyView(loadingView(cached))
 		case .loaded(let matches): return AnyView(loadedView(matches))
@@ -56,7 +57,7 @@ struct LobbyV2: View {
 				MatchRow(match: match)
 			}
 		}
-		.pullToRefresh(isShowing: viewModel.isRefreshing) {
+		.pullToRefresh(isShowing: isRefreshing) {
 			self.loadMatches()
 		}
 		.listRowInsets(EdgeInsets(equalTo: .m))
@@ -79,10 +80,22 @@ struct LobbyV2: View {
 
 	// MARK: - Actions
 
+	var isRefreshing: Binding<Bool> {
+		Binding(
+			get: {
+				if case .loading = self.matches {
+					return true
+				}
+				return false
+			},
+			set: { _ in }
+		)
+	}
+
 	private func loadMatches() {
 		container.interactors.matchInteractor.loadOpenMatches(
 			withAccount: container.account,
-			matches: $viewModel.matches
+			matches: $matches
 		)
 	}
 }
