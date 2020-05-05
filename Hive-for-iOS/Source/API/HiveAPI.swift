@@ -48,23 +48,16 @@ enum HiveAPIError: LocalizedError {
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
 class HiveAPI: ObservableObject {
-	static let baseURL = URL(string: "https://52970f6c.ngrok.io")!
+	static let baseURL = URL(string: "https://3192aba9.ngrok.io")!
 
 	private var apiGroup: URL { HiveAPI.baseURL.appendingPathComponent("api") }
 	private var userGroup: URL { apiGroup.appendingPathComponent("users") }
 	private var matchGroup: URL { apiGroup.appendingPathComponent("matches") }
 
 	private let session: NetworkSession
-	private var account: AccountV2?
 
 	init(session: NetworkSession = URLSession.shared) {
 		self.session = session
-	}
-
-	// MARK: - Account
-
-	func updateAccount(to account: AccountV2?) {
-		self.account = account
 	}
 
 	func login(login: LoginData) -> AnyPublisher<AccessToken, HiveAPIError> {
@@ -75,7 +68,7 @@ class HiveAPI: ObservableObject {
 			let authData = auth.data(using: String.Encoding.utf8)!
 			let base64Auth = authData.base64EncodedString()
 
-			var request = self.buildBaseRequest(to: url, withAuth: false)
+			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "POST"
 			request.setValue("Basic \(base64Auth)", forHTTPHeaderField: "Authorization")
 
@@ -95,7 +88,7 @@ class HiveAPI: ObservableObject {
 				return promise(.failure(.invalidData))
 			}
 
-			var request = self.buildBaseRequest(to: url, withAuth: false)
+			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "POST"
 			request.httpBody = signupData
 
@@ -110,7 +103,7 @@ class HiveAPI: ObservableObject {
 		Future<TokenValidation, HiveAPIError> { promise in
 			let url = self.userGroup.appendingPathComponent("validate")
 
-			var request = self.buildBaseRequest(to: url, withAuth: false)
+			var request = self.buildBaseRequest(to: url)
 			request.httpMethod = "GET"
 			AccountV2.apply(auth: nil, to: &request, overridingTokenWith: token)
 
@@ -122,11 +115,11 @@ class HiveAPI: ObservableObject {
 		.eraseToAnyPublisher()
 	}
 
-	func logout() -> AnyPublisher<Bool, HiveAPIError> {
+	func logout(fromAccount account: AccountV2) -> AnyPublisher<Bool, HiveAPIError> {
 		Future { promise in
 			let url = self.userGroup.appendingPathComponent("logout")
 
-			var request = self.buildBaseRequest(to: url)
+			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "DELETE"
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
@@ -138,11 +131,11 @@ class HiveAPI: ObservableObject {
 
 	// MARK: - Users
 
-	func user(id: User.ID) -> AnyPublisher<User, HiveAPIError> {
+	func user(id: User.ID, withAccount account: AccountV2?) -> AnyPublisher<User, HiveAPIError> {
 		Future { promise in
 			let url = self.userGroup.appendingPathComponent("details")
 
-			var request = self.buildBaseRequest(to: url)
+			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "GET"
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
@@ -154,11 +147,11 @@ class HiveAPI: ObservableObject {
 
 	// MARK: - Matches
 
-	func openMatches() -> AnyPublisher<[Match], HiveAPIError> {
+	func openMatches(withAccount account: AccountV2?) -> AnyPublisher<[Match], HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent("open")
 
-			var request = self.buildBaseRequest(to: url)
+			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "GET"
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
@@ -168,11 +161,11 @@ class HiveAPI: ObservableObject {
 		.eraseToAnyPublisher()
 	}
 
-	func matchDetails(id: Match.ID) -> AnyPublisher<Match, HiveAPIError> {
+	func matchDetails(id: Match.ID, withAccount account: AccountV2?) -> AnyPublisher<Match, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent(id.uuidString)
 
-			var request = self.buildBaseRequest(to: url)
+			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "GET"
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
@@ -182,13 +175,13 @@ class HiveAPI: ObservableObject {
 		.eraseToAnyPublisher()
 	}
 
-	func joinMatch(id: Match.ID) -> AnyPublisher<JoinMatchResponse, HiveAPIError> {
+	func joinMatch(id: Match.ID, withAccount account: AccountV2?) -> AnyPublisher<JoinMatchResponse, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup
 				.appendingPathComponent(id.uuidString)
 				.appendingPathComponent("join")
 
-			var request = self.buildBaseRequest(to: url)
+			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "POST"
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
@@ -198,11 +191,11 @@ class HiveAPI: ObservableObject {
 		.eraseToAnyPublisher()
 	}
 
-	func createMatch() -> AnyPublisher<CreateMatchResponse, HiveAPIError> {
+	func createMatch(withAccount account: AccountV2?) -> AnyPublisher<CreateMatchResponse, HiveAPIError> {
 		Future { promise in
 			let url = self.matchGroup.appendingPathComponent("new")
 
-			var request = self.buildBaseRequest(to: url)
+			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "POST"
 
 			self.session.loadData(from: request) { [weak self] data, response, error in
@@ -214,13 +207,11 @@ class HiveAPI: ObservableObject {
 
 	// MARK: - Common
 
-	private func buildBaseRequest(to url: URL, withAuth: Bool = true) -> URLRequest {
+	private func buildBaseRequest(to url: URL, withAccount account: AccountV2? = nil) -> URLRequest {
 		var request = URLRequest(url: url)
 		request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 		request.addValue("application/json", forHTTPHeaderField: "Accept")
-		if withAuth {
-			account?.applyAuth(to: &request)
-		}
+		account?.applyAuth(to: &request)
 		return request
 	}
 
@@ -281,7 +272,6 @@ class HiveAPI: ObservableObject {
 	}
 
 	private func clearAccount() {
-		self.account = nil
 		NotificationCenter.default.post(name: NSNotification.Name.Account.Unauthorized, object: nil)
 	}
 }

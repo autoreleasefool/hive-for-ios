@@ -10,50 +10,50 @@ import Combine
 import Foundation
 
 protocol MatchInteractor {
-	func loadOpenMatches(matches: LoadableSubject<[Match]>)
-	func loadMatchDetails(id: Match.ID, match: LoadableSubject<Match>)
-	func joinMatch(id: Match.ID, match: LoadableSubject<Match>)
-	func createNewMatch(match: LoadableSubject<Match>)
+	func loadOpenMatches(withAccount account: AccountV2?, matches: LoadableSubject<[Match]>)
+	func loadMatchDetails(id: Match.ID, withAccount account: AccountV2?, match: LoadableSubject<Match>)
+	func joinMatch(id: Match.ID, withAccount account: AccountV2?, match: LoadableSubject<Match>)
+	func createNewMatch(withAccount account: AccountV2?, match: LoadableSubject<Match>)
 }
 
 struct LiveMatchInteractor: MatchInteractor {
 	let repository: MatchRepository
 
-	func loadOpenMatches(matches: LoadableSubject<[Match]>) {
+	func loadOpenMatches(withAccount account: AccountV2?, matches: LoadableSubject<[Match]>) {
 		let cancelBag = CancelBag()
 		matches.wrappedValue = .loading(cached: matches.wrappedValue.value, cancelBag: cancelBag)
 
-		repository.loadOpenMatches()
+		repository.loadOpenMatches(withAccount: account)
 			.receive(on: DispatchQueue.main)
 			.sinkToLoadable { matches.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
 
-	func loadMatchDetails(id: Match.ID, match: LoadableSubject<Match>) {
+	func loadMatchDetails(id: Match.ID, withAccount account: AccountV2?, match: LoadableSubject<Match>) {
 		let cancelBag = CancelBag()
 		match.wrappedValue = .loading(cached: match.wrappedValue.value, cancelBag: cancelBag)
 
-		repository.loadMatchDetails(id: id)
+		repository.loadMatchDetails(id: id, withAccount: account)
 			.receive(on: DispatchQueue.main)
 			.sinkToLoadable { match.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
 
-	func joinMatch(id: Match.ID, match: LoadableSubject<Match>) {
+	func joinMatch(id: Match.ID, withAccount account: AccountV2?, match: LoadableSubject<Match>) {
 		let cancelBag = CancelBag()
 		match.wrappedValue = .loading(cached: match.wrappedValue.value, cancelBag: cancelBag)
 
-		repository.joinMatch(id: id)
+		repository.joinMatch(id: id, withAccount: account)
 			.receive(on: DispatchQueue.main)
 			.sinkToLoadable { match.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
 
-	func createNewMatch(match: LoadableSubject<Match>) {
+	func createNewMatch(withAccount account: AccountV2?, match: LoadableSubject<Match>) {
 		let cancelBag = CancelBag()
 		match.wrappedValue = .loading(cached: match.wrappedValue.value, cancelBag: cancelBag)
 
-		repository.createNewMatch()
+		repository.createNewMatch(withAccount: account)
 			.receive(on: DispatchQueue.main)
 			.sinkToLoadable { match.wrappedValue = $0 }
 			.store(in: cancelBag)
@@ -61,8 +61,8 @@ struct LiveMatchInteractor: MatchInteractor {
 }
 
 struct StubMatchInteractor: MatchInteractor {
-	func loadOpenMatches(matches: LoadableSubject<[Match]>) { }
-	func loadMatchDetails(id: Match.ID, match: LoadableSubject<Match>) { }
-	func joinMatch(id: Match.ID, match: LoadableSubject<Match>) { }
-	func createNewMatch(match: LoadableSubject<Match>) { }
+	func loadOpenMatches(withAccount account: AccountV2?, matches: LoadableSubject<[Match]>) { }
+	func loadMatchDetails(id: Match.ID, withAccount account: AccountV2?, match: LoadableSubject<Match>) { }
+	func joinMatch(id: Match.ID, withAccount account: AccountV2?, match: LoadableSubject<Match>) { }
+	func createNewMatch(withAccount account: AccountV2?, match: LoadableSubject<Match>) { }
 }

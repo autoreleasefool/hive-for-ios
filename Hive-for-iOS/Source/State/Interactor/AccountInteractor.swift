@@ -15,7 +15,7 @@ protocol AccountInteractor {
 	func updateAccount(to account: AccountV2)
 	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>)
 	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>)
-	func logout(result: LoadableSubject<Bool>)
+	func logout(fromAccount account: AccountV2, result: LoadableSubject<Bool>)
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -49,11 +49,11 @@ struct LiveAccountInteractor: AccountInteractor {
 		appState[\.account] = .loaded(account)
 	}
 
-	func logout(result: LoadableSubject<Bool>) {
+	func logout(fromAccount account: AccountV2, result: LoadableSubject<Bool>) {
 		let cancelBag = CancelBag()
 		result.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
 
-		repository.logout()
+		repository.logout(fromAccount: account)
 			.receive(on: DispatchQueue.main)
 			.sinkToLoadable { result.wrappedValue = $0 }
 			.store(in: cancelBag)
@@ -87,5 +87,5 @@ struct StubAccountInteractor: AccountInteractor {
 	func updateAccount(to account: AccountV2) { }
 	func login(_ loginData: LoginData, account: LoadableSubject<AccountV2>) { }
 	func signup(_ signupData: SignupData, account: LoadableSubject<AccountV2>) { }
-	func logout(result: LoadableSubject<Bool>) { }
+	func logout(fromAccount account: AccountV2, result: LoadableSubject<Bool>) { }
 }

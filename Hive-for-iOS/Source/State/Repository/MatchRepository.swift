@@ -14,10 +14,10 @@ enum MatchRepositoryError: Error {
 }
 
 protocol MatchRepository {
-	func loadOpenMatches() -> AnyPublisher<[Match], MatchRepositoryError>
-	func loadMatchDetails(id: Match.ID) -> AnyPublisher<Match, MatchRepositoryError>
-	func joinMatch(id: Match.ID) -> AnyPublisher<Match, MatchRepositoryError>
-	func createNewMatch() -> AnyPublisher<Match, MatchRepositoryError>
+	func loadOpenMatches(withAccount account: AccountV2?) -> AnyPublisher<[Match], MatchRepositoryError>
+	func loadMatchDetails(id: Match.ID, withAccount account: AccountV2?) -> AnyPublisher<Match, MatchRepositoryError>
+	func joinMatch(id: Match.ID, withAccount account: AccountV2?) -> AnyPublisher<Match, MatchRepositoryError>
+	func createNewMatch(withAccount account: AccountV2?) -> AnyPublisher<Match, MatchRepositoryError>
 }
 
 struct LiveMatchRepository: MatchRepository {
@@ -27,26 +27,26 @@ struct LiveMatchRepository: MatchRepository {
 		self.api = api
 	}
 
-	func loadOpenMatches() -> AnyPublisher<[Match], MatchRepositoryError> {
-		api.openMatches()
+	func loadOpenMatches(withAccount account: AccountV2?) -> AnyPublisher<[Match], MatchRepositoryError> {
+		api.openMatches(withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
-	func loadMatchDetails(id: Match.ID) -> AnyPublisher<Match, MatchRepositoryError> {
-		api.matchDetails(id: id)
+	func loadMatchDetails(id: Match.ID, withAccount account: AccountV2?) -> AnyPublisher<Match, MatchRepositoryError> {
+		api.matchDetails(id: id, withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
-	func joinMatch(id: Match.ID) -> AnyPublisher<Match, MatchRepositoryError> {
-		api.joinMatch(id: id)
+	func joinMatch(id: Match.ID, withAccount account: AccountV2?) -> AnyPublisher<Match, MatchRepositoryError> {
+		api.joinMatch(id: id, withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
-	func createNewMatch() -> AnyPublisher<Match, MatchRepositoryError> {
-		api.createMatch()
+	func createNewMatch(withAccount account: AccountV2?) -> AnyPublisher<Match, MatchRepositoryError> {
+		api.createMatch(withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}

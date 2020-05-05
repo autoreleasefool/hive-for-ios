@@ -9,6 +9,7 @@
 import Combine
 import SwiftUI
 import HiveEngine
+import SwiftUIRefresh
 
 struct MatchDetailV2: View {
 	@Environment(\.presentationMode) private var presentationMode
@@ -232,18 +233,18 @@ struct MatchDetailV2: View {
 	private func joinMatch() {
 		guard let id = viewModel.matchId else { return }
 		container.interactors.matchInteractor
-			.joinMatch(id: id, match: $viewModel.match)
+			.joinMatch(id: id, withAccount: container.account, match: $viewModel.match)
 	}
 
 	private func createNewMatch() {
 		container.interactors.matchInteractor
-			.createNewMatch(match: $viewModel.match)
+			.createNewMatch(withAccount: container.account, match: $viewModel.match)
 	}
 
 	private func loadMatchDetails() {
 		guard let id = viewModel.matchId else { return }
 		container.interactors.matchInteractor
-			.loadMatchDetails(id: id, match: $viewModel.match)
+			.loadMatchDetails(id: id, withAccount: container.account, match: $viewModel.match)
 	}
 
 	// MARK: - Updates

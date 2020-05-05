@@ -44,7 +44,6 @@
 		CA88BA69244E383500C4A276 /* SwiftUIRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = CA88BA68244E383500C4A276 /* SwiftUIRefresh */; };
 		CA88BA6B244E39A800C4A276 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */; };
 		CA8F46DD245DD27600B136D0 /* LoginSignupV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DC245DD27600B136D0 /* LoginSignupV2.swift */; };
-		CA8F46DF245DE4D600B136D0 /* LoginSignupViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DE245DE4D600B136D0 /* LoginSignupViewModelV2.swift */; };
 		CA8F46E1245EBD0D00B136D0 /* LobbyV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E0245EBD0D00B136D0 /* LobbyV2.swift */; };
 		CA8F46E3245EBD2100B136D0 /* LobbyViewModelV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E2245EBD2100B136D0 /* LobbyViewModelV2.swift */; };
 		CA8F46E5245EC35800B136D0 /* MatchInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */; };
@@ -143,7 +142,6 @@
 		CA88B80B244D89B600C4A276 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		CA8F46DC245DD27600B136D0 /* LoginSignupV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupV2.swift; sourceTree = "<group>"; };
-		CA8F46DE245DE4D600B136D0 /* LoginSignupViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewModelV2.swift; sourceTree = "<group>"; };
 		CA8F46E0245EBD0D00B136D0 /* LobbyV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyV2.swift; sourceTree = "<group>"; };
 		CA8F46E2245EBD2100B136D0 /* LobbyViewModelV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyViewModelV2.swift; sourceTree = "<group>"; };
 		CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchInteractor.swift; sourceTree = "<group>"; };
@@ -365,14 +363,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		CAC426D024338C0100E513BC /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				CA8F46DE245DE4D600B136D0 /* LoginSignupViewModelV2.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		CAC426D62433988600E513BC /* ViewModifier */ = {
 			isa = PBXGroup;
 			children = (
@@ -504,7 +494,6 @@
 			children = (
 				CAC68CC424327521003CC2E6 /* Model */,
 				CAC68CC52432752B003CC2E6 /* View */,
-				CAC426D024338C0100E513BC /* ViewModel */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -751,7 +740,6 @@
 				CA41ACB2245616F500B6F88E /* Set+Extensions.swift in Sources */,
 				CAA87BCB243299C8006E418B /* LoginSignupData.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveARViewController.swift in Sources */,
-				CA8F46DF245DE4D600B136D0 /* LoginSignupViewModelV2.swift in Sources */,
 				CA8F46EB245F3D4F00B136D0 /* MatchDetailViewModelV2.swift in Sources */,
 				CAF82570245D59730064359E /* AppEnvironment.swift in Sources */,
 				CAF8255C245C6C640064359E /* Loadable.swift in Sources */,

@@ -36,20 +36,20 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 	}
 
 	private func fetchProfileDetails() {
-		api.user(id: userId)
-			.receive(on: DispatchQueue.main)
-			.sink(
-				receiveCompletion: { [weak self] result in
-					self?.refreshComplete.send()
-					if case let .failure(error) = result {
-						self?.breadBox.send(error.loaf)
-					}
-				},
-				receiveValue: { [weak self] user in
-					self?.user = user
-				}
-			)
-			.store(in: self)
+//		api.user(id: userId, withAccount: account)
+//			.receive(on: DispatchQueue.main)
+//			.sink(
+//				receiveCompletion: { [weak self] result in
+//					self?.refreshComplete.send()
+//					if case let .failure(error) = result {
+//						self?.breadBox.send(error.loaf)
+//					}
+//				},
+//				receiveValue: { [weak self] user in
+//					self?.user = user
+//				}
+//			)
+//			.store(in: self)
 	}
 
 	func setAPI(to api: HiveAPI) {

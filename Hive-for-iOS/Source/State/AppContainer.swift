@@ -12,6 +12,10 @@ struct AppContainer: EnvironmentKey {
 	let appState: Store<AppState>
 	let interactors: Interactors
 
+	var account: AccountV2? {
+		appState.value.account.value
+	}
+
 	static var defaultValue: AppContainer { AppContainer.default }
 
 	private static let `default` = AppContainer(

@@ -21,7 +21,7 @@ protocol AccountRepository {
 	func loadAccount() -> AnyPublisher<AccountV2, AccountRepositoryError>
 	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError>
 	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError>
-	func logout() -> AnyPublisher<Bool, AccountRepositoryError>
+	func logout(fromAccount account: AccountV2) -> AnyPublisher<Bool, AccountRepositoryError>
 }
 
 struct LiveAccountRepository: AccountRepository {
@@ -56,10 +56,7 @@ struct LiveAccountRepository: AccountRepository {
 		.flatMap { account in
 			self.api.checkToken(userId: account.userId, token: account.token)
 				.mapError { .apiError($0) }
-				.map { _ in
-					self.api.updateAccount(to: account)
-					return account
-				}
+				.map { _ in account }
 		}
 		.eraseToAnyPublisher()
 	}
@@ -67,27 +64,19 @@ struct LiveAccountRepository: AccountRepository {
 	func login(_ loginData: LoginData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
 		self.api.login(login: loginData)
 			.mapError { .apiError($0) }
-			.map {
-				let account = AccountV2(userId: $0.userId, token: $0.token)
-				self.api.updateAccount(to: account)
-				return account
-			}
+			.map { AccountV2(userId: $0.userId, token: $0.token) }
 			.eraseToAnyPublisher()
 	}
 
 	func signup(_ signupData: SignupData) -> AnyPublisher<AccountV2, AccountRepositoryError> {
 		self.api.signup(signup: signupData)
 			.mapError { .apiError($0) }
-			.map {
-				let account = AccountV2(userId: $0.accessToken.userId, token: $0.accessToken.token)
-				self.api.updateAccount(to: account)
-				return account
-			}
+			.map { AccountV2(userId: $0.accessToken.userId, token: $0.accessToken.token) }
 			.eraseToAnyPublisher()
 	}
 
-	func logout() -> AnyPublisher<Bool, AccountRepositoryError> {
-		self.api.logout()
+	func logout(fromAccount account: AccountV2) -> AnyPublisher<Bool, AccountRepositoryError> {
+		self.api.logout(fromAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}

@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftUIRefresh
 
 struct LobbyV2: View {
 	@Environment(\.container) private var container: AppContainer
@@ -79,6 +80,9 @@ struct LobbyV2: View {
 	// MARK: - Actions
 
 	private func loadMatches() {
-		container.interactors.matchInteractor.loadOpenMatches(matches: $viewModel.matches)
+		container.interactors.matchInteractor.loadOpenMatches(
+			withAccount: container.account,
+			matches: $viewModel.matches
+		)
 	}
 }
