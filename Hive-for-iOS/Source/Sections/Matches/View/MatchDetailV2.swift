@@ -11,43 +11,65 @@ import SwiftUI
 import HiveEngine
 import SwiftUIRefresh
 
+private final class MatchDetailState: ObservableObject {
+	@Published var match: Loadable<Match> = .notLoaded {
+		didSet {
+			matchOptions = match.value?.optionSet ?? Set()
+			gameOptions = match.value?.gameOptionSet ?? Set()
+		}
+	}
+
+	@Published var matchOptions: Set<Match.Option> = Set()
+	@Published var gameOptions: Set<GameState.Option> = Set()
+	@Published var readyPlayers: Set<UUID> = Set()
+}
+
 struct MatchDetailV2: View {
 	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster: Toaster
 	@Environment(\.container) private var container: AppContainer
 
-	@ObservedObject private var viewModel: MatchDetailViewModelV2
+	@State private var matchId: Match.ID?
+
+	@ObservedObject private var matchState = MatchDetailState()
+
+	@State private var inGame = false
+	@State private var exiting = false
 
 	init(id: Match.ID?, match: Loadable<Match> = .notLoaded) {
-		self.viewModel = MatchDetailViewModelV2(id: id, match: match)
+		self.matchId = id
+		self.matchState.match = match
 	}
 
 	var body: some View {
 		GeometryReader { geometry in
 			NavigationLink(
 				destination: HiveGame { self.presentationMode.wrappedValue.dismiss() },
-				isActive: self.$viewModel.inGame,
+				isActive: self.$inGame,
 				label: { EmptyView() }
 			)
 
 			self.content(geometry)
 		}
-		.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
+		.navigationBarTitle(Text(title), displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.navigationBarItems(leading: exitButton, trailing: startButton)
-		.onReceive(accountUpdate) { self.viewModel.account = $0 }
-		.onReceive(viewModel.actions) { self.handleAction($0) }
-		.popoverSheet(isPresented: $viewModel.exiting) {
+		.onReceive(matchState.$match) {
+			if let match = $0.value {
+				self.openClientConnection(to: match)
+			}
+		}
+		.popoverSheet(isPresented: $exiting) {
 			PopoverSheetConfig(
 				title: "Leave match?",
 				message: "Are you sure you want to leave this match?",
 				buttons: [
 					PopoverSheetConfig.ButtonConfig(title: "Leave", type: .destructive) {
-						self.viewModel.exiting = false
-						self.viewModel.postViewAction(.exitMatch)
+						self.exiting = false
+						self.exitMatch()
 					},
 					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {
-						self.viewModel.exiting = false
+						self.exiting = false
 					},
 				]
 			)
@@ -55,7 +77,7 @@ struct MatchDetailV2: View {
 	}
 
 	private func content(_ geometry: GeometryProxy) -> AnyView {
-		switch viewModel.match {
+		switch matchState.match {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let match, _): return AnyView(loadedView(match, geometry))
 		case .loaded(let match): return AnyView(loadedView(match, geometry))
@@ -63,12 +85,12 @@ struct MatchDetailV2: View {
 		}
 	}
 
-	// MARK: - Content
+	// MARK: Content
 
 	private var notLoadedView: some View {
 		Text("")
 			.onAppear {
-				if self.viewModel.matchId == nil {
+				if self.matchId == nil {
 					self.createNewMatch()
 				} else {
 					self.joinMatch()
@@ -99,7 +121,7 @@ struct MatchDetailV2: View {
 				.frame(width: geometry.size.width)
 			}
 		}
-		.pullToRefresh(isShowing: viewModel.isRefreshing) {
+		.pullToRefresh(isShowing: isRefreshing) {
 			self.loadMatchDetails()
 		}
 	}
@@ -114,13 +136,13 @@ struct MatchDetailV2: View {
 		HStack(spacing: 0) {
 			MatchUserSummary(
 				match.host,
-				isReady: self.viewModel.isPlayerReady(id: match.host?.id),
+				isReady: self.isPlayerReady(id: match.host?.id),
 				iconSize: .l
 			)
 			Spacer()
 			MatchUserSummary(
 				match.opponent,
-				isReady: self.viewModel.isPlayerReady(id: match.opponent?.id),
+				isReady: self.isPlayerReady(id: match.opponent?.id),
 				alignment: .trailing,
 				iconSize: .l
 			)
@@ -137,7 +159,7 @@ struct MatchDetailV2: View {
 			HStack(spacing: .l) {
 				Spacer()
 				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-					self.expansionOption(for: option, enabled: self.viewModel.gameOptions.contains(option))
+					self.expansionOption(for: option, enabled: self.matchState.gameOptions.contains(option))
 				}
 				Spacer()
 			}
@@ -146,10 +168,10 @@ struct MatchDetailV2: View {
 
 	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
 		Button(action: {
-			self.viewModel.gameOptionEnabled(option: option).wrappedValue.toggle()
+			self.gameOptionEnabled(option: option).wrappedValue.toggle()
 		}, label: {
 			ZStack {
-				Text(self.viewModel.name(forOption: option))
+				Text(name(forOption: option))
 					.subtitle()
 					.foregroundColor(
 						enabled
@@ -166,7 +188,7 @@ struct MatchDetailV2: View {
 					.squareImage(.l)
 			}
 		})
-		.disabled(!viewModel.userIsHost)
+		.disabled(!userIsHost)
 	}
 
 	private func optionSectionHeader(title: String) -> some View {
@@ -181,8 +203,8 @@ struct MatchDetailV2: View {
 		VStack(alignment: .leading) {
 			self.optionSectionHeader(title: "Match options")
 			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
-				Toggle(self.viewModel.name(forOption: option), isOn: self.viewModel.optionEnabled(option: option))
-					.disabled(!self.viewModel.userIsHost)
+				Toggle(self.name(forOption: option), isOn: self.optionEnabled(option: option))
+					.disabled(!self.userIsHost)
 					.foregroundColor(Color(.text))
 			}
 		}
@@ -192,8 +214,8 @@ struct MatchDetailV2: View {
 		VStack(alignment: .leading) {
 			self.optionSectionHeader(title: "Other options")
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
-				Toggle(self.viewModel.name(forOption: option), isOn: self.viewModel.gameOptionEnabled(option: option))
-					.disabled(!self.viewModel.userIsHost)
+				Toggle(self.name(forOption: option), isOn: self.gameOptionEnabled(option: option))
+					.disabled(!self.userIsHost)
 					.foregroundColor(Color(.text))
 			}
 		}
@@ -203,7 +225,7 @@ struct MatchDetailV2: View {
 
 	private var exitButton: some View {
 		Button(action: {
-			self.viewModel.exiting = true
+			self.exiting = true
 		}, label: {
 			Text("Leave")
 		})
@@ -211,45 +233,263 @@ struct MatchDetailV2: View {
 
 	private var startButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.startMatch)
+			self.toggleReadiness()
 		}, label: {
-			Text(viewModel.startButtonText)
+			Text(startButtonText)
 		})
 	}
+}
 
-	// MARK: - Actions
+// MARK: - Actions
 
-	private func handleAction(_ action: MatchDetailAction) {
-		switch action {
-		case .leftMatch:
-			presentationMode.wrappedValue.dismiss()
-		case .loadMatch:
+extension MatchDetailV2 {
+	var userIsHost: Bool {
+		container.account?.userId == matchState.match.value?.host?.id
+	}
+
+	var isRefreshing: Binding<Bool> {
+		Binding(
+			get: {
+				if case .loading = self.matchState.match {
+					return true
+				}
+				return false
+			},
+			set: { _ in }
+		)
+	}
+
+	func isPlayerReady(id: UUID?) -> Bool {
+		guard let id = id else { return false }
+		return matchState.readyPlayers.contains(id)
+	}
+
+	func optionEnabled(option: Match.Option) -> Binding<Bool> {
+		Binding(
+			get: { self.matchState.matchOptions.contains(option) },
+			set: {
+				guard self.userIsHost else { return }
+				self.matchState.matchOptions.set(option, to: $0)
+//				self.client.send(.setOption(.matchOption(option), $0))
+			}
+		)
+	}
+
+	func gameOptionEnabled(option: GameState.Option) -> Binding<Bool> {
+		Binding(
+			get: { self.matchState.gameOptions.contains(option) },
+			set: {
+				guard self.userIsHost else { return }
+				self.matchState.gameOptions.set(option, to: $0)
+//					self.client.send(.setOption(.gameOption(option), $0))
+			}
+		)
+	}
+
+	private func toggleReadiness() {
+		guard let id = userIsHost ? matchState.match.value?.host?.id : matchState.match.value?.opponent?.id else {
+			return
+		}
+
+		if isPlayerReady(id: id) {
+			matchState.readyPlayers.remove(id)
+//			client.send(.readyToPlay)
+		} else {
+			matchState.readyPlayers.insert(id)
+//			client.send(.readyToPlay)
+		}
+	}
+
+	private func playerJoined(id: UUID) {
+		if userIsHost {
+			toaster.loaf.send(LoafState("An opponent has joined!", state: .success))
+		}
+		loadMatchDetails()
+	}
+
+	private func playerLeft(id: UUID) {
+		matchState.readyPlayers.remove(id)
+		if userIsHost && id == matchState.match.value?.opponent?.id {
+			toaster.loaf.send(LoafState("Your opponent has left!", state: .warning))
 			loadMatchDetails()
-		case .presentLoaf(let loaf):
-			toaster.loaf.send(loaf)
+		} else if !userIsHost && id == matchState.match.value?.host?.id {
+			toaster.loaf.send(LoafState("The host has left!", state: .warning))
+//			client.close()
+			presentationMode.wrappedValue.dismiss()
+		}
+	}
+
+	private func updateGameState(to state: GameState) {
+		let player: Player
+		if userIsHost {
+			player = matchState.matchOptions.contains(.hostIsWhite) ? .white : .black
+		} else {
+			player = matchState.matchOptions.contains(.hostIsWhite) ? .black : .white
+		}
+
+//		gameViewModel.setPlayer(to: player)
+//		gameViewModel.gameStateStore.send(state)
+//		beginGame.send()
+	}
+
+	private func setOption(_ option: GameServerMessage.Option, to value: Bool) {
+		switch option {
+		case .gameOption(let option): matchState.gameOptions.set(option, to: value)
+		case .matchOption(let option): matchState.matchOptions.set(option, to: value)
 		}
 	}
 
 	private func joinMatch() {
-		guard let id = viewModel.matchId else { return }
+		guard let id = matchId else { return }
 		container.interactors.matchInteractor
-			.joinMatch(id: id, withAccount: container.account, match: $viewModel.match)
+			.joinMatch(id: id, withAccount: container.account, match: $matchState.match)
 	}
 
 	private func createNewMatch() {
 		container.interactors.matchInteractor
-			.createNewMatch(withAccount: container.account, match: $viewModel.match)
+			.createNewMatch(withAccount: container.account, match: $matchState.match)
 	}
 
 	private func loadMatchDetails() {
-		guard let id = viewModel.matchId else { return }
+		guard let id = matchId else { return }
 		container.interactors.matchInteractor
-			.loadMatchDetails(id: id, withAccount: container.account, match: $viewModel.match)
+			.loadMatchDetails(id: id, withAccount: container.account, match: $matchState.match)
 	}
 
-	// MARK: - Updates
+	private func exitMatch() {
+//		client.send(.forfeit)
+//		client.close()
+		presentationMode.wrappedValue.dismiss()
+	}
+}
 
+// MARK: - Updates
+
+extension MatchDetailV2 {
 	var accountUpdate: AnyPublisher<Loadable<AccountV2>, Never> {
 		container.appState.updates(for: \.account)
+	}
+}
+
+// MARK: - HiveGameClient
+
+extension MatchDetailV2 {
+	private func openClientConnection(to: Match) {
+//		if !client.isConnected {
+//			if let url = match.webSocketURL {
+//				openClientConnection(to: url)
+//			} else {
+//				actions.send(.presentLoaf(LoafState("Failed to join match", state: .error)))
+//				actions.send(.leftMatch)
+//			}
+//		}
+	}
+
+//	private func openClientConnection(to url: URL) {
+//		client.url = url
+//		LoadingHUD.shared.show()
+//
+//		client.openConnection()
+//			.receive(on: DispatchQueue.main)
+//			.sink(
+//				receiveCompletion: { [weak self] result in
+//					if case let .failure(error) = result {
+//						self?.handleGameClientError(error)
+//					}
+//				},
+//				receiveValue: { [weak self] event in
+//					self?.handleGameClientEvent(event)
+//				}
+//			).store(in: self)
+//	}
+//
+//	private func handleGameClientError(_ error: GameClientError) {
+//		LoadingHUD.shared.hide()
+//		actions.send(.leftMatch)
+//		#warning("TODO: add a reconnect mechanism")
+//		print("Client disconnected: \(error)")
+//	}
+//
+//	private func handleGameClientEvent(_ event: GameClientEvent) {
+//		switch event {
+//		case .connected:
+//			LoadingHUD.shared.hide()
+//		case .closed:
+//			actions.send(.leftMatch)
+//		case .message(let message):
+//			handleGameClientMessage(message)
+//		}
+//	}
+//
+//	private func handleGameClientMessage(_ message: GameServerMessage) {
+//		switch message {
+//		case .playerJoined(let id):
+//			playerJoined(id: id)
+//		case .playerLeft(let id):
+//			playerLeft(id: id)
+//		case .gameState(let state):
+//			updateGameState(to: state)
+//		case .playerReady(let id, let ready):
+//			readyPlayers.set(id, to: ready)
+//		case .setOption(let option, let value):
+//			setOption(option, to: value)
+//		case .message(let id, let string):
+//			#warning("TODO: display message")
+//			print("Received message '\(string)' from \(id)")
+//		case .error(let error):
+//			actions.send(.presentLoaf(error.loaf))
+//		case .forfeit, .gameOver:
+//			print("Received invalid message in Match Details: \(message)")
+//		}
+//	}
+}
+
+// MARK: - Strings
+
+extension MatchDetailV2 {
+	var title: String {
+		if let host = matchState.match.value?.host?.displayName {
+			return "\(host)'s match"
+		} else {
+			return "Match Details"
+		}
+	}
+
+	var startButtonText: String {
+		guard let hostId = matchState.match.value?.host?.id,
+			let opponentId = matchState.match.value?.opponent?.id else {
+			return ""
+		}
+
+		let user = userIsHost ? hostId : opponentId
+		let opponent = userIsHost ? opponentId : hostId
+
+		if matchState.readyPlayers.contains(user) {
+			return "Cancel"
+		} else {
+			return matchState.readyPlayers.contains(opponent) ? "Start" : "Ready"
+		}
+	}
+
+	func name(forOption option: Match.Option) -> String {
+		switch option {
+		case .asyncPlay: return "Asynchronous play"
+		case .hostIsWhite: return "\(matchState.match.value?.host?.displayName ?? "Host") is white"
+		}
+	}
+
+	func name(forOption option: GameState.Option) -> String {
+		return option.preview ?? option.displayName
+	}
+}
+
+private extension GameState.Option {
+	var preview: String? {
+		switch self {
+		case .mosquito: return "M"
+		case .ladyBug: return "L"
+		case .pillBug: return "P"
+		default: return nil
+		}
 	}
 }
