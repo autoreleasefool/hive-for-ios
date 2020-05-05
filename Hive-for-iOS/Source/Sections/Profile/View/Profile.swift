@@ -9,15 +9,12 @@
 import SwiftUI
 
 struct Profile: View {
-	@ObservedObject private var viewModel: ProfileViewModel
 
-	init(viewModel: ProfileViewModel) {
-		self.viewModel = viewModel
-	}
+	@State private var user: Loadable<User> = .notLoaded
 
 	var body: some View {
 		List {
-			HexImage(url: viewModel.user?.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .primary)
+			HexImage(url: user.value?.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .primary)
 				.placeholderTint(.primary)
 				.squareImage(.m)
 		}

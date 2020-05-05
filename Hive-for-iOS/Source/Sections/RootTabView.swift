@@ -28,7 +28,6 @@ struct RootTabView: View {
 	}
 
 	@State private var currentTab = 0
-	private var profileViewModel = ProfileViewModel(userId: UUID())
 
 	var body: some View {
 		TabView(selection: $currentTab) {
@@ -36,7 +35,7 @@ struct RootTabView: View {
 				.tabItem {
 					Tab.lobby.tabItem(isSelected: currentTab == Tab.lobby.rawValue)
 				}
-			Profile(viewModel: profileViewModel)
+			Profile()
 				.tabItem {
 					Tab.profile.tabItem(isSelected: currentTab == Tab.profile.rawValue)
 				}

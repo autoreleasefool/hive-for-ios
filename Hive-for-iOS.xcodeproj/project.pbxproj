@@ -102,7 +102,6 @@
 		CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA91F923EA1B410087F1F0 /* String+Extensions.swift */; };
 		CAFC7A62245C527400747E82 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC7A61245C527400747E82 /* RootTabView.swift */; };
 		CAFC7A65245C54EE00747E82 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC7A64245C54EE00747E82 /* Profile.swift */; };
-		CAFC7A68245C5CAA00747E82 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC7A67245C5CAA00747E82 /* ProfileViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -197,7 +196,6 @@
 		CAFA91F923EA1B410087F1F0 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		CAFC7A61245C527400747E82 /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		CAFC7A64245C54EE00747E82 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		CAFC7A67245C5CAA00747E82 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -369,6 +367,22 @@
 			path = ViewModifier;
 			sourceTree = "<group>";
 		};
+		CAC650A92461533900835209 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAFC7A64245C54EE00747E82 /* Profile.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAC650AA2461535800835209 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CAA87BC024328F53006E418B /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		CAC685F623CCE9F400B882D2 /* Welcome */ = {
 			isa = PBXGroup;
 			children = (
@@ -499,7 +513,6 @@
 			isa = PBXGroup;
 			children = (
 				CAA87BCA243299C8006E418B /* LoginSignupData.swift */,
-				CAA87BC024328F53006E418B /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -597,18 +610,10 @@
 		CAFC7A63245C54DE00747E82 /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				CAFC7A66245C5CA100747E82 /* ViewModel */,
-				CAFC7A64245C54EE00747E82 /* Profile.swift */,
+				CAC650AA2461535800835209 /* Model */,
+				CAC650A92461533900835209 /* View */,
 			);
 			path = Profile;
-			sourceTree = "<group>";
-		};
-		CAFC7A66245C5CA100747E82 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				CAFC7A67245C5CAA00747E82 /* ProfileViewModel.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -804,7 +809,6 @@
 				CAF8255E245C75C50064359E /* AppContainer.swift in Sources */,
 				CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */,
 				CAF82556245C6B030064359E /* AppState.swift in Sources */,
-				CAFC7A68245C5CAA00747E82 /* ProfileViewModel.swift in Sources */,
 				CAFA91F623E958EE0087F1F0 /* PopoverSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
