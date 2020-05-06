@@ -292,7 +292,7 @@ extension MatchDetail {
 			set: {
 				guard self.userIsHost else { return }
 				self.matchState.matchOptions.set(option, to: $0)
-//				self.client.send(.setOption(.matchOption(option), $0))
+				self.send(.setOption(.matchOption(option), $0))
 			}
 		)
 	}
@@ -303,7 +303,7 @@ extension MatchDetail {
 			set: {
 				guard self.userIsHost else { return }
 				self.matchState.gameOptions.set(option, to: $0)
-//					self.client.send(.setOption(.gameOption(option), $0))
+				self.send(.setOption(.gameOption(option), $0))
 			}
 		)
 	}
@@ -315,10 +315,10 @@ extension MatchDetail {
 
 		if isPlayerReady(id: id) {
 			matchState.readyPlayers.remove(id)
-//			client.send(.readyToPlay)
+			send(.readyToPlay)
 		} else {
 			matchState.readyPlayers.insert(id)
-//			client.send(.readyToPlay)
+			send(.readyToPlay)
 		}
 	}
 
@@ -370,8 +370,8 @@ extension MatchDetail {
 	}
 
 	private func exitMatch() {
-//		client.send(.forfeit)
-//		client.close()
+		send(.forfeit)
+		close(code: nil)
 		presentationMode.wrappedValue.dismiss()
 	}
 }
