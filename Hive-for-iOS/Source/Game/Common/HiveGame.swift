@@ -12,7 +12,9 @@ import HiveEngine
 import Loaf
 
 struct HiveGame: View {
-	@Environment(\.presentationMode) var presentationMode
+	@Environment(\.presentationMode) private var presentationMode
+	@Environment(\.container) private var container: AppContainer
+
 	private let onGameEnd: () -> Void
 	private let viewModel = HiveGameViewModel()
 
@@ -49,6 +51,8 @@ struct HiveGame: View {
 		.navigationBarBackButtonHidden(true)
 		.onAppear {
 			UIApplication.shared.isIdleTimerDisabled = true
+			self.viewModel.userId = self.container.account?.userId
+			self.viewModel.clientInteractor = self.container.interactors.clientInteractor
 			self.viewModel.postViewAction(.onAppear)
 		}
 		.onDisappear {

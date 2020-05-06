@@ -12,6 +12,8 @@ import Starscream
 
 protocol ClientInteractor {
 	func openConnection(to url: URL, subscriber: AnySubscriber<GameClientEvent, GameClientError>)
+	func subscribe(_ subscriber: AnySubscriber<GameClientEvent, GameClientError>)
+
 	func closeConnection(code: CloseCode?)
 	func send(_ message: GameClientMessage)
 }
@@ -34,7 +36,13 @@ struct LiveClientInteractor: ClientInteractor {
 			.subscribe(subscriber)
 	}
 
-	func closeConnection(code: CloseCode? = nil) {
+	func subscribe(_ subscriber: AnySubscriber<GameClientEvent, GameClientError>) {
+		client.subject?
+			.receive(on: DispatchQueue.main)
+			.subscribe(subscriber)
+	}
+
+	func closeConnection(code: CloseCode?) {
 		client.close(code: code)
 	}
 
@@ -45,6 +53,7 @@ struct LiveClientInteractor: ClientInteractor {
 
 struct StubClientInteractor: ClientInteractor {
 	func openConnection(to url: URL, subscriber: AnySubscriber<GameClientEvent, GameClientError>) { }
+	func subscribe(_ subscriber: AnySubscriber<GameClientEvent, GameClientError>) { }
 	func closeConnection(code: CloseCode?) { }
 	func send(_ message: GameClientMessage) { }
 }

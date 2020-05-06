@@ -40,8 +40,7 @@ enum HiveGameViewAction: BaseViewAction {
 }
 
 class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
-	private var account: Account!
-	private var client: HiveGameClient!
+	var clientInteractor: ClientInteractor!
 
 	@Published private(set) var presentedPlayerHand: PlayerHand?
 	@Published private(set) var presentedGameInformation: GameInformation?
@@ -64,8 +63,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private(set) var gameStateStore = Store<GameState?>(nil)
 	private(set) var debugModeStore = Store<Bool>(false)
 
+	var userId: User.ID!
+	var playingAs: Player!
 	private(set) var gameContent: GameViewContent!
-	private(set) var playingAs: Player!
 
 	var gameState: GameState {
 		gameStateStore.value!
@@ -207,22 +207,22 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func openConnection() {
 		guard !connectionOpened else { return }
 		connectionOpened = true
-		client.openConnection()
-			.receive(on: DispatchQueue.main)
-			.sink(
-				receiveCompletion: { [weak self] result in
-					if case let .failure(error) = result {
-						self?.handleGameClientError(error)
-					}
-				},
-				receiveValue: { [weak self] event in
-					self?.handleGameClientEvent(event)
+		clientInteractor.subscribe(AnySubscriber(
+			receiveSubscription: nil,
+			receiveValue: { [weak self] in
+				self?.handleGameClientEvent($0)
+				return Subscribers.Demand.unlimited
+			},
+			receiveCompletion: { [weak self] in
+				if case let .failure(error) = $0 {
+					self?.handleGameClientError(error)
 				}
-			).store(in: self)
+			}
+		))
 	}
 
 	private func cleanUp() {
-		client.close()
+		clientInteractor.closeConnection(code: nil)
 	}
 
 	private func attemptSetupNewGame() {
@@ -297,7 +297,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func forfeitGame() {
 		guard inGame else { return }
 
-		client.send(.forfeit)
+		clientInteractor.send(.forfeit)
 		transition(to: .forfeit)
 	}
 
@@ -388,7 +388,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		}
 
 		transition(to: .sendingMovement(movement))
-		client.send(.movement(relativeMovement))
+		clientInteractor.send(.movement(relativeMovement))
 	}
 
 	private func updateGameState(to newState: GameState) {
@@ -476,7 +476,7 @@ extension HiveGameViewModel {
 				winner: winner == nil
 					? nil
 					: (
-						winner == account.userId
+						winner == userId
 							? playingAs
 							: playingAs.next
 					),
@@ -486,22 +486,6 @@ extension HiveGameViewModel {
 			#warning("TODO: handle remaining messages in game")
 			debugLog("Received message: \(message)")
 		}
-	}
-}
-
-// MARK: - Modifiers
-
-extension HiveGameViewModel {
-	func setAccount(to account: Account) {
-		self.account = account
-	}
-
-	func setClient(to client: HiveGameClient) {
-		self.client = client
-	}
-
-	func setPlayer(to player: Player) {
-		self.playingAs = player
 	}
 }
 
