@@ -18,7 +18,9 @@ struct HiveGame: View {
 	private let onGameEnd: () -> Void
 	private let viewModel = HiveGameViewModel()
 
-	init(onGameEnd: @escaping () -> Void) {
+	init(state: GameState?, player: Player, onGameEnd: @escaping () -> Void) {
+		viewModel.playingAs = player
+		viewModel.gameStateStore.send(state)
 		self.onGameEnd = onGameEnd
 	}
 

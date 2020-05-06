@@ -34,7 +34,7 @@ struct MatchDetail: View {
 
 	@ObservedObject private var matchState = MatchDetailState()
 
-	@State private var inGame = false
+	@State private var gameState: GameState?
 	@State private var exiting = false
 
 	init(id: Match.ID?, match: Loadable<Match> = .notLoaded) {
@@ -45,8 +45,10 @@ struct MatchDetail: View {
 	var body: some View {
 		GeometryReader { geometry in
 			NavigationLink(
-				destination: HiveGame { self.presentationMode.wrappedValue.dismiss() },
-				isActive: self.$inGame,
+				destination: HiveGame(state: self.gameState, player: self.player) {
+					self.presentationMode.wrappedValue.dismiss()
+				},
+				isActive: self.inGame,
 				label: { EmptyView() }
 			)
 
@@ -244,6 +246,25 @@ struct MatchDetail: View {
 // MARK: - Actions
 
 extension MatchDetail {
+	var inGame: Binding<Bool> {
+		Binding(
+			get: { self.gameState != nil },
+			set: { newValue in
+				if !newValue {
+					self.gameState = nil
+				}
+			}
+		)
+	}
+
+	var player: Player {
+		if matchState.matchOptions.contains(.hostIsWhite) {
+			return userIsHost ? .white : .black
+		} else {
+			return userIsHost ? .black : .white
+		}
+	}
+
 	var userIsHost: Bool {
 		container.account?.userId == matchState.match.value?.host?.id
 	}
@@ -315,22 +336,13 @@ extension MatchDetail {
 			loadMatchDetails()
 		} else if !userIsHost && id == matchState.match.value?.host?.id {
 			toaster.loaf.send(LoafState("The host has left!", state: .warning))
-//			client.close()
+			close(code: nil)
 			presentationMode.wrappedValue.dismiss()
 		}
 	}
 
 	private func updateGameState(to state: GameState) {
-		let player: Player
-		if userIsHost {
-			player = matchState.matchOptions.contains(.hostIsWhite) ? .white : .black
-		} else {
-			player = matchState.matchOptions.contains(.hostIsWhite) ? .black : .white
-		}
-
-//		gameViewModel.setPlayer(to: player)
-//		gameViewModel.gameStateStore.send(state)
-//		beginGame.send()
+		gameState = state
 	}
 
 	private func setOption(_ option: GameServerMessage.Option, to value: Bool) {
@@ -411,14 +423,14 @@ extension MatchDetail {
 				}
 			))
 	}
-//
+
 	private func handleGameClientError(_ error: GameClientError) {
 		LoadingHUD.shared.hide()
 		presentationMode.wrappedValue.dismiss()
 		#warning("TODO: add a reconnect mechanism")
 		print("Client disconnected: \(error)")
 	}
-//
+
 	private func handleGameClientEvent(_ event: GameClientEvent) {
 		switch event {
 		case .connected:
