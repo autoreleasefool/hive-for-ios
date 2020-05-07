@@ -99,6 +99,8 @@ extension ContentView {
 extension ContentView {
 	var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
+			.receive(on: DispatchQueue.main)
+			.eraseToAnyPublisher()
 	}
 }
 
