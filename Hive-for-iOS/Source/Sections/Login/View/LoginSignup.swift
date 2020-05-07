@@ -171,6 +171,7 @@ extension LoginSignup {
 	}
 
 	private func submitForm() {
+		activeField = nil
 		switch form {
 		case .login: login()
 		case .signup: signup()
