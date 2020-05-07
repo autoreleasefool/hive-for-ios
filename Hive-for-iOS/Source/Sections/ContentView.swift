@@ -38,7 +38,7 @@ struct ContentView: View {
 					self.handleAccountError(error)
 				}
 			}
-			.onReceive(NotificationCenter.default.publisher(for: NSNotification.Name.Account.Unauthorized)) { _ in
+			.onReceive(self.loggedOutUpdate) { _ in
 				self.container.interactors.accountInteractor.clearAccount()
 			}
 			.inject(self.container)
@@ -99,6 +99,14 @@ extension ContentView {
 extension ContentView {
 	var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
+			.receive(on: DispatchQueue.main)
+			.eraseToAnyPublisher()
+	}
+
+	var loggedOutUpdate: AnyPublisher<Void, Never> {
+		NotificationCenter.default
+			.publisher(for: NSNotification.Name.Account.Unauthorized)
+			.map { _ in }
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
 	}
