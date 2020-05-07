@@ -21,6 +21,10 @@ struct LoginSignup: View {
 	@State private var confirmPassword: String = ""
 	@State private var displayName: String = ""
 
+	init(account: Loadable<Account>) {
+		self._account = .init(initialValue: account)
+	}
+
 	var body: some View {
 		content
 			.padding(.all, length: .m)
@@ -140,11 +144,11 @@ struct LoginSignup: View {
 // MARK: - Actions
 
 extension LoginSignup {
-	var loginData: LoginData {
+	private var loginData: LoginData {
 		LoginData(email: email, password: password)
 	}
 
-	var signupData: SignupData {
+	private var signupData: SignupData {
 		SignupData(email: email, displayName: displayName, password: password, verifyPassword: confirmPassword)
 	}
 
@@ -234,39 +238,50 @@ extension LoginSignup {
 // MARK: - Strings
 
 extension LoginSignup {
-	var submitButtonText: String {
+	private var submitButtonText: String {
 		switch form {
 		case .login: return "Login"
 		case .signup: return "Signup"
 		}
 	}
 
-	var toggleButtonText: String {
+	private var toggleButtonText: String {
 		switch form {
 		case .login: return "create a new account"
 		case .signup: return "login to an existing account"
 		}
 	}
 
-	var shouldShowNotice: Bool {
+	private var shouldShowNotice: Bool {
 		switch account {
 		case .failed: return true
 		case .loaded, .loading, .notLoaded: return false
 		}
 	}
 
-	var noticeMessage: String {
+	private var noticeMessage: String {
 		switch account {
 		case .failed(let error):
 			if let accountError = error as? AccountRepositoryError {
 				switch accountError {
 				case .loggedOut: return "You've been logged out. Please login again."
-				case .apiError(let apiError): return apiError.errorDescription ?? error.localizedDescription
+				case .apiError(let apiError): return noticeMessage(for: apiError)
 				case .notFound, .keychainError: return ""
 				}
 			}
 			return error.localizedDescription
 		case .loaded, .loading, .notLoaded: return ""
+		}
+	}
+
+	private func noticeMessage(for error: HiveAPIError) -> String {
+		switch error {
+		case .unauthorized:
+			return "You entered an incorrect email or password."
+		case .networkingError:
+			return "There was an error connecting to the server. Are you connected to the Internet?"
+		case .invalidData, .invalidHTTPResponse, .invalidResponse, .missingData, .notImplemented:
+			return error.errorDescription ?? error.localizedDescription
 		}
 	}
 }

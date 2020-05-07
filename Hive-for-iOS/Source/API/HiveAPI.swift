@@ -19,7 +19,7 @@ enum HiveAPIError: LocalizedError {
 	case notImplemented
 	case unauthorized
 
-	var errorDescription: String {
+	var errorDescription: String? {
 		switch self {
 		case .networkingError:
 			return "Network error"
@@ -41,7 +41,7 @@ enum HiveAPIError: LocalizedError {
 	}
 
 	var loaf: LoafState {
-		LoafState(self.errorDescription, state: .error)
+		LoafState(self.errorDescription ?? "Unknown (API Error)", state: .error)
 	}
 }
 
