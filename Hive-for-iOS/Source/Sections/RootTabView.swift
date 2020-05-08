@@ -9,24 +9,6 @@
 import SwiftUI
 
 struct RootTabView: View {
-	enum Tab: Int {
-		case lobby = 0
-//		case matchHistory = 1
-		case profile = 1
-
-		var tabImageName: String {
-			switch self {
-			case .lobby: return "gamecontroller.fill"
-//			case .matchHistory: return ""
-			case .profile: return "person.fill"
-			}
-		}
-
-		var tabItem: some View {
-			Image(systemName: tabImageName)
-		}
-	}
-
 	@State private var currentTab = 0
 
 	var body: some View {
@@ -42,6 +24,28 @@ struct RootTabView: View {
 		}
 		.accentColor(Color(.primary))
 	}
+}
+
+// MARK: - Tabs
+
+extension RootTabView {
+	enum Tab: Int {
+			case lobby = 0
+	//		case matchHistory = 1
+			case profile = 1
+
+			var tabImageName: String {
+				switch self {
+				case .lobby: return "gamecontroller.fill"
+	//			case .matchHistory: return ""
+				case .profile: return "person.fill"
+				}
+			}
+
+			var tabItem: some View {
+				Image(systemName: tabImageName)
+			}
+		}
 }
 
 #if DEBUG
