@@ -145,11 +145,16 @@ struct LoginSignup: View {
 
 extension LoginSignup {
 	private var loginData: LoginData {
-		LoginData(email: email, password: password)
+		LoginData(email: email.lowercased(), password: password)
 	}
 
 	private var signupData: SignupData {
-		SignupData(email: email, displayName: displayName, password: password, verifyPassword: confirmPassword)
+		SignupData(
+			email: email.lowercased(),
+			displayName: displayName,
+			password: password,
+			verifyPassword: confirmPassword
+		)
 	}
 
 	private func nextField(after id: FieldItem) -> FieldItem? {
