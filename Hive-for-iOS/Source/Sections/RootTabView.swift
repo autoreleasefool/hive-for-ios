@@ -14,16 +14,16 @@ struct RootTabView: View {
 //		case matchHistory = 1
 		case profile = 1
 
-		private var tabImageName: String {
+		var tabImageName: String {
 			switch self {
-			case .lobby: return "gamecontroller"
+			case .lobby: return "gamecontroller.fill"
 //			case .matchHistory: return ""
-			case .profile: return "person"
+			case .profile: return "person.fill"
 			}
 		}
 
-		func tabItem(isSelected: Bool) -> some View {
-			Image(systemName: isSelected ? "\(tabImageName).fill" : tabImageName)
+		var tabItem: some View {
+			Image(systemName: tabImageName)
 		}
 	}
 
@@ -33,12 +33,21 @@ struct RootTabView: View {
 		TabView(selection: $currentTab) {
 			Lobby()
 				.tabItem {
-					Tab.lobby.tabItem(isSelected: currentTab == Tab.lobby.rawValue)
+					Tab.lobby.tabItem
 				}
 			Profile()
 				.tabItem {
-					Tab.profile.tabItem(isSelected: currentTab == Tab.profile.rawValue)
+					Tab.profile.tabItem
 				}
 		}
+		.accentColor(Color(.primary))
 	}
 }
+
+#if DEBUG
+struct RootTabViewPreview: PreviewProvider {
+	static var previews: some View {
+		RootTabView()
+	}
+}
+#endif
