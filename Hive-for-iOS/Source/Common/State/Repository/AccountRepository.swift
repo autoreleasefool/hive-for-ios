@@ -19,6 +19,7 @@ enum AccountRepositoryError: Error {
 
 protocol AccountRepository {
 	func loadAccount() -> AnyPublisher<Account, AccountRepositoryError>
+	func saveAccount(_ account: Account)
 	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError>
 	func signup(_ signupData: SignupData) -> AnyPublisher<Account, AccountRepositoryError>
 	func logout(fromAccount account: Account) -> AnyPublisher<Bool, AccountRepositoryError>
@@ -59,6 +60,15 @@ struct LiveAccountRepository: AccountRepository {
 				.map { _ in account }
 		}
 		.eraseToAnyPublisher()
+	}
+
+	func saveAccount(_ account: Account) {
+		do {
+			try keychain.set(account.userId.uuidString, key: Key.userId.rawValue)
+			try keychain.set(account.token, key: Key.token.rawValue)
+		} catch {
+			print("Error saving login: \(error)")
+		}
 	}
 
 	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError> {

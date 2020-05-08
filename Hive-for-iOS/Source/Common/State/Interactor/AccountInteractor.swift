@@ -46,6 +46,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 	func updateAccount(to account: Account) {
 		appState[\.account] = .loaded(account)
+		repository.saveAccount(account)
 	}
 
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) {
@@ -66,7 +67,8 @@ struct LiveAccountInteractor: AccountInteractor {
 		repository.login(loginData)
 			.receive(on: DispatchQueue.main)
 			.sinkToLoadable {
-				if case .loaded = $0 {
+				if case .loaded = $0, let account = $0.value {
+					self.repository.saveAccount(account)
 					weakState?[\.account] = $0
 				}
 				account.wrappedValue = $0
@@ -83,7 +85,8 @@ struct LiveAccountInteractor: AccountInteractor {
 		repository.signup(signupData)
 			.receive(on: DispatchQueue.main)
 			.sinkToLoadable {
-				if case .loaded = $0 {
+				if case .loaded = $0, let account = $0.value {
+					self.repository.saveAccount(account)
 					weakState?[\.account] = $0
 				}
 				account.wrappedValue = $0
