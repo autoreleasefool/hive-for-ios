@@ -12,8 +12,8 @@ import SwiftUI
 struct LoginSignup: View {
 	@Environment(\.container) private var container: AppContainer
 
-	@State private var account: Loadable<Account> = .notLoaded
-	@State private var form: Form = .login
+	@State private var account: Loadable<Account>
+	@State private var form: Form
 	@State private var activeField: FieldItem?
 
 	@State private var email: String = ""
@@ -21,8 +21,9 @@ struct LoginSignup: View {
 	@State private var confirmPassword: String = ""
 	@State private var displayName: String = ""
 
-	init(account: Loadable<Account> = .notLoaded) {
+	init(defaultForm: Form = .login, account: Loadable<Account> = .notLoaded) {
 		self._account = .init(initialValue: account)
+		self._form = .init(initialValue: defaultForm)
 	}
 
 	var body: some View {
@@ -230,7 +231,7 @@ extension LoginSignup {
 			}
 		}
 
-		func returnKeyType(forForm form: Form) -> UIReturnKeyType {
+		func returnKeyType(forForm form: LoginSignup.Form) -> UIReturnKeyType {
 			switch self {
 			case .email, .displayName: return .next
 			case .confirmPassword: return .done
@@ -301,3 +302,15 @@ extension LoginSignup.FieldItem {
 		}
 	}
 }
+
+#if DEBUG
+struct LoginSignupPreview: PreviewProvider {
+	static var previews: some View {
+		VStack(spacing: .m) {
+			LoginSignup(defaultForm: .login)
+			LoginSignup(defaultForm: .signup)
+		}
+		.background(Color(.background))
+	}
+}
+#endif
