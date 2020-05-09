@@ -9,8 +9,11 @@
 import SwiftUI
 
 struct Profile: View {
-
 	@State private var user: Loadable<User> = .notLoaded
+
+	init(user: Loadable<User> = .notLoaded) {
+		self._user = .init(initialValue: user)
+	}
 
 	var body: some View {
 		List {
@@ -20,3 +23,11 @@ struct Profile: View {
 		}
 	}
 }
+
+#if DEBUG
+struct ProfilePreview: PreviewProvider {
+	static var previews: some View {
+		Profile()
+	}
+}
+#endif
