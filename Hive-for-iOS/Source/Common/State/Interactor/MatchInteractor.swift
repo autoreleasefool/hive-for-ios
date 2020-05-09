@@ -21,7 +21,7 @@ struct LiveMatchInteractor: MatchInteractor {
 
 	func loadOpenMatches(withAccount account: Account?, matches: LoadableSubject<[Match]>) {
 		let cancelBag = CancelBag()
-		matches.wrappedValue = .loading(cached: matches.wrappedValue.value, cancelBag: cancelBag)
+		matches.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.loadOpenMatches(withAccount: account)
 			.receive(on: DispatchQueue.main)
@@ -31,7 +31,7 @@ struct LiveMatchInteractor: MatchInteractor {
 
 	func loadMatchDetails(id: Match.ID, withAccount account: Account?, match: LoadableSubject<Match>) {
 		let cancelBag = CancelBag()
-		match.wrappedValue = .loading(cached: match.wrappedValue.value, cancelBag: cancelBag)
+		match.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.loadMatchDetails(id: id, withAccount: account)
 			.receive(on: DispatchQueue.main)
@@ -41,7 +41,7 @@ struct LiveMatchInteractor: MatchInteractor {
 
 	func joinMatch(id: Match.ID, withAccount account: Account?, match: LoadableSubject<Match>) {
 		let cancelBag = CancelBag()
-		match.wrappedValue = .loading(cached: match.wrappedValue.value, cancelBag: cancelBag)
+		match.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.joinMatch(id: id, withAccount: account)
 			.receive(on: DispatchQueue.main)
@@ -51,7 +51,7 @@ struct LiveMatchInteractor: MatchInteractor {
 
 	func createNewMatch(withAccount account: Account?, match: LoadableSubject<Match>) {
 		let cancelBag = CancelBag()
-		match.wrappedValue = .loading(cached: match.wrappedValue.value, cancelBag: cancelBag)
+		match.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.createNewMatch(withAccount: account)
 			.receive(on: DispatchQueue.main)

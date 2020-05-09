@@ -48,6 +48,12 @@ enum Loadable<T> {
 	}
 }
 
+extension Loadable {
+	mutating func setLoading(cancelBag: CancelBag) {
+		self = .loading(cached: value, cancelBag: cancelBag)
+	}
+}
+
 extension Loadable: Equatable where T: Equatable {
 	static func == (lhs: Loadable<T>, rhs: Loadable<T>) -> Bool {
 		switch (lhs, rhs) {

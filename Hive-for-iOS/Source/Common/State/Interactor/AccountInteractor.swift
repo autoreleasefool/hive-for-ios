@@ -31,7 +31,7 @@ struct LiveAccountInteractor: AccountInteractor {
 		guard case .notLoaded = appState[\.account] else { return }
 
 		let cancelBag = CancelBag()
-		appState[\.account] = .loading(cached: nil, cancelBag: cancelBag)
+		appState[\.account].setLoading(cancelBag: cancelBag)
 
 		weak var weakState = appState
 		repository.loadAccount()
@@ -51,7 +51,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) {
 		let cancelBag = CancelBag()
-		result.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
+		result.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.logout(fromAccount: account)
 			.receive(on: DispatchQueue.main)
@@ -61,7 +61,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 	func login(_ loginData: LoginData, account: LoadableSubject<Account>) {
 		let cancelBag = CancelBag()
-		account.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
+		account.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		weak var weakState = appState
 		repository.login(loginData)
@@ -79,7 +79,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 	func signup(_ signupData: SignupData, account: LoadableSubject<Account>) {
 		let cancelBag = CancelBag()
-		account.wrappedValue = .loading(cached: nil, cancelBag: cancelBag)
+		account.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		weak var weakState = appState
 		repository.signup(signupData)
