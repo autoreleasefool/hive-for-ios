@@ -55,6 +55,7 @@ struct MatchDetail: View {
 
 			self.content(geometry)
 		}
+		.background(Color(.background).edgesIgnoringSafeArea(.all))
 		.navigationBarTitle(Text(title), displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.navigationBarItems(leading: exitButton, trailing: startButton)
@@ -514,3 +515,13 @@ private extension GameState.Option {
 		}
 	}
 }
+
+#if DEBUG
+struct MatchDetailPreview: PreviewProvider {
+	static var previews: some View {
+		let match = Match.matches[0]
+		let loadable: Loadable<Match> = .loaded(match)
+		return MatchDetail(id: match.id, match: loadable)
+	}
+}
+#endif
