@@ -12,7 +12,7 @@ import Starscream
 
 protocol ClientInteractor {
 	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError>
-	func subscribe() -> AnyPublisher<GameClientEvent, GameClientError>?
+	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError>
 
 	func closeConnection(code: CloseCode?)
 	func send(_ message: GameClientMessage)
@@ -33,8 +33,8 @@ struct LiveClientInteractor: ClientInteractor {
 			.eraseToAnyPublisher()
 	}
 
-	func subscribe() -> AnyPublisher<GameClientEvent, GameClientError>? {
-		client.subject?
+	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
+		client.reconnect(withAccount: appState.value.account.value)
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
 	}
@@ -50,13 +50,11 @@ struct LiveClientInteractor: ClientInteractor {
 
 struct StubClientInteractor: ClientInteractor {
 	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError> {
-		Future { promise in promise(.failure(.failedToConnect)) }
-			.eraseToAnyPublisher()
+		Fail(error: .failedToConnect).eraseToAnyPublisher()
 	}
 
-	func subscribe() -> AnyPublisher<GameClientEvent, GameClientError>? {
-		Future { promise in promise(.failure(.failedToConnect)) }
-			.eraseToAnyPublisher()
+	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
+		Fail(error: .failedToConnect).eraseToAnyPublisher()
 	}
 
 	func closeConnection(code: CloseCode?) { }
