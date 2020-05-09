@@ -138,7 +138,7 @@ struct MatchDetail: View {
 	// MARK: Match Details
 
 	private func playerSection(match: Match) -> some View {
-		HStack(spacing: 0) {
+		HStack(spacing: .xs) {
 			MatchUserSummary(
 				match.host,
 				highlight: self.isPlayerReady(id: match.host?.id),

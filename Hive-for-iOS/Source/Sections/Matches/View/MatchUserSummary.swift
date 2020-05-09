@@ -64,11 +64,13 @@ struct MatchUserSummary: View {
 			Text(primaryText)
 				.body()
 				.foregroundColor(Color(.text))
+				.multilineTextAlignment(textAlignment == .leading ? .leading : .trailing)
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if user != nil {
 				Text(secondaryText)
 					.caption()
 					.foregroundColor(Color(.textSecondary))
+					.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			}
 		}
 	}
@@ -94,6 +96,14 @@ struct MatchUserSummaryPreview: PreviewProvider {
 				.border(Color(.highlight), width: 1)
 			MatchUserSummary(nil, alignment: .trailing)
 				.border(Color(.highlight), width: 1)
+
+			HStack(spacing: .xs) {
+				MatchUserSummary(Match.User.users[0], iconSize: .l)
+					.border(Color(.highlight), width: 1)
+				Spacer()
+				MatchUserSummary(Match.User.users[1], alignment: .trailing, iconSize: .l)
+					.border(Color(.highlight), width: 1)
+			}
 		}
 		.frame(width: UIScreen.main.bounds.width)
 		.background(Color(.background))
