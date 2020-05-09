@@ -11,24 +11,27 @@ import SwiftUI
 
 struct LoginField: UIViewRepresentable {
 	let title: String
-	var text: Binding<String>
+	let text: Binding<String>
+	let maxLength: Int?
 	let keyboardType: UIKeyboardType
 	let returnKeyType: UIReturnKeyType
-	var isFirstResponder: Bool
+	let isFirstResponder: Bool
 	let isSecure: Bool
 	let onReturn: () -> Void
 
 	init(
 		_ title: String,
 		text: Binding<String>,
-		keyboardType: UIKeyboardType,
-		returnKeyType: UIReturnKeyType,
+		maxLength: Int? = nil,
+		keyboardType: UIKeyboardType = .default,
+		returnKeyType: UIReturnKeyType = .default,
 		isActive: Bool,
-		isSecure: Bool,
+		isSecure: Bool = false,
 		onReturn: @escaping () -> Void
 	) {
 		self.title = title
 		self.text = text
+		self.maxLength = maxLength
 		self.keyboardType = keyboardType
 		self.returnKeyType = returnKeyType
 		self.isFirstResponder = isActive
@@ -57,7 +60,7 @@ struct LoginField: UIViewRepresentable {
 	}
 
 	func makeCoordinator() -> LoginField.Coordinator {
-		Coordinator(text: text, onReturn: onReturn)
+		Coordinator(text: text, maxLength: maxLength, onReturn: onReturn)
 	}
 
 	func updateUIView(_ textField: UITextField, context: UIViewRepresentableContext<LoginField>) {
@@ -81,12 +84,14 @@ struct LoginField: UIViewRepresentable {
 	}
 
 	class Coordinator: NSObject, UITextFieldDelegate {
-		var text: Binding<String>
-		var onReturn: () -> Void
+		let text: Binding<String>
+		let maxLength: Int?
+		let onReturn: () -> Void
 		var didBecomeFirstResponder = false
 
-		init(text: Binding<String>, onReturn: @escaping () -> Void) {
+		init(text: Binding<String>, maxLength: Int?, onReturn: @escaping () -> Void) {
 			self.text = text
+			self.maxLength = maxLength
 			self.onReturn = onReturn
 		}
 
@@ -100,6 +105,23 @@ struct LoginField: UIViewRepresentable {
 			}
 			onReturn()
 			return false
+		}
+
+		func textField(
+			_ textField: UITextField,
+			shouldChangeCharactersIn range: NSRange,
+			replacementString string: String
+		) -> Bool {
+			guard let maxLength = maxLength else {
+				return true
+			}
+			guard let textFieldText = textField.text,
+				let rangeOfTextToReplace = Range(range, in: textFieldText) else {
+				return false
+			}
+			let substringToReplace = textFieldText[rangeOfTextToReplace]
+			let count = textFieldText.count - substringToReplace.count + string.count
+			return count <= maxLength
 		}
 	}
 }

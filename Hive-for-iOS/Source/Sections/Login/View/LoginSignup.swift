@@ -90,6 +90,7 @@ struct LoginSignup: View {
 		LoginField(
 			id.title,
 			text: text(for: id),
+			maxLength: id.maxLength,
 			keyboardType: id.keyboardType,
 			returnKeyType: id.returnKeyType(forForm: form),
 			isActive: activeField == id,
@@ -236,6 +237,13 @@ extension LoginSignup {
 			case .email, .displayName: return .next
 			case .confirmPassword: return .done
 			case .password: return form == .login ? .done : .next
+			}
+		}
+
+		var maxLength: Int? {
+			switch self {
+			case .displayName: return 24
+			case .email, .password, .confirmPassword: return nil
 			}
 		}
 	}
