@@ -141,13 +141,13 @@ struct MatchDetail: View {
 		HStack(spacing: 0) {
 			MatchUserSummary(
 				match.host,
-				isReady: self.isPlayerReady(id: match.host?.id),
+				highlight: self.isPlayerReady(id: match.host?.id),
 				iconSize: .l
 			)
 			Spacer()
 			MatchUserSummary(
 				match.opponent,
-				isReady: self.isPlayerReady(id: match.opponent?.id),
+				highlight: self.isPlayerReady(id: match.opponent?.id),
 				alignment: .trailing,
 				iconSize: .l
 			)

@@ -14,37 +14,46 @@ struct MatchUserSummary: View {
 	}
 
 	let user: Match.User?
-	let isReady: Bool
+	let highlight: Bool
 	let textAlignment: Alignment
-	let compact: Bool
 	let iconSize: Metrics.Image
 
 	init(
 		_ user: Match.User?,
-		isReady: Bool = false,
+		highlight: Bool = false,
 		alignment: Alignment = .leading,
-		compact: Bool = false,
 		iconSize: Metrics.Image = .m
 	) {
 		self.user = user
-		self.isReady = isReady
+		self.highlight = highlight
 		self.textAlignment = alignment
-		self.compact = compact
 		self.iconSize = iconSize
 	}
 
+	var body: some View {
+		HStack(spacing: .s) {
+			if textAlignment == .leading {
+				userImage
+				userDescription
+			} else {
+				userDescription
+				userImage
+			}
+		}
+		.opacity(user == nil ? 0.7 : 1)
+	}
+
 	var primaryText: String {
-		guard let user = user else { return "N/A" }
-		return compact ? user.formattedELO : user.displayName
+		user?.displayName ?? "N/A"
 	}
 
 	var secondaryText: String {
 		guard let user = user else { return "" }
-		return compact ? "ELO" : "\(user.formattedELO) ELO"
+		return "\(user.formattedELO) ELO"
 	}
 
 	var userImage: some View {
-		let stroke: ColorAsset = user != nil && isReady ? .success : .primary
+		let stroke: ColorAsset = user != nil && highlight ? .success : .primary
 		return HexImage(url: user?.avatarURL, placeholder: ImageAsset.borderlessGlyph, stroke: stroke)
 			.placeholderTint(.primary)
 			.squareImage(iconSize)
@@ -63,36 +72,30 @@ struct MatchUserSummary: View {
 			}
 		}
 	}
-
-	var body: some View {
-		HStack(spacing: .s) {
-			if textAlignment == .leading {
-				userImage
-				userDescription
-			} else {
-				userDescription
-				userImage
-			}
-		}
-		.opacity(user == nil ? 0.7 : 1)
-	}
 }
 
 #if DEBUG
 struct MatchUserSummaryPreview: PreviewProvider {
 	static var previews: some View {
-		VStack {
+		VStack(spacing: .m) {
 			MatchUserSummary(Match.User.users[0])
-			MatchUserSummary(Match.User.users[0], isReady: true)
+				.border(Color(.highlight), width: 1)
+			MatchUserSummary(Match.User.users[0], highlight: true)
+				.border(Color(.highlight), width: 1)
 			MatchUserSummary(Match.User.users[0], iconSize: .l)
+				.border(Color(.highlight), width: 1)
 			MatchUserSummary(Match.User.users[0], alignment: .trailing)
-			MatchUserSummary(Match.User.users[0], compact: true)
+				.border(Color(.highlight), width: 1)
 			MatchUserSummary(nil)
-			MatchUserSummary(nil, isReady: true)
+				.border(Color(.highlight), width: 1)
+			MatchUserSummary(nil, highlight: true)
+				.border(Color(.highlight), width: 1)
 			MatchUserSummary(nil, iconSize: .l)
+				.border(Color(.highlight), width: 1)
 			MatchUserSummary(nil, alignment: .trailing)
-			MatchUserSummary(nil, compact: true)
+				.border(Color(.highlight), width: 1)
 		}
+		.frame(width: UIScreen.main.bounds.width)
 		.background(Color(.background))
 	}
 }
