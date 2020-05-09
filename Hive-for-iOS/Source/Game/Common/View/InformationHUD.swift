@@ -19,7 +19,39 @@ struct InformationHUD: View {
 		case .piece, .pieceClass, .rule: return maxHeight * 0.75
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
 		case .gameEnd: return maxHeight * 0.25
+		case .reconnecting: return maxHeight * 0.25
 		case .none: return 0
+		}
+	}
+
+	var body: some View {
+		GeometryReader { geometry in
+			BottomSheet(
+				isOpen: self.viewModel.presentingGameInformation,
+				minHeight: 0,
+				maxHeight: self.hudHeight(
+					maxHeight: geometry.size.height,
+					information: self.viewModel.presentedGameInformation
+				),
+				showsDragIndicator: self.information?.dismissable ?? true,
+				dragGestureEnabled: self.information?.dismissable ?? true
+			) {
+				if self.isPresenting {
+					self.HUD(information: self.information!, state: self.viewModel.gameState)
+				} else {
+					EmptyView()
+				}
+			}
+		}
+	}
+
+	fileprivate func HUD(information: GameInformation, state: GameState) -> some View {
+		VStack(spacing: .m) {
+			header(information: information)
+			Divider()
+				.background(Color(.divider))
+				.padding(.horizontal, length: .m)
+			details(information: information, state: state)
 		}
 	}
 
@@ -28,7 +60,7 @@ struct InformationHUD: View {
 
 		return VStack(spacing: .s) {
 			Text(information.title)
-				.title()
+				.subtitle()
 				.foregroundColor(Color(.text))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 
@@ -72,38 +104,23 @@ struct InformationHUD: View {
 				return AnyView(
 					Button("Return to lobby") { self.viewModel.postViewAction(.returnToLobby) }
 				)
+			case .reconnecting:
+				return AnyView(ActivityIndicator(isAnimating: true, style: .whiteLarge))
 			}
 		}
 			.padding(.horizontal, length: .m)
 	}
+}
 
-	fileprivate func HUD(information: GameInformation, state: GameState) -> some View {
-		VStack(spacing: .m) {
-			header(information: information)
-			Divider()
-				.background(Color(.divider))
-				.padding(.horizontal, length: .m)
-			details(information: information, state: state)
-		}
+// MARK: - Actions
+
+extension InformationHUD {
+	var isPresenting: Bool {
+		viewModel.presentingGameInformation.wrappedValue
 	}
 
-	var body: some View {
-		GeometryReader { geometry in
-			BottomSheet(
-				isOpen: self.viewModel.presentingGameInformation,
-				minHeight: 0,
-				maxHeight: self.hudHeight(
-					maxHeight: geometry.size.height,
-					information: self.viewModel.presentedGameInformation
-				)
-			) {
-				if self.viewModel.presentingGameInformation.wrappedValue {
-					self.HUD(information: self.viewModel.presentedGameInformation!, state: self.viewModel.gameState)
-				} else {
-					EmptyView()
-				}
-			}
-		}
+	var information: GameInformation? {
+		viewModel.presentedGameInformation
 	}
 }
 

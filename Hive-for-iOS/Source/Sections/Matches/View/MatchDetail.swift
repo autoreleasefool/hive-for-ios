@@ -436,20 +436,22 @@ extension MatchDetail {
 	}
 
 	private func reopenClientConnection() {
-		guard let match = matchState.match.value else {
-			toaster.loaf.send(LoafState("Failed to reconnect", state: .error))
-			presentationMode.wrappedValue.dismiss()
-			return
-		}
-
-		openClientConnection(to: match)
+		openClientConnection(to: nil)
 	}
 
-	private func openClientConnection(to url: URL) {
+	private func openClientConnection(to url: URL?) {
 		LoadingHUD.shared.show()
 
-		container.interactors.clientInteractor
-			.openConnection(to: url)
+		let publisher: AnyPublisher<GameClientEvent, GameClientError>
+		if let url = url {
+			publisher = container.interactors.clientInteractor
+				.openConnection(to: url)
+		} else {
+			publisher = container.interactors.clientInteractor
+				.reconnect()
+		}
+
+		publisher
 			.sink(
 				receiveCompletion: {
 					if case let .failure(error) = $0 {

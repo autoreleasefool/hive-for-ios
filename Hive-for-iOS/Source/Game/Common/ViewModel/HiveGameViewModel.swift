@@ -67,6 +67,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	var playingAs: Player!
 	private(set) var gameContent: GameViewContent!
 
+	private var connectionOpened = false
+	private var reconnectAttempts = 0
+	private var reconnecting = false
+
 	var gameState: GameState {
 		gameStateStore.value!
 	}
@@ -146,9 +150,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		return Position(x: x, y: -x - z, z: z)
 	}
 
-	private var connectionOpened: Bool = false
-	private var viewContentReady: Bool = false
-	private var viewInteractionsReady: Bool = false
+	private var viewContentReady = false
+	private var viewInteractionsReady = false
 
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {
@@ -206,9 +209,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	private func openConnection() {
 		guard !connectionOpened else { return }
-		if let subject = clientInteractor.subscribe() {
-			connectionOpened = true
-			subject.sink(
+		connectionOpened = true
+		clientInteractor.reconnect()
+			.sink(
 				receiveCompletion: { [weak self] in
 					if case let .failure(error) = $0 {
 						self?.handleGameClientError(error)
@@ -217,8 +220,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 					self?.handleGameClientEvent($0)
 				}
 			)
-				.store(in: self)
-		}
+			.store(in: self)
 	}
 
 	private func cleanUp() {
@@ -452,12 +454,39 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 extension HiveGameViewModel {
 	private func handleGameClientError(_ error: GameClientError) {
 		print("Client did not connect: \(error)")
+
+		guard reconnectAttempts < HiveGameClient.maxReconnectAttempts else {
+			loafState.send(LoafState("Failed to reconnect", state: .error))
+			transition(to: .gameEnd)
+			return
+		}
+
+		reconnecting = true
+		reconnectAttempts += 1
+
+		switch presentedGameInformation {
+		case .reconnecting: break
+		default: presentedGameInformation = .reconnecting(reconnectAttempts)
+		}
+
+		openConnection()
+	}
+
+	private func onClientConnected() {
+		reconnecting = false
+		reconnectAttempts = 0
+		debugLog("Connected to client.")
+
+		switch presentedGameInformation {
+		case .reconnecting: presentedGameInformation = nil
+		default: break
+		}
 	}
 
 	private func handleGameClientEvent(_ event: GameClientEvent) {
 		switch event {
 		case .connected:
-			debugLog("Connected to client.")
+			onClientConnected()
 		case .closed(let reason, let code):
 			debugLog("Connection to client closed: \(reason) (\(String(describing: code)))")
 			self.connectionOpened = false
@@ -567,6 +596,9 @@ extension HiveGameViewModel {
 		case (_, .forfeit): return true
 		case (.forfeit, _): return false
 
+		// Game can be ended at any time
+		case (_, .gameEnd): return true
+
 		// Beginning the game always transitions to the start of a game
 		case (.begin, .gameStart): return true
 		case (.begin, _): return false
@@ -581,15 +613,14 @@ extension HiveGameViewModel {
 		case (.playerTurn, .sendingMovement): return true
 		case (.playerTurn, _): return false
 
-		// A played move either leads to a new turn, or the end of the game
-		case (.sendingMovement, .opponentTurn), (.sendingMovement, .gameEnd): return true
-		case (.opponentTurn, .playerTurn), (.opponentTurn, .gameEnd): return true
+		// A played move leads to a new turn
+		case (.sendingMovement, .opponentTurn): return true
+		case (.opponentTurn, .playerTurn): return true
 		case (.opponentTurn, _): return false
 
 		case (.sendingMovement, _), (_, .sendingMovement): return false
 		case (_, .playerTurn), (_, .opponentTurn): return false
 
-		case (_, .gameEnd): return false
 		}
 	}
 }

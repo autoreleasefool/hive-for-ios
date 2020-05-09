@@ -28,6 +28,7 @@ enum GameInformation {
 	case stack([Piece])
 	case rule(HiveRule?)
 	case gameEnd(EndState)
+	case reconnecting(Int)
 
 	init?(fromLink link: String) {
 		if link.starts(with: "class:"), let pieceClass = Piece.Class(fromName: String(link.substring(from: 6))) {
@@ -56,6 +57,7 @@ enum GameInformation {
 			} else {
 				return "It's a tie!"
 			}
+		case .reconnecting: return "Disconnected from server"
 		}
 	}
 
@@ -76,6 +78,18 @@ enum GameInformation {
 					"\(state.playerIsWinner ? "your opponent's" : "your") queen and won the game! " +
 					"Return to the lobby to play another game."
 			}
+		case .reconnecting(let attempts):
+			return "The connection to the server has been lost. The game will automatically attempt to reconnect, " +
+				"but if a connection cannot be made, you will forfeit the match. This dialog will dismiss " +
+				"automatically if the connection is restored.\n" +
+				"Please wait (\(attempts)/\(HiveGameClient.maxReconnectAttempts))."
+		}
+	}
+
+	var dismissable: Bool {
+		switch self {
+		case .reconnecting: return false
+		case .gameEnd, .piece, .pieceClass, .rule, .stack: return true
 		}
 	}
 }
