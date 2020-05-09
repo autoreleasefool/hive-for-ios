@@ -21,7 +21,7 @@ struct LoginSignup: View {
 	@State private var confirmPassword: String = ""
 	@State private var displayName: String = ""
 
-	init(account: Loadable<Account>) {
+	init(account: Loadable<Account> = .notLoaded) {
 		self._account = .init(initialValue: account)
 	}
 

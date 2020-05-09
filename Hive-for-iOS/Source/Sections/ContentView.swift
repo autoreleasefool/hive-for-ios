@@ -73,7 +73,7 @@ struct ContentView: View {
 	}
 
 	private var noAccountView: some View {
-		LoginSignup(account: account)
+		LoginSignup()
 	}
 }
 
