@@ -112,7 +112,7 @@ struct MatchDetail: View {
 			if match == nil {
 				HStack {
 					Spacer()
-					ActivityIndicator(isAnimating: true, style: .large)
+					ActivityIndicator(isAnimating: true, style: .whiteLarge)
 					Spacer()
 				}
 				.padding(.top, length: .m)

@@ -67,7 +67,7 @@ struct LoginSignup: View {
 		GeometryReader { geometry in
 			HStack {
 				Spacer()
-				ActivityIndicator(isAnimating: true, style: .large)
+				ActivityIndicator(isAnimating: true, style: .whiteLarge)
 				Spacer()
 			}
 			.padding(.top, length: .m)
