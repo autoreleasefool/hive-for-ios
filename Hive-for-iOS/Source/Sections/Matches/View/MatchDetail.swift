@@ -23,6 +23,7 @@ private final class MatchDetailState: ObservableObject {
 	@Published var matchOptions: Set<Match.Option> = Set()
 	@Published var gameOptions: Set<GameState.Option> = Set()
 	@Published var readyPlayers: Set<UUID> = Set()
+	var cancelBag = CancelBag()
 }
 
 struct MatchDetail: View {
@@ -397,8 +398,8 @@ extension MatchDetail {
 			.closeConnection(code: code)
 	}
 
-	private func openClientConnection(to: Match) {
-		if let url = matchState.match.value?.webSocketURL {
+	private func openClientConnection(to match: Match) {
+		if let url = match.webSocketURL {
 			openClientConnection(to: url)
 		} else {
 			toaster.loaf.send(LoafState("Failed to join match", state: .error))
@@ -410,18 +411,17 @@ extension MatchDetail {
 		LoadingHUD.shared.show()
 
 		container.interactors.clientInteractor
-			.openConnection(to: url, subscriber: AnySubscriber(
-				receiveSubscription: nil,
-				receiveValue: {
-					self.handleGameClientEvent($0)
-					return Subscribers.Demand.unlimited
-				},
+			.openConnection(to: url)
+			.sink(
 				receiveCompletion: {
 					if case let .failure(error) = $0 {
 						self.handleGameClientError(error)
 					}
+				}, receiveValue: {
+					self.handleGameClientEvent($0)
 				}
-			))
+			)
+			.store(in: matchState.cancelBag)
 	}
 
 	private func handleGameClientError(_ error: GameClientError) {

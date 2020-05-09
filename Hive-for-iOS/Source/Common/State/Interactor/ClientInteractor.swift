@@ -11,8 +11,8 @@ import Foundation
 import Starscream
 
 protocol ClientInteractor {
-	func openConnection(to url: URL, subscriber: AnySubscriber<GameClientEvent, GameClientError>)
-	func subscribe(_ subscriber: AnySubscriber<GameClientEvent, GameClientError>)
+	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError>
+	func subscribe() -> AnyPublisher<GameClientEvent, GameClientError>?
 
 	func closeConnection(code: CloseCode?)
 	func send(_ message: GameClientMessage)
@@ -27,19 +27,16 @@ struct LiveClientInteractor: ClientInteractor {
 		self.appState = appState
 	}
 
-	func openConnection(
-		to url: URL,
-		subscriber: AnySubscriber<GameClientEvent, GameClientError>
-	) {
+	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError> {
 		client.openConnection(to: url, withAccount: appState.value.account.value)
 			.receive(on: DispatchQueue.main)
-			.subscribe(subscriber)
+			.eraseToAnyPublisher()
 	}
 
-	func subscribe(_ subscriber: AnySubscriber<GameClientEvent, GameClientError>) {
+	func subscribe() -> AnyPublisher<GameClientEvent, GameClientError>? {
 		client.subject?
 			.receive(on: DispatchQueue.main)
-			.subscribe(subscriber)
+			.eraseToAnyPublisher()
 	}
 
 	func closeConnection(code: CloseCode?) {
@@ -52,8 +49,16 @@ struct LiveClientInteractor: ClientInteractor {
 }
 
 struct StubClientInteractor: ClientInteractor {
-	func openConnection(to url: URL, subscriber: AnySubscriber<GameClientEvent, GameClientError>) { }
-	func subscribe(_ subscriber: AnySubscriber<GameClientEvent, GameClientError>) { }
+	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError> {
+		Future { promise in promise(.failure(.failedToConnect)) }
+			.eraseToAnyPublisher()
+	}
+
+	func subscribe() -> AnyPublisher<GameClientEvent, GameClientError>? {
+		Future { promise in promise(.failure(.failedToConnect)) }
+			.eraseToAnyPublisher()
+	}
+
 	func closeConnection(code: CloseCode?) { }
 	func send(_ message: GameClientMessage) { }
 }

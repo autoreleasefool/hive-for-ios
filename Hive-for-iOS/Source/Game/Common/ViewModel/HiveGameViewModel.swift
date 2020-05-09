@@ -206,19 +206,19 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	private func openConnection() {
 		guard !connectionOpened else { return }
-		connectionOpened = true
-		clientInteractor.subscribe(AnySubscriber(
-			receiveSubscription: nil,
-			receiveValue: { [weak self] in
-				self?.handleGameClientEvent($0)
-				return Subscribers.Demand.unlimited
-			},
-			receiveCompletion: { [weak self] in
-				if case let .failure(error) = $0 {
-					self?.handleGameClientError(error)
+		if let subject = clientInteractor.subscribe() {
+			connectionOpened = true
+			subject.sink(
+				receiveCompletion: { [weak self] in
+					if case let .failure(error) = $0 {
+						self?.handleGameClientError(error)
+					}
+				}, receiveValue: { [weak self] in
+					self?.handleGameClientEvent($0)
 				}
-			}
-		))
+			)
+				.store(in: self)
+		}
 	}
 
 	private func cleanUp() {
