@@ -12,7 +12,11 @@ import SwiftUIRefresh
 struct Lobby: View {
 	@Environment(\.container) private var container: AppContainer
 
-	@State private var matches: Loadable<[Match]> = .notLoaded
+	@State private var matches: Loadable<[Match]>
+
+	init(matches: Loadable<[Match]> = .notLoaded) {
+		self._matches = .init(initialValue: matches)
+	}
 
 	var body: some View {
 		NavigationView {
@@ -101,5 +105,12 @@ extension Lobby {
 			withAccount: container.account,
 			matches: $matches
 		)
+	}
+}
+
+struct LobbyPreview: PreviewProvider {
+	static var previews: some View {
+		let loadable: Loadable<[Match]> = .loaded(Match.matches)
+		return Lobby(matches: loadable)
 	}
 }
