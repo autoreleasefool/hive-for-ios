@@ -38,6 +38,10 @@ struct MatchDetail: View {
 	@State private var gameState: GameState?
 	@State private var exiting = false
 
+	@State private var clientConnected = false
+	@State private var reconnectAttempts = 0
+	@State private var reconnecting = false
+
 	init(id: Match.ID?, match: Loadable<Match> = .notLoaded) {
 		self.matchId = id
 		self.matchState.match = match
@@ -114,25 +118,48 @@ struct MatchDetail: View {
 				.padding(.top, length: .m)
 				.frame(width: geometry.size.width)
 			} else {
-				VStack(spacing: .m) {
-					self.playerSection(match: match!)
-					Divider().background(Color(.divider))
-					self.expansionSection
-					Divider().background(Color(.divider))
-					self.otherOptionsSection
+				if self.reconnecting {
+					reconnectingView(geometry)
+				} else {
+					VStack(spacing: .m) {
+						self.playerSection(match: match!)
+						Divider().background(Color(.divider))
+						self.expansionSection
+						Divider().background(Color(.divider))
+						self.otherOptionsSection
+					}
+					.padding(.all, length: .m)
+					.frame(width: geometry.size.width)
 				}
-				.padding(.horizontal, length: .m)
-				.padding(.top, length: .m)
-				.frame(width: geometry.size.width)
 			}
 		}
 		.pullToRefresh(isShowing: isRefreshing) {
+			guard !self.reconnecting else { return }
 			self.loadMatchDetails()
 		}
 	}
 
+	// TODO: failedView
 	private var failedView: some View {
 		EmptyView()
+	}
+
+	private func reconnectingView(_ geometry: GeometryProxy) -> some View {
+		VStack(spacing: .m) {
+			Text("The connection to the server was lost.\nPlease wait while we try to reconnect you.")
+				.multilineTextAlignment(.center)
+				.body()
+				.foregroundColor(Color(.text))
+			ActivityIndicator(isAnimating: true, style: .whiteLarge)
+			Text(reconnectingMessage)
+				.multilineTextAlignment(.center)
+				.body()
+				.foregroundColor(Color(.text))
+			Spacer()
+		}
+		.padding(.all, length: .m)
+		.padding(.top, length: .xl)
+		.frame(width: geometry.size.width)
 	}
 
 	// MARK: Match Details
@@ -408,6 +435,16 @@ extension MatchDetail {
 		}
 	}
 
+	private func reopenClientConnection() {
+		guard let match = matchState.match.value else {
+			toaster.loaf.send(LoafState("Failed to reconnect", state: .error))
+			presentationMode.wrappedValue.dismiss()
+			return
+		}
+
+		openClientConnection(to: match)
+	}
+
 	private func openClientConnection(to url: URL) {
 		LoadingHUD.shared.show()
 
@@ -426,15 +463,24 @@ extension MatchDetail {
 	}
 
 	private func handleGameClientError(_ error: GameClientError) {
-		LoadingHUD.shared.hide()
-		presentationMode.wrappedValue.dismiss()
-		#warning("TODO: add a reconnect mechanism")
-		print("Client disconnected: \(error)")
+		guard reconnectAttempts < HiveGameClient.maxReconnectAttempts else {
+			LoadingHUD.shared.hide()
+			toaster.loaf.send(LoafState("Failed to reconnect", state: .error))
+			presentationMode.wrappedValue.dismiss()
+			return
+		}
+
+		reconnecting = true
+		reconnectAttempts += 1
+		reopenClientConnection()
 	}
 
 	private func handleGameClientEvent(_ event: GameClientEvent) {
 		switch event {
 		case .connected:
+			clientConnected = true
+			reconnecting = false
+			reconnectAttempts = 0
 			LoadingHUD.shared.hide()
 		case .closed:
 			presentationMode.wrappedValue.dismiss()
@@ -502,6 +548,10 @@ extension MatchDetail {
 
 	func name(forOption option: GameState.Option) -> String {
 		return option.preview ?? option.displayName
+	}
+
+	var reconnectingMessage: String {
+		"Reconnecting (\(reconnectAttempts)/\(HiveGameClient.maxReconnectAttempts))..."
 	}
 }
 

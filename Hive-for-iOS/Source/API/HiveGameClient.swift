@@ -23,6 +23,8 @@ enum GameClientError: LocalizedError {
 }
 
 class HiveGameClient {
+	static let maxReconnectAttempts = 5
+
 	private var url: URL?
 	private var webSocket: WebSocket?
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
@@ -42,6 +44,7 @@ class HiveGameClient {
 		self.subject = publisher
 
 		var request = URLRequest(url: url)
+		request.timeoutInterval = 10
 		account?.applyAuth(to: &request)
 		webSocket = WebSocket(request: request)
 		webSocket?.delegate = self
@@ -85,7 +88,8 @@ extension HiveGameClient: WebSocketDelegate {
 			// Ignore non-text responses
 			break
 		case .viabilityChanged, .reconnectSuggested:
-			// No idea what these are for
+			// viabilityChanged -- when connection goes down/up
+			// reconnectSuggested -- when a better connection is available
 			break
 		}
 	}
