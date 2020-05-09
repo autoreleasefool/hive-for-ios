@@ -106,22 +106,60 @@ struct LoginField: UIViewRepresentable {
 
 #if DEBUG
 struct LoginField_Previews: PreviewProvider {
-	@State static var text: String = "Email"
+	@State static var email: String = "Email"
+	@State static var displayName: String = ""
+	@State static var password: String = "Password"
+	@State static var confirm: String = ""
 	@State static var isActive: Bool = true
 
 	static var previews: some View {
-		LoginField(
-			"Email",
-			text: $text,
-			keyboardType: .default,
-			returnKeyType: .default,
-			isActive: isActive,
-			isSecure: false,
-			onReturn: { }
-		)
-			.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
-			.padding(.all, length: .m)
-			.background(Color(.background))
+		VStack(spacing: .m) {
+			LoginField(
+				"Email",
+				text: $email,
+				keyboardType: .default,
+				returnKeyType: .default,
+				isActive: isActive,
+				isSecure: false,
+				onReturn: { }
+			)
+				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
+
+			LoginField(
+				"Display name",
+				text: $displayName,
+				keyboardType: .default,
+				returnKeyType: .default,
+				isActive: isActive,
+				isSecure: false,
+				onReturn: { }
+			)
+				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
+
+			LoginField(
+				"Password",
+				text: $password,
+				keyboardType: .default,
+				returnKeyType: .default,
+				isActive: isActive,
+				isSecure: true,
+				onReturn: { }
+			)
+				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
+
+			LoginField(
+				"Confirm password",
+				text: $confirm,
+				keyboardType: .default,
+				returnKeyType: .default,
+				isActive: isActive,
+				isSecure: true,
+				onReturn: { }
+			)
+				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
+		}
+		.padding(.all, length: .m)
+		.background(Color(.background))
 	}
 }
 #endif
