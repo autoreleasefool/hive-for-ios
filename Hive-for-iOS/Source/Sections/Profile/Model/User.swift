@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct User: Identifiable, Decodable {
+struct User: Identifiable, Decodable, Equatable {
 	let id: UUID
 	let displayName: String
 	let elo: Double

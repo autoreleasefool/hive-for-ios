@@ -12,8 +12,8 @@ import HiveEngine
 typealias CreateMatchResponse = Match
 typealias JoinMatchResponse = Match
 
-struct Match: Identifiable, Decodable {
-	struct User: Identifiable, Decodable {
+struct Match: Identifiable, Decodable, Equatable {
+	struct User: Identifiable, Decodable, Equatable {
 		let id: UUID
 		let displayName: String
 		let elo: Double
@@ -26,7 +26,7 @@ struct Match: Identifiable, Decodable {
 		case ended = 3
 	}
 
-	struct Move: Identifiable, Decodable {
+	struct Move: Identifiable, Decodable, Equatable {
 		let id: UUID
 		let notation: String
 		let ordinal: Int

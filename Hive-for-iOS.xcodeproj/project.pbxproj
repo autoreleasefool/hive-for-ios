@@ -36,6 +36,7 @@
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
 		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
 		CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* HiveARGameView.swift */; };
+		CA797F61246868000011E7D1 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F60246868000011E7D1 /* History.swift */; };
 		CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */; };
 		CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */; };
 		CA88B80C244D89B600C4A276 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
@@ -132,6 +133,7 @@
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA75CE42242A98D200998719 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
 		CA75CE44242AB65300998719 /* HiveARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveARGameView.swift; sourceTree = "<group>"; };
+		CA797F60246868000011E7D1 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedLoadingIndicator.swift; sourceTree = "<group>"; };
 		CA88B80B244D89B600C4A276 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -290,6 +292,57 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		CA797F592468669B0011E7D1 /* Lobby */ = {
+			isa = PBXGroup;
+			children = (
+				CA797F5C246867050011E7D1 /* View */,
+			);
+			path = Lobby;
+			sourceTree = "<group>";
+		};
+		CA797F5A246866C40011E7D1 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				CA797F5E246867230011E7D1 /* View */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		CA797F5B246866CE0011E7D1 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				CAC6860B23CD235D00B882D2 /* Model */,
+				CA797F5D2468670C0011E7D1 /* View */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		CA797F5C246867050011E7D1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA8F46E0245EBD0D00B136D0 /* Lobby.swift */,
+				CA8F46E8245F3D4500B136D0 /* MatchDetail.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA797F5D2468670C0011E7D1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAC6861723CE4E6800B882D2 /* MatchRow.swift */,
+				CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA797F5E246867230011E7D1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA797F60246868000011E7D1 /* History.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		CA91C32024350CD3007E7D55 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -411,8 +464,9 @@
 		CAC6860123CD1C9B00B882D2 /* Matches */ = {
 			isa = PBXGroup;
 			children = (
-				CAC6860B23CD235D00B882D2 /* Model */,
-				CAC6861623CE4E5D00B882D2 /* View */,
+				CA797F5B246866CE0011E7D1 /* Common */,
+				CA797F5A246866C40011E7D1 /* History */,
+				CA797F592468669B0011E7D1 /* Lobby */,
 			);
 			path = Matches;
 			sourceTree = "<group>";
@@ -449,17 +503,6 @@
 				CAF8255B245C6C640064359E /* Loadable.swift */,
 			);
 			path = API;
-			sourceTree = "<group>";
-		};
-		CAC6861623CE4E5D00B882D2 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				CA8F46E0245EBD0D00B136D0 /* Lobby.swift */,
-				CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */,
-				CAC6861723CE4E6800B882D2 /* MatchRow.swift */,
-				CA8F46E8245F3D4500B136D0 /* MatchDetail.swift */,
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		CAC6861B23CE6AFD00B882D2 /* View */ = {
@@ -736,6 +779,7 @@
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
 				CAF82568245C7A1D0064359E /* AccountRepository.swift in Sources */,
 				CA45F9C0242E4857007EC94D /* PieceStack.swift in Sources */,
+				CA797F61246868000011E7D1 /* History.swift in Sources */,
 				CAFA91F223E77B290087F1F0 /* GameState+AR.swift in Sources */,
 				CAA87BC124328F53006E418B /* User.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
