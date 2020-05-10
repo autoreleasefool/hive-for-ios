@@ -37,6 +37,7 @@
 		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
 		CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* HiveARGameView.swift */; };
 		CA797F61246868000011E7D1 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F60246868000011E7D1 /* History.swift */; };
+		CA797F63246892AC0011E7D1 /* EmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F62246892AC0011E7D1 /* EmptyState.swift */; };
 		CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */; };
 		CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */; };
 		CA88B80C244D89B600C4A276 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
@@ -134,6 +135,7 @@
 		CA75CE42242A98D200998719 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
 		CA75CE44242AB65300998719 /* HiveARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveARGameView.swift; sourceTree = "<group>"; };
 		CA797F60246868000011E7D1 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
+		CA797F62246892AC0011E7D1 /* EmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyState.swift; sourceTree = "<group>"; };
 		CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedLoadingIndicator.swift; sourceTree = "<group>"; };
 		CA88B80B244D89B600C4A276 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -510,6 +512,7 @@
 			children = (
 				CABDFCDD23DBA17200C697AD /* BottomSheet.swift */,
 				CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */,
+				CA797F62246892AC0011E7D1 /* EmptyState.swift */,
 				CA22022B243F800D005367B6 /* LoadingHUD.swift */,
 				CABDFD0523DCA73500C697AD /* HexImage.swift */,
 				CAFA91F523E958EE0087F1F0 /* PopoverSheet.swift */,
@@ -758,6 +761,7 @@
 				CA75CE43242A98D200998719 /* LoafState.swift in Sources */,
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
 				CAC68CC824327557003CC2E6 /* AccessToken.swift in Sources */,
+				CA797F63246892AC0011E7D1 /* EmptyState.swift in Sources */,
 				CA22022C243F800D005367B6 /* LoadingHUD.swift in Sources */,
 				CA45F9BA242B7C4C007EC94D /* ActionHUD.swift in Sources */,
 				CA41ACB2245616F500B6F88E /* Set+Extensions.swift in Sources */,
