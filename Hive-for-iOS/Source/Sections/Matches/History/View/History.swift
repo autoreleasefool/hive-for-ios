@@ -56,7 +56,7 @@ struct History: View {
 							} else {
 								ForEach(self.matches(for: section, fromUser: user)) { match in
 									NavigationLink(destination: self.details(for: match)) {
-										MatchRow(match: match)
+										HistoryRow(match: match)
 									}
 								}
 							}

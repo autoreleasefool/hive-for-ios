@@ -30,6 +30,7 @@ struct Match: Identifiable, Decodable, Equatable {
 		let id: UUID
 		let notation: String
 		let ordinal: Int
+		let date: Date
 	}
 
 	enum Option: String, CaseIterable {
@@ -104,14 +105,14 @@ extension Match {
 				host: Match.User.users[0],
 				opponent: Match.User.users[1],
 				winner: nil,
-				moves: [],
+				moves: [Move(id: UUID(), notation: "wQ", ordinal: 0, date: Date())],
 				hostElo: 1000.0,
 				opponentElo: 1200.0,
 				options: "HostIsWhite:true",
 				gameOptions: "Mosquito:true;LadyBug:true;PillBug:true",
 				createdAt: Date(),
 				duration: nil,
-				status: .notStarted,
+				status: .active,
 				isComplete: false
 			),
 			Match(

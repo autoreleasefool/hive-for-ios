@@ -53,7 +53,7 @@ struct Lobby: View {
 			} else {
 				List(matches) { match in
 					NavigationLink(destination: LobbyRoom(id: match.id)) {
-						MatchRow(match: match)
+						LobbyRow(match: match)
 					}
 				}
 				.pullToRefresh(isShowing: isRefreshing) {

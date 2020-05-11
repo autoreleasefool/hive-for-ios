@@ -1,5 +1,5 @@
 //
-//  MatchRow.swift
+//  LobbyRow.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-14.
@@ -9,7 +9,7 @@
 import SwiftUI
 import HiveEngine
 
-struct MatchRow: View {
+struct LobbyRow: View {
 	let match: Match
 
 	private func optionsPreview(for options: Set<GameState.Option>) -> some View {
@@ -61,9 +61,9 @@ private extension GameState.Option {
 }
 
 #if DEBUG
-struct MatchRowPreview: PreviewProvider {
+struct LobbyRowPreview: PreviewProvider {
 	static var previews: some View {
-		MatchRow(match: Match.matches[0])
+		LobbyRow(match: Match.matches[0])
 			.background(Color(.background))
 	}
 }
