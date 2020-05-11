@@ -16,3 +16,18 @@ struct User: Identifiable, Decodable, Equatable {
 	let activeMatches: [Match]
 	let pastMatches: [Match]
 }
+
+#if DEBUG
+extension User {
+	static var users: [User] = [
+		User(
+			id: UUID(),
+			displayName: "Joseph",
+			elo: 1000,
+			avatarUrl: nil, //URL(string: "https://avatars1.githubusercontent.com/u/6619581?v=4"),
+			activeMatches: Match.matches,
+			pastMatches: []
+		)
+	]
+}
+#endif
