@@ -29,7 +29,7 @@ struct History: View {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let user, _): return AnyView(loadingView(user?.activeMatches, user?.pastMatches))
 		case .loaded(let user): return AnyView(loadedView(user.activeMatches, user.pastMatches))
-		case .failed: return AnyView(failedView)
+		case .failed(let error): return AnyView(failedView(error))
 		}
 	}
 
@@ -45,28 +45,33 @@ struct History: View {
 	}
 
 	private func loadedView(_ matchesInProgress: [Match], _ completedMatches: [Match]) -> some View {
-		return List {
-			Section(header: self.inProgressHeader) {
-				ForEach(matchesInProgress) { match in
-					NavigationLink(destination: MatchDetail(id: match.id)) {
-						MatchRow(match: match)
+		Group {
+			if matchesInProgress.count + completedMatches.count == 0 {
+				emptyState
+			} else {
+				List {
+					Section(header: self.inProgressHeader) {
+						ForEach(matchesInProgress) { match in
+							NavigationLink(destination: MatchDetail(id: match.id)) {
+								MatchRow(match: match)
+							}
+						}
 					}
-				}
-			}
 
-			Section(header: self.completedHeader) {
-				ForEach(completedMatches) { match in
-					NavigationLink(destination: MatchDetail(id: match.id)) {
-						MatchRow(match: match)
+					Section(header: self.completedHeader) {
+						ForEach(completedMatches) { match in
+							NavigationLink(destination: MatchDetail(id: match.id)) {
+								MatchRow(match: match)
+							}
+						}
 					}
 				}
 			}
 		}
 	}
 
-	// TODO: failed view
-	private var failedView: some View {
-		EmptyView()
+	private func failedView(_ error: Error) -> some View {
+		failedState(error)
 	}
 
 	// MARK: History
@@ -77,6 +82,29 @@ struct History: View {
 
 	private var completedHeader: some View {
 		Text("Past matches")
+	}
+}
+
+// MARK: - EmptyState
+
+extension History {
+	private var emptyState: some View {
+		EmptyState(
+			header: "No matches found",
+			message: "Try playing a match and when you're finished, you'll find it here. You'll also be able to see " +
+				"your incomplete matches"
+		) {
+			self.loadMatchHistory()
+		}
+	}
+
+	private func failedState(_ error: Error) -> some View {
+		EmptyState(
+			header: "An error occurred",
+			message: "We can't fetch your history right now.\n\(errorMessage(from: error))"
+		) {
+			self.loadMatchHistory()
+		}
 	}
 }
 
@@ -99,7 +127,8 @@ extension History {
 // MARK: - Strings
 
 extension History {
-	private var inProgressHeaderText: String {
-		""
+	private func errorMessage(from error: Error) -> String {
+		// TODO: get a better error message from the repository error
+		error.localizedDescription
 	}
 }

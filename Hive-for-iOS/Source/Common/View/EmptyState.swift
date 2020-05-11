@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct EmptyState: View {
-	private let image: UIImage
+	private let image: UIImage?
 	private let headerText: String
 	private let messageText: String
 	private let onRefresh: (() -> Void)?
 
-	init(image: UIImage, header: String, message: String, onRefresh: (() -> Void)?) {
+	init(header: String, message: String, image: UIImage? = nil, onRefresh: (() -> Void)? = nil) {
 		self.image = image
 		self.headerText = header
 		self.messageText = message
@@ -25,7 +25,10 @@ struct EmptyState: View {
 		GeometryReader { geometry in
 			VStack(spacing: .m) {
 				Spacer()
-				self.emptyStateImage(geometry)
+
+				if self.image != nil {
+					self.emptyStateImage(self.image!, geometry)
+				}
 
 				VStack(spacing: .s) {
 					self.header
@@ -45,7 +48,7 @@ struct EmptyState: View {
 
 	// MARK: EmptyState
 
-	private func emptyStateImage(_ geometry: GeometryProxy) -> some View {
+	private func emptyStateImage(_ image: UIImage, _ geometry: GeometryProxy) -> some View {
 		Image(uiImage: image)
 			.resizable()
 			.scaledToFit()
@@ -89,10 +92,10 @@ struct EmptyState: View {
 struct EmptyStatePreview: PreviewProvider {
 	static var previews: some View {
 		EmptyState(
-			image: ImageAsset.joseph,
 			header: "No matches found",
 			message: "Try playing a match, and when you're finished, you'll be able to find it here. " +
-				"You'll also be able to see your incomplete matches."
+				"You'll also be able to see your incomplete matches.",
+			image: ImageAsset.joseph
 		) { }
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
