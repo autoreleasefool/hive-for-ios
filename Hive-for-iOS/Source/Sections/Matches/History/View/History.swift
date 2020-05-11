@@ -142,8 +142,6 @@ extension History {
 extension History {
 	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
-			.receive(on: DispatchQueue.main)
-			.eraseToAnyPublisher()
 	}
 }
 
