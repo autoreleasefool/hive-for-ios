@@ -53,10 +53,12 @@ extension AppEnvironment {
 	) -> RepositoryContainer {
 		let accountRepository = LiveAccountRepository(keychain: keychain, api: api)
 		let matchRepository = LiveMatchRepository(api: api)
+		let userRepository = LiveUserRepository(api: api)
 
 		return RepositoryContainer(
 			accountRepository: accountRepository,
 			matchRepository: matchRepository,
+			userRepository: userRepository,
 			client: client
 		)
 	}
@@ -75,6 +77,11 @@ extension AppEnvironment {
 			appState: appState
 		)
 
+		let userInteractor = LiveUserInteractor(
+			repository: repositories.userRepository,
+			appState: appState
+		)
+
 		let clientInteractor = LiveClientInteractor(
 			client: repositories.client,
 			appState: appState
@@ -83,6 +90,7 @@ extension AppEnvironment {
 		return AppContainer.Interactors(
 			accountInteractor: accountInteractor,
 			matchInteractor: matchInteractor,
+			userInteractor: userInteractor,
 			clientInteractor: clientInteractor
 		)
 	}
@@ -92,6 +100,7 @@ private extension AppEnvironment {
 	struct RepositoryContainer {
 		let accountRepository: AccountRepository
 		let matchRepository: MatchRepository
+		let userRepository: UserRepository
 		let client: HiveGameClient
 	}
 }

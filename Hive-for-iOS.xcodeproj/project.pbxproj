@@ -38,6 +38,8 @@
 		CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* HiveARGameView.swift */; };
 		CA797F61246868000011E7D1 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F60246868000011E7D1 /* History.swift */; };
 		CA797F63246892AC0011E7D1 /* EmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F62246892AC0011E7D1 /* EmptyState.swift */; };
+		CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F64246930BB0011E7D1 /* UserRepository.swift */; };
+		CA797F67246930C80011E7D1 /* UserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F66246930C80011E7D1 /* UserInteractor.swift */; };
 		CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */; };
 		CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */; };
 		CA88B80C244D89B600C4A276 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
@@ -136,6 +138,8 @@
 		CA75CE44242AB65300998719 /* HiveARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveARGameView.swift; sourceTree = "<group>"; };
 		CA797F60246868000011E7D1 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CA797F62246892AC0011E7D1 /* EmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyState.swift; sourceTree = "<group>"; };
+		CA797F64246930BB0011E7D1 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		CA797F66246930C80011E7D1 /* UserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractor.swift; sourceTree = "<group>"; };
 		CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedLoadingIndicator.swift; sourceTree = "<group>"; };
 		CA88B80B244D89B600C4A276 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
@@ -566,8 +570,9 @@
 			children = (
 				CAF8255F245C76EA0064359E /* Interactors.swift */,
 				CAF82564245C78060064359E /* AccountInteractor.swift */,
-				CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */,
 				CAC650AB2461FC1900835209 /* ClientInteractor.swift */,
+				CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */,
+				CA797F66246930C80011E7D1 /* UserInteractor.swift */,
 			);
 			path = Interactor;
 			sourceTree = "<group>";
@@ -586,6 +591,7 @@
 			children = (
 				CAF82567245C7A1D0064359E /* AccountRepository.swift */,
 				CA8F46E6245EC36200B136D0 /* MatchRepository.swift */,
+				CA797F64246930BB0011E7D1 /* UserRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -805,6 +811,7 @@
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
 				CAF82560245C76EA0064359E /* Interactors.swift in Sources */,
 				CAFC7A65245C54EE00747E82 /* Profile.swift in Sources */,
+				CA797F67246930C80011E7D1 /* UserInteractor.swift in Sources */,
 				CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* MatchRow.swift in Sources */,
@@ -825,6 +832,7 @@
 				CABDFD0623DCA73500C697AD /* HexImage.swift in Sources */,
 				CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */,
 				CABDFD1023E0C87700C697AD /* PlayerHand.swift in Sources */,
+				CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */,
 				CAFA467423D8B3B1003C38AB /* HiveGame.swift in Sources */,
 				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,
 				CABDFD0E23DF8B4000C697AD /* Experience+Extensions.swift in Sources */,
