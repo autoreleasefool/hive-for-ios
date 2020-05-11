@@ -55,7 +55,7 @@ struct History: View {
 								section.emptyState
 							} else {
 								ForEach(self.matches(for: section, fromUser: user)) { match in
-									NavigationLink(destination: LobbyRoom(id: match.id)) {
+									NavigationLink(destination: self.matchDetails(for: match)) {
 										MatchRow(match: match)
 									}
 								}
@@ -128,6 +128,12 @@ extension History {
 		switch section {
 		case .inProgress: return user?.activeMatches ?? []
 		case .completed: return user?.pastMatches ?? []
+		}
+	}
+
+	private func matchDetails(for match: Match) -> some View {
+		ScrollView {
+			MatchDetail(match: match, editable: false)
 		}
 	}
 
