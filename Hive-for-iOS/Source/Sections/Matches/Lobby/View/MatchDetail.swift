@@ -384,18 +384,18 @@ extension MatchDetail {
 	private func joinMatch() {
 		guard let id = matchId else { return }
 		container.interactors.matchInteractor
-			.joinMatch(id: id, withAccount: container.account, match: $matchState.match)
+			.joinMatch(id: id, match: $matchState.match)
 	}
 
 	private func createNewMatch() {
 		container.interactors.matchInteractor
-			.createNewMatch(withAccount: container.account, match: $matchState.match)
+			.createNewMatch(match: $matchState.match)
 	}
 
 	private func loadMatchDetails() {
 		guard let id = matchId else { return }
 		container.interactors.matchInteractor
-			.loadMatchDetails(id: id, withAccount: container.account, match: $matchState.match)
+			.loadMatchDetails(id: id, match: $matchState.match)
 	}
 
 	private func exitMatch() {

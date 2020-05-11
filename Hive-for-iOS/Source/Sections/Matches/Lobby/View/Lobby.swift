@@ -119,10 +119,8 @@ extension Lobby {
 	}
 
 	private func loadMatches() {
-		container.interactors.matchInteractor.loadOpenMatches(
-			withAccount: container.account,
-			matches: $matches
-		)
+		container.interactors.matchInteractor
+			.loadOpenMatches(matches: $matches)
 	}
 }
 

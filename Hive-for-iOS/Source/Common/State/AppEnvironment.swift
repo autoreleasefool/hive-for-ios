@@ -70,7 +70,10 @@ extension AppEnvironment {
 			appState: appState
 		)
 
-		let matchInteractor = LiveMatchInteractor(repository: repositories.matchRepository)
+		let matchInteractor = LiveMatchInteractor(
+			repository: repositories.matchRepository,
+			appState: appState
+		)
 
 		let clientInteractor = LiveClientInteractor(
 			client: repositories.client,
