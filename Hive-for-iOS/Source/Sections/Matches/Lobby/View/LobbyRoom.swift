@@ -1,5 +1,5 @@
 //
-//  MatchDetail.swift
+//  LobbyRoom.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-03.
@@ -12,7 +12,7 @@ import HiveEngine
 import Starscream
 import SwiftUIRefresh
 
-private final class MatchDetailState: ObservableObject {
+private final class LobbyRoomState: ObservableObject {
 	@Published var match: Loadable<Match> = .notLoaded {
 		didSet {
 			matchOptions = match.value?.optionSet ?? Set()
@@ -26,14 +26,14 @@ private final class MatchDetailState: ObservableObject {
 	var cancelBag = CancelBag()
 }
 
-struct MatchDetail: View {
+struct LobbyRoom: View {
 	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster: Toaster
 	@Environment(\.container) private var container: AppContainer
 
 	@State private var matchId: Match.ID?
 
-	@ObservedObject private var matchState = MatchDetailState()
+	@ObservedObject private var matchState = LobbyRoomState()
 
 	@State private var gameState: GameState?
 	@State private var exiting = false
@@ -274,7 +274,7 @@ struct MatchDetail: View {
 
 // MARK: - Actions
 
-extension MatchDetail {
+extension LobbyRoom {
 	var inGame: Binding<Bool> {
 		Binding(
 			get: { self.gameState != nil },
@@ -407,7 +407,7 @@ extension MatchDetail {
 
 // MARK: - Updates
 
-extension MatchDetail {
+extension LobbyRoom {
 	var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
 	}
@@ -415,7 +415,7 @@ extension MatchDetail {
 
 // MARK: - HiveGameClient
 
-extension MatchDetail {
+extension LobbyRoom {
 	private func send(_ message: GameClientMessage) {
 		container.interactors.clientInteractor
 			.send(message)
@@ -516,7 +516,7 @@ extension MatchDetail {
 
 // MARK: - Strings
 
-extension MatchDetail {
+extension LobbyRoom {
 	var title: String {
 		if let host = matchState.match.value?.host?.displayName {
 			return "\(host)'s match"
@@ -569,11 +569,11 @@ private extension GameState.Option {
 }
 
 #if DEBUG
-struct MatchDetailPreview: PreviewProvider {
+struct LobbyRoomPreview: PreviewProvider {
 	static var previews: some View {
 		let match = Match.matches[0]
 		let loadable: Loadable<Match> = .loaded(match)
-		return MatchDetail(id: match.id, match: loadable)
+		return LobbyRoom(id: match.id, match: loadable)
 	}
 }
 #endif

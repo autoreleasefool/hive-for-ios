@@ -55,7 +55,7 @@ struct History: View {
 								section.emptyState
 							} else {
 								ForEach(self.matches(for: section, fromUser: user)) { match in
-									NavigationLink(destination: MatchDetail(id: match.id)) {
+									NavigationLink(destination: LobbyRoom(id: match.id)) {
 										MatchRow(match: match)
 									}
 								}

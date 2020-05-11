@@ -52,7 +52,7 @@ struct Lobby: View {
 				emptyState
 			} else {
 				List(matches) { match in
-					NavigationLink(destination: MatchDetail(id: match.id)) {
+					NavigationLink(destination: LobbyRoom(id: match.id)) {
 						MatchRow(match: match)
 					}
 				}
@@ -71,7 +71,7 @@ struct Lobby: View {
 	// MARK: Lobby
 
 	private var newMatchButton: some View {
-		NavigationLink(destination: MatchDetail(id: nil)) {
+		NavigationLink(destination: LobbyRoom(id: nil)) {
 			Image(systemName: "plus")
 				.imageScale(.large)
 				.accessibility(label: Text("Create Match"))
