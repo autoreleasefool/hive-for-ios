@@ -14,13 +14,11 @@ struct RootTabView: View {
 	var body: some View {
 		TabView(selection: $currentTab) {
 			Lobby()
-				.tabItem {
-					Tab.lobby.tabItem
-				}
+				.tabItem { Tab.lobby.tabItem }
+			History()
+				.tabItem { Tab.matchHistory.tabItem }
 			Profile()
-				.tabItem {
-					Tab.profile.tabItem
-				}
+				.tabItem { Tab.profile.tabItem }
 		}
 		.accentColor(Color(.primary))
 	}
@@ -29,15 +27,15 @@ struct RootTabView: View {
 // MARK: - Tabs
 
 extension RootTabView {
-	enum Tab: Int {
-			case lobby = 0
-	//		case matchHistory = 1
-			case profile = 1
+	enum Tab {
+			case lobby
+			case matchHistory
+			case profile
 
 			var tabImageName: String {
 				switch self {
 				case .lobby: return "gamecontroller.fill"
-	//			case .matchHistory: return ""
+				case .matchHistory: return "clock.fill"
 				case .profile: return "person.fill"
 				}
 			}
