@@ -81,9 +81,8 @@ extension History {
 
 		var header: some View {
 			Text(headerText)
-				.body()
+				.caption()
 				.foregroundColor(Color(.textContrasting))
-				.padding(.horizontal, length: .m)
 				.padding(.vertical, length: .s)
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 		}
