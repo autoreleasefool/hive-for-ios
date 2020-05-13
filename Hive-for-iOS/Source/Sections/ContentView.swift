@@ -42,7 +42,7 @@ struct ContentView: View {
 				self.container.interactors.accountInteractor.clearAccount()
 			}
 			.onReceive(self.routingUpdate) { self.routing = $0 }
-			.sheet(isPresented: self.$routing.settingsIsOpen) {
+			.sheet(isPresented: self.settingsRoutingBinding) {
 				Settings()
 			}
 			.inject(self.container)
@@ -119,6 +119,10 @@ extension ContentView {
 		container.appState.updates(for: \.routing.mainRouting)
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
+	}
+
+	private var settingsRoutingBinding: Binding<Bool> {
+		$routing.settingsIsOpen.dispatched(to: container.appState, \.routing.mainRouting.settingsIsOpen)
 	}
 
 	private var welcomeRoutingBinding: Binding<Bool> {
