@@ -21,6 +21,7 @@ struct Profile: View {
 	var body: some View {
 		NavigationView {
 			content
+				.background(Color(.background).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle(title)
 				.navigationBarItems(leading: settingsButton)
 		}

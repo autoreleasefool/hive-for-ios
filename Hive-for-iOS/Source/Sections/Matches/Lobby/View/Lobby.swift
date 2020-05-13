@@ -21,6 +21,7 @@ struct Lobby: View {
 	var body: some View {
 		NavigationView {
 			content
+				.background(Color(.background).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle("Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 		}

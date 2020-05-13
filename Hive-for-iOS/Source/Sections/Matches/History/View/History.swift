@@ -22,6 +22,7 @@ struct History: View {
 	var body: some View {
 		NavigationView {
 			content
+				.background(Color(.background).edgesIgnoringSafeArea(.all))
 				.onReceive(userUpdates) { self.user = $0 }
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)

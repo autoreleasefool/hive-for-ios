@@ -15,10 +15,13 @@ struct RootTabView: View {
 		TabView(selection: $currentTab) {
 			Lobby()
 				.tabItem { Tab.lobby.tabItem }
+				.tag(0)
 			History()
 				.tabItem { Tab.matchHistory.tabItem }
+				.tag(1)
 			Profile()
 				.tabItem { Tab.profile.tabItem }
+				.tag(2)
 		}
 		.accentColor(Color(.primary))
 	}
