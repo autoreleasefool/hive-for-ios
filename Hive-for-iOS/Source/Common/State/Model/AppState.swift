@@ -9,5 +9,6 @@
 struct AppState: Equatable {
 	var account: Loadable<Account> = .notLoaded
 	var userProfile: Loadable<User> = .notLoaded
+	var openMatches: Loadable<[Match]> = .notLoaded
 	var routing = Routing()
 }

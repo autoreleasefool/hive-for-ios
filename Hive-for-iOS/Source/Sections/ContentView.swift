@@ -114,6 +114,15 @@ extension ContentView {
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
 	}
+}
+
+// MARK: - Routing
+
+extension ContentView {
+	struct Routing: Equatable {
+		var settingsIsOpen: Bool = false
+		var showWelcome: Bool = true
+	}
 
 	private var routingUpdate: AnyPublisher<Routing, Never> {
 		container.appState.updates(for: \.routing.mainRouting)
@@ -127,15 +136,6 @@ extension ContentView {
 
 	private var welcomeRoutingBinding: Binding<Bool> {
 		$routing.showWelcome.dispatched(to: container.appState, \.routing.mainRouting.showWelcome)
-	}
-}
-
-// MARK: - Routing
-
-extension ContentView {
-	struct Routing: Equatable {
-		var settingsIsOpen: Bool = false
-		var showWelcome: Bool = true
 	}
 }
 

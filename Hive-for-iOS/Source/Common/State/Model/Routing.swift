@@ -8,4 +8,5 @@
 
 struct Routing: Equatable {
 	var mainRouting = ContentView.Routing()
+	var lobbyRouting = Lobby.Routing()
 }

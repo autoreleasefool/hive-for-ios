@@ -310,14 +310,6 @@ extension LobbyRoom {
 	}
 }
 
-// MARK: - Updates
-
-extension LobbyRoom {
-	var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
-		container.appState.updates(for: \.account)
-	}
-}
-
 // MARK: - HiveGameClient
 
 extension LobbyRoom {

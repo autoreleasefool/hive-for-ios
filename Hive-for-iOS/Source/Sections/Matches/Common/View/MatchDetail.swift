@@ -37,17 +37,14 @@ struct MatchDetail: View {
 	}
 
 	var body: some View {
-		GeometryReader { geometry in
-			VStack(spacing: .m) {
-				self.playerSection
-				Divider().background(Color(.divider))
-				self.expansionSection
-				Divider().background(Color(.divider))
-				self.otherOptionsSection
-			}
-			.padding(.all, length: .m)
-			.frame(width: geometry.size.width)
+		VStack(spacing: .m) {
+			self.playerSection
+			Divider().background(Color(.divider))
+			self.expansionSection
+			Divider().background(Color(.divider))
+			self.otherOptionsSection
 		}
+		.padding(.all, length: .m)
 	}
 
 	// MARK: Match Details
