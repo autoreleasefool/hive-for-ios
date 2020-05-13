@@ -31,6 +31,7 @@ struct LobbyRoom: View {
 	@Environment(\.toaster) private var toaster: Toaster
 	@Environment(\.container) private var container: AppContainer
 
+	private let creatingNewMatch: Bool
 	@State private var matchId: Match.ID?
 
 	@ObservedObject private var matchState = LobbyRoomState()
@@ -43,6 +44,7 @@ struct LobbyRoom: View {
 	@State private var reconnecting = false
 
 	init(id: Match.ID?, match: Loadable<Match> = .notLoaded) {
+		self.creatingNewMatch = id == nil
 		self.matchId = id
 		self.matchState.match = match
 	}
@@ -99,7 +101,7 @@ struct LobbyRoom: View {
 	private var notLoadedView: some View {
 		Text("")
 			.onAppear {
-				if self.matchId == nil {
+				if self.creatingNewMatch {
 					self.createNewMatch()
 				} else {
 					self.joinMatch()
