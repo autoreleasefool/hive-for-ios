@@ -82,6 +82,7 @@
 		CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730E824696F1C004DB450 /* HistoryRow.swift */; };
 		CAC730EB246979C5004DB450 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730EA246979C5004DB450 /* Date+Extensions.swift */; };
 		CAC730F3246BCBDF004DB450 /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F2246BCBDF004DB450 /* Routing.swift */; };
+		CAC730F7246BDF26004DB450 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F6246BDF26004DB450 /* Settings.swift */; };
 		CAC961E3243B105E00B3FC8D /* GameClientMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */; };
 		CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
@@ -184,6 +185,7 @@
 		CAC730E824696F1C004DB450 /* HistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRow.swift; sourceTree = "<group>"; };
 		CAC730EA246979C5004DB450 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		CAC730F2246BCBDF004DB450 /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
+		CAC730F6246BDF26004DB450 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClientMessage.swift; sourceTree = "<group>"; };
 		CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServerMessage.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
@@ -453,6 +455,7 @@
 				CAC68CC324327517003CC2E6 /* Login */,
 				CAC6860123CD1C9B00B882D2 /* Matches */,
 				CAFC7A63245C54DE00747E82 /* Profile */,
+				CAC730F4246BDF0C004DB450 /* Settings */,
 				CAC685F623CCE9F400B882D2 /* Welcome */,
 			);
 			path = Sections;
@@ -559,6 +562,22 @@
 			children = (
 				CAC426D92433B11000E513BC /* LoginField.swift */,
 				CA8F46DC245DD27600B136D0 /* LoginSignup.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAC730F4246BDF0C004DB450 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				CAC730F5246BDF1C004DB450 /* View */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		CAC730F5246BDF1C004DB450 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAC730F6246BDF26004DB450 /* Settings.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -787,6 +806,7 @@
 				CAA87BCB243299C8006E418B /* LoginSignupData.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* HiveARViewController.swift in Sources */,
 				CAF82570245D59730064359E /* AppEnvironment.swift in Sources */,
+				CAC730F7246BDF26004DB450 /* Settings.swift in Sources */,
 				CAF8255C245C6C640064359E /* Loadable.swift in Sources */,
 				CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */,
 				CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */,

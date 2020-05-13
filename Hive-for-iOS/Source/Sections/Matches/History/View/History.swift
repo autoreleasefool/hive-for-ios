@@ -24,6 +24,7 @@ struct History: View {
 			content
 				.onReceive(userUpdates) { self.user = $0 }
 				.navigationBarTitle("History")
+				.navigationBarItems(leading: settingsButton)
 		}
 	}
 
@@ -69,6 +70,16 @@ struct History: View {
 
 	private func failedView(_ error: Error) -> some View {
 		failedState(error)
+	}
+
+	private var settingsButton: some View {
+		Button(action: {
+			self.container.appState[\.routing.mainRouting.settingsIsOpen] = true
+		}, label: {
+			Image(systemName: "gear")
+				.imageScale(.large)
+				.accessibility(label: Text("Settings"))
+		})
 	}
 }
 

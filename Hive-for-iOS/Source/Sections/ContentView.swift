@@ -42,6 +42,9 @@ struct ContentView: View {
 				self.container.interactors.accountInteractor.clearAccount()
 			}
 			.onReceive(self.routingUpdate) { self.routing = $0 }
+			.sheet(isPresented: self.$routing.settingsIsOpen) {
+				Settings()
+			}
 			.inject(self.container)
 			.plugInToaster()
 		}

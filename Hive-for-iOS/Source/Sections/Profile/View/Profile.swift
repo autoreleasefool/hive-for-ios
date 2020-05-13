@@ -19,7 +19,11 @@ struct Profile: View {
 	}
 
 	var body: some View {
-		content
+		NavigationView {
+			content
+				.navigationBarTitle(title)
+				.navigationBarItems(leading: settingsButton)
+		}
 	}
 
 	private var content: AnyView {
@@ -61,6 +65,16 @@ struct Profile: View {
 	private func failedView(_ error: Error) -> some View {
 		failedState(error)
 	}
+
+	private var settingsButton: some View {
+		Button(action: {
+			self.container.appState[\.routing.mainRouting.settingsIsOpen] = true
+		}, label: {
+			Image(systemName: "gear")
+				.imageScale(.large)
+				.accessibility(label: Text("Settings"))
+		})
+	}
 }
 
 // MARK: - EmptyState
@@ -96,6 +110,10 @@ extension Profile {
 // MARK: - Strings
 
 extension Profile {
+	private var title: String {
+		user.value?.displayName ?? "Profile"
+	}
+
 	private func errorMessage(from error: Error) -> String {
 		guard let userError = error as? UserRepositoryError else {
 			return error.localizedDescription

@@ -22,7 +22,7 @@ struct Lobby: View {
 		NavigationView {
 			content
 				.navigationBarTitle("Lobby")
-				.navigationBarItems(trailing: newMatchButton)
+				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 		}
 	}
 
@@ -75,8 +75,17 @@ struct Lobby: View {
 			Image(systemName: "plus")
 				.imageScale(.large)
 				.accessibility(label: Text("Create Match"))
-				.padding(.all, length: .m)
 		}
+	}
+
+	private var settingsButton: some View {
+		Button(action: {
+			self.container.appState[\.routing.mainRouting.settingsIsOpen] = true
+		}, label: {
+			Image(systemName: "gear")
+				.imageScale(.large)
+				.accessibility(label: Text("Settings"))
+		})
 	}
 }
 
