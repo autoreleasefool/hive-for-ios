@@ -13,8 +13,8 @@ struct ContentView: View {
 	private let container: AppContainer
 
 	@Environment(\.toaster) private var toaster: Toaster
-	@State private var showWelcome = true
 	@State private var account: Loadable<Account> = .notLoaded
+	@State private var routing = Routing()
 
 	init(container: AppContainer, account: Loadable<Account> = .notLoaded) {
 		self.container = container
@@ -24,8 +24,8 @@ struct ContentView: View {
 	var body: some View {
 		GeometryReader { geometry in
 			Group {
-				if self.showWelcome {
-					Welcome(showWelcome: self.$showWelcome)
+				if self.routing.showWelcome {
+					Welcome(showWelcome: self.welcomeRoutingBinding)
 				} else {
 					self.content
 				}
@@ -41,6 +41,7 @@ struct ContentView: View {
 			.onReceive(self.loggedOutUpdate) { _ in
 				self.container.interactors.accountInteractor.clearAccount()
 			}
+			.onReceive(self.routingUpdate) { self.routing = $0 }
 			.inject(self.container)
 			.plugInToaster()
 		}
@@ -97,18 +98,37 @@ extension ContentView {
 // MARK: - Updates
 
 extension ContentView {
-	var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
+	private var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
 	}
 
-	var loggedOutUpdate: AnyPublisher<Void, Never> {
+	private var loggedOutUpdate: AnyPublisher<Void, Never> {
 		NotificationCenter.default
 			.publisher(for: NSNotification.Name.Account.Unauthorized)
 			.map { _ in }
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
+	}
+
+	private var routingUpdate: AnyPublisher<Routing, Never> {
+		container.appState.updates(for: \.routing.mainRouting)
+			.receive(on: DispatchQueue.main)
+			.eraseToAnyPublisher()
+	}
+
+	private var welcomeRoutingBinding: Binding<Bool> {
+		$routing.showWelcome.dispatched(to: container.appState, \.routing.mainRouting.showWelcome)
+	}
+}
+
+// MARK: - Routing
+
+extension ContentView {
+	struct Routing: Equatable {
+		var settingsIsOpen: Bool = false
+		var showWelcome: Bool = true
 	}
 }
 
