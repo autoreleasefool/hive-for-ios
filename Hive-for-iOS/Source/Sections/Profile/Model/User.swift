@@ -27,7 +27,7 @@ extension User {
 			avatarUrl: nil, //URL(string: "https://avatars1.githubusercontent.com/u/6619581?v=4"),
 			activeMatches: Match.matches,
 			pastMatches: []
-		)
+		),
 	]
 }
 #endif

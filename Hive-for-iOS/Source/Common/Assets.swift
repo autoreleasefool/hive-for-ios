@@ -41,9 +41,7 @@ enum ImageAsset {
 		static let spider = UIImage(named: "Pieces/Spider")!
 	}
 
-	enum EmptyState {
-		
-	}
+	enum EmptyState { }
 }
 
 // MARK: - Colors

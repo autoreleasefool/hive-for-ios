@@ -44,7 +44,7 @@ class HiveGameClient {
 		return openConnection(withAccount: account)
 	}
 
-	func reconnect(withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError>{
+	func reconnect(withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
 		if isConnected, let subject = subject {
 			return subject.eraseToAnyPublisher()
 		}

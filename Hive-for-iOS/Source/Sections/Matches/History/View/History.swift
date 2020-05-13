@@ -177,8 +177,14 @@ extension History {
 
 extension History {
 	private func errorMessage(from error: Error) -> String {
-		// TODO: get a better error message from the repository error
-		error.localizedDescription
+		guard let userError = error as? UserRepositoryError else {
+			return error.localizedDescription
+		}
+
+		switch userError {
+		case .missingID: return "Account not available"
+		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
+		}
 	}
 }
 

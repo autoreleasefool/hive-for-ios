@@ -220,4 +220,3 @@ struct MatchDetailPreview: PreviewProvider {
 	}
 }
 #endif
-

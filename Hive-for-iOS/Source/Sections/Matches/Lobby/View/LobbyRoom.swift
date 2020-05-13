@@ -90,7 +90,7 @@ struct LobbyRoom: View {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let match, _): return AnyView(loadedView(match, geometry))
 		case .loaded(let match): return AnyView(loadedView(match, geometry))
-		case .failed: return AnyView(failedView)
+		case .failed(let error): return AnyView(failedView(error))
 		}
 	}
 
@@ -147,9 +147,17 @@ struct LobbyRoom: View {
 		}
 	}
 
-	// TODO: failedView
-	private var failedView: some View {
-		EmptyView()
+	private func failedView(_ error: Error) -> some View {
+		EmptyState(
+			header: "An error occurred",
+			message: "We can't fetch the match right now.\n\(errorMessage(from: error))"
+		) {
+			if self.creatingNewMatch {
+				self.createNewMatch()
+			} else {
+				self.joinMatch()
+			}
+		}
 	}
 
 	private func reconnectingView(_ geometry: GeometryProxy) -> some View {
@@ -438,6 +446,16 @@ extension LobbyRoom {
 
 	var reconnectingMessage: String {
 		"Reconnecting (\(reconnectAttempts)/\(HiveGameClient.maxReconnectAttempts))..."
+	}
+
+	private func errorMessage(from error: Error) -> String {
+		guard let matchError = error as? MatchRepositoryError else {
+			return error.localizedDescription
+		}
+
+		switch matchError {
+		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
+		}
 	}
 }
 
