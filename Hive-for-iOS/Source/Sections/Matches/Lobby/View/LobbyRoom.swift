@@ -123,23 +123,7 @@ struct LobbyRoom: View {
 				if self.reconnecting {
 					reconnectingView(geometry)
 				} else {
-					MatchDetail(
-						match: match!,
-						editable: userIsHost,
-						matchOptions: self.matchState.matchOptions,
-						gameOptions: self.matchState.gameOptions,
-						readyPlayers: self.matchState.readyPlayers
-					)
-					.onMatchOptionToggled { option, newValue in
-						guard self.userIsHost else { return }
-						self.matchState.matchOptions.set(option, to: newValue)
-						self.send(.setOption(.matchOption(option), newValue))
-					}
-					.onGameOptionToggled { option, newValue in
-						guard self.userIsHost else { return }
-						self.matchState.gameOptions.set(option, to: newValue)
-						self.send(.setOption(.gameOption(option), newValue))
-					}
+					matchDetail(match!)
 				}
 			}
 		}
@@ -197,6 +181,108 @@ struct LobbyRoom: View {
 			Text(startButtonText)
 		})
 	}
+
+	// MARK: Match Detail
+
+	private func matchDetail(_ match: Match) -> some View {
+		VStack(spacing: .m) {
+			self.playerSection(match)
+			Divider().background(Color(.divider))
+			self.expansionSection
+			Divider().background(Color(.divider))
+			self.otherOptionsSection
+		}
+		.padding(.all, length: .m)
+	}
+
+	private func playerSection(_ match: Match) -> some View {
+		HStack(spacing: .xs) {
+			MatchUserSummary(
+				match.host,
+				highlight: self.isPlayerReady(id: match.host?.id),
+				iconSize: .l
+			)
+			Spacer()
+			MatchUserSummary(
+				match.opponent,
+				highlight: self.isPlayerReady(id: match.opponent?.id),
+				alignment: .trailing,
+				iconSize: .l
+			)
+		}
+	}
+
+	var expansionSection: some View {
+		VStack(alignment: .leading) {
+			Text("Expansions")
+				.bold()
+				.body()
+				.foregroundColor(Color(.text))
+				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+			HStack(spacing: .l) {
+				Spacer()
+				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
+					self.expansionOption(for: option, enabled: self.matchState.gameOptions.contains(option))
+				}
+				Spacer()
+			}
+		}
+	}
+
+	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
+		Button(action: {
+			self.gameOptionEnabled(option: option).wrappedValue.toggle()
+		}, label: {
+			ZStack {
+				Text(name(forOption: option))
+					.subtitle()
+					.foregroundColor(
+						enabled
+							? Color(.primary)
+							: Color(.textSecondary)
+					)
+				Hex()
+					.stroke(
+						enabled
+							? Color(.primary)
+							: Color(.textSecondary),
+						lineWidth: CGFloat(5)
+					)
+					.squareImage(.l)
+			}
+		})
+		.disabled(!userIsHost)
+	}
+
+	private func optionSectionHeader(title: String) -> some View {
+		Text(title)
+			.bold()
+			.body()
+			.foregroundColor(Color(.text))
+			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+	}
+
+	private var matchOptionsSection: some View {
+		VStack(alignment: .leading) {
+			self.optionSectionHeader(title: "Match options")
+			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
+				Toggle(self.name(forOption: option), isOn: self.optionEnabled(option: option))
+					.disabled(!self.userIsHost)
+					.foregroundColor(Color(.text))
+			}
+		}
+	}
+
+	private var otherOptionsSection: some View {
+		VStack(alignment: .leading) {
+			self.optionSectionHeader(title: "Other options")
+			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
+				Toggle(self.name(forOption: option), isOn: self.gameOptionEnabled(option: option))
+					.disabled(!self.userIsHost)
+					.foregroundColor(Color(.text))
+			}
+		}
+	}
 }
 
 // MARK: - Actions
@@ -234,6 +320,28 @@ extension LobbyRoom {
 				return false
 			},
 			set: { _ in }
+		)
+	}
+
+	func optionEnabled(option: Match.Option) -> Binding<Bool> {
+		Binding(
+			get: { self.matchState.matchOptions.contains(option) },
+			set: { newValue in
+				guard self.userIsHost else { return }
+				self.matchState.matchOptions.set(option, to: newValue)
+				self.send(.setOption(.matchOption(option), newValue))
+			}
+		)
+	}
+
+	func gameOptionEnabled(option: GameState.Option) -> Binding<Bool> {
+		Binding(
+			get: { self.matchState.gameOptions.contains(option) },
+			set: { newValue in
+				guard self.userIsHost else { return }
+				self.matchState.gameOptions.set(option, to: newValue)
+				self.send(.setOption(.gameOption(option), newValue))
+			}
 		)
 	}
 
@@ -422,6 +530,17 @@ extension LobbyRoom {
 		}
 	}
 
+	func name(forOption option: Match.Option) -> String {
+		switch option {
+		case .asyncPlay: return "Asynchronous play"
+		case .hostIsWhite: return "\(matchState.match.value?.host?.displayName ?? "Host") is white"
+		}
+	}
+
+	func name(forOption option: GameState.Option) -> String {
+		return option.preview ?? option.displayName
+	}
+
 	var startButtonText: String {
 		guard let hostId = matchState.match.value?.host?.id,
 			let opponentId = matchState.match.value?.opponent?.id else {
@@ -449,6 +568,17 @@ extension LobbyRoom {
 
 		switch matchError {
 		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
+		}
+	}
+}
+
+private extension GameState.Option {
+	var preview: String? {
+		switch self {
+		case .mosquito: return "M"
+		case .ladyBug: return "L"
+		case .pillBug: return "P"
+		default: return nil
 		}
 	}
 }

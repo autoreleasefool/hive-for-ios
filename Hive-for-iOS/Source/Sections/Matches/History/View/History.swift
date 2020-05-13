@@ -152,7 +152,7 @@ extension History {
 
 	private func completeMatchDetails(for match: Match) -> some View {
 		ScrollView {
-			MatchDetail(match: match, editable: false)
+			MatchDetail(match: match)
 		}
 	}
 
