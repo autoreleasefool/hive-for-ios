@@ -35,7 +35,7 @@ struct Lobby: View {
 		switch matches {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let cached, _): return AnyView(loadingView(cached))
-		case .loaded(let matches): return AnyView(loadedView(matches))
+		case .loaded(let matches): return AnyView(loadedView(matches, loading: false))
 		case .failed(let error): return AnyView(failedView(error))
 		}
 	}
@@ -48,10 +48,10 @@ struct Lobby: View {
 	}
 
 	private func loadingView(_ matches: [Match]?) -> some View {
-		loadedView(matches ?? [])
+		loadedView(matches ?? [], loading: true)
 	}
 
-	private func loadedView(_ matches: [Match]) -> some View {
+	private func loadedView(_ matches: [Match], loading: Bool) -> some View {
 		Group {
 			NavigationLink(
 				destination: LobbyRoom(id: self.routing.matchId),
@@ -65,7 +65,7 @@ struct Lobby: View {
 				label: { EmptyView() }
 			)
 
-			if matches.count == 0 {
+			if !loading && matches.count == 0 {
 				emptyState
 			} else {
 				List(matches) { match in
