@@ -157,7 +157,7 @@ extension History {
 	}
 
 	private func lobbyDetails(for match: Match) -> some View {
-		LobbyRoom(id: match.id)
+		LobbyRoom(creatingRoom: false)
 	}
 
 	private func loadMatchHistory() {

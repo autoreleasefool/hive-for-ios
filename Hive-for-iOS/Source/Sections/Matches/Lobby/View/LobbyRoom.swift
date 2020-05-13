@@ -32,7 +32,6 @@ struct LobbyRoom: View {
 	@Environment(\.container) private var container: AppContainer
 
 	private let creatingNewMatch: Bool
-	@State private var matchId: Match.ID?
 
 	@ObservedObject private var matchState = LobbyRoomState()
 
@@ -43,9 +42,8 @@ struct LobbyRoom: View {
 	@State private var reconnectAttempts = 0
 	@State private var reconnecting = false
 
-	init(id: Match.ID?, match: Loadable<Match> = .notLoaded) {
-		self.creatingNewMatch = id == nil
-		self.matchId = id
+	init(creatingRoom: Bool, match: Loadable<Match> = .notLoaded) {
+		self.creatingNewMatch = creatingRoom
 		self.matchState.match = match
 	}
 
@@ -395,7 +393,7 @@ extension LobbyRoom {
 	}
 
 	private func joinMatch() {
-		guard let id = matchId else { return }
+		guard let id = container.appState.value.routing.lobbyRouting.matchId else { return }
 		container.interactors.matchInteractor
 			.joinMatch(id: id, match: $matchState.match)
 	}
@@ -406,7 +404,7 @@ extension LobbyRoom {
 	}
 
 	private func loadMatchDetails() {
-		guard let id = matchId else { return }
+		guard let id = matchState.match.value?.id else { return }
 		container.interactors.matchInteractor
 			.loadMatchDetails(id: id, match: $matchState.match)
 	}
@@ -586,9 +584,7 @@ private extension GameState.Option {
 #if DEBUG
 struct LobbyRoomPreview: PreviewProvider {
 	static var previews: some View {
-		let match = Match.matches[0]
-		let loadable: Loadable<Match> = .loaded(match)
-		return LobbyRoom(id: match.id, match: loadable)
+		return LobbyRoom(creatingRoom: false, match: .loaded(Match.matches[0]))
 	}
 }
 #endif

@@ -54,13 +54,13 @@ struct Lobby: View {
 	private func loadedView(_ matches: [Match], loading: Bool) -> some View {
 		Group {
 			NavigationLink(
-				destination: LobbyRoom(id: self.routing.matchId),
+				destination: LobbyRoom(creatingRoom: false),
 				isActive: self.inRoom,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
-				destination: LobbyRoom(id: self.routing.matchId),
+				destination: LobbyRoom(creatingRoom: true),
 				isActive: self.creatingRoom,
 				label: { EmptyView() }
 			)
