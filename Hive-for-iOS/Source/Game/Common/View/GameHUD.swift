@@ -91,7 +91,7 @@ struct GameHUD: View {
 struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {
 		GameHUD()
-			.environmentObject(HiveGameViewModel())
+			.environmentObject(HiveGameViewModel(initialState: GameState(), playingAs: .white))
 			.background(Color(.backgroundDark).edgesIgnoringSafeArea(.all))
 	}
 }

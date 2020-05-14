@@ -64,8 +64,7 @@ class HiveARGameView: UIView {
 
 		viewModel.gameStateStore
 			.sink { [weak self] receivedValue in
-				guard let gameState = receivedValue else { return }
-				self?.present(gameState: gameState)
+				self?.present(gameState: receivedValue)
 			}
 			.store(in: viewModel)
 
