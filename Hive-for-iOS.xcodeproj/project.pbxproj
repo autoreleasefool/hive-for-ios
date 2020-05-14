@@ -83,6 +83,7 @@
 		CAC730EB246979C5004DB450 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730EA246979C5004DB450 /* Date+Extensions.swift */; };
 		CAC730F3246BCBDF004DB450 /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F2246BCBDF004DB450 /* Routing.swift */; };
 		CAC730F7246BDF26004DB450 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F6246BDF26004DB450 /* Settings.swift */; };
+		CAC730F9246C98BB004DB450 /* GameContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */; };
 		CAC961E3243B105E00B3FC8D /* GameClientMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */; };
 		CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
@@ -186,6 +187,7 @@
 		CAC730EA246979C5004DB450 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		CAC730F2246BCBDF004DB450 /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
 		CAC730F6246BDF26004DB450 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameContentCoordinator.swift; sourceTree = "<group>"; };
 		CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClientMessage.swift; sourceTree = "<group>"; };
 		CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServerMessage.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
@@ -451,6 +453,7 @@
 			isa = PBXGroup;
 			children = (
 				CAF8256D245CD14D0064359E /* ContentView.swift */,
+				CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */,
 				CAFC7A61245C527400747E82 /* RootTabView.swift */,
 				CAC68CC324327517003CC2E6 /* Login */,
 				CAC6860123CD1C9B00B882D2 /* Matches */,
@@ -789,6 +792,7 @@
 				CA91C32224350CEA007E7D55 /* UserSignup.swift in Sources */,
 				CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */,
 				CA88B80C244D89B600C4A276 /* Store.swift in Sources */,
+				CAC730F9246C98BB004DB450 /* GameContentCoordinator.swift in Sources */,
 				CA41ACB02456144200B6F88E /* OptionSet.swift in Sources */,
 				CA8F46E7245EC36200B136D0 /* MatchRepository.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,

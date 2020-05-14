@@ -49,14 +49,6 @@ struct LobbyRoom: View {
 
 	var body: some View {
 		GeometryReader { geometry in
-			NavigationLink(
-				destination: HiveGame(state: self.gameState, player: self.player) {
-					self.presentationMode.wrappedValue.dismiss()
-				},
-				isActive: self.inGame,
-				label: { EmptyView() }
-			)
-
 			self.content(geometry)
 		}
 		.background(Color(.background).edgesIgnoringSafeArea(.all))
@@ -286,17 +278,6 @@ struct LobbyRoom: View {
 // MARK: - Actions
 
 extension LobbyRoom {
-	var inGame: Binding<Bool> {
-		Binding(
-			get: { self.gameState != nil },
-			set: { newValue in
-				if !newValue {
-					self.gameState = nil
-				}
-			}
-		)
-	}
-
 	var player: Player {
 		if matchState.matchOptions.contains(.hostIsWhite) {
 			return userIsHost ? .white : .black
@@ -382,7 +363,13 @@ extension LobbyRoom {
 	}
 
 	private func updateGameState(to state: GameState) {
-		gameState = state
+		container.appState[\.routing.gameContentRouting.gameSetup] = GameContentCoordinator.GameSetup(
+			state: state,
+			player: player
+		)
+
+		// Unsubscribe from future events so we don't disrupt the game
+		matchState.cancelBag.cancel()
 	}
 
 	private func setOption(_ option: GameServerMessage.Option, to value: Bool) {

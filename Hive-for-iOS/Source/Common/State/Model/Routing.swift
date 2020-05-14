@@ -9,4 +9,5 @@
 struct Routing: Equatable {
 	var mainRouting = ContentView.Routing()
 	var lobbyRouting = Lobby.Routing()
+	var gameContentRouting = GameContentCoordinator.Routing()
 }
