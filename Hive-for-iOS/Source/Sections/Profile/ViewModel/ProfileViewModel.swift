@@ -9,7 +9,7 @@
 import Combine
 
 enum ProfileViewAction: BaseViewAction {
-	case loadProfile
+	case onAppear
 	case openSettings
 }
 
@@ -32,7 +32,7 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 
 	override func postViewAction(_ viewAction: ProfileViewAction) {
 		switch viewAction {
-		case .loadProfile:
+		case .onAppear:
 			actions.send(.loadProfile)
 		case .openSettings:
 			actions.send(.openSettings)

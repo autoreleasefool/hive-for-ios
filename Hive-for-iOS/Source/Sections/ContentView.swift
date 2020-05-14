@@ -56,7 +56,7 @@ struct ContentView: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.viewModel.postViewAction(.loadAccount) }
+			.onAppear { self.viewModel.postViewAction(.onAppear) }
 	}
 
 	private var loadingView: some View {

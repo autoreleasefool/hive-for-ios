@@ -10,7 +10,7 @@ import Foundation
 import Combine
 
 enum ContentViewViewAction: BaseViewAction {
-	case loadAccount
+	case onAppear
 }
 
 enum ContentViewAction: BaseAction {
@@ -36,7 +36,7 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 
 	override func postViewAction(_ viewAction: ContentViewViewAction) {
 		switch viewAction {
-		case .loadAccount:
+		case .onAppear:
 			actions.send(.loadAccount)
 		}
 	}

@@ -42,7 +42,7 @@ struct Profile: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.viewModel.postViewAction(.loadProfile) }
+			.onAppear { self.viewModel.postViewAction(.onAppear) }
 	}
 
 	private var loadingView: some View {
