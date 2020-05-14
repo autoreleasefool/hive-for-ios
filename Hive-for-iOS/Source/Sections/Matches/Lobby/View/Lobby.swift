@@ -13,11 +13,10 @@ import SwiftUIRefresh
 struct Lobby: View {
 	@Environment(\.container) private var container: AppContainer
 
-	@State private var matches: Loadable<[Match]>
-	@State private var routing = Routing()
+	@ObservedObject private var viewModel: LobbyViewModel
 
 	init(matches: Loadable<[Match]> = .notLoaded) {
-		self._matches = .init(initialValue: matches)
+		viewModel = LobbyViewModel(matches: matches)
 	}
 
 	var body: some View {
@@ -26,13 +25,14 @@ struct Lobby: View {
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle("Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
-				.onReceive(self.routingUpdate) { self.routing = $0 }
-				.onReceive(self.openMatchesUpdate) { self.matches = $0 }
+				.onReceive(self.routingUpdate) { self.viewModel.routing = $0 }
+				.onReceive(self.openMatchesUpdate) { self.viewModel.matches = $0 }
+				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 		}
 	}
 
 	private var content: AnyView {
-		switch matches {
+		switch viewModel.matches {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let cached, _): return AnyView(loadingView(cached))
 		case .loaded(let matches): return AnyView(loadedView(matches, loading: false))
@@ -44,7 +44,7 @@ struct Lobby: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.loadMatches() }
+			.onAppear { self.viewModel.postViewAction(.onAppear) }
 	}
 
 	private func loadingView(_ matches: [Match]?) -> some View {
@@ -55,13 +55,13 @@ struct Lobby: View {
 		Group {
 			NavigationLink(
 				destination: LobbyRoom(creatingRoom: false),
-				isActive: self.inRoom,
+				isActive: self.viewModel.inRoom,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
 				destination: LobbyRoom(creatingRoom: true),
-				isActive: self.creatingRoom,
+				isActive: self.viewModel.creatingRoom,
 				label: { EmptyView() }
 			)
 
@@ -70,7 +70,7 @@ struct Lobby: View {
 			} else {
 				List(matches) { match in
 					Button(action: {
-						self.container.appState[\.routing.lobbyRouting.matchId] = match.id
+						self.viewModel.postViewAction(.joinMatch(match.id))
 					}, label: {
 						LobbyRow(match: match)
 					})
@@ -91,7 +91,7 @@ struct Lobby: View {
 
 	private var newMatchButton: some View {
 		Button(action: {
-			self.container.appState[\.routing.lobbyRouting.creatingRoom] = true
+			self.viewModel.postViewAction(.createNewMatch)
 		}, label: {
 			Image(systemName: "plus")
 				.imageScale(.large)
@@ -101,7 +101,7 @@ struct Lobby: View {
 
 	private var settingsButton: some View {
 		Button(action: {
-			self.container.appState[\.routing.mainRouting.settingsIsOpen] = true
+			self.viewModel.postViewAction(.openSettings)
 		}, label: {
 			Image(systemName: "gear")
 				.imageScale(.large)
@@ -119,16 +119,16 @@ extension Lobby {
 			message: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
 				"with the '+' button in the top right"
 		) {
-			self.loadMatches()
+			self.viewModel.postViewAction(.refresh)
 		}
 	}
 
 	private func failedState(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't fetch the lobby right now.\n\(errorMessage(from: error))"
+			message: "We can't fetch the lobby right now.\n\(viewModel.errorMessage(from: error))"
 		) {
-			self.loadMatches()
+			self.viewModel.postViewAction(.refresh)
 		}
 	}
 }
@@ -139,7 +139,7 @@ extension Lobby {
 	var isRefreshing: Binding<Bool> {
 		Binding(
 			get: {
-				if case .loading = self.matches {
+				if case .loading = self.viewModel.matches {
 					return true
 				}
 				return false
@@ -148,9 +148,41 @@ extension Lobby {
 		)
 	}
 
+	private func handleAction(_ action: LobbyAction) {
+		switch action {
+		case .loadOpenMatches:
+			loadMatches()
+		case .openSettings:
+			openSettings()
+		case .createNewMatch:
+			createNewMatch()
+		case .leaveMatch:
+			leaveMatch()
+		case .joinMatch(let id):
+			joinMatch(id)
+		}
+	}
+
 	private func loadMatches() {
 		container.interactors.matchInteractor
 			.loadOpenMatches()
+	}
+
+	private func openSettings() {
+		container.appState[\.routing.mainRouting.settingsIsOpen] = true
+	}
+
+	private func createNewMatch() {
+		container.appState[\.routing.lobbyRouting.creatingRoom] = true
+	}
+
+	private func leaveMatch() {
+		container.appState[\.routing.lobbyRouting.creatingRoom] = false
+		container.appState[\.routing.lobbyRouting.matchId] = nil
+	}
+
+	private func joinMatch(_ id: Match.ID) {
+		container.appState[\.routing.lobbyRouting.matchId] = id
 	}
 }
 
@@ -176,45 +208,6 @@ extension Lobby {
 		container.appState.updates(for: \.routing.lobbyRouting)
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
-	}
-
-	private var inRoom: Binding<Bool> {
-		Binding(
-			get: {
-				!self.routing.creatingRoom && self.routing.matchId != nil
-			},
-			set: { newValue in
-				guard !newValue else { return }
-				self.container.appState[\.routing.lobbyRouting.matchId] = nil
-			}
-		)
-	}
-
-	private var creatingRoom: Binding<Bool> {
-		Binding(
-			get: {
-				self.routing.creatingRoom
-			},
-			set: { newValue in
-				guard !newValue else { return }
-				self.container.appState[\.routing.lobbyRouting.creatingRoom] = false
-				self.container.appState[\.routing.lobbyRouting.matchId] = nil
-			}
-		)
-	}
-}
-
-// MARK: - Strings
-
-extension Lobby {
-	private func errorMessage(from error: Error) -> String {
-		guard let matchError = error as? MatchRepositoryError else {
-			return error.localizedDescription
-		}
-
-		switch matchError {
-		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
-		}
 	}
 }
 
