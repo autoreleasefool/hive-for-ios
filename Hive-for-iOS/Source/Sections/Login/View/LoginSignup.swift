@@ -11,29 +11,21 @@ import SwiftUI
 
 struct LoginSignup: View {
 	@Environment(\.container) private var container: AppContainer
+	@ObservedObject private var viewModel: LoginSignupViewModel
 
-	@State private var account: Loadable<Account>
-	@State private var form: Form
-	@State private var activeField: FieldItem?
-
-	@State private var email: String = ""
-	@State private var password: String = ""
-	@State private var confirmPassword: String = ""
-	@State private var displayName: String = ""
-
-	init(defaultForm: Form = .login, account: Loadable<Account> = .notLoaded) {
-		self._account = .init(initialValue: account)
-		self._form = .init(initialValue: defaultForm)
+	init(defaultForm: LoginSignupViewModel.Form = .login, account: Loadable<Account> = .notLoaded) {
+		viewModel = LoginSignupViewModel(defaultForm: defaultForm, account: account)
 	}
 
 	var body: some View {
 		content
 			.padding(.all, length: .m)
 			.avoidingKeyboard()
+			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
 	}
 
 	private var content: AnyView {
-		switch account {
+		switch viewModel.account {
 		case .notLoaded, .failed: return AnyView(formView)
 		case .loading, .loaded: return AnyView(loadingView)
 		}
@@ -44,16 +36,16 @@ struct LoginSignup: View {
 	private var formView: some View {
 		ScrollView {
 			VStack(spacing: .m) {
-				if shouldShowNotice {
-					notice(message: noticeMessage)
+				if viewModel.shouldShowNotice {
+					notice(message: viewModel.noticeMessage)
 				}
 
 				field(for: .email)
-				if form == .signup {
+				if viewModel.form == .signup {
 					field(for: .displayName)
 				}
 				field(for: .password)
-				if form == .signup {
+				if viewModel.form == .signup {
 					field(for: .confirmPassword)
 				}
 
@@ -77,37 +69,37 @@ struct LoginSignup: View {
 
 	// MARK: Form
 
-	private func text(for id: FieldItem) -> Binding<String> {
-		switch id {
-		case .email: return $email
-		case .password: return $password
-		case .confirmPassword: return $confirmPassword
-		case .displayName: return $displayName
-		}
-	}
-
-	private func field(for id: FieldItem) -> some View {
+	private func field(for id: LoginSignupViewModel.FieldItem) -> some View {
 		LoginField(
 			id.title,
 			text: text(for: id),
 			maxLength: id.maxLength,
 			keyboardType: id.keyboardType,
-			returnKeyType: id.returnKeyType(forForm: form),
-			isActive: activeField == id,
+			returnKeyType: id.returnKeyType(forForm: viewModel.form),
+			isActive: viewModel.activeField == id,
 			isSecure: id.isSecure,
-			onReturn: { self.handleReturn(from: id) }
+			onReturn: { self.viewModel.postViewAction(.didReturn(from: id)) }
 		)
 		.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
 		.onTapGesture {
-			self.activeField = id
+			self.viewModel.activeField = id
+		}
+	}
+
+	private func text(for id: LoginSignupViewModel.FieldItem) -> Binding<String> {
+		switch id {
+		case .email: return $viewModel.email
+		case .password: return $viewModel.password
+		case .confirmPassword: return $viewModel.confirmPassword
+		case .displayName: return $viewModel.displayName
 		}
 	}
 
 	private var submitButton: some View {
 		Button(action: {
-			self.submitForm()
+			self.viewModel.postViewAction(.submitForm)
 		}, label: {
-			Text(submitButtonText)
+			Text(viewModel.submitButtonText)
 				.body()
 				.foregroundColor(Color(.background))
 				.padding(.vertical, length: .m)
@@ -125,9 +117,9 @@ struct LoginSignup: View {
 				.caption()
 				.foregroundColor(Color(.text))
 			Button(action: {
-				self.toggleForm()
+				self.viewModel.postViewAction(.toggleForm)
 			}, label: {
-				Text(toggleButtonText)
+				Text(viewModel.toggleButtonText)
 					.caption()
 					.foregroundColor(Color(.primary))
 					.padding(.vertical, length: .s)
@@ -146,168 +138,23 @@ struct LoginSignup: View {
 // MARK: - Actions
 
 extension LoginSignup {
-	private var loginData: LoginData {
-		LoginData(email: email.lowercased(), password: password)
-	}
-
-	private var signupData: SignupData {
-		SignupData(
-			email: email.lowercased(),
-			displayName: displayName,
-			password: password,
-			verifyPassword: confirmPassword
-		)
-	}
-
-	private func nextField(after id: FieldItem) -> FieldItem? {
-		switch id {
-		case .email: return form == .login ? .password : .displayName
-		case .displayName: return .password
-		case .password: return form == .login ? nil : .confirmPassword
-		case .confirmPassword: return nil
+	private func handleAction(_ action: LoginSignupAction) {
+		switch action {
+		case .login(let data):
+			login(data)
+		case .signup(let data):
+			signup(data)
 		}
 	}
 
-	private func handleReturn(from id: FieldItem) {
-		if let field = nextField(after: id) {
-			activeField = field
-		} else {
-			activeField = nil
-			submitForm()
-		}
-	}
-
-	private func toggleForm() {
-		form = form == .login ? .signup : .login
-	}
-
-	private func submitForm() {
-		activeField = nil
-		switch form {
-		case .login: login()
-		case .signup: signup()
-		}
-	}
-
-	private func login() {
+	private func login(_ data: LoginData) {
 		container.interactors.accountInteractor
-			.login(loginData, account: $account)
+			.login(data, account: $viewModel.account)
 	}
 
-	private func signup() {
+	private func signup(_ data: SignupData) {
 		container.interactors.accountInteractor
-			.signup(signupData, account: $account)
-	}
-}
-
-// MARK: - Form
-
-extension LoginSignup {
-	enum Form {
-		case login
-		case signup
-	}
-}
-
-// MARK: - FieldItem
-
-extension LoginSignup {
-	enum FieldItem {
-		case email
-		case password
-		case confirmPassword
-		case displayName
-
-		var isSecure: Bool {
-			switch self {
-			case .email, .displayName: return false
-			case .password, .confirmPassword: return true
-			}
-		}
-
-		var keyboardType: UIKeyboardType {
-			switch self {
-			case .email: return .emailAddress
-			case .confirmPassword, .password, .displayName: return .default
-			}
-		}
-
-		func returnKeyType(forForm form: LoginSignup.Form) -> UIReturnKeyType {
-			switch self {
-			case .email, .displayName: return .next
-			case .confirmPassword: return .done
-			case .password: return form == .login ? .done : .next
-			}
-		}
-
-		var maxLength: Int? {
-			switch self {
-			case .displayName: return 24
-			case .email, .password, .confirmPassword: return nil
-			}
-		}
-	}
-}
-
-// MARK: - Strings
-
-extension LoginSignup {
-	private var submitButtonText: String {
-		switch form {
-		case .login: return "Login"
-		case .signup: return "Signup"
-		}
-	}
-
-	private var toggleButtonText: String {
-		switch form {
-		case .login: return "create a new account"
-		case .signup: return "login to an existing account"
-		}
-	}
-
-	private var shouldShowNotice: Bool {
-		switch account {
-		case .failed: return true
-		case .loaded, .loading, .notLoaded: return false
-		}
-	}
-
-	private var noticeMessage: String {
-		switch account {
-		case .failed(let error):
-			if let accountError = error as? AccountRepositoryError {
-				switch accountError {
-				case .loggedOut: return "You've been logged out. Please login again."
-				case .apiError(let apiError): return noticeMessage(for: apiError)
-				case .notFound, .keychainError: return ""
-				}
-			}
-			return error.localizedDescription
-		case .loaded, .loading, .notLoaded: return ""
-		}
-	}
-
-	private func noticeMessage(for error: HiveAPIError) -> String {
-		switch error {
-		case .unauthorized:
-			return "You entered an incorrect email or password."
-		case .networkingError:
-			return "There was an error connecting to the server. Are you connected to the Internet?"
-		case .invalidData, .invalidHTTPResponse, .invalidResponse, .missingData, .notImplemented:
-			return error.errorDescription ?? error.localizedDescription
-		}
-	}
-}
-
-extension LoginSignup.FieldItem {
-	var title: String {
-		switch self {
-		case .email: return "Email"
-		case .password: return "Password"
-		case .confirmPassword: return "Confirm password"
-		case .displayName: return "Display name"
-		}
+			.signup(data, account: $viewModel.account)
 	}
 }
 

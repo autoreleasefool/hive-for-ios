@@ -84,6 +84,7 @@
 		CAC730F3246BCBDF004DB450 /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F2246BCBDF004DB450 /* Routing.swift */; };
 		CAC730F7246BDF26004DB450 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F6246BDF26004DB450 /* Settings.swift */; };
 		CAC730F9246C98BB004DB450 /* GameContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */; };
+		CAC730FC246DCE5B004DB450 /* LoginSignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730FB246DCE5B004DB450 /* LoginSignupViewModel.swift */; };
 		CAC961E3243B105E00B3FC8D /* GameClientMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */; };
 		CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
@@ -188,6 +189,7 @@
 		CAC730F2246BCBDF004DB450 /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
 		CAC730F6246BDF26004DB450 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameContentCoordinator.swift; sourceTree = "<group>"; };
+		CAC730FB246DCE5B004DB450 /* LoginSignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewModel.swift; sourceTree = "<group>"; };
 		CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClientMessage.swift; sourceTree = "<group>"; };
 		CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServerMessage.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
@@ -548,6 +550,7 @@
 			children = (
 				CAC68CC424327521003CC2E6 /* Model */,
 				CAC68CC52432752B003CC2E6 /* View */,
+				CAC730FA246DCE48004DB450 /* ViewModel */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -583,6 +586,14 @@
 				CAC730F6246BDF26004DB450 /* Settings.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		CAC730FA246DCE48004DB450 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CAC730FB246DCE5B004DB450 /* LoginSignupViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		CAF82561245C77B20064359E /* State */ = {
@@ -855,6 +866,7 @@
 				CAC6861823CE4E6800B882D2 /* LobbyRow.swift in Sources */,
 				CA45F9C4242E758C007EC94D /* HiveRule.swift in Sources */,
 				CA88BA6B244E39A800C4A276 /* ActivityIndicator.swift in Sources */,
+				CAC730FC246DCE5B004DB450 /* LoginSignupViewModel.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
 				CABDFD0823DD9FE300C697AD /* MatchUserSummary.swift in Sources */,
 				CAC730E7246955BC004DB450 /* MatchDetail.swift in Sources */,
