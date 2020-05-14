@@ -13,24 +13,25 @@ import SwiftUIRefresh
 struct History: View {
 	@Environment(\.container) private var container: AppContainer
 
-	@State private var user: Loadable<User>
+	@ObservedObject private var viewModel: HistoryViewModel
 
 	init(user: Loadable<User> = .notLoaded) {
-		self._user = .init(initialValue: user)
+		self.viewModel = HistoryViewModel(user: user)
 	}
 
 	var body: some View {
 		NavigationView {
 			content
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
-				.onReceive(userUpdates) { self.user = $0 }
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)
+				.onReceive(userUpdates) { self.viewModel.user = $0 }
+				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 		}
 	}
 
 	private var content: AnyView {
-		switch user {
+		switch viewModel.user {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let user, _): return AnyView(loadedView(user))
 		case .loaded(let user): return AnyView(loadedView(user))
@@ -42,7 +43,7 @@ struct History: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.loadMatchHistory() }
+			.onAppear { self.viewModel.postViewAction(.onAppear) }
 	}
 
 	private func loadedView(_ user: User?) -> some View {
@@ -53,10 +54,10 @@ struct History: View {
 				List {
 					ForEach(ListSection.allCases, id: \.rawValue) { section in
 						Section(header: section.header) {
-							if self.matches(for: section, fromUser: user).count == 0 {
+							if self.viewModel.matches(for: section, fromUser: user).count == 0 {
 								section.emptyState
 							} else {
-								ForEach(self.matches(for: section, fromUser: user)) { match in
+								ForEach(self.viewModel.matches(for: section, fromUser: user)) { match in
 									NavigationLink(destination: self.details(for: match)) {
 										HistoryRow(match: match)
 									}
@@ -75,12 +76,30 @@ struct History: View {
 
 	private var settingsButton: some View {
 		Button(action: {
-			self.container.appState[\.routing.mainRouting.settingsIsOpen] = true
+			self.viewModel.postViewAction(.openSettings)
 		}, label: {
 			Image(systemName: "gear")
 				.imageScale(.large)
 				.accessibility(label: Text("Settings"))
 		})
+	}
+
+	private func details(for match: Match) -> AnyView {
+		if match.isComplete {
+			return AnyView(completeMatchDetails(for: match))
+		} else {
+			return AnyView(lobbyDetails(for: match))
+		}
+	}
+
+	private func completeMatchDetails(for match: Match) -> some View {
+		ScrollView {
+			MatchDetail(match: match)
+		}
+	}
+
+	private func lobbyDetails(for match: Match) -> some View {
+		LobbyRoom(creatingRoom: false)
 	}
 }
 
@@ -125,7 +144,7 @@ extension History {
 	private func failedState(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't fetch your history right now.\n\(errorMessage(from: error))"
+			message: "We can't fetch your history right now.\n\(viewModel.errorMessage(from: error))"
 		) {
 			self.loadMatchHistory()
 		}
@@ -135,34 +154,22 @@ extension History {
 // MARK: - Actions
 
 extension History {
-	private func matches(for section: ListSection, fromUser user: User?) -> [Match] {
-		switch section {
-		case .inProgress: return user?.activeMatches ?? []
-		case .completed: return user?.pastMatches ?? []
+	private func handleAction(_ action: HistoryAction) {
+		switch action {
+		case .loadMatchHistory:
+			loadMatchHistory()
+		case .openSettings:
+			openSettings()
 		}
-	}
-
-	private func details(for match: Match) -> AnyView {
-		if match.isComplete {
-			return AnyView(completeMatchDetails(for: match))
-		} else {
-			return AnyView(lobbyDetails(for: match))
-		}
-	}
-
-	private func completeMatchDetails(for match: Match) -> some View {
-		ScrollView {
-			MatchDetail(match: match)
-		}
-	}
-
-	private func lobbyDetails(for match: Match) -> some View {
-		LobbyRoom(creatingRoom: false)
 	}
 
 	private func loadMatchHistory() {
 		container.interactors.userInteractor
 			.loadProfile()
+	}
+
+	private func openSettings() {
+		container.appState[\.routing.mainRouting.settingsIsOpen] = true
 	}
 }
 
@@ -171,30 +178,6 @@ extension History {
 extension History {
 	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
-	}
-}
-
-// MARK: - Strings
-
-extension History {
-	private func errorMessage(from error: Error) -> String {
-		guard let userError = error as? UserRepositoryError else {
-			return error.localizedDescription
-		}
-
-		switch userError {
-		case .missingID: return "Account not available"
-		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
-		}
-	}
-}
-
-extension History.ListSection {
-	var headerText: String {
-		switch self {
-		case .inProgress: return "Matches in progress"
-		case .completed: return "Past matches"
-		}
 	}
 }
 
