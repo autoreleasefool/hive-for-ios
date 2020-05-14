@@ -12,23 +12,18 @@ import HiveEngine
 import Loaf
 
 struct HiveGame: View {
-	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.container) private var container: AppContainer
 
-	private let onGameEnd: () -> Void
-	private let viewModel = HiveGameViewModel()
+	private let viewModel: HiveGameViewModel
 
-	init(state: GameState?, player: Player, onGameEnd: @escaping () -> Void) {
-		viewModel.playingAs = player
-		viewModel.gameStateStore.send(state)
-		self.onGameEnd = onGameEnd
+	init(state: GameState, player: Player) {
+		viewModel = HiveGameViewModel(initialState: state, playingAs: player)
 	}
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {
 		switch newState {
 		case .forfeit, .gameEnd:
-			presentationMode.wrappedValue.dismiss()
-			onGameEnd()
+			container.appState[\.routing.gameContentRouting.gameSetup] = nil
 		case .begin, .gameStart, .opponentTurn, .playerTurn, .sendingMovement:
 			break
 		}
@@ -47,6 +42,7 @@ struct HiveGame: View {
 			GameHUD()
 				.environmentObject(viewModel)
 		}
+		.onAppear { self.viewModel.userId = self.container.account?.userId }
 		.onReceive(viewModel.stateStore) { receivedValue in self.handleTransition(to: receivedValue) }
 		.navigationBarTitle("")
 		.navigationBarHidden(true)

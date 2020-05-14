@@ -60,11 +60,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	var currentSelectedPiece: SelectedPiece? { selectedPiece.value.1 }
 
 	private(set) var stateStore = Store<State>(State.begin)
-	private(set) var gameStateStore = Store<GameState?>(nil)
 	private(set) var debugModeStore = Store<Bool>(false)
+	private(set) var gameStateStore: Store<GameState>
 
 	var userId: User.ID!
-	var playingAs: Player!
+	var playingAs: Player
 	private(set) var gameContent: GameViewContent!
 
 	private var connectionOpened = false
@@ -72,7 +72,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private var reconnecting = false
 
 	var gameState: GameState {
-		gameStateStore.value!
+		gameStateStore.value
 	}
 
 	var currentState: State {
@@ -152,6 +152,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	private var viewContentReady = false
 	private var viewInteractionsReady = false
+
+	init(initialState: GameState, playingAs: Player) {
+		self.gameStateStore = .init(initialState)
+		self.playingAs = playingAs
+	}
 
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
 		switch viewAction {

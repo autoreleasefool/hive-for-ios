@@ -33,9 +33,7 @@ struct GameContentCoordinator: View {
 	}
 
 	private func gameView(_ setup: GameSetup) -> some View {
-		HiveGame(state: setup.state, player: setup.player) {
-			self.container.appState[\.routing.gameContentRouting.gameSetup] = nil
-		}
+		HiveGame(state: setup.state, player: setup.player)
 	}
 }
 
@@ -47,7 +45,7 @@ extension GameContentCoordinator {
 	}
 
 	struct GameSetup: Equatable {
-		let state: GameState?
+		let state: GameState
 		let player: Player
 	}
 }
