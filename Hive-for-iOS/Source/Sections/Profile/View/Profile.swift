@@ -126,7 +126,7 @@ extension Profile {
 #if DEBUG
 struct ProfilePreview: PreviewProvider {
 	static var previews: some View {
-		Profile()
+		Profile(user: .loaded(User.users[0]))
 	}
 }
 #endif

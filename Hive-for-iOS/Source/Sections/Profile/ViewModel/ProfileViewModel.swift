@@ -26,7 +26,7 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(user: Loadable<User> = .notLoaded) {
+	init(user: Loadable<User>) {
 		self._user = .init(initialValue: user)
 	}
 
