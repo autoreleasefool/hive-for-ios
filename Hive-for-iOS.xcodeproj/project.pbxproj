@@ -85,6 +85,7 @@
 		CAC730F7246BDF26004DB450 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F6246BDF26004DB450 /* Settings.swift */; };
 		CAC730F9246C98BB004DB450 /* GameContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */; };
 		CAC730FC246DCE5B004DB450 /* LoginSignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730FB246DCE5B004DB450 /* LoginSignupViewModel.swift */; };
+		CAC730FF246DF74E004DB450 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730FE246DF74E004DB450 /* ProfileViewModel.swift */; };
 		CAC961E3243B105E00B3FC8D /* GameClientMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */; };
 		CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
@@ -190,6 +191,7 @@
 		CAC730F6246BDF26004DB450 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameContentCoordinator.swift; sourceTree = "<group>"; };
 		CAC730FB246DCE5B004DB450 /* LoginSignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewModel.swift; sourceTree = "<group>"; };
+		CAC730FE246DF74E004DB450 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClientMessage.swift; sourceTree = "<group>"; };
 		CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServerMessage.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
@@ -596,6 +598,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		CAC730FD246DF6AF004DB450 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CAC730FE246DF74E004DB450 /* ProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		CAF82561245C77B20064359E /* State */ = {
 			isa = PBXGroup;
 			children = (
@@ -687,6 +697,7 @@
 			children = (
 				CAC650AA2461535800835209 /* Model */,
 				CAC650A92461533900835209 /* View */,
+				CAC730FD246DF6AF004DB450 /* ViewModel */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -877,6 +888,7 @@
 				CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */,
 				CAF82558245C6B2B0064359E /* Account.swift in Sources */,
 				CA8F46DD245DD27600B136D0 /* LoginSignup.swift in Sources */,
+				CAC730FF246DF74E004DB450 /* ProfileViewModel.swift in Sources */,
 				CA68BBC4244B20BC00879060 /* NetworkSession.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
 				CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */,

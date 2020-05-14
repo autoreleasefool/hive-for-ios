@@ -12,23 +12,25 @@ import SwiftUI
 struct Profile: View {
 	@Environment(\.container) private var container: AppContainer
 
-	@State private var user: Loadable<User> = .notLoaded
+	@ObservedObject private var viewModel: ProfileViewModel
 
 	init(user: Loadable<User> = .notLoaded) {
-		self._user = .init(initialValue: user)
+		self.viewModel = ProfileViewModel(user: user)
 	}
 
 	var body: some View {
 		NavigationView {
 			content
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
-				.navigationBarTitle(title)
+				.navigationBarTitle(viewModel.title)
 				.navigationBarItems(leading: settingsButton)
+				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
+				.onReceive(userUpdates) { self.viewModel.user = $0 }
 		}
 	}
 
 	private var content: AnyView {
-		switch user {
+		switch viewModel.user {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading: return AnyView(loadingView)
 		case .loaded(let user): return AnyView(loadedView(user))
@@ -40,7 +42,7 @@ struct Profile: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.loadProfile() }
+			.onAppear { self.viewModel.postViewAction(.loadProfile) }
 	}
 
 	private var loadingView: some View {
@@ -69,7 +71,7 @@ struct Profile: View {
 
 	private var settingsButton: some View {
 		Button(action: {
-			self.container.appState[\.routing.mainRouting.settingsIsOpen] = true
+			self.viewModel.postViewAction(.openSettings)
 		}, label: {
 			Image(systemName: "gear")
 				.imageScale(.large)
@@ -84,7 +86,7 @@ extension Profile {
 	private func failedState(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't fetch your profile right now.\n\(errorMessage(from: error))"
+			message: "We can't fetch your profile right now.\n\(viewModel.errorMessage(from: error))"
 		) {
 			self.loadProfile()
 		}
@@ -94,9 +96,22 @@ extension Profile {
 // MARK: - Actions
 
 extension Profile {
+	private func handleAction(_ action: ProfileAction) {
+		switch action {
+		case .loadProfile:
+			loadProfile()
+		case .openSettings:
+			openSettings()
+		}
+	}
+
 	private func loadProfile() {
 		container.interactors.userInteractor
 			.loadProfile()
+	}
+
+	private func openSettings() {
+		container.appState[\.routing.mainRouting.settingsIsOpen] = true
 	}
 }
 
@@ -105,25 +120,6 @@ extension Profile {
 extension Profile {
 	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
-	}
-}
-
-// MARK: - Strings
-
-extension Profile {
-	private var title: String {
-		user.value?.displayName ?? "Profile"
-	}
-
-	private func errorMessage(from error: Error) -> String {
-		guard let userError = error as? UserRepositoryError else {
-			return error.localizedDescription
-		}
-
-		switch userError {
-		case .missingID: return "Account missing"
-		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
-		}
 	}
 }
 
