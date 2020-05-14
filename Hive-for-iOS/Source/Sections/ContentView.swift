@@ -13,18 +13,18 @@ struct ContentView: View {
 	private let container: AppContainer
 
 	@Environment(\.toaster) private var toaster: Toaster
-	@State private var account: Loadable<Account> = .notLoaded
-	@State private var routing = Routing()
+
+	@ObservedObject private var viewModel: ContentViewViewModel
 
 	init(container: AppContainer, account: Loadable<Account> = .notLoaded) {
 		self.container = container
-		self.account = account
+		self.viewModel = ContentViewViewModel(account: account)
 	}
 
 	var body: some View {
 		GeometryReader { geometry in
 			Group {
-				if self.routing.showWelcome {
+				if self.viewModel.routing.showWelcome {
 					Welcome(showWelcome: self.welcomeRoutingBinding)
 				} else {
 					self.content
@@ -32,16 +32,9 @@ struct ContentView: View {
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
-			.onReceive(self.accountUpdate) {
-				self.account = $0
-				if case let .failed(error) = $0 {
-					self.handleAccountError(error)
-				}
-			}
-			.onReceive(self.loggedOutUpdate) { _ in
-				self.container.interactors.accountInteractor.clearAccount()
-			}
-			.onReceive(self.routingUpdate) { self.routing = $0 }
+			.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
+			.onReceive(self.accountUpdate) { self.viewModel.account = $0 }
+			.onReceive(self.routingUpdate) { self.viewModel.routing = $0 }
 			.sheet(isPresented: self.settingsRoutingBinding) {
 				Settings()
 			}
@@ -51,7 +44,7 @@ struct ContentView: View {
 	}
 
 	private var content: AnyView {
-		switch account {
+		switch viewModel.account {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading: return AnyView(loadingView)
 		case .loaded: return AnyView(loadedView)
@@ -63,9 +56,7 @@ struct ContentView: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear {
-				self.container.interactors.accountInteractor.loadAccount()
-			}
+			.onAppear { self.viewModel.postViewAction(.loadAccount) }
 	}
 
 	private var loadingView: some View {
@@ -84,17 +75,17 @@ struct ContentView: View {
 // MARK: - Actions
 
 extension ContentView {
-	private func handleAccountError(_ error: Error) {
-		if let error = error as? AccountRepositoryError {
-			switch error {
-			case .loggedOut:
-				toaster.loaf.send(LoafState("You've been logged out", state: .error))
-			case .apiError, .keychainError:
-				toaster.loaf.send(LoafState("Failed to log in", state: .error))
-			case .notFound:
-				break
-			}
+	private func handleAction(_ action: ContentViewAction) {
+		switch action {
+		case .loadAccount:
+			loadAccount()
+		case .loggedOut:
+			container.interactors.accountInteractor.clearAccount()
 		}
+	}
+
+	private func loadAccount() {
+		self.container.interactors.accountInteractor.loadAccount()
 	}
 }
 
@@ -103,14 +94,6 @@ extension ContentView {
 extension ContentView {
 	private var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
-			.receive(on: DispatchQueue.main)
-			.eraseToAnyPublisher()
-	}
-
-	private var loggedOutUpdate: AnyPublisher<Void, Never> {
-		NotificationCenter.default
-			.publisher(for: NSNotification.Name.Account.Unauthorized)
-			.map { _ in }
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
 	}
@@ -131,11 +114,13 @@ extension ContentView {
 	}
 
 	private var settingsRoutingBinding: Binding<Bool> {
-		$routing.settingsIsOpen.dispatched(to: container.appState, \.routing.mainRouting.settingsIsOpen)
+		$viewModel.routing.settingsIsOpen
+			.dispatched(to: container.appState, \.routing.mainRouting.settingsIsOpen)
 	}
 
 	private var welcomeRoutingBinding: Binding<Bool> {
-		$routing.showWelcome.dispatched(to: container.appState, \.routing.mainRouting.showWelcome)
+		$viewModel.routing.showWelcome
+			.dispatched(to: container.appState, \.routing.mainRouting.showWelcome)
 	}
 }
 
