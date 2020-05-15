@@ -20,7 +20,7 @@ class ViewModel<ViewAction> where ViewAction: BaseViewAction {
 		fatalError("Classes extending ViewModel must override postViewAction(_:)")
 	}
 
-	func cancelAllRequests() {
+	func cancelAll() {
 		cancellables.removeAll()
 	}
 
@@ -29,8 +29,37 @@ class ViewModel<ViewAction> where ViewAction: BaseViewAction {
 	}
 }
 
+class ExtendedViewModel<ViewAction, CancellableIdentifiable>
+	: ViewModel<ViewAction> where CancellableIdentifiable: Identifiable, ViewAction: BaseViewAction {
+
+	private var idenfitiedCancellables: [CancellableIdentifiable.ID: AnyCancellable] = [:]
+
+	override func cancelAll() {
+		super.cancelAll()
+		idenfitiedCancellables.removeAll()
+	}
+
+	func cancel(withId id: CancellableIdentifiable) {
+		guard let cancellable = idenfitiedCancellables[id.id] else { return }
+		cancellable.cancel()
+		idenfitiedCancellables[id.id] = nil
+	}
+
+	fileprivate func store(_ cancellable: AnyCancellable, _ id: CancellableIdentifiable?) {
+		if let id = id {
+			idenfitiedCancellables[id.id] = cancellable
+		} else {
+			store(cancellable)
+		}
+	}
+}
+
 extension AnyCancellable {
 	func store<V>(in model: ViewModel<V>) {
 		model.store(self)
+	}
+
+	func store<V, I>(in model: ExtendedViewModel<V, I>, withId id: I? = nil) where I: Identifiable {
+		model.store(self, id)
 	}
 }
