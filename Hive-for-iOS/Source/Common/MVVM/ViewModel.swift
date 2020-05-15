@@ -29,23 +29,24 @@ class ViewModel<ViewAction> where ViewAction: BaseViewAction {
 	}
 }
 
-class ExtendedViewModel<ViewAction, CancellableIdentifiable>
-	: ViewModel<ViewAction> where CancellableIdentifiable: Identifiable, ViewAction: BaseViewAction {
+class ExtendedViewModel<ViewAction, CancelIdentifiable>: ViewModel<ViewAction> where
+	CancelIdentifiable: Identifiable,
+	ViewAction: BaseViewAction {
 
-	private var idenfitiedCancellables: [CancellableIdentifiable.ID: AnyCancellable] = [:]
+	private var idenfitiedCancellables: [CancelIdentifiable.ID: AnyCancellable] = [:]
 
 	override func cancelAll() {
 		super.cancelAll()
 		idenfitiedCancellables.removeAll()
 	}
 
-	func cancel(withId id: CancellableIdentifiable) {
+	func cancel(withId id: CancelIdentifiable) {
 		guard let cancellable = idenfitiedCancellables[id.id] else { return }
 		cancellable.cancel()
 		idenfitiedCancellables[id.id] = nil
 	}
 
-	fileprivate func store(_ cancellable: AnyCancellable, _ id: CancellableIdentifiable?) {
+	fileprivate func store(_ cancellable: AnyCancellable, _ id: CancelIdentifiable?) {
 		if let id = id {
 			idenfitiedCancellables[id.id] = cancellable
 		} else {

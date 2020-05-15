@@ -12,39 +12,15 @@ import HiveEngine
 import Starscream
 import SwiftUIRefresh
 
-private final class LobbyRoomState: ObservableObject {
-	@Published var match: Loadable<Match> = .notLoaded {
-		didSet {
-			matchOptions = match.value?.optionSet ?? Set()
-			gameOptions = match.value?.gameOptionSet ?? Set()
-		}
-	}
-
-	@Published var matchOptions: Set<Match.Option> = Set()
-	@Published var gameOptions: Set<GameState.Option> = Set()
-	@Published var readyPlayers: Set<UUID> = Set()
-	var cancelBag = CancelBag()
-}
-
 struct LobbyRoom: View {
 	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster: Toaster
 	@Environment(\.container) private var container: AppContainer
 
-	private let creatingNewMatch: Bool
-
-	@ObservedObject private var matchState = LobbyRoomState()
-
-	@State private var gameState: GameState?
-	@State private var exiting = false
-
-	@State private var clientConnected = false
-	@State private var reconnectAttempts = 0
-	@State private var reconnecting = false
+	@ObservedObject private var viewModel: LobbyRoomViewModel
 
 	init(creatingRoom: Bool, match: Loadable<Match> = .notLoaded) {
-		self.creatingNewMatch = creatingRoom
-		self.matchState.match = match
+		self.viewModel = LobbyRoomViewModel(creatingNewMatch: creatingRoom, match: match)
 	}
 
 	var body: some View {
@@ -52,25 +28,20 @@ struct LobbyRoom: View {
 			self.content(geometry)
 		}
 		.background(Color(.background).edgesIgnoringSafeArea(.all))
-		.navigationBarTitle(Text(title), displayMode: .inline)
+		.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.navigationBarItems(leading: exitButton, trailing: startButton)
-		.onReceive(matchState.$match) {
-			if let match = $0.value {
-				self.openClientConnection(to: match)
-			}
-		}
-		.popoverSheet(isPresented: $exiting) {
+		.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
+		.popoverSheet(isPresented: $viewModel.exiting) {
 			PopoverSheetConfig(
 				title: "Leave match?",
 				message: "Are you sure you want to leave this match?",
 				buttons: [
 					PopoverSheetConfig.ButtonConfig(title: "Leave", type: .destructive) {
-						self.exiting = false
-						self.exitMatch()
+						self.viewModel.postViewAction(.exitMatch)
 					},
 					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {
-						self.exiting = false
+						self.viewModel.postViewAction(.dismissExit)
 					},
 				]
 			)
@@ -78,7 +49,7 @@ struct LobbyRoom: View {
 	}
 
 	private func content(_ geometry: GeometryProxy) -> AnyView {
-		switch matchState.match {
+		switch viewModel.match {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let match, _): return AnyView(loadedView(match, geometry))
 		case .loaded(let match): return AnyView(loadedView(match, geometry))
@@ -90,13 +61,7 @@ struct LobbyRoom: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear {
-				if self.creatingNewMatch {
-					self.createNewMatch()
-				} else {
-					self.joinMatch()
-				}
-			}
+			.onAppear { self.viewModel.postViewAction(.onAppear(self.container.account?.userId)) }
 	}
 
 	private func loadedView(_ match: Match?, _ geometry: GeometryProxy) -> some View {
@@ -110,29 +75,25 @@ struct LobbyRoom: View {
 				.padding(.top, length: .m)
 				.frame(width: geometry.size.width)
 			} else {
-				if self.reconnecting {
+				if self.viewModel.reconnecting {
 					reconnectingView(geometry)
 				} else {
 					matchDetail(match!)
 				}
 			}
 		}
-		.pullToRefresh(isShowing: isRefreshing) {
-			guard !self.reconnecting else { return }
-			self.loadMatchDetails()
+		.pullToRefresh(isShowing: viewModel.isRefreshing) {
+			guard !self.viewModel.reconnecting else { return }
+			self.viewModel.postViewAction(.refresh)
 		}
 	}
 
 	private func failedView(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't fetch the match right now.\n\(errorMessage(from: error))"
+			message: "We can't fetch the match right now.\n\(viewModel.errorMessage(from: error))"
 		) {
-			if self.creatingNewMatch {
-				self.createNewMatch()
-			} else {
-				self.joinMatch()
-			}
+			self.viewModel.postViewAction(.retryInitialAction)
 		}
 	}
 
@@ -143,7 +104,7 @@ struct LobbyRoom: View {
 				.body()
 				.foregroundColor(Color(.text))
 			ActivityIndicator(isAnimating: true, style: .whiteLarge)
-			Text(reconnectingMessage)
+			Text(viewModel.reconnectingMessage)
 				.multilineTextAlignment(.center)
 				.body()
 				.foregroundColor(Color(.text))
@@ -158,7 +119,7 @@ struct LobbyRoom: View {
 
 	private var exitButton: some View {
 		Button(action: {
-			self.exiting = true
+			self.viewModel.postViewAction(.requestExit)
 		}, label: {
 			Text("Leave")
 		})
@@ -166,9 +127,9 @@ struct LobbyRoom: View {
 
 	private var startButton: some View {
 		Button(action: {
-			self.toggleReadiness()
+			self.viewModel.postViewAction(.toggleReadiness)
 		}, label: {
-			Text(startButtonText)
+			Text(viewModel.startButtonText)
 		})
 	}
 
@@ -189,13 +150,13 @@ struct LobbyRoom: View {
 		HStack(spacing: .xs) {
 			MatchUserSummary(
 				match.host,
-				highlight: self.isPlayerReady(id: match.host?.id),
+				highlight: self.viewModel.isPlayerReady(id: match.host?.id),
 				iconSize: .l
 			)
 			Spacer()
 			MatchUserSummary(
 				match.opponent,
-				highlight: self.isPlayerReady(id: match.opponent?.id),
+				highlight: self.viewModel.isPlayerReady(id: match.opponent?.id),
 				alignment: .trailing,
 				iconSize: .l
 			)
@@ -212,7 +173,7 @@ struct LobbyRoom: View {
 			HStack(spacing: .l) {
 				Spacer()
 				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-					self.expansionOption(for: option, enabled: self.matchState.gameOptions.contains(option))
+					self.expansionOption(for: option, enabled: self.viewModel.gameOptions.contains(option))
 				}
 				Spacer()
 			}
@@ -221,10 +182,10 @@ struct LobbyRoom: View {
 
 	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
 		Button(action: {
-			self.gameOptionEnabled(option: option).wrappedValue.toggle()
+			self.viewModel.gameOptionEnabled(option: option).wrappedValue.toggle()
 		}, label: {
 			ZStack {
-				Text(name(forOption: option))
+				Text(viewModel.name(forOption: option))
 					.subtitle()
 					.foregroundColor(
 						enabled
@@ -241,7 +202,7 @@ struct LobbyRoom: View {
 					.squareImage(.l)
 			}
 		})
-		.disabled(!userIsHost)
+		.disabled(!viewModel.userIsHost)
 	}
 
 	private func optionSectionHeader(title: String) -> some View {
@@ -256,8 +217,8 @@ struct LobbyRoom: View {
 		VStack(alignment: .leading) {
 			self.optionSectionHeader(title: "Match options")
 			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
-				Toggle(self.name(forOption: option), isOn: self.optionEnabled(option: option))
-					.disabled(!self.userIsHost)
+				Toggle(self.viewModel.name(forOption: option), isOn: self.viewModel.optionEnabled(option: option))
+					.disabled(!self.viewModel.userIsHost)
 					.foregroundColor(Color(.text))
 			}
 		}
@@ -267,8 +228,8 @@ struct LobbyRoom: View {
 		VStack(alignment: .leading) {
 			self.optionSectionHeader(title: "Other options")
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
-				Toggle(self.name(forOption: option), isOn: self.gameOptionEnabled(option: option))
-					.disabled(!self.userIsHost)
+				Toggle(self.viewModel.name(forOption: option), isOn: self.viewModel.gameOptionEnabled(option: option))
+					.disabled(!self.viewModel.userIsHost)
 					.foregroundColor(Color(.text))
 			}
 		}
@@ -278,122 +239,74 @@ struct LobbyRoom: View {
 // MARK: - Actions
 
 extension LobbyRoom {
-	var player: Player {
-		if matchState.matchOptions.contains(.hostIsWhite) {
-			return userIsHost ? .white : .black
-		} else {
-			return userIsHost ? .black : .white
-		}
-	}
-
-	var userIsHost: Bool {
-		container.account?.userId == matchState.match.value?.host?.id
-	}
-
-	var isRefreshing: Binding<Bool> {
-		Binding(
-			get: {
-				if case .loading = self.matchState.match {
-					return true
-				}
-				return false
-			},
-			set: { _ in }
-		)
-	}
-
-	func optionEnabled(option: Match.Option) -> Binding<Bool> {
-		Binding(
-			get: { self.matchState.matchOptions.contains(option) },
-			set: { newValue in
-				guard self.userIsHost else { return }
-				self.matchState.matchOptions.set(option, to: newValue)
-				self.send(.setOption(.matchOption(option), newValue))
-			}
-		)
-	}
-
-	func gameOptionEnabled(option: GameState.Option) -> Binding<Bool> {
-		Binding(
-			get: { self.matchState.gameOptions.contains(option) },
-			set: { newValue in
-				guard self.userIsHost else { return }
-				self.matchState.gameOptions.set(option, to: newValue)
-				self.send(.setOption(.gameOption(option), newValue))
-			}
-		)
-	}
-
-	func isPlayerReady(id: UUID?) -> Bool {
-		guard let id = id else { return false }
-		return matchState.readyPlayers.contains(id)
-	}
-
-	private func toggleReadiness() {
-		guard let id = userIsHost ? matchState.match.value?.host?.id : matchState.match.value?.opponent?.id else {
-			return
-		}
-
-		if isPlayerReady(id: id) {
-			matchState.readyPlayers.remove(id)
-			send(.readyToPlay)
-		} else {
-			matchState.readyPlayers.insert(id)
-			send(.readyToPlay)
-		}
-	}
-
-	private func playerJoined(id: UUID) {
-		if userIsHost {
-			toaster.loaf.send(LoafState("An opponent has joined!", state: .success))
-		}
-		loadMatchDetails()
-	}
-
-	private func playerLeft(id: UUID) {
-		matchState.readyPlayers.remove(id)
-		if userIsHost && id == matchState.match.value?.opponent?.id {
-			toaster.loaf.send(LoafState("Your opponent has left!", state: .warning))
+	private func handleAction(_ action: LobbyRoomAction) {
+		switch action {
+		case .createNewMatch:
+			createNewMatch()
+		case .joinMatch:
+			joinMatch()
+		case .loadMatchDetails:
 			loadMatchDetails()
-		} else if !userIsHost && id == matchState.match.value?.host?.id {
-			toaster.loaf.send(LoafState("The host has left!", state: .warning))
-			close(code: nil)
-			presentationMode.wrappedValue.dismiss()
+		case .startGame(let state, let player):
+			startGame(state: state, player: player)
+
+		case .openClientConnection(let url):
+			openClientConnection(to: url)
+		case .closeConnection(let code):
+			close(code: code)
+		case .sendMessage(let message):
+			send(message)
+
+		case .failedToJoinMatch:
+			failedToJoin()
+		case .failedToReconnect:
+			failedToReconnect()
+		case .exitSilently:
+			exitSilently()
+		case .exitMatch:
+			exitMatch()
+
+		case .showLoaf(let loaf):
+			toaster.loaf.send(loaf)
 		}
 	}
 
-	private func updateGameState(to state: GameState) {
+	private func startGame(state: GameState, player: Player) {
 		container.appState[\.routing.gameContentRouting.gameSetup] = GameContentCoordinator.GameSetup(
 			state: state,
 			player: player
 		)
-
-		// Unsubscribe from future events so we don't disrupt the game
-		matchState.cancelBag.cancel()
-	}
-
-	private func setOption(_ option: GameServerMessage.Option, to value: Bool) {
-		switch option {
-		case .gameOption(let option): matchState.gameOptions.set(option, to: value)
-		case .matchOption(let option): matchState.matchOptions.set(option, to: value)
-		}
 	}
 
 	private func joinMatch() {
 		guard let id = container.appState.value.routing.lobbyRouting.matchId else { return }
 		container.interactors.matchInteractor
-			.joinMatch(id: id, match: $matchState.match)
+			.joinMatch(id: id, match: $viewModel.match)
 	}
 
 	private func createNewMatch() {
 		container.interactors.matchInteractor
-			.createNewMatch(match: $matchState.match)
+			.createNewMatch(match: $viewModel.match)
 	}
 
 	private func loadMatchDetails() {
-		guard let id = matchState.match.value?.id else { return }
+		guard let id = viewModel.match.value?.id else { return }
 		container.interactors.matchInteractor
-			.loadMatchDetails(id: id, match: $matchState.match)
+			.loadMatchDetails(id: id, match: $viewModel.match)
+	}
+
+	private func failedToJoin() {
+		toaster.loaf.send(LoafState("Failed to join match", state: .error))
+		presentationMode.wrappedValue.dismiss()
+	}
+
+	private func failedToReconnect() {
+		toaster.loaf.send(LoafState("Failed to reconnect", state: .error))
+		presentationMode.wrappedValue.dismiss()
+	}
+
+	private func exitSilently() {
+		presentationMode.wrappedValue.dismiss()
 	}
 
 	private func exitMatch() {
@@ -406,6 +319,19 @@ extension LobbyRoom {
 // MARK: - HiveGameClient
 
 extension LobbyRoom {
+	private func openClientConnection(to url: URL?) {
+		let publisher: AnyPublisher<GameClientEvent, GameClientError>
+		if let url = url {
+			publisher = container.interactors.clientInteractor
+				.openConnection(to: url)
+		} else {
+			publisher = container.interactors.clientInteractor
+				.reconnect()
+		}
+
+		viewModel.postViewAction(.subscribedToClient(publisher))
+	}
+
 	private func send(_ message: GameClientMessage) {
 		container.interactors.clientInteractor
 			.send(message)
@@ -416,155 +342,9 @@ extension LobbyRoom {
 			.closeConnection(code: code)
 	}
 
-	private func openClientConnection(to match: Match) {
-		if let url = match.webSocketURL {
-			openClientConnection(to: url)
-		} else {
-			toaster.loaf.send(LoafState("Failed to join match", state: .error))
-			presentationMode.wrappedValue.dismiss()
-		}
-	}
-
-	private func reopenClientConnection() {
-		openClientConnection(to: nil)
-	}
-
-	private func openClientConnection(to url: URL?) {
-		LoadingHUD.shared.show()
-
-		let publisher: AnyPublisher<GameClientEvent, GameClientError>
-		if let url = url {
-			publisher = container.interactors.clientInteractor
-				.openConnection(to: url)
-		} else {
-			publisher = container.interactors.clientInteractor
-				.reconnect()
-		}
-
-		publisher
-			.sink(
-				receiveCompletion: {
-					if case let .failure(error) = $0 {
-						self.handleGameClientError(error)
-					}
-				}, receiveValue: {
-					self.handleGameClientEvent($0)
-				}
-			)
-			.store(in: matchState.cancelBag)
-	}
-
-	private func handleGameClientError(_ error: GameClientError) {
-		guard reconnectAttempts < HiveGameClient.maxReconnectAttempts else {
-			LoadingHUD.shared.hide()
-			toaster.loaf.send(LoafState("Failed to reconnect", state: .error))
-			presentationMode.wrappedValue.dismiss()
-			return
-		}
-
-		reconnecting = true
-		reconnectAttempts += 1
-		reopenClientConnection()
-	}
-
-	private func handleGameClientEvent(_ event: GameClientEvent) {
-		switch event {
-		case .connected:
-			clientConnected = true
-			reconnecting = false
-			reconnectAttempts = 0
-			LoadingHUD.shared.hide()
-		case .closed:
-			presentationMode.wrappedValue.dismiss()
-		case .message(let message):
-			handleGameClientMessage(message)
-		}
-	}
-
-	private func handleGameClientMessage(_ message: GameServerMessage) {
-		switch message {
-		case .playerJoined(let id):
-			playerJoined(id: id)
-		case .playerLeft(let id):
-			playerLeft(id: id)
-		case .gameState(let state):
-			updateGameState(to: state)
-		case .playerReady(let id, let ready):
-			matchState.readyPlayers.set(id, to: ready)
-		case .setOption(let option, let value):
-			setOption(option, to: value)
-		case .message(let id, let string):
-			#warning("TODO: display message")
-			print("Received message '\(string)' from \(id)")
-		case .error(let error):
-			toaster.loaf.send(error.loaf)
-		case .forfeit, .gameOver:
-			print("Received invalid message in Match Details: \(message)")
-		}
-	}
-}
-
-// MARK: - Strings
-
-extension LobbyRoom {
-	var title: String {
-		if let host = matchState.match.value?.host?.displayName {
-			return "\(host)'s match"
-		} else {
-			return "Match Details"
-		}
-	}
-
-	func name(forOption option: Match.Option) -> String {
-		switch option {
-		case .asyncPlay: return "Asynchronous play"
-		case .hostIsWhite: return "\(matchState.match.value?.host?.displayName ?? "Host") is white"
-		}
-	}
-
-	func name(forOption option: GameState.Option) -> String {
-		return option.preview ?? option.displayName
-	}
-
-	var startButtonText: String {
-		guard let hostId = matchState.match.value?.host?.id,
-			let opponentId = matchState.match.value?.opponent?.id else {
-			return ""
-		}
-
-		let user = userIsHost ? hostId : opponentId
-		let opponent = userIsHost ? opponentId : hostId
-
-		if matchState.readyPlayers.contains(user) {
-			return "Cancel"
-		} else {
-			return matchState.readyPlayers.contains(opponent) ? "Start" : "Ready"
-		}
-	}
-
-	var reconnectingMessage: String {
-		"Reconnecting (\(reconnectAttempts)/\(HiveGameClient.maxReconnectAttempts))..."
-	}
-
-	private func errorMessage(from error: Error) -> String {
-		guard let matchError = error as? MatchRepositoryError else {
-			return error.localizedDescription
-		}
-
-		switch matchError {
-		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
-		}
-	}
-}
-
-private extension GameState.Option {
-	var preview: String? {
-		switch self {
-		case .mosquito: return "M"
-		case .ladyBug: return "L"
-		case .pillBug: return "P"
-		default: return nil
-		}
+	private func closeConnection(code: CloseCode?) {
+		close(code: code)
+		presentationMode.wrappedValue.dismiss()
 	}
 }
 
