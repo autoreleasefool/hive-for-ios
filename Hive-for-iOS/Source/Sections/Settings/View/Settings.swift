@@ -19,8 +19,10 @@ struct Settings: View {
 
 	var body: some View {
 		NavigationView {
-			List {
-				logoutButton
+			ScrollView {
+				VStack(spacing: .m) {
+					logoutButton
+				}
 			}
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
@@ -36,13 +38,14 @@ struct Settings: View {
 		}, label: {
 			self.logoutButtonLabel
 				.body()
-				.foregroundColor(Color(.background))
+				.foregroundColor(Color(.text))
 				.frame(minWidth: 0, maxWidth: .infinity)
+				.frame(height: 48)
 				.background(
 					RoundedRectangle(cornerRadius: .s)
-						.size(width: .infinity, height: 48)
 						.fill(Color(.primary))
 				)
+//				.padding(.all, length: .m)
 		})
 	}
 

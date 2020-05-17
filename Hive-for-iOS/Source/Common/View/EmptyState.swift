@@ -77,7 +77,7 @@ struct EmptyState: View {
 		}, label: {
 			Text("Refresh")
 				.body()
-				.foregroundColor(Color(.background))
+				.foregroundColor(Color(.text))
 				.padding(.vertical, length: .m)
 				.frame(minWidth: 0, maxWidth: .infinity)
 				.background(
