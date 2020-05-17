@@ -14,23 +14,26 @@ struct Profile: View {
 
 	@ObservedObject private var viewModel: ProfileViewModel
 
+	@State private var user: Loadable<User>
+
 	init(user: Loadable<User> = .notLoaded) {
-		self.viewModel = ProfileViewModel(user: user)
+		self._user = .init(initialValue: user)
+		self.viewModel = ProfileViewModel()
 	}
 
 	var body: some View {
 		NavigationView {
 			content
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
-				.navigationBarTitle(viewModel.title)
+				.navigationBarTitle(title)
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
-				.onReceive(userUpdates) { self.viewModel.user = $0 }
+				.onReceive(userUpdates) { self.user = $0 }
 		}
 	}
 
 	private var content: AnyView {
-		switch viewModel.user {
+		switch user {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading: return AnyView(loadingView)
 		case .loaded(let user): return AnyView(loadedView(user))
@@ -120,6 +123,14 @@ extension Profile {
 extension Profile {
 	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
+	}
+}
+
+// MARK: - Strings
+
+extension Profile {
+	var title: String {
+		user.value?.displayName ?? "Profile"
 	}
 }
 

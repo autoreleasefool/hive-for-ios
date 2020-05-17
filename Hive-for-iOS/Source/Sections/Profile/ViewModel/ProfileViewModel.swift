@@ -19,15 +19,9 @@ enum ProfileAction: BaseAction {
 }
 
 class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
-	@Published var user: Loadable<User>
-
 	private let actions = PassthroughSubject<ProfileAction, Never>()
 	var actionsPublisher: AnyPublisher<ProfileAction, Never> {
 		actions.eraseToAnyPublisher()
-	}
-
-	init(user: Loadable<User>) {
-		self._user = .init(initialValue: user)
 	}
 
 	override func postViewAction(_ viewAction: ProfileViewAction) {
@@ -43,10 +37,6 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 // MARK: - Strings
 
 extension ProfileViewModel {
-	var title: String {
-		user.value?.displayName ?? "Profile"
-	}
-
 	func errorMessage(from error: Error) -> String {
 		guard let userError = error as? UserRepositoryError else {
 			return error.localizedDescription
