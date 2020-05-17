@@ -42,6 +42,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 	func clearAccount() {
 		appState[\.account] = .failed(AccountRepositoryError.loggedOut)
+		repository.clearAccount()
 	}
 
 	func updateAccount(to account: Account) {
@@ -53,9 +54,13 @@ struct LiveAccountInteractor: AccountInteractor {
 		let cancelBag = CancelBag()
 		result.wrappedValue.setLoading(cancelBag: cancelBag)
 
+		weak var weakState = appState
 		repository.logout(fromAccount: account)
 			.receive(on: DispatchQueue.main)
-			.sinkToLoadable { result.wrappedValue = $0 }
+			.sinkToLoadable {
+				weakState?[\.account] = .failed(AccountRepositoryError.loggedOut)
+				result.wrappedValue = $0
+			}
 			.store(in: cancelBag)
 	}
 

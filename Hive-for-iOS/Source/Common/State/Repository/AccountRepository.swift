@@ -19,6 +19,8 @@ enum AccountRepositoryError: Error {
 
 protocol AccountRepository {
 	func loadAccount() -> AnyPublisher<Account, AccountRepositoryError>
+	func clearAccount()
+
 	func saveAccount(_ account: Account)
 	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError>
 	func signup(_ signupData: SignupData) -> AnyPublisher<Account, AccountRepositoryError>
@@ -62,6 +64,15 @@ struct LiveAccountRepository: AccountRepository {
 		.eraseToAnyPublisher()
 	}
 
+	func clearAccount() {
+		do {
+			try self.keychain.remove(Key.userId.rawValue)
+			try self.keychain.remove(Key.token.rawValue)
+		} catch {
+			print("Failed to clear account: \(error)")
+		}
+	}
+
 	func saveAccount(_ account: Account) {
 		do {
 			try keychain.set(account.userId.uuidString, key: Key.userId.rawValue)
@@ -72,21 +83,22 @@ struct LiveAccountRepository: AccountRepository {
 	}
 
 	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError> {
-		self.api.login(login: loginData)
+		api.login(login: loginData)
 			.mapError { .apiError($0) }
 			.map { Account(userId: $0.userId, token: $0.token) }
 			.eraseToAnyPublisher()
 	}
 
 	func signup(_ signupData: SignupData) -> AnyPublisher<Account, AccountRepositoryError> {
-		self.api.signup(signup: signupData)
+		api.signup(signup: signupData)
 			.mapError { .apiError($0) }
 			.map { Account(userId: $0.accessToken.userId, token: $0.accessToken.token) }
 			.eraseToAnyPublisher()
 	}
 
 	func logout(fromAccount account: Account) -> AnyPublisher<Bool, AccountRepositoryError> {
-		self.api.logout(fromAccount: account)
+		clearAccount()
+		return api.logout(fromAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}

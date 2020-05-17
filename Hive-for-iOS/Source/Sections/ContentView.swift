@@ -43,6 +43,7 @@ struct ContentView: View {
 			.onReceive(self.routingUpdate) { self.routing = $0 }
 			.sheet(isPresented: self.settingsRoutingBinding) {
 				Settings()
+					.inject(self.container)
 			}
 			.inject(self.container)
 			.plugInToaster()
