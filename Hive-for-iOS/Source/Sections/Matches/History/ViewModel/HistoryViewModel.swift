@@ -19,15 +19,9 @@ enum HistoryAction: BaseAction {
 }
 
 class HistoryViewModel: ViewModel<HistoryViewAction>, ObservableObject {
-	@Published var user: Loadable<User>
-
 	private let actions = PassthroughSubject<HistoryAction, Never>()
 	var actionsPublisher: AnyPublisher<HistoryAction, Never> {
 		actions.eraseToAnyPublisher()
-	}
-
-	init(user: Loadable<User>) {
-		self._user = .init(initialValue: user)
 	}
 
 	override func postViewAction(_ viewAction: HistoryViewAction) {

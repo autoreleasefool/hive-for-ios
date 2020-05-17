@@ -15,8 +15,11 @@ struct History: View {
 
 	@ObservedObject private var viewModel: HistoryViewModel
 
+	@State private var user: Loadable<User>
+
 	init(user: Loadable<User> = .notLoaded) {
-		self.viewModel = HistoryViewModel(user: user)
+		self._user = .init(initialValue: user)
+		self.viewModel = HistoryViewModel()
 	}
 
 	var body: some View {
@@ -25,13 +28,13 @@ struct History: View {
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)
-				.onReceive(userUpdates) { self.viewModel.user = $0 }
+				.onReceive(userUpdates) { self.user = $0 }
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 		}
 	}
 
 	private var content: AnyView {
-		switch viewModel.user {
+		switch user {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading(let user, _): return AnyView(loadedView(user))
 		case .loaded(let user): return AnyView(loadedView(user))
