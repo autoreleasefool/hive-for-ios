@@ -82,7 +82,7 @@ struct LoginSignup: View {
 		)
 		.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
 		.onTapGesture {
-			self.viewModel.activeField = id
+			self.viewModel.postViewAction(.focusField(id))
 		}
 	}
 

@@ -12,6 +12,7 @@ import UIKit
 enum LoginSignupViewAction: BaseViewAction {
 	case toggleForm
 	case submitForm
+	case focusField(LoginSignupViewModel.FieldItem)
 	case didReturn(from: LoginSignupViewModel.FieldItem)
 }
 
@@ -48,6 +49,9 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			submitForm()
 		case .didReturn(let from):
 			handleReturn(from: from)
+		case .focusField(let id):
+			activeField = id
+			print(id)
 		}
 	}
 
