@@ -10,7 +10,7 @@ import Combine
 import Foundation
 
 protocol MatchInteractor {
-	func loadOpenMatches()
+	func loadOpenMatches(matches: LoadableSubject<[Match]>)
 	func loadMatchDetails(id: Match.ID, match: LoadableSubject<Match>)
 	func joinMatch(id: Match.ID, match: LoadableSubject<Match>)
 	func createNewMatch(match: LoadableSubject<Match>)
@@ -20,14 +20,13 @@ struct LiveMatchInteractor: MatchInteractor {
 	let repository: MatchRepository
 	let appState: Store<AppState>
 
-	func loadOpenMatches() {
+	func loadOpenMatches(matches: LoadableSubject<[Match]>) {
 		let cancelBag = CancelBag()
-		appState[\.openMatches].setLoading(cancelBag: cancelBag)
+		matches.wrappedValue.setLoading(cancelBag: cancelBag)
 
-		weak var weakState = appState
 		repository.loadOpenMatches(withAccount: appState.value.account.value)
 			.receive(on: DispatchQueue.main)
-			.sinkToLoadable { weakState?[\.openMatches] = $0 }
+			.sinkToLoadable { matches.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
 
@@ -63,7 +62,7 @@ struct LiveMatchInteractor: MatchInteractor {
 }
 
 struct StubMatchInteractor: MatchInteractor {
-	func loadOpenMatches() { }
+	func loadOpenMatches(matches: LoadableSubject<[Match]>) { }
 	func loadMatchDetails(id: Match.ID, match: LoadableSubject<Match>) { }
 	func joinMatch(id: Match.ID, match: LoadableSubject<Match>) { }
 	func createNewMatch(match: LoadableSubject<Match>) { }

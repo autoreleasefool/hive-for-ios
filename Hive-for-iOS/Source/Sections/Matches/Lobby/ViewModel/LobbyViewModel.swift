@@ -11,10 +11,12 @@ import SwiftUI
 
 enum LobbyViewAction: BaseViewAction {
 	case onAppear
+	case refresh
 	case openSettings
+
 	case joinMatch(Match.ID)
 	case createNewMatch
-	case refresh
+	case leaveMatch
 }
 
 enum LobbyAction: BaseAction {
@@ -28,7 +30,6 @@ enum LobbyAction: BaseAction {
 class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
 	@Published var matches: Loadable<[Match]>
-	@Published var routing = Lobby.Routing()
 
 	private let actions = PassthroughSubject<LobbyAction, Never>()
 	var actionsPublisher: AnyPublisher<LobbyAction, Never> {
@@ -49,32 +50,9 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 			actions.send(.createNewMatch)
 		case .joinMatch(let id):
 			actions.send(.joinMatch(id))
+		case .leaveMatch:
+			actions.send(.leaveMatch)
 		}
-	}
-
-	var inRoom: Binding<Bool> {
-		Binding(
-			get: { [weak self] in
-				guard let self = self else { return false }
-				return !self.routing.creatingRoom && self.routing.matchId != nil
-			},
-			set: { [weak self] newValue in
-				guard !newValue else { return }
-				self?.actions.send(.leaveMatch)
-			}
-		)
-	}
-
-	var creatingRoom: Binding<Bool> {
-		Binding(
-			get: { [weak self] in
-				self?.routing.creatingRoom ?? false
-			},
-			set: { [weak self] newValue in
-				guard !newValue else { return }
-				self?.actions.send(.leaveMatch)
-			}
-		)
 	}
 }
 

@@ -15,6 +15,8 @@ struct Lobby: View {
 
 	@ObservedObject private var viewModel: LobbyViewModel
 
+	@State var routing = Lobby.Routing()
+
 	init(matches: Loadable<[Match]> = .notLoaded) {
 		viewModel = LobbyViewModel(matches: matches)
 	}
@@ -25,8 +27,7 @@ struct Lobby: View {
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle("Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
-				.onReceive(self.routingUpdate) { self.viewModel.routing = $0 }
-				.onReceive(self.openMatchesUpdate) { self.viewModel.matches = $0 }
+				.onReceive(self.routingUpdate) { self.routing = $0 }
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 		}
 	}
@@ -55,13 +56,13 @@ struct Lobby: View {
 		Group {
 			NavigationLink(
 				destination: LobbyRoom(creatingRoom: false),
-				isActive: self.viewModel.inRoom,
+				isActive: self.inRoom,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
 				destination: LobbyRoom(creatingRoom: true),
-				isActive: self.viewModel.creatingRoom,
+				isActive: self.creatingRoom,
 				label: { EmptyView() }
 			)
 
@@ -136,6 +137,30 @@ extension Lobby {
 // MARK: - Actions
 
 extension Lobby {
+	var inRoom: Binding<Bool> {
+		Binding(
+			get: {
+				!self.routing.creatingRoom && self.routing.matchId != nil
+			},
+			set: { newValue in
+				guard !newValue else { return }
+				self.viewModel.postViewAction(.leaveMatch)
+			}
+		)
+	}
+
+	var creatingRoom: Binding<Bool> {
+		Binding(
+			get: {
+				self.routing.creatingRoom
+			},
+			set: { newValue in
+				guard !newValue else { return }
+				self.viewModel.postViewAction(.leaveMatch)
+			}
+		)
+	}
+
 	var isRefreshing: Binding<Bool> {
 		Binding(
 			get: {
@@ -165,7 +190,7 @@ extension Lobby {
 
 	private func loadMatches() {
 		container.interactors.matchInteractor
-			.loadOpenMatches()
+			.loadOpenMatches(matches: $viewModel.matches)
 	}
 
 	private func openSettings() {
@@ -196,12 +221,6 @@ extension Lobby {
 		var inRoom: Bool {
 			creatingRoom || matchId != nil
 		}
-	}
-
-	private var openMatchesUpdate: AnyPublisher<Loadable<[Match]>, Never> {
-		container.appState.updates(for: \.openMatches)
-			.receive(on: DispatchQueue.main)
-			.eraseToAnyPublisher()
 	}
 
 	private var routingUpdate: AnyPublisher<Routing, Never> {
