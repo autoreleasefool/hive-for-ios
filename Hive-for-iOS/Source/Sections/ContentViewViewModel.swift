@@ -19,13 +19,8 @@ enum ContentViewAction: BaseAction {
 }
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
-	@Published var account: Loadable<Account>
-	@Published var routing = ContentView.Routing()
-
-	init(account: Loadable<Account>) {
-		self._account = .init(initialValue: account)
+	override init() {
 		super.init()
-
 		subscribeToAccountUpdates()
 	}
 

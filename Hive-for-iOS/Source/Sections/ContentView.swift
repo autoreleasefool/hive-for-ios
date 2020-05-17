@@ -16,15 +16,21 @@ struct ContentView: View {
 
 	@ObservedObject private var viewModel: ContentViewViewModel
 
+	// These values can't be moved to the ViewModel because they mirror the AppState and
+	// were causing a re-render loop when in the @ObservedObject view model
+	@State private var account: Loadable<Account>
+	@State private var routing = ContentView.Routing()
+
 	init(container: AppContainer, account: Loadable<Account> = .notLoaded) {
 		self.container = container
-		self.viewModel = ContentViewViewModel(account: account)
+		self._account = .init(initialValue: account)
+		self.viewModel = ContentViewViewModel()
 	}
 
 	var body: some View {
 		GeometryReader { geometry in
 			Group {
-				if self.viewModel.routing.showWelcome {
+				if self.routing.showWelcome {
 					Welcome(showWelcome: self.welcomeRoutingBinding)
 				} else {
 					self.content
@@ -33,8 +39,8 @@ struct ContentView: View {
 			.frame(width: geometry.size.width, height: geometry.size.height)
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 			.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
-			.onReceive(self.accountUpdate) { self.viewModel.account = $0 }
-			.onReceive(self.routingUpdate) { self.viewModel.routing = $0 }
+			.onReceive(self.accountUpdate) { self.account = $0 }
+			.onReceive(self.routingUpdate) { self.routing = $0 }
 			.sheet(isPresented: self.settingsRoutingBinding) {
 				Settings()
 			}
@@ -44,7 +50,7 @@ struct ContentView: View {
 	}
 
 	private var content: AnyView {
-		switch viewModel.account {
+		switch account {
 		case .notLoaded: return AnyView(notLoadedView)
 		case .loading: return AnyView(loadingView)
 		case .loaded: return AnyView(loadedView)
@@ -85,7 +91,7 @@ extension ContentView {
 	}
 
 	private func loadAccount() {
-		self.container.interactors.accountInteractor.loadAccount()
+		container.interactors.accountInteractor.loadAccount()
 	}
 }
 
@@ -114,12 +120,12 @@ extension ContentView {
 	}
 
 	private var settingsRoutingBinding: Binding<Bool> {
-		$viewModel.routing.settingsIsOpen
+		$routing.settingsIsOpen
 			.dispatched(to: container.appState, \.routing.mainRouting.settingsIsOpen)
 	}
 
 	private var welcomeRoutingBinding: Binding<Bool> {
-		$viewModel.routing.showWelcome
+		$routing.showWelcome
 			.dispatched(to: container.appState, \.routing.mainRouting.showWelcome)
 	}
 }
