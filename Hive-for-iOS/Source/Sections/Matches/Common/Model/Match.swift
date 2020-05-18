@@ -16,7 +16,7 @@ struct Match: Identifiable, Decodable, Equatable {
 	struct User: Identifiable, Decodable, Equatable {
 		let id: UUID
 		let displayName: String
-		let elo: Double
+		let elo: Int
 		let avatarUrl: String?
 	}
 
@@ -56,9 +56,6 @@ struct Match: Identifiable, Decodable, Equatable {
 	let winner: User?
 	let moves: [Move]
 
-	let hostElo: Double?
-	let opponentElo: Double?
-
 	let options: String
 	let gameOptions: String
 	let createdAt: Date?
@@ -89,10 +86,6 @@ extension Match.User {
 		guard let url = avatarUrl else { return nil }
 		return URL(string: url)
 	}
-
-	var formattedELO: String {
-		String(format: "%.0f", elo)
-	}
 }
 
 #if DEBUG
@@ -106,8 +99,6 @@ extension Match {
 				opponent: Match.User.users[1],
 				winner: nil,
 				moves: [Move(id: UUID(), notation: "wQ", ordinal: 0, date: Date())],
-				hostElo: 1000.0,
-				opponentElo: 1200.0,
 				options: "HostIsWhite:true",
 				gameOptions: "Mosquito:true;LadyBug:true;PillBug:true",
 				createdAt: Date(),
@@ -121,8 +112,6 @@ extension Match {
 				opponent: Match.User.users[2],
 				winner: nil,
 				moves: [],
-				hostElo: 10300.0,
-				opponentElo: 100.0,
 				options: "HostIsWhite:true",
 				gameOptions: "Mosquito:true",
 				createdAt: Date(),

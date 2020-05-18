@@ -11,7 +11,7 @@ import Foundation
 struct User: Identifiable, Decodable, Equatable {
 	let id: UUID
 	let displayName: String
-	let elo: Double
+	let elo: Int
 	let avatarUrl: URL?
 	let activeMatches: [Match]
 	let pastMatches: [Match]
