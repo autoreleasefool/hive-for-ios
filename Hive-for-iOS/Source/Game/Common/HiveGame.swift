@@ -31,14 +31,8 @@ struct HiveGame: View {
 
 	var body: some View {
 		ZStack {
-			#if targetEnvironment(simulator)
-			Hive2DGame(viewModel: viewModel)
+			gameView
 				.edgesIgnoringSafeArea(.all)
-			#else
-			Hive2DGame(viewModel: viewModel)
-				.edgesIgnoringSafeArea(.all)
-//			HiveARGame(viewModel: viewModel)
-			#endif
 			GameHUD()
 				.environmentObject(viewModel)
 		}
@@ -56,6 +50,13 @@ struct HiveGame: View {
 		.onDisappear {
 			UIApplication.shared.isIdleTimerDisabled = true
 			self.viewModel.postViewAction(.onDisappear)
+		}
+	}
+
+	private var gameView: AnyView {
+		switch container.appState.value.preferences.gameMode {
+		case .ar: return AnyView(HiveARGame(viewModel: viewModel))
+		case .sprite: return AnyView(Hive2DGame(viewModel: viewModel))
 		}
 	}
 }
