@@ -15,13 +15,13 @@ struct HistoryRow: View {
 	var body: some View {
 		VStack(spacing: .s) {
 			HStack(spacing: .m) {
-				MatchUserSummary(
-					match.host?.preview,
+				UserPreview(
+					match.host?.summary,
 					highlight: self.isWinner(user: match.host?.id)
 				)
 				Spacer()
-				MatchUserSummary(
-					match.opponent?.preview,
+				UserPreview(
+					match.opponent?.summary,
 					highlight: self.isWinner(user: match.opponent?.id),
 					alignment: .trailing
 				)

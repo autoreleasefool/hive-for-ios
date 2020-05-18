@@ -1,5 +1,5 @@
 //
-//  MatchUserSummary.swift
+//  UserPreview.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-26.
@@ -8,8 +8,8 @@
 
 import SwiftUI
 
-struct MatchUserSummary: View {
-	struct UserPreview {
+struct UserPreview: View {
+	struct UserSummary {
 		let displayName: String
 		let elo: Int
 		let avatarURL: URL?
@@ -19,13 +19,13 @@ struct MatchUserSummary: View {
 		case leading, trailing
 	}
 
-	let user: UserPreview?
+	let user: UserSummary?
 	let highlight: Bool
 	let textAlignment: Alignment
 	let iconSize: Metrics.Image
 
 	init(
-		_ user: UserPreview?,
+		_ user: UserSummary?,
 		highlight: Bool = false,
 		alignment: Alignment = .leading,
 		iconSize: Metrics.Image = .m
@@ -83,43 +83,43 @@ struct MatchUserSummary: View {
 }
 
 extension Match.User {
-	var preview: MatchUserSummary.UserPreview {
-		MatchUserSummary.UserPreview(displayName: displayName, elo: elo, avatarURL: avatarURL)
+	var summary: UserPreview.UserSummary {
+		UserPreview.UserSummary(displayName: displayName, elo: elo, avatarURL: avatarURL)
 	}
 }
 
 extension User {
-	var preview: MatchUserSummary.UserPreview {
-		MatchUserSummary.UserPreview(displayName: displayName, elo: elo, avatarURL: avatarUrl)
+	var summary: UserPreview.UserSummary {
+		UserPreview.UserSummary(displayName: displayName, elo: elo, avatarURL: avatarUrl)
 	}
 }
 
 #if DEBUG
-struct MatchUserSummaryPreview: PreviewProvider {
+struct UserPreviewPreview: PreviewProvider {
 	static var previews: some View {
 		VStack(spacing: .m) {
-			MatchUserSummary(Match.User.users[0].preview)
+			UserPreview(Match.User.users[0].summary)
 				.border(Color(.highlight), width: 1)
-			MatchUserSummary(Match.User.users[0].preview, highlight: true)
+			UserPreview(Match.User.users[0].summary, highlight: true)
 				.border(Color(.highlight), width: 1)
-			MatchUserSummary(Match.User.users[0].preview, iconSize: .l)
+			UserPreview(Match.User.users[0].summary, iconSize: .l)
 				.border(Color(.highlight), width: 1)
-			MatchUserSummary(Match.User.users[0].preview, alignment: .trailing)
+			UserPreview(Match.User.users[0].summary, alignment: .trailing)
 				.border(Color(.highlight), width: 1)
-			MatchUserSummary(nil)
+			UserPreview(nil)
 				.border(Color(.highlight), width: 1)
-			MatchUserSummary(nil, highlight: true)
+			UserPreview(nil, highlight: true)
 				.border(Color(.highlight), width: 1)
-			MatchUserSummary(nil, iconSize: .l)
+			UserPreview(nil, iconSize: .l)
 				.border(Color(.highlight), width: 1)
-			MatchUserSummary(nil, alignment: .trailing)
+			UserPreview(nil, alignment: .trailing)
 				.border(Color(.highlight), width: 1)
 
 			HStack(spacing: .xs) {
-				MatchUserSummary(Match.User.users[0].preview, iconSize: .l)
+				UserPreview(Match.User.users[0].summary, iconSize: .l)
 					.border(Color(.highlight), width: 1)
 				Spacer()
-				MatchUserSummary(Match.User.users[1].preview, alignment: .trailing, iconSize: .l)
+				UserPreview(Match.User.users[1].summary, alignment: .trailing, iconSize: .l)
 					.border(Color(.highlight), width: 1)
 			}
 		}

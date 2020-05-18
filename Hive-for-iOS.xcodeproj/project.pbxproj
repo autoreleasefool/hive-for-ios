@@ -60,7 +60,7 @@
 		CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCDD23DBA17200C697AD /* BottomSheet.swift */; };
 		CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCE023DBAC5700C697AD /* GameInformation.swift */; };
 		CABDFD0623DCA73500C697AD /* HexImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0523DCA73500C697AD /* HexImage.swift */; };
-		CABDFD0823DD9FE300C697AD /* MatchUserSummary.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */; };
+		CABDFD0823DD9FE300C697AD /* UserPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0723DD9FE300C697AD /* UserPreview.swift */; };
 		CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */; };
 		CABDFD0E23DF8B4000C697AD /* Experience+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */; };
 		CABDFD1023E0C87700C697AD /* PlayerHand.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0F23E0C87700C697AD /* PlayerHand.swift */; };
@@ -171,7 +171,7 @@
 		CABDFCDD23DBA17200C697AD /* BottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheet.swift; sourceTree = "<group>"; };
 		CABDFCE023DBAC5700C697AD /* GameInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameInformation.swift; sourceTree = "<group>"; };
 		CABDFD0523DCA73500C697AD /* HexImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HexImage.swift; sourceTree = "<group>"; };
-		CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchUserSummary.swift; sourceTree = "<group>"; };
+		CABDFD0723DD9FE300C697AD /* UserPreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreview.swift; sourceTree = "<group>"; };
 		CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Extensions.swift"; sourceTree = "<group>"; };
 		CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Experience+Extensions.swift"; sourceTree = "<group>"; };
 		CABDFD0F23E0C87700C697AD /* PlayerHand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHand.swift; sourceTree = "<group>"; };
@@ -373,7 +373,6 @@
 			isa = PBXGroup;
 			children = (
 				CAC730E6246955BC004DB450 /* MatchDetail.swift */,
-				CABDFD0723DD9FE300C697AD /* MatchUserSummary.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -556,14 +555,15 @@
 		CAC6861B23CE6AFD00B882D2 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */,
 				CABDFCDD23DBA17200C697AD /* BottomSheet.swift */,
 				CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */,
 				CA797F62246892AC0011E7D1 /* EmptyState.swift */,
-				CA22022B243F800D005367B6 /* LoadingHUD.swift */,
 				CABDFD0523DCA73500C697AD /* HexImage.swift */,
+				CA22022B243F800D005367B6 /* LoadingHUD.swift */,
 				CAFA91F523E958EE0087F1F0 /* PopoverSheet.swift */,
 				CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */,
-				CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */,
+				CABDFD0723DD9FE300C697AD /* UserPreview.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -923,7 +923,7 @@
 				CA88BA6B244E39A800C4A276 /* ActivityIndicator.swift in Sources */,
 				CAC730FC246DCE5B004DB450 /* LoginSignupViewModel.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
-				CABDFD0823DD9FE300C697AD /* MatchUserSummary.swift in Sources */,
+				CABDFD0823DD9FE300C697AD /* UserPreview.swift in Sources */,
 				CAC730E7246955BC004DB450 /* MatchDetail.swift in Sources */,
 				CAF8256E245CD14D0064359E /* ContentView.swift in Sources */,
 				CAF82565245C78060064359E /* AccountInteractor.swift in Sources */,
