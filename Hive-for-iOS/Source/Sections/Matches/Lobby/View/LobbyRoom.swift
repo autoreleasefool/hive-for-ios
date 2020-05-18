@@ -149,13 +149,13 @@ struct LobbyRoom: View {
 	private func playerSection(_ match: Match) -> some View {
 		HStack(spacing: .xs) {
 			MatchUserSummary(
-				match.host,
+				match.host?.preview,
 				highlight: self.viewModel.isPlayerReady(id: match.host?.id),
 				iconSize: .l
 			)
 			Spacer()
 			MatchUserSummary(
-				match.opponent,
+				match.opponent?.preview,
 				highlight: self.viewModel.isPlayerReady(id: match.opponent?.id),
 				alignment: .trailing,
 				iconSize: .l

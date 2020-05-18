@@ -41,7 +41,7 @@ struct LobbyRow: View {
 
 	var body: some View {
 		HStack(spacing: .m) {
-			MatchUserSummary(match.host)
+			MatchUserSummary(match.host.preview)
 			Spacer()
 			optionsPreview(for: match.gameOptionSet)
 		}

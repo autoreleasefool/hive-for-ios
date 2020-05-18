@@ -34,14 +34,14 @@ struct MatchDetail: View {
 	private var playerSection: some View {
 		HStack(spacing: .xs) {
 			MatchUserSummary(
-				self.match.host,
-				highlight: self.match.winner?.id == self.match.host?.id,
+				match.host?.preview,
+				highlight: match.winner?.id == match.host?.id,
 				iconSize: .l
 			)
 			Spacer()
 			MatchUserSummary(
-				self.match.opponent,
-				highlight: self.match.winner?.id == self.match.opponent?.id,
+				match.opponent?.preview,
+				highlight: match.winner?.id == match.opponent?.id,
 				alignment: .trailing,
 				iconSize: .l
 			)
