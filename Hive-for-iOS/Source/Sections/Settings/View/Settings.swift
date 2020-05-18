@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 
 struct Settings: View {
@@ -13,7 +14,11 @@ struct Settings: View {
 
 	@ObservedObject private var viewModel: SettingsViewModel
 
-	init(logoutResult: Loadable<Bool> = .notLoaded) {
+	@State private var preferences = Preferences()
+	@State private var userProfile: Loadable<User>
+
+	init(user: Loadable<User> = .notLoaded, logoutResult: Loadable<Bool> = .notLoaded) {
+		self._userProfile = .init(initialValue: user)
 		viewModel = SettingsViewModel(logoutResult: logoutResult)
 	}
 
@@ -21,13 +26,59 @@ struct Settings: View {
 		NavigationView {
 			ScrollView {
 				VStack(spacing: .m) {
+					sectionHeader(title: "Game")
+					itemToggle(title: "Mode", selected: preferences.gameMode) {
+						self.viewModel.postViewAction(.switchGameMode(current: $0))
+					}
+
+					sectionHeader(title: "Account")
+					UserPreview(userProfile.value?.summary)
+
 					logoutButton
 				}
 			}
+			.background(Color(.background).edgesIgnoringSafeArea(.all))
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
 			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
+			.onReceive(preferencesUpdate) { self.preferences = $0 }
+			.onReceive(userUpdate) { self.userProfile = $0 }
 		}
+	}
+
+	// MARK: Content
+
+	private func sectionHeader(title: String) -> some View {
+		HStack {
+			Text(title)
+				.caption()
+				.foregroundColor(Color(.text))
+			Spacer()
+		}
+		.padding(.vertical, length: .s)
+		.padding(.horizontal, length: .m)
+		.background(Color(.backgroundLight))
+	}
+
+	private func itemToggle<I>(
+		title: String,
+		selected: I,
+		onTap: @escaping (I) -> Void
+	) -> some View where I: Identifiable, I: CustomStringConvertible {
+		Button(action: {
+			onTap(selected)
+		}, label: {
+			HStack {
+				Text(title)
+					.body()
+					.foregroundColor(Color(.text))
+				Spacer()
+				Text(selected.description)
+					.body()
+					.foregroundColor(Color(.text))
+			}
+			.padding(.horizontal, length: .m)
+		})
 	}
 
 	// MARK: Buttons
@@ -45,7 +96,7 @@ struct Settings: View {
 					RoundedRectangle(cornerRadius: .s)
 						.fill(Color(.primary))
 				)
-//				.padding(.all, length: .m)
+				.padding(.horizontal, length: .m)
 		})
 	}
 
@@ -72,6 +123,9 @@ struct Settings: View {
 extension Settings {
 	private func handleAction(_ action: SettingsAction) {
 		switch action {
+		case .setGameMode(let mode):
+			container.appState[\.preferences.gameMode] = mode
+
 		case .exit:
 			exit()
 		case .logout:
@@ -91,3 +145,30 @@ extension Settings {
 		)
 	}
 }
+
+// MARK: - Updates
+
+extension Settings {
+	private var preferencesUpdate: AnyPublisher<Preferences, Never> {
+		container.appState.updates(for: \.preferences)
+			.receive(on: DispatchQueue.main)
+			.eraseToAnyPublisher()
+	}
+
+	private var userUpdate: AnyPublisher<Loadable<User>, Never> {
+		container.appState.updates(for: \.userProfile)
+			.receive(on: DispatchQueue.main)
+			.eraseToAnyPublisher()
+	}
+}
+
+#if DEBUG
+struct Settings_Previews: PreviewProvider {
+	static var previews: some View {
+		Settings(
+			user: .loaded(User.users[0]),
+			logoutResult: .loading(cached: nil, cancelBag: CancelBag())
+		)
+	}
+}
+#endif
