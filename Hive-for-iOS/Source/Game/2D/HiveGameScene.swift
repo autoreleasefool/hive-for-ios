@@ -367,6 +367,14 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 	}
 
 	@objc private func handlePinch(_ gesture: UIPinchGestureRecognizer) {
+		if nodeBeingMoved != nil {
+			removeSnappingPositions()
+			nodeBeingMoved = nil
+			snappingPositions = nil
+			nodeInitialPosition = nil
+			updateSpriteScaleAndOffset()
+		}
+
 		if gesture.state == .changed {
 			currentScaleMultiplier *= gesture.scale
 			gesture.scale = 1
