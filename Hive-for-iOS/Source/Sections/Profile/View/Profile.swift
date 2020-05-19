@@ -30,6 +30,7 @@ struct Profile: View {
 				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
 				.onReceive(userUpdates) { self.user = $0 }
 		}
+		.navigationViewStyle(StackNavigationViewStyle())
 	}
 
 	private var content: AnyView {

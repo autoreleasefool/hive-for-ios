@@ -44,6 +44,7 @@ struct Settings: View {
 			.onReceive(preferencesUpdate) { self.preferences = $0 }
 			.onReceive(userUpdate) { self.userProfile = $0 }
 		}
+		.navigationViewStyle(StackNavigationViewStyle())
 	}
 
 	// MARK: Content

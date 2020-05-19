@@ -30,6 +30,8 @@ struct History: View {
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(userUpdates) { self.user = $0 }
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
+
+			noRoomSelectedState
 		}
 	}
 
@@ -151,6 +153,13 @@ extension History {
 		) {
 			self.loadMatchHistory()
 		}
+	}
+
+	private var noRoomSelectedState: some View {
+		EmptyState(
+			header: "No room selected",
+			message: "Choose a room from the list to view"
+		)
 	}
 }
 
