@@ -14,8 +14,8 @@ enum LobbyViewAction: BaseViewAction {
 	case refresh
 	case openSettings
 
-	case joinMatch(Match.ID)
-	case createNewMatch
+	case joinMatch(Match.ID, inMatch: Bool)
+	case createNewMatch(inMatch: Bool)
 	case leaveMatch
 }
 
@@ -30,6 +30,7 @@ enum LobbyAction: BaseAction {
 class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
 	@Published var matches: Loadable<[Match]>
+	@Published var showMatchInProgressWarning = false
 
 	private let actions = PassthroughSubject<LobbyAction, Never>()
 	var actionsPublisher: AnyPublisher<LobbyAction, Never> {
@@ -46,10 +47,20 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 			actions.send(.loadOpenMatches)
 		case .openSettings:
 			actions.send(.openSettings)
-		case .createNewMatch:
-			actions.send(.createNewMatch)
-		case .joinMatch(let id):
-			actions.send(.joinMatch(id))
+
+		case .createNewMatch(let inMatch):
+			if inMatch {
+				showMatchInProgressWarning = true
+			} else {
+				actions.send(.createNewMatch)
+			}
+		case .joinMatch(let id, let inMatch):
+			if inMatch {
+				showMatchInProgressWarning = true
+			} else {
+				actions.send(.joinMatch(id))
+			}
+
 		case .leaveMatch:
 			actions.send(.leaveMatch)
 		}

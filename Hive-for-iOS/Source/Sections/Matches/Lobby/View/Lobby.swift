@@ -29,6 +29,16 @@ struct Lobby: View {
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(self.routingUpdate) { self.routing = $0 }
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
+				.alert(isPresented: $viewModel.showMatchInProgressWarning) {
+					Alert(
+						title: Text("Already in match"),
+						message: Text("You've already joined a match. " +
+							"Please leave the current match before trying to join a new one"),
+						dismissButton: .default(Text("OK"))
+					)
+				}
+
+			noRoomSelectedState
 		}
 	}
 
@@ -71,7 +81,7 @@ struct Lobby: View {
 			} else {
 				List(matches) { match in
 					Button(action: {
-						self.viewModel.postViewAction(.joinMatch(match.id))
+						self.viewModel.postViewAction(.joinMatch(match.id, inMatch: self.inMatch))
 					}, label: {
 						LobbyRow(match: match)
 					})
@@ -92,7 +102,7 @@ struct Lobby: View {
 
 	private var newMatchButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.createNewMatch)
+			self.viewModel.postViewAction(.createNewMatch(inMatch: self.inMatch))
 		}, label: {
 			Image(systemName: "plus")
 				.imageScale(.large)
@@ -132,11 +142,22 @@ extension Lobby {
 			self.viewModel.postViewAction(.refresh)
 		}
 	}
+
+	private var noRoomSelectedState: some View {
+		EmptyState(
+			header: "No room selected",
+			message: "Choose a room from the list to join"
+		)
+	}
 }
 
 // MARK: - Actions
 
 extension Lobby {
+	var inMatch: Bool {
+		inRoom.wrappedValue || creatingRoom.wrappedValue
+	}
+
 	var inRoom: Binding<Bool> {
 		Binding(
 			get: {
