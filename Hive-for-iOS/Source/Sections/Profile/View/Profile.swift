@@ -14,6 +14,8 @@ struct Profile: View {
 
 	@ObservedObject private var viewModel: ProfileViewModel
 
+	// This value can't be moved to the ViewModel because it mirrors the AppState and
+	// was causing a re-render loop when in the @ObservedObject view model
 	@State private var user: Loadable<User>
 
 	init(user: Loadable<User> = .notLoaded) {
@@ -25,10 +27,14 @@ struct Profile: View {
 		NavigationView {
 			content
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
-				.navigationBarTitle(title)
+				.navigationBarTitle(viewModel.title(forUser: user.value))
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
 				.onReceive(userUpdates) { self.user = $0 }
+				.sheet(isPresented: $viewModel.settingsOpened) {
+					Settings(isOpen: self.$viewModel.settingsOpened)
+						.inject(self.container)
+				}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
 	}
@@ -104,18 +110,12 @@ extension Profile {
 		switch action {
 		case .loadProfile:
 			loadProfile()
-		case .openSettings:
-			openSettings()
 		}
 	}
 
 	private func loadProfile() {
 		container.interactors.userInteractor
 			.loadProfile()
-	}
-
-	private func openSettings() {
-		container.appState[\.routing.mainRouting.settingsIsOpen] = true
 	}
 }
 
@@ -124,14 +124,6 @@ extension Profile {
 extension Profile {
 	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
-	}
-}
-
-// MARK: - Strings
-
-extension Profile {
-	var title: String {
-		user.value?.displayName ?? "Profile"
 	}
 }
 

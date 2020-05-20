@@ -15,10 +15,11 @@ enum ProfileViewAction: BaseViewAction {
 
 enum ProfileAction: BaseAction {
 	case loadProfile
-	case openSettings
 }
 
 class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
+	@Published var settingsOpened = false
+
 	private let actions = PassthroughSubject<ProfileAction, Never>()
 	var actionsPublisher: AnyPublisher<ProfileAction, Never> {
 		actions.eraseToAnyPublisher()
@@ -29,7 +30,7 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 		case .onAppear:
 			actions.send(.loadProfile)
 		case .openSettings:
-			actions.send(.openSettings)
+			settingsOpened = true
 		}
 	}
 }
@@ -37,6 +38,10 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 // MARK: - Strings
 
 extension ProfileViewModel {
+	func title(forUser user: User?) -> String {
+		user?.displayName ?? "Profile"
+	}
+
 	func errorMessage(from error: Error) -> String {
 		guard let userError = error as? UserRepositoryError else {
 			return error.localizedDescription

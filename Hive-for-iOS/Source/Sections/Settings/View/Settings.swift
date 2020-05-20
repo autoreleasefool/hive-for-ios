@@ -17,9 +17,9 @@ struct Settings: View {
 	@State private var preferences = Preferences()
 	@State private var userProfile: Loadable<User>
 
-	init(user: Loadable<User> = .notLoaded, logoutResult: Loadable<Bool> = .notLoaded) {
+	init(isOpen: Binding<Bool>, user: Loadable<User> = .notLoaded, logoutResult: Loadable<Bool> = .notLoaded) {
 		self._userProfile = .init(initialValue: user)
-		viewModel = SettingsViewModel(logoutResult: logoutResult)
+		viewModel = SettingsViewModel(isOpen: isOpen, logoutResult: logoutResult)
 	}
 
 	var body: some View {
@@ -126,16 +126,9 @@ extension Settings {
 		switch action {
 		case .setGameMode(let mode):
 			container.appState[\.preferences.gameMode] = mode
-
-		case .exit:
-			exit()
 		case .logout:
 			logout()
 		}
-	}
-
-	private func exit() {
-		container.appState[\.routing.mainRouting.settingsIsOpen] = false
 	}
 
 	private func logout() {
@@ -165,8 +158,11 @@ extension Settings {
 
 #if DEBUG
 struct Settings_Previews: PreviewProvider {
+	@State private static var isOpen = true
+
 	static var previews: some View {
 		Settings(
+			isOpen: $isOpen,
 			user: .loaded(User.users[0]),
 			logoutResult: .loading(cached: nil, cancelBag: CancelBag())
 		)

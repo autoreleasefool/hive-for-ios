@@ -15,10 +15,11 @@ enum HistoryViewAction: BaseViewAction {
 
 enum HistoryAction: BaseAction {
 	case loadMatchHistory
-	case openSettings
 }
 
 class HistoryViewModel: ViewModel<HistoryViewAction>, ObservableObject {
+	@Published var settingsOpened = false
+
 	private let actions = PassthroughSubject<HistoryAction, Never>()
 	var actionsPublisher: AnyPublisher<HistoryAction, Never> {
 		actions.eraseToAnyPublisher()
@@ -29,7 +30,7 @@ class HistoryViewModel: ViewModel<HistoryViewAction>, ObservableObject {
 		case .onAppear:
 			actions.send(.loadMatchHistory)
 		case .openSettings:
-			actions.send(.openSettings)
+			settingsOpened = true
 		}
 	}
 

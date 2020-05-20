@@ -19,8 +19,8 @@ struct LobbyRoom: View {
 
 	@ObservedObject private var viewModel: LobbyRoomViewModel
 
-	init(creatingRoom: Bool, match: Loadable<Match> = .notLoaded) {
-		self.viewModel = LobbyRoomViewModel(creatingNewMatch: creatingRoom, match: match)
+	init(id: Match.ID?, creatingRoom: Bool, match: Loadable<Match> = .notLoaded) {
+		self.viewModel = LobbyRoomViewModel(matchId: id, creatingNewMatch: creatingRoom, match: match)
 	}
 
 	var body: some View {
@@ -272,14 +272,14 @@ extension LobbyRoom {
 	}
 
 	private func startGame(state: GameState, player: Player) {
-		container.appState[\.routing.gameContentRouting.gameSetup] = GameContentCoordinator.GameSetup(
+		container.appState[\.gameSetup] = GameContentCoordinator.GameSetup(
 			state: state,
 			player: player
 		)
 	}
 
 	private func joinMatch() {
-		guard let id = container.appState.value.routing.lobbyRouting.matchId else { return }
+		guard let id = viewModel.initialMatchId else { return }
 		container.interactors.matchInteractor
 			.joinMatch(id: id, match: $viewModel.match)
 	}
@@ -351,7 +351,7 @@ extension LobbyRoom {
 #if DEBUG
 struct LobbyRoomPreview: PreviewProvider {
 	static var previews: some View {
-		return LobbyRoom(creatingRoom: false, match: .loaded(Match.matches[0]))
+		return LobbyRoom(id: Match.matches[0].id, creatingRoom: false, match: .loaded(Match.matches[0]))
 	}
 }
 #endif

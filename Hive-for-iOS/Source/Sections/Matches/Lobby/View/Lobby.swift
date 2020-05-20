@@ -15,8 +15,6 @@ struct Lobby: View {
 
 	@ObservedObject private var viewModel: LobbyViewModel
 
-	@State var routing = Lobby.Routing()
-
 	init(matches: Loadable<[Match]> = .notLoaded) {
 		viewModel = LobbyViewModel(matches: matches)
 	}
@@ -27,8 +25,11 @@ struct Lobby: View {
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle("Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
-				.onReceive(self.routingUpdate) { self.routing = $0 }
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
+				.sheet(isPresented: $viewModel.settingsOpened) {
+					Settings(isOpen: self.$viewModel.settingsOpened)
+						.inject(self.container)
+				}
 				.alert(isPresented: $viewModel.showMatchInProgressWarning) {
 					Alert(
 						title: Text("Already in match"),
@@ -65,14 +66,14 @@ struct Lobby: View {
 	private func loadedView(_ matches: [Match], loading: Bool) -> some View {
 		Group {
 			NavigationLink(
-				destination: LobbyRoom(creatingRoom: false),
-				isActive: self.inRoom,
+				destination: LobbyRoom(id: self.viewModel.currentMatchId, creatingRoom: false),
+				isActive: self.viewModel.joiningMatch,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
-				destination: LobbyRoom(creatingRoom: true),
-				isActive: self.creatingRoom,
+				destination: LobbyRoom(id: nil, creatingRoom: true),
+				isActive: self.$viewModel.creatingRoom,
 				label: { EmptyView() }
 			)
 
@@ -81,7 +82,7 @@ struct Lobby: View {
 			} else {
 				List(matches) { match in
 					Button(action: {
-						self.viewModel.postViewAction(.joinMatch(match.id, inMatch: self.inMatch))
+						self.viewModel.postViewAction(.joinMatch(match.id))
 					}, label: {
 						LobbyRow(match: match)
 					})
@@ -102,7 +103,7 @@ struct Lobby: View {
 
 	private var newMatchButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.createNewMatch(inMatch: self.inMatch))
+			self.viewModel.postViewAction(.createNewMatch)
 		}, label: {
 			Image(systemName: "plus")
 				.imageScale(.large)
@@ -154,34 +155,6 @@ extension Lobby {
 // MARK: - Actions
 
 extension Lobby {
-	var inMatch: Bool {
-		inRoom.wrappedValue || creatingRoom.wrappedValue
-	}
-
-	var inRoom: Binding<Bool> {
-		Binding(
-			get: {
-				!self.routing.creatingRoom && self.routing.matchId != nil
-			},
-			set: { newValue in
-				guard !newValue else { return }
-				self.viewModel.postViewAction(.leaveMatch)
-			}
-		)
-	}
-
-	var creatingRoom: Binding<Bool> {
-		Binding(
-			get: {
-				self.routing.creatingRoom
-			},
-			set: { newValue in
-				guard !newValue else { return }
-				self.viewModel.postViewAction(.leaveMatch)
-			}
-		)
-	}
-
 	var isRefreshing: Binding<Bool> {
 		Binding(
 			get: {
@@ -198,56 +171,12 @@ extension Lobby {
 		switch action {
 		case .loadOpenMatches:
 			loadMatches()
-		case .openSettings:
-			openSettings()
-		case .createNewMatch:
-			createNewMatch()
-		case .leaveMatch:
-			leaveMatch()
-		case .joinMatch(let id):
-			joinMatch(id)
 		}
 	}
 
 	private func loadMatches() {
 		container.interactors.matchInteractor
 			.loadOpenMatches(matches: $viewModel.matches)
-	}
-
-	private func openSettings() {
-		container.appState[\.routing.mainRouting.settingsIsOpen] = true
-	}
-
-	private func createNewMatch() {
-		container.appState[\.routing.lobbyRouting.creatingRoom] = true
-	}
-
-	private func leaveMatch() {
-		container.appState[\.routing.lobbyRouting.creatingRoom] = false
-		container.appState[\.routing.lobbyRouting.matchId] = nil
-	}
-
-	private func joinMatch(_ id: Match.ID) {
-		container.appState[\.routing.lobbyRouting.matchId] = id
-	}
-}
-
-// MARK: - Routing
-
-extension Lobby {
-	struct Routing: Equatable {
-		var creatingRoom: Bool = false
-		var matchId: Match.ID?
-
-		var inRoom: Bool {
-			creatingRoom || matchId != nil
-		}
-	}
-
-	private var routingUpdate: AnyPublisher<Routing, Never> {
-		container.appState.updates(for: \.routing.lobbyRouting)
-			.receive(on: DispatchQueue.main)
-			.eraseToAnyPublisher()
 	}
 }
 

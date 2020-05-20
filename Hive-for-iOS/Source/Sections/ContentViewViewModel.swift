@@ -19,6 +19,8 @@ enum ContentViewAction: BaseAction {
 }
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
+	@Published var showWelcome = true
+
 	override init() {
 		super.init()
 		subscribeToAccountUpdates()

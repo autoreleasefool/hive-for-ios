@@ -12,14 +12,11 @@ import Combine
 struct ContentView: View {
 	private let container: AppContainer
 
-	@Environment(\.toaster) private var toaster: Toaster
-
 	@ObservedObject private var viewModel: ContentViewViewModel
 
-	// These values can't be moved to the ViewModel because they mirror the AppState and
-	// were causing a re-render loop when in the @ObservedObject view model
+	// This value can't be moved to the ViewModel because it mirrors the AppState and
+	// was causing a re-render loop when in the @ObservedObject view model
 	@State private var account: Loadable<Account>
-	@State private var routing = ContentView.Routing()
 
 	init(container: AppContainer, account: Loadable<Account> = .notLoaded) {
 		self.container = container
@@ -30,8 +27,8 @@ struct ContentView: View {
 	var body: some View {
 		GeometryReader { geometry in
 			Group {
-				if self.routing.showWelcome {
-					Welcome(showWelcome: self.welcomeRoutingBinding)
+				if self.viewModel.showWelcome {
+					Welcome(showWelcome: self.$viewModel.showWelcome)
 				} else {
 					self.content
 				}
@@ -40,11 +37,6 @@ struct ContentView: View {
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 			.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 			.onReceive(self.accountUpdate) { self.account = $0 }
-			.onReceive(self.routingUpdate) { self.routing = $0 }
-			.sheet(isPresented: self.settingsRoutingBinding) {
-				Settings()
-					.inject(self.container)
-			}
 			.inject(self.container)
 			.plugInToaster()
 		}
@@ -103,31 +95,6 @@ extension ContentView {
 		container.appState.updates(for: \.account)
 			.receive(on: DispatchQueue.main)
 			.eraseToAnyPublisher()
-	}
-}
-
-// MARK: - Routing
-
-extension ContentView {
-	struct Routing: Equatable {
-		var settingsIsOpen: Bool = false
-		var showWelcome: Bool = true
-	}
-
-	private var routingUpdate: AnyPublisher<Routing, Never> {
-		container.appState.updates(for: \.routing.mainRouting)
-			.receive(on: DispatchQueue.main)
-			.eraseToAnyPublisher()
-	}
-
-	private var settingsRoutingBinding: Binding<Bool> {
-		$routing.settingsIsOpen
-			.dispatched(to: container.appState, \.routing.mainRouting.settingsIsOpen)
-	}
-
-	private var welcomeRoutingBinding: Binding<Bool> {
-		$routing.showWelcome
-			.dispatched(to: container.appState, \.routing.mainRouting.showWelcome)
 	}
 }
 

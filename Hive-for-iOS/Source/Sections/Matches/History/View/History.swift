@@ -15,6 +15,8 @@ struct History: View {
 
 	@ObservedObject private var viewModel: HistoryViewModel
 
+	// This value can't be moved to the ViewModel because it mirrors the AppState and
+	// was causing a re-render loop when in the @ObservedObject view model
 	@State private var user: Loadable<User>
 
 	init(user: Loadable<User> = .notLoaded) {
@@ -29,7 +31,11 @@ struct History: View {
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(userUpdates) { self.user = $0 }
-				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
+				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
+				.sheet(isPresented: $viewModel.settingsOpened) {
+					Settings(isOpen: self.$viewModel.settingsOpened)
+						.inject(self.container)
+				}
 
 			noRoomSelectedState
 		}
@@ -104,7 +110,7 @@ struct History: View {
 	}
 
 	private func lobbyDetails(for match: Match) -> some View {
-		LobbyRoom(creatingRoom: false)
+		LobbyRoom(id: Match.matches[0].id, creatingRoom: false)
 	}
 }
 
@@ -170,18 +176,12 @@ extension History {
 		switch action {
 		case .loadMatchHistory:
 			loadMatchHistory()
-		case .openSettings:
-			openSettings()
 		}
 	}
 
 	private func loadMatchHistory() {
 		container.interactors.userInteractor
 			.loadProfile()
-	}
-
-	private func openSettings() {
-		container.appState[\.routing.mainRouting.settingsIsOpen] = true
 	}
 }
 

@@ -7,6 +7,7 @@
 //
 
 import Combine
+import SwiftUI
 
 enum SettingsViewAction: BaseViewAction {
 	case switchGameMode(current: Preferences.GameMode)
@@ -17,27 +18,30 @@ enum SettingsViewAction: BaseViewAction {
 
 enum SettingsAction: BaseAction {
 	case setGameMode(Preferences.GameMode)
-
 	case logout
-	case exit
 }
 
 class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 	@Published var logoutResult: Loadable<Bool> {
 		didSet {
 			switch logoutResult {
-			case .failed, .loaded: actions.send(.exit)
-			case .loading, .notLoaded: break
+			case .failed, .loaded:
+				isOpen.wrappedValue = false
+			case .loading, .notLoaded:
+				break
 			}
 		}
 	}
+
+	private var isOpen: Binding<Bool>
 
 	private let actions = PassthroughSubject<SettingsAction, Never>()
 	var actionsPublisher: AnyPublisher<SettingsAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(logoutResult: Loadable<Bool>) {
+	init(isOpen: Binding<Bool>, logoutResult: Loadable<Bool>) {
+		self.isOpen = isOpen
 		self._logoutResult = .init(initialValue: logoutResult)
 	}
 
@@ -47,7 +51,7 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 			switchGameMode(from: current)
 
 		case .exit:
-			actions.send(.exit)
+			isOpen.wrappedValue = false
 		case .logout:
 			actions.send(.logout)
 		}

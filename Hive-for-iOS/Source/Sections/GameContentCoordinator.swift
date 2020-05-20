@@ -6,20 +6,22 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import Combine
 import SwiftUI
 import HiveEngine
 
 struct GameContentCoordinator: View {
 	@Environment(\.container) private var container: AppContainer
 
-	@State private var routing = Routing()
+	@State private var gameSetup: GameSetup?
 
 	var body: some View {
 		content
+			.onReceive(setupUpdates) { self.gameSetup = $0 }
 	}
 
 	var content: AnyView {
-		if let setup = routing.gameSetup {
+		if let setup = gameSetup {
 			return AnyView(gameView(setup))
 		} else {
 			return AnyView(contentView)
@@ -37,15 +39,21 @@ struct GameContentCoordinator: View {
 	}
 }
 
-// MARK: - Routing
+// MARK: - GameSetup
 
 extension GameContentCoordinator {
-	struct Routing: Equatable {
-		var gameSetup: GameSetup?
-	}
-
 	struct GameSetup: Equatable {
 		let state: GameState
 		let player: Player
+	}
+}
+
+// MARK: - Updates
+
+extension GameContentCoordinator {
+	var setupUpdates: AnyPublisher<GameSetup?, Never> {
+		container.appState.updates(for: \.gameSetup)
+			.receive(on: DispatchQueue.main)
+			.eraseToAnyPublisher()
 	}
 }

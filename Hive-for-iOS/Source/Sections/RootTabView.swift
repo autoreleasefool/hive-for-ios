@@ -13,7 +13,7 @@ struct RootTabView: View {
 	@State private var selectedTab = 0
 
 	var body: some View {
-		TabView(selection: presentedTab) {
+		TabView(selection: $selectedTab) {
 			Lobby()
 				.tabItem { Tab.lobby.tabItem }
 				.tag(0)
@@ -25,16 +25,6 @@ struct RootTabView: View {
 				.tag(2)
 		}
 		.accentColor(Color(.primary))
-	}
-
-	var presentedTab: Binding<Int> {
-		Binding(
-			get: { self.selectedTab },
-			set: { newValue in
-				guard !self.container.appState.value.routing.lobbyRouting.inRoom else { return }
-				self.selectedTab = newValue
-			}
-		)
 	}
 }
 

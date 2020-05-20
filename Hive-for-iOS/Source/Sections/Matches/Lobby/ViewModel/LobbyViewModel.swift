@@ -14,22 +14,34 @@ enum LobbyViewAction: BaseViewAction {
 	case refresh
 	case openSettings
 
-	case joinMatch(Match.ID, inMatch: Bool)
-	case createNewMatch(inMatch: Bool)
-	case leaveMatch
+	case joinMatch(Match.ID)
+	case createNewMatch
 }
 
 enum LobbyAction: BaseAction {
 	case loadOpenMatches
-	case openSettings
-	case joinMatch(Match.ID)
-	case createNewMatch
-	case leaveMatch
 }
 
 class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
+	@Published var creatingRoom = false {
+		didSet {
+			if !creatingRoom && currentMatchId != nil {
+				currentMatchId = nil
+			}
+		}
+	}
+
+	@Published var currentMatchId: Match.ID? {
+		didSet {
+			if currentMatchId == nil && creatingRoom {
+				creatingRoom = false
+			}
+		}
+	}
+
 	@Published var matches: Loadable<[Match]>
+	@Published var settingsOpened = false
 	@Published var showMatchInProgressWarning = false
 
 	private let actions = PassthroughSubject<LobbyAction, Never>()
@@ -46,24 +58,45 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		case .onAppear, .refresh:
 			actions.send(.loadOpenMatches)
 		case .openSettings:
-			actions.send(.openSettings)
+			settingsOpened = true
 
-		case .createNewMatch(let inMatch):
+		case .createNewMatch:
 			if inMatch {
 				showMatchInProgressWarning = true
 			} else {
-				actions.send(.createNewMatch)
+				creatingRoom = true
 			}
-		case .joinMatch(let id, let inMatch):
+		case .joinMatch(let id):
 			if inMatch {
 				showMatchInProgressWarning = true
 			} else {
-				actions.send(.joinMatch(id))
+				currentMatchId = id
 			}
-
-		case .leaveMatch:
-			actions.send(.leaveMatch)
 		}
+	}
+}
+
+extension LobbyViewModel {
+	var inRoom: Bool {
+		creatingRoom || currentMatchId != nil
+	}
+
+	var inMatch: Bool {
+		inRoom || creatingRoom
+	}
+
+	var joiningMatch: Binding<Bool> {
+		Binding(
+			get: { [weak self] in
+				guard let self = self else { return false }
+				return !self.creatingRoom && self.currentMatchId != nil
+			},
+			set: { [weak self] in
+				if !$0 {
+					self?.currentMatchId = nil
+				}
+			}
+		)
 	}
 }
 

@@ -23,7 +23,7 @@ struct HiveGame: View {
 	private func handleTransition(to newState: HiveGameViewModel.State) {
 		switch newState {
 		case .forfeit, .gameEnd:
-			container.appState[\.routing.gameContentRouting.gameSetup] = nil
+			container.appState[\.gameSetup] = nil
 		case .begin, .gameStart, .opponentTurn, .playerTurn, .sendingMovement:
 			break
 		}
@@ -54,9 +54,13 @@ struct HiveGame: View {
 	}
 
 	private var gameView: AnyView {
+		#if targetEnvironment(simulator)
+		return AnyView(Hive2DGame(viewModel: viewModel))
+		#else
 		switch container.appState.value.preferences.gameMode {
 		case .ar: return AnyView(HiveARGame(viewModel: viewModel))
 		case .sprite: return AnyView(Hive2DGame(viewModel: viewModel))
 		}
+		#endif
 	}
 }

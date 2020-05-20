@@ -83,7 +83,6 @@
 		CAC730E7246955BC004DB450 /* MatchDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730E6246955BC004DB450 /* MatchDetail.swift */; };
 		CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730E824696F1C004DB450 /* HistoryRow.swift */; };
 		CAC730EB246979C5004DB450 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730EA246979C5004DB450 /* Date+Extensions.swift */; };
-		CAC730F3246BCBDF004DB450 /* Routing.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F2246BCBDF004DB450 /* Routing.swift */; };
 		CAC730F7246BDF26004DB450 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F6246BDF26004DB450 /* Settings.swift */; };
 		CAC730F9246C98BB004DB450 /* GameContentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */; };
 		CAC730FC246DCE5B004DB450 /* LoginSignupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730FB246DCE5B004DB450 /* LoginSignupViewModel.swift */; };
@@ -195,7 +194,6 @@
 		CAC730E6246955BC004DB450 /* MatchDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetail.swift; sourceTree = "<group>"; };
 		CAC730E824696F1C004DB450 /* HistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRow.swift; sourceTree = "<group>"; };
 		CAC730EA246979C5004DB450 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
-		CAC730F2246BCBDF004DB450 /* Routing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Routing.swift; sourceTree = "<group>"; };
 		CAC730F6246BDF26004DB450 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		CAC730F8246C98BB004DB450 /* GameContentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameContentCoordinator.swift; sourceTree = "<group>"; };
 		CAC730FB246DCE5B004DB450 /* LoginSignupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupViewModel.swift; sourceTree = "<group>"; };
@@ -678,7 +676,6 @@
 				CAF82555245C6B030064359E /* AppState.swift */,
 				CAF82557245C6B2B0064359E /* Account.swift */,
 				CA286D092471E84B0044BAAE /* Preferences.swift */,
-				CAC730F2246BCBDF004DB450 /* Routing.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -884,7 +881,6 @@
 				CAFA469A23DAD13B003C38AB /* HiveGameViewModel.swift in Sources */,
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
 				CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */,
-				CAC730F3246BCBDF004DB450 /* Routing.swift in Sources */,
 				CA0F939A24264DE400F6E104 /* GameState+2D.swift in Sources */,
 				CA0F939824264CB700F6E104 /* HiveSpriteManager.swift in Sources */,
 				CA41ACAC2454A30B00B6F88E /* Toaster.swift in Sources */,

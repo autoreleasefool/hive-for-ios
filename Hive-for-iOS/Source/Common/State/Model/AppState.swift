@@ -9,7 +9,7 @@
 struct AppState: Equatable {
 	var account: Loadable<Account> = .notLoaded
 	var userProfile: Loadable<User> = .notLoaded
+	var gameSetup: GameContentCoordinator.GameSetup?
 
 	var preferences = Preferences()
-	var routing = Routing()
 }

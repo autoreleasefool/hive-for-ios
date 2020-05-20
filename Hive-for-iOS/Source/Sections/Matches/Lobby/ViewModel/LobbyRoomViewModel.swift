@@ -63,6 +63,7 @@ class LobbyRoomViewModel: ExtendedViewModel<LobbyRoomViewAction, LobbyRoomCancel
 		}
 	}
 
+	let initialMatchId: Match.ID?
 	private var userId: User.ID!
 
 	@Published private(set) var matchOptions: Set<Match.Option> = Set()
@@ -82,7 +83,8 @@ class LobbyRoomViewModel: ExtendedViewModel<LobbyRoomViewAction, LobbyRoomCancel
 
 	private let creatingNewMatch: Bool
 
-	init(creatingNewMatch: Bool, match: Loadable<Match>) {
+	init(matchId: Match.ID?, creatingNewMatch: Bool, match: Loadable<Match>) {
+		self.initialMatchId = matchId
 		self.creatingNewMatch = creatingNewMatch
 		self._match = .init(initialValue: match)
 	}
