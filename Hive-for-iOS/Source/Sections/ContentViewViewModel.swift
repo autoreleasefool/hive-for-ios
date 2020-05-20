@@ -20,6 +20,7 @@ enum ContentViewAction: BaseAction {
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 	@Published var showWelcome = true
+	@Published var showSettings = false
 
 	override init() {
 		super.init()

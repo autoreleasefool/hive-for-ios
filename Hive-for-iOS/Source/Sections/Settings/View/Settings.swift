@@ -17,9 +17,14 @@ struct Settings: View {
 	@State private var preferences = Preferences()
 	@State private var userProfile: Loadable<User>
 
-	init(isOpen: Binding<Bool>, user: Loadable<User> = .notLoaded, logoutResult: Loadable<Bool> = .notLoaded) {
+	init(
+		isOpen: Binding<Bool>,
+		showAccount: Bool = true,
+		user: Loadable<User> = .notLoaded,
+		logoutResult: Loadable<Bool> = .notLoaded
+	) {
 		self._userProfile = .init(initialValue: user)
-		viewModel = SettingsViewModel(isOpen: isOpen, logoutResult: logoutResult)
+		viewModel = SettingsViewModel(isOpen: isOpen, logoutResult: logoutResult, showAccount: showAccount)
 	}
 
 	var body: some View {
@@ -31,10 +36,12 @@ struct Settings: View {
 						self.viewModel.postViewAction(.switchGameMode(current: $0))
 					}
 
-					sectionHeader(title: "Account")
-					UserPreview(userProfile.value?.summary)
+					if self.viewModel.showAccount {
+						sectionHeader(title: "Account")
+						UserPreview(userProfile.value?.summary)
 
-					logoutButton
+						logoutButton
+					}
 				}
 			}
 			.background(Color(.background).edgesIgnoringSafeArea(.all))

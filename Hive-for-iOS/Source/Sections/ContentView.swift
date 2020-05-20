@@ -28,7 +28,10 @@ struct ContentView: View {
 		GeometryReader { geometry in
 			Group {
 				if self.viewModel.showWelcome {
-					Welcome(showWelcome: self.$viewModel.showWelcome)
+					Welcome(
+						showWelcome: self.$viewModel.showWelcome,
+						showSettings: self.$viewModel.showSettings
+					)
 				} else {
 					self.content
 				}
@@ -37,6 +40,10 @@ struct ContentView: View {
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 			.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 			.onReceive(self.accountUpdate) { self.account = $0 }
+			.sheet(isPresented: self.$viewModel.showSettings) {
+				Settings(isOpen: self.$viewModel.showSettings, showAccount: false)
+					.inject(self.container)
+			}
 			.inject(self.container)
 			.plugInToaster()
 		}

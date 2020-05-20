@@ -35,6 +35,7 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 		}
 	}
 
+	let showAccount: Bool
 	private var isOpen: Binding<Bool>
 
 	private let actions = PassthroughSubject<SettingsAction, Never>()
@@ -42,9 +43,10 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(isOpen: Binding<Bool>, logoutResult: Loadable<Bool>) {
+	init(isOpen: Binding<Bool>, logoutResult: Loadable<Bool>, showAccount: Bool) {
 		self.isOpen = isOpen
 		self._logoutResult = .init(initialValue: logoutResult)
+		self.showAccount = showAccount
 	}
 
 	override func postViewAction(_ viewAction: SettingsViewAction) {

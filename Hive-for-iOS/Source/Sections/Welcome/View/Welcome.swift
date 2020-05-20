@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Welcome: View {
 	@Binding var showWelcome: Bool
+	@Binding var showSettings: Bool
 
 	var body: some View {
 		VStack {
@@ -29,7 +30,7 @@ struct Welcome: View {
 			.padding(.m)
 
 			Button("Settings") {
-				self.showWelcome = false
+				self.showSettings = true
 			}
 			.subtitle()
 			.foregroundColor(Color(.text))
