@@ -10,6 +10,7 @@ import Combine
 import SwiftUI
 
 enum SettingsViewAction: BaseViewAction {
+	case onAppear
 	case switchGameMode(current: Preferences.GameMode)
 
 	case logout
@@ -17,6 +18,7 @@ enum SettingsViewAction: BaseViewAction {
 }
 
 enum SettingsAction: BaseAction {
+	case loadProfile
 	case setGameMode(Preferences.GameMode)
 	case logout
 }
@@ -47,6 +49,8 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 
 	override func postViewAction(_ viewAction: SettingsViewAction) {
 		switch viewAction {
+		case .onAppear:
+			actions.send(.loadProfile)
 		case .switchGameMode(let current):
 			switchGameMode(from: current)
 

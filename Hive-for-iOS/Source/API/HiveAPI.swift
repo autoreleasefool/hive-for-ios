@@ -133,7 +133,9 @@ class HiveAPI: ObservableObject {
 
 	func user(id: User.ID, withAccount account: Account?) -> AnyPublisher<User, HiveAPIError> {
 		Future { promise in
-			let url = self.userGroup.appendingPathComponent("details")
+			let url = self.userGroup
+				.appendingPathComponent(id.uuidString)
+				.appendingPathComponent("details")
 
 			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "GET"

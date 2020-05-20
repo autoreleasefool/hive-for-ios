@@ -43,6 +43,7 @@ struct Settings: View {
 			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
 			.onReceive(preferencesUpdate) { self.preferences = $0 }
 			.onReceive(userUpdate) { self.userProfile = $0 }
+			.onAppear { self.viewModel.postViewAction(.onAppear) }
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
 	}
@@ -124,11 +125,18 @@ struct Settings: View {
 extension Settings {
 	private func handleAction(_ action: SettingsAction) {
 		switch action {
+		case .loadProfile:
+			loadProfile()
 		case .setGameMode(let mode):
 			container.appState[\.preferences.gameMode] = mode
 		case .logout:
 			logout()
 		}
+	}
+
+	private func loadProfile() {
+		container.interactors.userInteractor
+			.loadProfile()
 	}
 
 	private func logout() {
