@@ -20,6 +20,8 @@ enum Theme {
 		UINavigationBar.appearance().scrollEdgeAppearance = coloredAppearance
 		UINavigationBar.appearance().tintColor = .white
 
+		UITabBar.appearance().tintColor = UIColor(.primary)
+
 		UITableView.appearance().backgroundColor = UIColor(.background)
 		UITableViewCell.appearance().backgroundColor = UIColor(.backgroundLight)
 
