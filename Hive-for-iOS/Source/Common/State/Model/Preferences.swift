@@ -6,8 +6,13 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import Foundation
+
 struct Preferences: Equatable {
-	var gameMode: GameMode = .sprite
+	var gameMode: GameMode {
+		get { GameMode(rawValue: UserDefaults.standard.string(forKey: Key.gameMode.rawValue) ?? "") ?? .sprite }
+		set { UserDefaults.standard.set(newValue.rawValue, forKey: Key.gameMode.rawValue) }
+	}
 }
 
 // MARK: - Game Mode
@@ -24,5 +29,13 @@ extension Preferences {
 		var description: String {
 			rawValue
 		}
+	}
+}
+
+// MARK: - Keys
+
+private extension Preferences {
+	enum Key: String {
+		case gameMode
 	}
 }
