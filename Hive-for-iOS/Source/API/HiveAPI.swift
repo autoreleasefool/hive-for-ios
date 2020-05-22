@@ -55,9 +55,11 @@ class HiveAPI: ObservableObject {
 	private var matchGroup: URL { apiGroup.appendingPathComponent("matches") }
 
 	private let session: NetworkSession
+	private let apiQueue: DispatchQueue
 
-	init(session: NetworkSession = URLSession.shared) {
+	init(session: NetworkSession = URLSession.shared, queue: DispatchQueue = .global(qos: .userInitiated)) {
 		self.session = session
+		self.apiQueue = queue
 	}
 
 	func login(login: LoginData) -> AnyPublisher<AccessToken, HiveAPIError> {
@@ -76,6 +78,7 @@ class HiveAPI: ObservableObject {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
 	}
 
@@ -96,6 +99,7 @@ class HiveAPI: ObservableObject {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
 	}
 
@@ -111,6 +115,7 @@ class HiveAPI: ObservableObject {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.map { result in userId == result.userId }
 		.eraseToAnyPublisher()
 	}
@@ -126,6 +131,7 @@ class HiveAPI: ObservableObject {
 				self?.handleVoidResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
 	}
 
@@ -144,6 +150,7 @@ class HiveAPI: ObservableObject {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
 	}
 
@@ -160,6 +167,7 @@ class HiveAPI: ObservableObject {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
 	}
 
@@ -174,6 +182,7 @@ class HiveAPI: ObservableObject {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
 	}
 
@@ -190,6 +199,7 @@ class HiveAPI: ObservableObject {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
 	}
 
@@ -204,6 +214,7 @@ class HiveAPI: ObservableObject {
 				self?.handleResponse(data: data, response: response, error: error, promise: promise)
 			}
 		}
+		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
 	}
 
