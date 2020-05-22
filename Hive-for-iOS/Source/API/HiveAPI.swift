@@ -54,10 +54,10 @@ class HiveAPI: ObservableObject {
 	private var userGroup: URL { apiGroup.appendingPathComponent("users") }
 	private var matchGroup: URL { apiGroup.appendingPathComponent("matches") }
 
-	private let session: NetworkSession
+	private let session: URLSession
 	private let apiQueue: DispatchQueue
 
-	init(session: NetworkSession = URLSession.shared, queue: DispatchQueue = .global(qos: .userInitiated)) {
+	init(session: URLSession = URLSession.shared, queue: DispatchQueue = .global(qos: .userInitiated)) {
 		self.session = session
 		self.apiQueue = queue
 	}
@@ -74,9 +74,9 @@ class HiveAPI: ObservableObject {
 			request.httpMethod = "POST"
 			request.setValue("Basic \(base64Auth)", forHTTPHeaderField: "Authorization")
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
@@ -95,9 +95,9 @@ class HiveAPI: ObservableObject {
 			request.httpMethod = "POST"
 			request.httpBody = signupData
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
@@ -111,9 +111,9 @@ class HiveAPI: ObservableObject {
 			request.httpMethod = "GET"
 			Account.apply(auth: nil, to: &request, overridingTokenWith: token)
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.map { result in userId == result.userId }
@@ -127,9 +127,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "DELETE"
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleVoidResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleVoidResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
@@ -146,9 +146,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "GET"
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
@@ -163,9 +163,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "GET"
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
@@ -178,9 +178,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "GET"
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
@@ -195,9 +195,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "POST"
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()
@@ -210,9 +210,9 @@ class HiveAPI: ObservableObject {
 			var request = self.buildBaseRequest(to: url, withAccount: account)
 			request.httpMethod = "POST"
 
-			self.session.loadData(from: request) { [weak self] data, response, error in
-				self?.handleResponse(data: data, response: response, error: error, promise: promise)
-			}
+			self.session.dataTask(with: request) { [weak self] in
+				self?.handleResponse(data: $0, response: $1, error: $2, promise: promise)
+			}.resume()
 		}
 		.subscribe(on: apiQueue)
 		.eraseToAnyPublisher()

@@ -29,12 +29,12 @@ extension AppEnvironment {
 		return AppEnvironment(container: container)
 	}
 
-	private static func configuredNetworkSession() -> NetworkSession {
+	private static func configuredNetworkSession() -> URLSession {
 		let configuration = URLSessionConfiguration.default
 		return URLSession(configuration: configuration)
 	}
 
-	private static func configuredAPI(session: NetworkSession) -> HiveAPI {
+	private static func configuredAPI(session: URLSession) -> HiveAPI {
 		HiveAPI(session: session)
 	}
 

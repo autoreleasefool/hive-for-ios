@@ -30,7 +30,6 @@
 		CA45F9C4242E758C007EC94D /* HiveRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* HiveRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
 		CA68BBC1244B063200879060 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = CA68BBC0244B063200879060 /* Starscream */; };
-		CA68BBC4244B20BC00879060 /* NetworkSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA68BBC3244B20BC00879060 /* NetworkSession.swift */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
@@ -141,7 +140,6 @@
 		CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceClassDetails.swift; sourceTree = "<group>"; };
 		CA45F9C3242E758C007EC94D /* HiveRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveRule.swift; sourceTree = "<group>"; };
 		CA45F9C5242E9F7A007EC94D /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
-		CA68BBC3244B20BC00879060 /* NetworkSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkSession.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
@@ -265,14 +263,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		CA68BBC2244B20AB00879060 /* Mocks */ = {
-			isa = PBXGroup;
-			children = (
-				CA68BBC3244B20BC00879060 /* NetworkSession.swift */,
-			);
-			path = Mocks;
-			sourceTree = "<group>";
-		};
 		CA7299972393156100AD1285 = {
 			isa = PBXGroup;
 			children = (
@@ -311,7 +301,6 @@
 		CA7299B7239320EA00AD1285 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				CA68BBC2244B20AB00879060 /* Mocks */,
 				CAC6861123CE43F600B882D2 /* API */,
 				CAC685FA23CCF65F00B882D2 /* Common */,
 				CAC6860423CD227A00B882D2 /* Extensions */,
@@ -964,7 +953,6 @@
 				CAF82558245C6B2B0064359E /* Account.swift in Sources */,
 				CA8F46DD245DD27600B136D0 /* LoginSignup.swift in Sources */,
 				CAC730FF246DF74E004DB450 /* ProfileViewModel.swift in Sources */,
-				CA68BBC4244B20BC00879060 /* NetworkSession.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
 				CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */,
 				CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */,
