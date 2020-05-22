@@ -51,7 +51,6 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			handleReturn(from: from)
 		case .focusField(let id):
 			activeField = id
-			print(id)
 		}
 	}
 
@@ -139,6 +138,14 @@ extension LoginSignupViewModel {
 			switch self {
 			case .email: return .emailAddress
 			case .confirmPassword, .password, .displayName: return .default
+			}
+		}
+
+		var textContentType: UITextContentType {
+			switch self {
+			case .email: return .emailAddress
+			case .password, .confirmPassword: return .password
+			case .displayName: return .username
 			}
 		}
 

@@ -69,7 +69,6 @@
 		CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD1123E0C97000C697AD /* InformationHUD.swift */; };
 		CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD1323E0DADD00C697AD /* PlayerHandHUD.swift */; };
 		CAC426D82433989800E513BC /* KeyboardAvoidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC426D72433989800E513BC /* KeyboardAvoidance.swift */; };
-		CAC426DA2433B11000E513BC /* LoginField.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC426D92433B11000E513BC /* LoginField.swift */; };
 		CAC650AC2461FC1900835209 /* ClientInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC650AB2461FC1900835209 /* ClientInteractor.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
@@ -181,7 +180,6 @@
 		CABDFD1123E0C97000C697AD /* InformationHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationHUD.swift; sourceTree = "<group>"; };
 		CABDFD1323E0DADD00C697AD /* PlayerHandHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandHUD.swift; sourceTree = "<group>"; };
 		CAC426D72433989800E513BC /* KeyboardAvoidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidance.swift; sourceTree = "<group>"; };
-		CAC426D92433B11000E513BC /* LoginField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginField.swift; sourceTree = "<group>"; };
 		CAC650AB2461FC1900835209 /* ClientInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientInteractor.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
@@ -624,7 +622,6 @@
 		CAC68CC52432752B003CC2E6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CAC426D92433B11000E513BC /* LoginField.swift */,
 				CA8F46DC245DD27600B136D0 /* LoginSignup.swift */,
 			);
 			path = View;
@@ -962,7 +959,6 @@
 				CAC730E7246955BC004DB450 /* MatchDetail.swift in Sources */,
 				CAF8256E245CD14D0064359E /* ContentView.swift in Sources */,
 				CAF82565245C78060064359E /* AccountInteractor.swift in Sources */,
-				CAC426DA2433B11000E513BC /* LoginField.swift in Sources */,
 				CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */,
 				CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */,
 				CAF82558245C6B2B0064359E /* Account.swift in Sources */,

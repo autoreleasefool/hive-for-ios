@@ -8,6 +8,7 @@
 
 import Combine
 import SwiftUI
+import Introspect
 
 struct LoginSignup: View {
 	@Environment(\.container) private var container: AppContainer
@@ -44,9 +45,9 @@ struct LoginSignup: View {
 				if viewModel.form == .signup {
 					field(for: .displayName)
 				}
-				field(for: .password)
+				secureField(for: .password)
 				if viewModel.form == .signup {
-					field(for: .confirmPassword)
+					secureField(for: .confirmPassword)
 				}
 
 				submitButton
@@ -69,21 +70,38 @@ struct LoginSignup: View {
 
 	// MARK: Form
 
-	private func field(for id: LoginSignupViewModel.FieldItem) -> some View {
-		LoginField(
+	private func secureField(for id: LoginSignupViewModel.FieldItem) -> some View {
+		SecureField(
 			id.title,
 			text: text(for: id),
-			maxLength: id.maxLength,
-			keyboardType: id.keyboardType,
-			returnKeyType: id.returnKeyType(forForm: viewModel.form),
-			isActive: viewModel.activeField == id,
-			isSecure: id.isSecure,
-			onReturn: { self.viewModel.postViewAction(.didReturn(from: id)) }
+			onCommit: {
+				self.viewModel.postViewAction(.didReturn(from: id))
+			}
 		)
-		.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
-		.onTapGesture {
-			self.viewModel.postViewAction(.focusField(id))
+		.introspectTextField {
+			if self.viewModel.activeField == id {
+				$0.becomeFirstResponder()
+			}
 		}
+		.onTapGesture { self.viewModel.postViewAction(.focusField(id)) }
+		.modifier(LoginFieldAppearance(id: id, isActive: viewModel.activeField == id))
+	}
+
+	private func field(for id: LoginSignupViewModel.FieldItem) -> some View {
+		TextField(
+			id.title,
+			text: text(for: id),
+			onCommit: {
+				self.viewModel.postViewAction(.didReturn(from: id))
+			}
+		)
+		.introspectTextField {
+			if self.viewModel.activeField == id {
+				$0.becomeFirstResponder()
+			}
+		}
+		.onTapGesture { self.viewModel.postViewAction(.focusField(id)) }
+		.modifier(LoginFieldAppearance(id: id, isActive: viewModel.activeField == id))
 	}
 
 	private func text(for id: LoginSignupViewModel.FieldItem) -> Binding<String> {
@@ -158,6 +176,28 @@ extension LoginSignup {
 	}
 }
 
+// MARK: Login Field Modifier
+
+private extension LoginSignup {
+	struct LoginFieldAppearance: ViewModifier {
+		let id: LoginSignupViewModel.FieldItem
+		let isActive: Bool
+
+		func body(content: Content) -> some View {
+			content
+				.textContentType(id.textContentType)
+				.keyboardType(id.keyboardType)
+				.foregroundColor(Color(isActive ? .primary : .textSecondary))
+				.padding(.all, length: .m)
+				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
+				.overlay(
+					RoundedRectangle(cornerRadius: .s)
+						.stroke(Color(isActive ? .primary : .textSecondary), lineWidth: 1)
+				)
+		}
+	}
+}
+
 #if DEBUG
 struct LoginSignupPreview: PreviewProvider {
 	static var previews: some View {
@@ -165,7 +205,7 @@ struct LoginSignupPreview: PreviewProvider {
 			LoginSignup(defaultForm: .login)
 			LoginSignup(defaultForm: .signup)
 		}
-		.background(Color(.background))
+		.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif
