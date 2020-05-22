@@ -187,12 +187,12 @@ private extension LoginSignup {
 			content
 				.textContentType(id.textContentType)
 				.keyboardType(id.keyboardType)
-				.foregroundColor(Color(isActive ? .primary : .textSecondary))
+				.foregroundColor(Color(isActive ? .primary : .text))
 				.padding(.all, length: .m)
 				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
 				.overlay(
 					RoundedRectangle(cornerRadius: .s)
-						.stroke(Color(isActive ? .primary : .textSecondary), lineWidth: 1)
+						.stroke(Color(isActive ? .primary : .text), lineWidth: 1)
 				)
 		}
 	}
