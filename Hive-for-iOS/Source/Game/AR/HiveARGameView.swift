@@ -57,27 +57,25 @@ class HiveARGameView: UIView {
 
 	private func subscribeToPublishers() {
 		viewModel.stateStore
-			.sink { [weak self] receivedValue in
-				self?.handleTransition(to: receivedValue)
+			.sink { [weak self] in
+				self?.handleTransition(to: $0)
 			}
 			.store(in: viewModel)
 
 		viewModel.gameStateStore
-			.sink { [weak self] receivedValue in
-				self?.present(gameState: receivedValue)
+			.sink { [weak self] in
+				self?.present(gameState: $0)
 			}
 			.store(in: viewModel)
 
 		viewModel.selectedPiece
-			.sink { [weak self] receivedValue in
-				self?.present(deselectedPiece: receivedValue.0, selectedPiece: receivedValue.1)
+			.sink { [weak self] in
+				self?.present(deselectedPiece: $0.0, selectedPiece: $0.1)
 			}
 			.store(in: viewModel)
 
 		viewModel.debugModeStore
-			.sink { [weak self] receivedValue in
-				self?.debugEnabled = receivedValue
-			}
+			.assign(to: \.debugEnabled, on: self)
 			.store(in: viewModel)
 	}
 

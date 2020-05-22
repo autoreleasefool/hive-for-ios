@@ -83,7 +83,7 @@ struct GameHUD: View {
 				.edgesIgnoringSafeArea(.bottom)
 		}
 		.padding(.top, length: .l)
-		.onReceive(viewModel.stateStore) { receivedValue in self.handleTransition(to: receivedValue) }
+		.onReceive(viewModel.stateStore) { self.handleTransition(to: $0) }
 	}
 }
 
