@@ -25,7 +25,7 @@ struct LiveMatchInteractor: MatchInteractor {
 		matches.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.loadOpenMatches(withAccount: appState.value.account.value)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable { matches.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
@@ -35,7 +35,7 @@ struct LiveMatchInteractor: MatchInteractor {
 		match.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.loadMatchDetails(id: id, withAccount: appState.value.account.value)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable { match.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
@@ -45,7 +45,7 @@ struct LiveMatchInteractor: MatchInteractor {
 		match.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.joinMatch(id: id, withAccount: appState.value.account.value)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable { match.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
@@ -55,7 +55,7 @@ struct LiveMatchInteractor: MatchInteractor {
 		match.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.createNewMatch(withAccount: appState.value.account.value)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable { match.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}

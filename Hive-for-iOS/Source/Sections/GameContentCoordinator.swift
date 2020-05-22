@@ -53,7 +53,7 @@ extension GameContentCoordinator {
 extension GameContentCoordinator {
 	var setupUpdates: AnyPublisher<GameSetup?, Never> {
 		container.appState.updates(for: \.gameSetup)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 }

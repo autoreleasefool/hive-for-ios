@@ -160,13 +160,13 @@ extension Settings {
 extension Settings {
 	private var preferencesUpdate: AnyPublisher<Preferences, Never> {
 		container.appState.updates(for: \.preferences)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 
 	private var userUpdate: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 }

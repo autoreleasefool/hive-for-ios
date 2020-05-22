@@ -29,7 +29,7 @@ struct LiveUserInteractor: UserInteractor {
 
 		weak var weakState = appState
 		repository.loadDetails(id: id, withAccount: appState.value.account.value)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable { weakState?[\.userProfile] = $0 }
 			.store(in: cancelBag)
 	}
@@ -39,7 +39,7 @@ struct LiveUserInteractor: UserInteractor {
 		user.wrappedValue.setLoading(cancelBag: cancelBag)
 
 		repository.loadDetails(id: id, withAccount: appState.value.account.value)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable { user.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}

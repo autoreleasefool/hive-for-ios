@@ -29,13 +29,13 @@ struct LiveClientInteractor: ClientInteractor {
 
 	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError> {
 		client.openConnection(to: url, withAccount: appState.value.account.value)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 
 	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
 		client.reconnect(withAccount: appState.value.account.value)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 

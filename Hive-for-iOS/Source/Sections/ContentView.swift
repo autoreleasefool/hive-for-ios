@@ -100,7 +100,7 @@ extension ContentView {
 extension ContentView {
 	private var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 }

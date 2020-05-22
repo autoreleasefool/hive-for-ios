@@ -27,7 +27,7 @@ private class RemoteImageFetcher: ObservableObject {
 		cancellable = ImageLoader
 			.shared
 			.fetch(url: url)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sink(
 				receiveCompletion: { _ in },
 				receiveValue: { [weak self] result in

@@ -43,7 +43,7 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 		NotificationCenter.default
 			.publisher(for: NSNotification.Name.Account.Unauthorized)
 			.map { _ in }
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sink { [weak self] in self?.actions.send(.loggedOut) }
 			.store(in: self)
 	}

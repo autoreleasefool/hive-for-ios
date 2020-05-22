@@ -35,7 +35,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 		weak var weakState = appState
 		repository.loadAccount()
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable { weakState?[\.account] = $0 }
 			.store(in: cancelBag)
 	}
@@ -56,7 +56,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 		weak var weakState = appState
 		repository.logout(fromAccount: account)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable {
 				weakState?[\.account] = .failed(AccountRepositoryError.loggedOut)
 				result.wrappedValue = $0
@@ -70,7 +70,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 		weak var weakState = appState
 		repository.login(loginData)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable {
 				if case .loaded = $0, let account = $0.value {
 					self.repository.saveAccount(account)
@@ -88,7 +88,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 		weak var weakState = appState
 		repository.signup(signupData)
-			.receive(on: DispatchQueue.main)
+			.receive(on: RunLoop.main)
 			.sinkToLoadable {
 				if case .loaded = $0, let account = $0.value {
 					self.repository.saveAccount(account)
