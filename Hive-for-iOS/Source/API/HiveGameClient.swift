@@ -14,6 +14,7 @@ import Starscream
 enum GameClientEvent {
 	case message(GameServerMessage)
 	case connected
+	case alreadyConnected
 	case closed(String, UInt16)
 }
 
@@ -34,6 +35,7 @@ class HiveGameClient {
 	func openConnection(to url: URL, withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
 		if isConnected, let subject = subject {
 			if self.url == url {
+				subject.send(.alreadyConnected)
 				return subject.eraseToAnyPublisher()
 			} else {
 				close()
@@ -46,6 +48,7 @@ class HiveGameClient {
 
 	func reconnect(withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
 		if isConnected, let subject = subject {
+			subject.send(.alreadyConnected)
 			return subject.eraseToAnyPublisher()
 		}
 

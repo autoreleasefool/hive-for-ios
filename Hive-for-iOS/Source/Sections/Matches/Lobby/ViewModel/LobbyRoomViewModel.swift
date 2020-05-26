@@ -276,7 +276,7 @@ extension LobbyRoomViewModel {
 
 	private func handleGameClientEvent(_ event: GameClientEvent) {
 		switch event {
-		case .connected:
+		case .connected, .alreadyConnected:
 			clientConnected = true
 			reconnecting = false
 			reconnectAttempts = 0

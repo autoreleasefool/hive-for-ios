@@ -490,7 +490,7 @@ extension HiveGameViewModel {
 
 	private func handleGameClientEvent(_ event: GameClientEvent) {
 		switch event {
-		case .connected:
+		case .connected, .alreadyConnected:
 			onClientConnected()
 		case .closed(let reason, let code):
 			debugLog("Connection to client closed: \(reason) (\(String(describing: code)))")
