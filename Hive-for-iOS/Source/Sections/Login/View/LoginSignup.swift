@@ -11,7 +11,7 @@ import SwiftUI
 import Introspect
 
 struct LoginSignup: View {
-	@Environment(\.container) private var container: AppContainer
+	@Environment(\.container) private var container
 	@ObservedObject private var viewModel: LoginSignupViewModel
 
 	init(defaultForm: LoginSignupViewModel.Form = .login, account: Loadable<Account> = .notLoaded) {

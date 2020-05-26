@@ -11,7 +11,7 @@ import SwiftUI
 import HiveEngine
 
 struct GameContentCoordinator: View {
-	@Environment(\.container) private var container: AppContainer
+	@Environment(\.container) private var container
 
 	@State private var gameSetup: GameSetup?
 

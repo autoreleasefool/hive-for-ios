@@ -12,7 +12,7 @@ import HiveEngine
 import Loaf
 
 struct HiveGame: View {
-	@Environment(\.container) private var container: AppContainer
+	@Environment(\.container) private var container
 
 	private let viewModel: HiveGameViewModel
 

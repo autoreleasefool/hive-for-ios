@@ -26,7 +26,7 @@ extension EnvironmentValues {
 }
 
 struct LoafModifier: ViewModifier {
-	@Environment(\.toaster) private var toaster: Toaster
+	@Environment(\.toaster) private var toaster
 	@State private var loaf: Loaf?
 	@State private var presentedLoafs: Set<LoafState> = []
 

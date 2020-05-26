@@ -14,8 +14,8 @@ import SwiftUIRefresh
 
 struct LobbyRoom: View {
 	@Environment(\.presentationMode) private var presentationMode
-	@Environment(\.toaster) private var toaster: Toaster
-	@Environment(\.container) private var container: AppContainer
+	@Environment(\.toaster) private var toaster
+	@Environment(\.container) private var container
 
 	@ObservedObject private var viewModel: LobbyRoomViewModel
 

@@ -11,7 +11,7 @@ import SwiftUI
 import SwiftUIRefresh
 
 struct Lobby: View {
-	@Environment(\.container) private var container: AppContainer
+	@Environment(\.container) private var container
 
 	@ObservedObject private var viewModel: LobbyViewModel
 

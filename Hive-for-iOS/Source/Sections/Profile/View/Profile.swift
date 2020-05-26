@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 
 struct Profile: View {
-	@Environment(\.container) private var container: AppContainer
+	@Environment(\.container) private var container
 
 	@ObservedObject private var viewModel: ProfileViewModel
 
