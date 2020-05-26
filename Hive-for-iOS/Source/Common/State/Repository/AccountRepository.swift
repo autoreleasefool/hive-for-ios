@@ -57,9 +57,9 @@ struct LiveAccountRepository: AccountRepository {
 			}
 		}
 		.flatMap { account in
-			self.api.checkToken(userId: account.userId, token: account.token)
+			self.api.fetch(.checkToken(account))
 				.mapError { .apiError($0) }
-				.map { _ in account }
+				.map { (_: TokenValidation) in account }
 		}
 		.eraseToAnyPublisher()
 	}
@@ -83,23 +83,24 @@ struct LiveAccountRepository: AccountRepository {
 	}
 
 	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError> {
-		api.login(login: loginData)
+		api.fetch(.login(loginData))
 			.mapError { .apiError($0) }
-			.map { Account(userId: $0.userId, token: $0.token) }
+			.map { (token: AccessToken) in Account(userId: token.userId, token: token.token) }
 			.eraseToAnyPublisher()
 	}
 
 	func signup(_ signupData: SignupData) -> AnyPublisher<Account, AccountRepositoryError> {
-		api.signup(signup: signupData)
+		api.fetch(.signup(signupData))
 			.mapError { .apiError($0) }
-			.map { Account(userId: $0.accessToken.userId, token: $0.accessToken.token) }
+			.map { (result: UserSignup) in Account(userId: result.accessToken.userId, token: result.accessToken.token) }
 			.eraseToAnyPublisher()
 	}
 
 	func logout(fromAccount account: Account) -> AnyPublisher<Bool, AccountRepositoryError> {
 		clearAccount()
-		return api.logout(fromAccount: account)
+		return api.fetch(.logout(account))
 			.mapError { .apiError($0) }
+			.map { (result: LogoutResult) in result.success }
 			.eraseToAnyPublisher()
 	}
 }

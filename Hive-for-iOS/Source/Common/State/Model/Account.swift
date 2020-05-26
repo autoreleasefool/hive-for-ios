@@ -18,6 +18,10 @@ struct Account: Equatable {
 	var userId: User.ID
 	var token: String
 
+	var headers: [String: String] {
+		return ["Authorization": "Bearer \(token)"]
+	}
+
 	func applyAuth(to request: inout URLRequest, overridingTokenWith token: String? = nil) {
 		Account.apply(auth: self, to: &request, overridingTokenWith: token)
 	}
@@ -26,4 +30,8 @@ struct Account: Equatable {
 		guard let token = token ?? auth?.token else { return }
 		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 	}
+}
+
+struct LogoutResult: Decodable {
+	var success: Bool
 }

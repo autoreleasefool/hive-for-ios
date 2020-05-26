@@ -26,7 +26,7 @@ struct LiveUserRepository: UserRepository {
 	}
 
 	func loadDetails(id: User.ID, withAccount account: Account?) -> AnyPublisher<User, UserRepositoryError> {
-		api.user(id: id, withAccount: account)
+		api.fetch(.userDetails(id), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}

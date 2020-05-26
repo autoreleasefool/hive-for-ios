@@ -28,25 +28,25 @@ struct LiveMatchRepository: MatchRepository {
 	}
 
 	func loadOpenMatches(withAccount account: Account?) -> AnyPublisher<[Match], MatchRepositoryError> {
-		api.openMatches(withAccount: account)
+		api.fetch(.openMatches, withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
 	func loadMatchDetails(id: Match.ID, withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError> {
-		api.matchDetails(id: id, withAccount: account)
+		api.fetch(.matchDetails(id), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
 	func joinMatch(id: Match.ID, withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError> {
-		api.joinMatch(id: id, withAccount: account)
+		api.fetch(.joinMatch(id), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
 	func createNewMatch(withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError> {
-		api.createMatch(withAccount: account)
+		api.fetch(.createMatch, withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
