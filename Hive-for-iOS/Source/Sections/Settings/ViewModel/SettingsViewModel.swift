@@ -29,13 +29,15 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 			switch logoutResult {
 			case .failed, .loaded:
 				isOpen.wrappedValue = false
+				showAccount = false
 			case .loading, .notLoaded:
 				break
 			}
 		}
 	}
 
-	let showAccount: Bool
+	@Published var showAccount: Bool
+
 	private var isOpen: Binding<Bool>
 
 	private let actions = PassthroughSubject<SettingsAction, Never>()
