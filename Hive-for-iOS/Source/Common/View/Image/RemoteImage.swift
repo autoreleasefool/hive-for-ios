@@ -50,6 +50,7 @@ struct RemoteImage: View {
 	init(url: URL?, placeholder: UIImage = UIImage()) {
 		self.placeholder = placeholder
 		self.imageFetcher = RemoteImageFetcher(url: url)
+		self.imageFetcher.fetch()
 	}
 
 	var body: some View {
@@ -69,7 +70,6 @@ struct RemoteImage: View {
 					.frame(width: geometry.size.width, height: geometry.size.height)
 			}
 		}
-		.onAppear(perform: imageFetcher.fetch)
 		.onDisappear(perform: imageFetcher.cancel)
 	}
 
