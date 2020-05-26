@@ -70,7 +70,7 @@ struct ContentView: View {
 	}
 
 	private var loadedView: some View {
-		RootTabView()
+		GameContentCoordinator()
 	}
 
 	private var noAccountView: some View {
