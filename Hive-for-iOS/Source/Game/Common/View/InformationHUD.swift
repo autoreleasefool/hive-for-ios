@@ -73,8 +73,8 @@ struct InformationHUD: View {
 				.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
 			}
 		}
-			.padding(.horizontal, length: .m)
-			.scaledToFit()
+		.padding(.horizontal, length: .m)
+		.scaledToFit()
 	}
 
 	private func details(information: GameInformation, state: GameState) -> some View {
@@ -108,7 +108,7 @@ struct InformationHUD: View {
 				return AnyView(ActivityIndicator(isAnimating: true, style: .whiteLarge))
 			}
 		}
-			.padding(.horizontal, length: .m)
+		.padding(.horizontal, length: .m)
 	}
 }
 

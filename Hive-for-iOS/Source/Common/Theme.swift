@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftyMarkdown
 
 enum Theme {
 	static func applyPrimaryTheme() {
@@ -28,5 +29,18 @@ enum Theme {
 		let backgroundView = UIView()
 		backgroundView.backgroundColor = UIColor(.background)
 		UITableViewCell.appearance().selectedBackgroundView = backgroundView
+	}
+
+	static func applyMarkdownTheme(to markdown: SwiftyMarkdown) {
+		markdown.body.color = UIColor(.text)
+		markdown.h1.color = UIColor(.text)
+		markdown.h2.color = UIColor(.text)
+		markdown.h3.color = UIColor(.text)
+		markdown.h4.color = UIColor(.text)
+		markdown.h5.color = UIColor(.text)
+		markdown.h6.color = UIColor(.text)
+		markdown.blockquotes.color = UIColor(.text)
+		markdown.code.color = UIColor(.text)
+		markdown.link.color = UIColor(.primary)
 	}
 }

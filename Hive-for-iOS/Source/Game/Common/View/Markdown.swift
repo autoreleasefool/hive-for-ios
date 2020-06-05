@@ -10,8 +10,9 @@ import SwiftUI
 import SwiftyMarkdown
 
 struct MarkdownInternal: UIViewRepresentable {
-	private let markdown: String
 	@Binding var height: CGFloat
+
+	private let markdown: String
 	private let didTapURL: ((URL) -> Void)?
 
 	init(_ markdown: String, height: Binding<CGFloat>, didTapURL: ((URL) -> Void)? = nil) {
@@ -36,8 +37,11 @@ struct MarkdownInternal: UIViewRepresentable {
 	}
 
 	func updateUIView(_ label: UITextView, context: Context) {
+		let md = SwiftyMarkdown(string: markdown)
+		Theme.applyMarkdownTheme(to: md)
+
 		label.delegate = context.coordinator
-		label.attributedText = SwiftyMarkdown(string: markdown).attributedString()
+		label.attributedText = md.attributedString()
 		MarkdownInternal.recalculateHeight(view: label, result: $height)
 	}
 
@@ -92,7 +96,6 @@ struct Markdown: View {
 	}
 
 	var body: some View {
-		print(dynamicHeight)
 		return MarkdownInternal(markdown, height: dynamicHeight, didTapURL: didTapURL)
 			.frame(minHeight: dynamicHeight.wrappedValue, maxHeight: dynamicHeight.wrappedValue)
 	}
