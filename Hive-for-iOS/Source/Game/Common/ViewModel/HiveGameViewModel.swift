@@ -19,7 +19,6 @@ enum HiveGameViewAction: BaseViewAction {
 
 	case presentPlayerHand(Player)
 	case presentInformation(GameInformation)
-	case enquiredFromHand(Piece.Class)
 	case selectedFromHand(Piece.Class)
 	case tappedPiece(Piece)
 	case tappedGamePiece(Piece)
@@ -176,9 +175,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .presentInformation(let information):
 			presentedGameInformation = information
 		case .selectedFromHand(let pieceClass):
-			placeFromHand(pieceClass)
-		case .enquiredFromHand(let pieceClass):
-			enquireFromHand(pieceClass)
+			selectFromHand(pieceClass)
 		case .tappedPiece(let piece):
 			tappedPiece(piece)
 		case .tappedGamePiece(let piece):
@@ -248,11 +245,19 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		}
 	}
 
+	private func selectFromHand(_ pieceClass: Piece.Class) {
+		guard inGame else { return }
+		if presentedPlayerHand?.player == playingAs {
+			placeFromHand(pieceClass)
+		} else {
+			enquireFromHand(pieceClass)
+		}
+		presentedPlayerHand = nil
+	}
+
 	private func placeFromHand(_ pieceClass: Piece.Class) {
 		guard inGame else { return }
-
-		if presentedPlayerHand?.player == playingAs,
-			let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
+		if let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
 			let position = selectedPieceDefaultPosition
 			selectedPiece.send((
 				selectedPiece.value.1,
@@ -263,12 +268,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			))
 			animateToPosition.send(position)
 		}
-		presentedPlayerHand = nil
 	}
 
 	private func enquireFromHand(_ pieceClass: Piece.Class) {
 		guard inGame else { return }
-		presentedPlayerHand = nil
 		presentedGameInformation = .pieceClass(pieceClass)
 	}
 
