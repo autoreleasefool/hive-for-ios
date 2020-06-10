@@ -247,9 +247,9 @@
 			isa = PBXGroup;
 			children = (
 				CA0F939924264DE400F6E104 /* GameState+2D.swift */,
-				CA0F93932426003800F6E104 /* Hive2DViewController.swift */,
 				CA0F9395242602BA00F6E104 /* HiveGameScene.swift */,
 				CA0F939724264CB700F6E104 /* HiveSpriteManager.swift */,
+				CA0F93932426003800F6E104 /* Hive2DViewController.swift */,
 				CA0F93A42428AEE200F6E104 /* DebugSprite.swift */,
 			);
 			path = 2D;
@@ -444,11 +444,11 @@
 		CABDFD1523E1A5D900C697AD /* AR */ = {
 			isa = PBXGroup;
 			children = (
-				CAFA467523D8BCEF003C38AB /* HiveARViewController.swift */,
 				CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */,
 				CAFA91F123E77B290087F1F0 /* GameState+AR.swift */,
-				CA0F938E2422C80800F6E104 /* DebugOverlay.swift */,
 				CA75CE44242AB65300998719 /* HiveARGameView.swift */,
+				CAFA467523D8BCEF003C38AB /* HiveARViewController.swift */,
+				CA0F938E2422C80800F6E104 /* DebugOverlay.swift */,
 			);
 			path = AR;
 			sourceTree = "<group>";

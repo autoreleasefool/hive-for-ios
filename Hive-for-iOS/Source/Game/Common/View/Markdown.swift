@@ -19,7 +19,6 @@ struct MarkdownInternal: UIViewRepresentable {
 		self.markdown = markdown
 		self._height = height
 		self.didTapURL = didTapURL
-		print(self.height)
 	}
 
 	func makeUIView(context: Context) -> UITextView {
