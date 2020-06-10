@@ -166,10 +166,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 			setupView(content: content)
 		case .viewContentReady:
 			viewContentReady = true
-			attemptSetupNewGame()
+			setupNewGame()
 		case .viewInteractionsReady:
 			viewInteractionsReady = true
-			attemptSetupNewGame()
+			setupNewGame()
 
 		case .presentPlayerHand(let player):
 			presentedPlayerHand = PlayerHand(player: player, state: gameState)
@@ -232,13 +232,8 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		clientInteractor.closeConnection(code: nil)
 	}
 
-	private func attemptSetupNewGame() {
-		guard !inGame && viewContentReady && viewInteractionsReady else { return }
-		setupNewGame()
-	}
-
 	private func setupNewGame() {
-		guard !inGame else { return }
+		guard !inGame && viewContentReady && viewInteractionsReady else { return }
 		if gameState.currentPlayer == playingAs {
 			transition(to: .playerTurn)
 		} else {
