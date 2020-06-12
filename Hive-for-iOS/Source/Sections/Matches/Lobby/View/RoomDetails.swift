@@ -122,7 +122,7 @@ struct RoomDetails: View {
 
 // MARK: - Strings
 
-extension BasicRoom {
+extension RoomDetails {
 	private func name(forOption option: Match.Option) -> String {
 		switch option {
 		case .asyncPlay: return "Asynchronous play"

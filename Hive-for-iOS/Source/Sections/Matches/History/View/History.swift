@@ -105,7 +105,19 @@ struct History: View {
 
 	private func completeMatchDetails(for match: Match) -> some View {
 		ScrollView {
-			MatchDetail(match: match)
+			RoomDetails(
+				host: match.host?.summary,
+				hostIsReady: match.winner?.id == match.host?.id,
+				opponent: match.opponent?.summary,
+				opponentIsReady: match.winner?.id == match.opponent?.id,
+				optionsDisabled: true,
+				isGameOptionEnabled: { option in
+					.constant(match.gameOptionSet.contains(option))
+				},
+				isOptionEnabled: { option in
+					.constant(match.optionSet.contains(option))
+				}
+			)
 		}
 	}
 
