@@ -19,18 +19,8 @@ struct OnlineRoom: View {
 
 	@ObservedObject private var viewModel: OnlineRoomViewModel
 
-	init(
-		id: Match.ID?,
-		roomType: OnlineRoomViewModel.RoomType,
-		creatingNewMatch: Bool,
-		match: Loadable<Match> = .notLoaded
-	) {
-		self.viewModel = OnlineRoomViewModel(
-			matchId: id,
-			roomType: roomType,
-			creatingNewMatch: creatingNewMatch,
-			match: match
-		)
+	init(id: Match.ID?, creatingNewMatch: Bool, match: Loadable<Match> = .notLoaded) {
+		self.viewModel = OnlineRoomViewModel(matchId: id, creatingNewMatch: creatingNewMatch, match: match)
 	}
 
 	var body: some View {
@@ -147,9 +137,9 @@ struct OnlineRoom: View {
 
 	private func matchDetail(_ match: Match) -> some View {
 		RoomDetails(
-			host: match.host,
+			host: match.host?.summary,
 			hostIsReady: viewModel.isPlayerReady(id: match.host?.id),
-			opponent: match.opponent,
+			opponent: match.opponent?.summary,
 			opponentIsReady: viewModel.isPlayerReady(id: match.opponent?.id),
 			optionsDisabled: !viewModel.userIsHost,
 			isGameOptionEnabled: viewModel.gameOptionEnabled,
@@ -275,7 +265,6 @@ struct OnlineRoomPreview: PreviewProvider {
 	static var previews: some View {
 		return OnlineRoom(
 			id: Match.matches[0].id,
-			roomType: .online,
 			creatingNewMatch: false,
 			match: .loaded(Match.matches[0])
 		)

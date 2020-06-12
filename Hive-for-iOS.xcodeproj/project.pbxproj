@@ -94,6 +94,7 @@
 		CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */; };
 		CAD32BF52493070A00984610 /* RoomDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF42493070A00984610 /* RoomDetails.swift */; };
 		CAD32BF72493103200984610 /* LocalRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF62493103200984610 /* LocalRoom.swift */; };
+		CAD32BF92493130000984610 /* LocalRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF82493130000984610 /* LocalRoomViewModel.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
 		CAF82556245C6B030064359E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82555245C6B030064359E /* AppState.swift */; };
@@ -206,6 +207,7 @@
 		CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameServerMessage.swift; sourceTree = "<group>"; };
 		CAD32BF42493070A00984610 /* RoomDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetails.swift; sourceTree = "<group>"; };
 		CAD32BF62493103200984610 /* LocalRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoom.swift; sourceTree = "<group>"; };
+		CAD32BF82493130000984610 /* LocalRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoomViewModel.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAF82555245C6B030064359E /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		CAF82557245C6B2B0064359E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -667,6 +669,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC73106246E01CB004DB450 /* LobbyViewModel.swift */,
+				CAD32BF82493130000984610 /* LocalRoomViewModel.swift */,
 				CAC73108246E0505004DB450 /* OnlineRoomViewModel.swift */,
 			);
 			path = ViewModel;
@@ -930,6 +933,7 @@
 				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Match.swift in Sources */,
 				CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */,
+				CAD32BF92493130000984610 /* LocalRoomViewModel.swift in Sources */,
 				CAC650AC2461FC1900835209 /* ClientInteractor.swift in Sources */,
 				CA8F46E9245F3D4500B136D0 /* OnlineRoom.swift in Sources */,
 				CAC73104246DFED5004DB450 /* HistoryViewModel.swift in Sources */,

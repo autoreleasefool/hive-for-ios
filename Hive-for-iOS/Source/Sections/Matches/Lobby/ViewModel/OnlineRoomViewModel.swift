@@ -82,11 +82,9 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 	}
 
 	private let creatingNewMatch: Bool
-	private let roomType: RoomType
 
-	init(matchId: Match.ID?, roomType: RoomType, creatingNewMatch: Bool, match: Loadable<Match>) {
+	init(matchId: Match.ID?, creatingNewMatch: Bool, match: Loadable<Match>) {
 		self.initialMatchId = matchId
-		self.roomType = roomType
 		self.creatingNewMatch = creatingNewMatch
 		self._match = .init(initialValue: match)
 	}
@@ -223,15 +221,6 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 		case .gameOption(let option): gameOptions.set(option, to: value)
 		case .matchOption(let option): matchOptions.set(option, to: value)
 		}
-	}
-}
-
-// MARK: - RoomType
-
-extension OnlineRoomViewModel {
-	enum RoomType {
-		case local
-		case online
 	}
 }
 

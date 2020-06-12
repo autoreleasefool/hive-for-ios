@@ -83,19 +83,19 @@ struct Lobby: View {
 	private func loadedView(_ matches: [Match], loading: Bool) -> some View {
 		Group {
 			NavigationLink(
-				destination: OnlineRoom(id: self.viewModel.currentMatchId, roomType: .online, creatingNewMatch: false),
+				destination: OnlineRoom(id: self.viewModel.currentMatchId, creatingNewMatch: false),
 				isActive: self.viewModel.joiningMatch,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
-				destination: OnlineRoom(id: nil, roomType: .online, creatingNewMatch: true),
+				destination: OnlineRoom(id: nil, creatingNewMatch: true),
 				isActive: self.$viewModel.creatingOnlineRoom,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
-				destination: OnlineRoom(id: nil, roomType: .local, creatingNewMatch: true),
+				destination: LocalRoom(),
 				isActive: self.$viewModel.creatingLocalRoom,
 				label: { EmptyView() }
 			)

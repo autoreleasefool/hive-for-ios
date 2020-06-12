@@ -10,9 +10,9 @@ import SwiftUI
 import HiveEngine
 
 struct RoomDetails: View {
-	let host: Match.User?
+	let host: UserPreview.UserSummary?
 	let hostIsReady: Bool
-	let opponent: Match.User?
+	let opponent: UserPreview.UserSummary?
 	let opponentIsReady: Bool
 	let optionsDisabled: Bool
 	let isGameOptionEnabled: (GameState.Option) -> Binding<Bool>
@@ -34,13 +34,13 @@ struct RoomDetails: View {
 	private var playerSection: some View {
 		HStack(spacing: .s) {
 			UserPreview(
-				host?.summary,
+				host,
 				highlight: hostIsReady,
 				iconSize: .l
 			)
 			Spacer()
 			UserPreview(
-				opponent?.summary,
+				opponent,
 				highlight: opponentIsReady,
 				iconSize: .l
 			)
