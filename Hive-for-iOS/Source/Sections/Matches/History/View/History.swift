@@ -110,7 +110,7 @@ struct History: View {
 	}
 
 	private func lobbyDetails(for match: Match) -> some View {
-		LobbyRoom(id: Match.matches[0].id, creatingRoom: false)
+		OnlineRoom(id: Match.matches[0].id, creatingRoom: false)
 	}
 }
 

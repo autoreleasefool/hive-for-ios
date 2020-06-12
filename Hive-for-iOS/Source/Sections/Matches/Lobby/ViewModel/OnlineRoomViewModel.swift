@@ -1,5 +1,5 @@
 //
-//  LobbyRoomViewModel.swift
+//  OnlineRoomViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-15.
@@ -12,7 +12,7 @@ import SwiftUI
 import HiveEngine
 import Starscream
 
-enum LobbyRoomViewAction: BaseViewAction {
+enum OnlineRoomViewAction: BaseViewAction {
 	case onAppear(User.ID?)
 	case retryInitialAction
 	case refresh
@@ -26,7 +26,7 @@ enum LobbyRoomViewAction: BaseViewAction {
 	case toggleReadiness
 }
 
-enum LobbyRoomAction: BaseAction {
+enum OnlineRoomAction: BaseAction {
 	case createNewMatch
 	case joinMatch
 	case loadMatchDetails
@@ -43,7 +43,7 @@ enum LobbyRoomAction: BaseAction {
 	case exitMatch
 }
 
-enum LobbyRoomCancellable: Int, Identifiable {
+enum OnlineRoomCancellable: Int, Identifiable {
 	case gameClient
 
 	var id: Int {
@@ -51,7 +51,7 @@ enum LobbyRoomCancellable: Int, Identifiable {
 	}
 }
 
-class LobbyRoomViewModel: ExtendedViewModel<LobbyRoomViewAction, LobbyRoomCancellable>, ObservableObject {
+class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCancellable>, ObservableObject {
 	@Published var match: Loadable<Match> = .notLoaded {
 		didSet {
 			matchOptions = match.value?.optionSet ?? Set()
@@ -76,20 +76,22 @@ class LobbyRoomViewModel: ExtendedViewModel<LobbyRoomViewAction, LobbyRoomCancel
 	@Published var reconnectAttempts = 0
 	@Published var reconnecting = false
 
-	private let actions = PassthroughSubject<LobbyRoomAction, Never>()
-	var actionsPublisher: AnyPublisher<LobbyRoomAction, Never> {
+	private let actions = PassthroughSubject<OnlineRoomAction, Never>()
+	var actionsPublisher: AnyPublisher<OnlineRoomAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
 	private let creatingNewMatch: Bool
+	private let roomType: RoomType
 
-	init(matchId: Match.ID?, creatingNewMatch: Bool, match: Loadable<Match>) {
+	init(matchId: Match.ID?, roomType: RoomType, creatingNewMatch: Bool, match: Loadable<Match>) {
 		self.initialMatchId = matchId
+		self.roomType = roomType
 		self.creatingNewMatch = creatingNewMatch
 		self._match = .init(initialValue: match)
 	}
 
-	override func postViewAction(_ viewAction: LobbyRoomViewAction) {
+	override func postViewAction(_ viewAction: OnlineRoomViewAction) {
 		switch viewAction {
 		case .onAppear(let id):
 			userId = id
@@ -224,9 +226,18 @@ class LobbyRoomViewModel: ExtendedViewModel<LobbyRoomViewAction, LobbyRoomCancel
 	}
 }
 
+// MARK: - RoomType
+
+extension OnlineRoomViewModel {
+	enum RoomType {
+		case local
+		case online
+	}
+}
+
 // MARK: - HiveGameClient
 
-extension LobbyRoomViewModel {
+extension OnlineRoomViewModel {
 	private func openClientConnection(to match: Match) {
 		if let url = match.webSocketURL {
 			openClientConnection(to: url)
@@ -313,7 +324,7 @@ extension LobbyRoomViewModel {
 
 // MARK: - Strings
 
-extension LobbyRoomViewModel {
+extension OnlineRoomViewModel {
 	var title: String {
 		if let host = match.value?.host?.displayName {
 			return "\(host)'s match"

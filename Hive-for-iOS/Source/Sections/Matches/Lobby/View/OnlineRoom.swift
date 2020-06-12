@@ -1,5 +1,5 @@
 //
-//  LobbyRoom.swift
+//  OnlineRoom.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-03.
@@ -12,15 +12,25 @@ import HiveEngine
 import Starscream
 import SwiftUIRefresh
 
-struct LobbyRoom: View {
+struct OnlineRoom: View {
 	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: LobbyRoomViewModel
+	@ObservedObject private var viewModel: OnlineRoomViewModel
 
-	init(id: Match.ID?, creatingRoom: Bool, match: Loadable<Match> = .notLoaded) {
-		self.viewModel = LobbyRoomViewModel(matchId: id, creatingNewMatch: creatingRoom, match: match)
+	init(
+		id: Match.ID?,
+		roomType: OnlineRoomViewModel.RoomType,
+		creatingNewMatch: Bool,
+		match: Loadable<Match> = .notLoaded
+	) {
+		self.viewModel = OnlineRoomViewModel(
+			matchId: id,
+			roomType: roomType,
+			creatingNewMatch: creatingNewMatch,
+			match: match
+		)
 	}
 
 	var body: some View {
@@ -136,110 +146,22 @@ struct LobbyRoom: View {
 	// MARK: Match Detail
 
 	private func matchDetail(_ match: Match) -> some View {
-		VStack(spacing: .m) {
-			self.playerSection(match)
-			Divider().background(Color(.divider))
-			self.expansionSection
-			Divider().background(Color(.divider))
-			self.otherOptionsSection
-		}
-		.padding(.all, length: .m)
-	}
-
-	private func playerSection(_ match: Match) -> some View {
-		HStack(spacing: .xs) {
-			UserPreview(
-				match.host?.summary,
-				highlight: self.viewModel.isPlayerReady(id: match.host?.id),
-				iconSize: .l
-			)
-			Spacer()
-			UserPreview(
-				match.opponent?.summary,
-				highlight: self.viewModel.isPlayerReady(id: match.opponent?.id),
-				alignment: .trailing,
-				iconSize: .l
-			)
-		}
-	}
-
-	var expansionSection: some View {
-		VStack(alignment: .leading) {
-			Text("Expansions")
-				.bold()
-				.body()
-				.foregroundColor(Color(.text))
-				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-			HStack(spacing: .l) {
-				Spacer()
-				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-					self.expansionOption(for: option, enabled: self.viewModel.gameOptions.contains(option))
-				}
-				Spacer()
-			}
-		}
-	}
-
-	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
-		Button(action: {
-			self.viewModel.gameOptionEnabled(option: option).wrappedValue.toggle()
-		}, label: {
-			ZStack {
-				Text(viewModel.name(forOption: option))
-					.subtitle()
-					.foregroundColor(
-						enabled
-							? Color(.primary)
-							: Color(.textSecondary)
-					)
-				Hex()
-					.stroke(
-						enabled
-							? Color(.primary)
-							: Color(.textSecondary),
-						lineWidth: CGFloat(5)
-					)
-					.squareImage(.l)
-			}
-		})
-		.disabled(!viewModel.userIsHost)
-	}
-
-	private func optionSectionHeader(title: String) -> some View {
-		Text(title)
-			.bold()
-			.body()
-			.foregroundColor(Color(.text))
-			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-	}
-
-	private var matchOptionsSection: some View {
-		VStack(alignment: .leading) {
-			self.optionSectionHeader(title: "Match options")
-			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
-				Toggle(self.viewModel.name(forOption: option), isOn: self.viewModel.optionEnabled(option: option))
-					.disabled(!self.viewModel.userIsHost)
-					.foregroundColor(Color(.text))
-			}
-		}
-	}
-
-	private var otherOptionsSection: some View {
-		VStack(alignment: .leading) {
-			self.optionSectionHeader(title: "Other options")
-			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
-				Toggle(self.viewModel.name(forOption: option), isOn: self.viewModel.gameOptionEnabled(option: option))
-					.disabled(!self.viewModel.userIsHost)
-					.foregroundColor(Color(.text))
-			}
-		}
+		RoomDetails(
+			host: match.host,
+			hostIsReady: viewModel.isPlayerReady(id: match.host?.id),
+			opponent: match.opponent,
+			opponentIsReady: viewModel.isPlayerReady(id: match.opponent?.id),
+			optionsDisabled: !viewModel.userIsHost,
+			isGameOptionEnabled: viewModel.gameOptionEnabled,
+			isOptionEnabled: viewModel.optionEnabled
+		)
 	}
 }
 
 // MARK: - Actions
 
-extension LobbyRoom {
-	private func handleAction(_ action: LobbyRoomAction) {
+extension OnlineRoom {
+	private func handleAction(_ action: OnlineRoomAction) {
 		switch action {
 		case .createNewMatch:
 			createNewMatch()
@@ -318,7 +240,7 @@ extension LobbyRoom {
 
 // MARK: - HiveGameClient
 
-extension LobbyRoom {
+extension OnlineRoom {
 	private func openClientConnection(to url: URL?) {
 		let publisher: AnyPublisher<GameClientEvent, GameClientError>
 		if let url = url {
@@ -349,9 +271,14 @@ extension LobbyRoom {
 }
 
 #if DEBUG
-struct LobbyRoomPreview: PreviewProvider {
+struct OnlineRoomPreview: PreviewProvider {
 	static var previews: some View {
-		return LobbyRoom(id: Match.matches[0].id, creatingRoom: false, match: .loaded(Match.matches[0]))
+		return OnlineRoom(
+			id: Match.matches[0].id,
+			roomType: .online,
+			creatingNewMatch: false,
+			match: .loaded(Match.matches[0])
+		)
 	}
 }
 #endif

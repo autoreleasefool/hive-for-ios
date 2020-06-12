@@ -38,6 +38,23 @@ struct Lobby: View {
 						dismissButton: .default(Text("OK"))
 					)
 				}
+				.popoverSheet(isPresented: $viewModel.showCreateMatchPrompt) {
+					PopoverSheetConfig(
+						title: "Create a match?",
+						message: "You can create a new match against another player, or play locally vs the computer.",
+						buttons: [
+							PopoverSheetConfig.ButtonConfig(title: "vs Player", type: .default) {
+								self.viewModel.postViewAction(.createOnlineMatchVsPlayer)
+							},
+							PopoverSheetConfig.ButtonConfig(title: "vs Computer", type: .default) {
+								self.viewModel.postViewAction(.createLocalMatchVsComputer)
+							},
+							PopoverSheetConfig.ButtonConfig(title: "Cancel", type: .cancel) {
+								self.viewModel.postViewAction(.cancelCreateMatch)
+							},
+						]
+					)
+				}
 
 			noRoomSelectedState
 		}
@@ -66,14 +83,20 @@ struct Lobby: View {
 	private func loadedView(_ matches: [Match], loading: Bool) -> some View {
 		Group {
 			NavigationLink(
-				destination: LobbyRoom(id: self.viewModel.currentMatchId, creatingRoom: false),
+				destination: OnlineRoom(id: self.viewModel.currentMatchId, roomType: .online, creatingNewMatch: false),
 				isActive: self.viewModel.joiningMatch,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
-				destination: LobbyRoom(id: nil, creatingRoom: true),
-				isActive: self.$viewModel.creatingRoom,
+				destination: OnlineRoom(id: nil, roomType: .online, creatingNewMatch: true),
+				isActive: self.$viewModel.creatingOnlineRoom,
+				label: { EmptyView() }
+			)
+
+			NavigationLink(
+				destination: OnlineRoom(id: nil, roomType: .local, creatingNewMatch: true),
+				isActive: self.$viewModel.creatingLocalRoom,
 				label: { EmptyView() }
 			)
 

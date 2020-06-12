@@ -16,6 +16,9 @@ enum LobbyViewAction: BaseViewAction {
 
 	case joinMatch(Match.ID)
 	case createNewMatch
+	case createOnlineMatchVsPlayer
+	case createLocalMatchVsComputer
+	case cancelCreateMatch
 }
 
 enum LobbyAction: BaseAction {
@@ -24,9 +27,17 @@ enum LobbyAction: BaseAction {
 
 class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
-	@Published var creatingRoom = false {
+	@Published var creatingOnlineRoom = false {
 		didSet {
-			if !creatingRoom && currentMatchId != nil {
+			if !creatingOnlineRoom && currentMatchId != nil {
+				currentMatchId = nil
+			}
+		}
+	}
+
+	@Published var creatingLocalRoom = false {
+		didSet {
+			if !creatingLocalRoom && currentMatchId != nil {
 				currentMatchId = nil
 			}
 		}
@@ -34,8 +45,13 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
 	@Published var currentMatchId: Match.ID? {
 		didSet {
-			if currentMatchId == nil && creatingRoom {
-				creatingRoom = false
+			if currentMatchId == nil {
+				if creatingOnlineRoom {
+					creatingOnlineRoom = false
+				}
+				if creatingLocalRoom {
+					creatingLocalRoom = false
+				}
 			}
 		}
 	}
@@ -43,6 +59,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published var matches: Loadable<[Match]>
 	@Published var settingsOpened = false
 	@Published var showMatchInProgressWarning = false
+	@Published var showCreateMatchPrompt = false
 
 	private let actions = PassthroughSubject<LobbyAction, Never>()
 	var actionsPublisher: AnyPublisher<LobbyAction, Never> {
@@ -64,7 +81,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 			if inMatch {
 				showMatchInProgressWarning = true
 			} else {
-				creatingRoom = true
+				showCreateMatchPrompt = true
 			}
 		case .joinMatch(let id):
 			if inMatch {
@@ -72,24 +89,28 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 			} else {
 				currentMatchId = id
 			}
+		case .createOnlineMatchVsPlayer:
+			creatingOnlineRoom = true
+			showCreateMatchPrompt = false
+		case .createLocalMatchVsComputer:
+			creatingLocalRoom = true
+			showCreateMatchPrompt = false
+		case .cancelCreateMatch:
+			showCreateMatchPrompt = false
 		}
 	}
 }
 
 extension LobbyViewModel {
-	var inRoom: Bool {
-		creatingRoom || currentMatchId != nil
-	}
-
 	var inMatch: Bool {
-		inRoom || creatingRoom
+		creatingOnlineRoom || creatingLocalRoom || currentMatchId != nil
 	}
 
 	var joiningMatch: Binding<Bool> {
 		Binding(
 			get: { [weak self] in
 				guard let self = self else { return false }
-				return !self.creatingRoom && self.currentMatchId != nil
+				return !self.creatingOnlineRoom && !self.creatingLocalRoom && self.currentMatchId != nil
 			},
 			set: { [weak self] in
 				if !$0 {
