@@ -18,6 +18,10 @@ struct Match: Identifiable, Decodable, Equatable {
 		let displayName: String
 		let elo: Int
 		let avatarUrl: String?
+
+		var isComputer: Bool {
+			ComputerPlayer.exists(withId: id)
+		}
 	}
 
 	enum Status: Int, Decodable {
