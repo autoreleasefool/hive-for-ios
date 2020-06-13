@@ -322,17 +322,6 @@ extension OnlineRoomViewModel {
 		}
 	}
 
-	func name(forOption option: Match.Option) -> String {
-		switch option {
-		case .asyncPlay: return "Asynchronous play"
-		case .hostIsWhite: return "\(match.value?.host?.displayName ?? "Host") is white"
-		}
-	}
-
-	func name(forOption option: GameState.Option) -> String {
-		return option.preview ?? option.displayName
-	}
-
 	var startButtonText: String {
 		guard let hostId = match.value?.host?.id,
 			let opponentId = match.value?.opponent?.id else {
@@ -360,17 +349,6 @@ extension OnlineRoomViewModel {
 
 		switch matchError {
 		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
-		}
-	}
-}
-
-private extension GameState.Option {
-	var preview: String? {
-		switch self {
-		case .mosquito: return "M"
-		case .ladyBug: return "L"
-		case .pillBug: return "P"
-		default: return nil
 		}
 	}
 }

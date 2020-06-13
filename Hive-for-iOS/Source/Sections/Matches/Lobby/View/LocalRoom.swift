@@ -38,8 +38,39 @@ struct LocalRoom: View {
 			}
 	}
 
+	// MARK: Content
+
 	private var content: AnyView {
-		AnyView(EmptyView())
+		switch viewModel.match {
+		case .notLoaded: return AnyView(notLoadedView)
+		case .loaded(let match): return AnyView(loadedView(match))
+		case .loading, .failed: return AnyView(errorView)
+		}
+	}
+
+	private var notLoadedView: some View {
+		Text("").onAppear { self.viewModel.postViewAction(.createMatch) }
+	}
+
+	private func loadedView(_ match: Match) -> some View {
+		RoomDetails(
+			host: match.host?.summary,
+			hostIsReady: false,
+			opponent: match.opponent?.summary,
+			opponentIsReady: false,
+			optionsDisabled: false,
+			isGameOptionEnabled: viewModel.gameOptionEnabled,
+			isOptionEnabled: viewModel.optionEnabled
+		)
+	}
+
+	private var errorView: some View {
+		EmptyState(
+			header: "An error occurred",
+			message: "We can't create this match right now."
+		) {
+			self.viewModel.postViewAction(.createMatch)
+		}
 	}
 
 	// MARK: Buttons
@@ -58,21 +89,6 @@ struct LocalRoom: View {
 		}, label: {
 			Text("Start")
 		})
-	}
-
-	// MARK: Match Detail
-
-	private func matchDetail(_ match: Match) -> some View {
-		EmptyView()
-//		RoomDetails(
-//			host: match.host,
-//			hostIsReady: viewModel.isPlayerReady(id: match.host?.id),
-//			opponent: match.opponent,
-//			opponentIsReady: viewModel.isPlayerReady(id: match.opponent?.id),
-//			optionsDisabled: !viewModel.userIsHost,
-//			isGameOptionEnabled: viewModel.gameOptionEnabled,
-//			isOptionEnabled: viewModel.optionEnabled
-//		)
 	}
 }
 
