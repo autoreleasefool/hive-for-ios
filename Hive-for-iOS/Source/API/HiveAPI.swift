@@ -146,8 +146,8 @@ class HiveAPI: ObservableObject {
 extension HiveAPI {
 	enum Endpoint {
 		// Auth
-		case login(LoginData)
-		case signup(SignupData)
+		case login(User.Login.Request)
+		case signup(User.Signup.Request)
 		case logout(Account)
 		case checkToken(Account)
 

@@ -165,12 +165,12 @@ extension LoginSignup {
 		}
 	}
 
-	private func login(_ data: LoginData) {
+	private func login(_ data: User.Login.Request) {
 		container.interactors.accountInteractor
 			.login(data, account: $viewModel.account)
 	}
 
-	private func signup(_ data: SignupData) {
+	private func signup(_ data: User.Signup.Request) {
 		container.interactors.accountInteractor
 			.signup(data, account: $viewModel.account)
 	}

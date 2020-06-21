@@ -31,7 +31,3 @@ struct Account: Equatable {
 		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 	}
 }
-
-struct LogoutResult: Decodable {
-	var success: Bool
-}

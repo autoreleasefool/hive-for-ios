@@ -12,8 +12,8 @@ import Foundation
 protocol AccountInteractor {
 	func loadAccount()
 	func clearAccount()
-	func login(_ loginData: LoginData, account: LoadableSubject<Account>)
-	func signup(_ signupData: SignupData, account: LoadableSubject<Account>)
+	func login(_ loginData: User.Login.Request, account: LoadableSubject<Account>)
+	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>)
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>)
 }
 
@@ -64,7 +64,7 @@ struct LiveAccountInteractor: AccountInteractor {
 			.store(in: cancelBag)
 	}
 
-	func login(_ loginData: LoginData, account: LoadableSubject<Account>) {
+	func login(_ loginData: User.Login.Request, account: LoadableSubject<Account>) {
 		let cancelBag = CancelBag()
 		account.wrappedValue.setLoading(cancelBag: cancelBag)
 
@@ -82,7 +82,7 @@ struct LiveAccountInteractor: AccountInteractor {
 
 	}
 
-	func signup(_ signupData: SignupData, account: LoadableSubject<Account>) {
+	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>) {
 		let cancelBag = CancelBag()
 		account.wrappedValue.setLoading(cancelBag: cancelBag)
 
@@ -103,7 +103,7 @@ struct LiveAccountInteractor: AccountInteractor {
 struct StubAccountInteractor: AccountInteractor {
 	func loadAccount() { }
 	func clearAccount() { }
-	func login(_ loginData: LoginData, account: LoadableSubject<Account>) { }
-	func signup(_ signupData: SignupData, account: LoadableSubject<Account>) { }
+	func login(_ loginData: User.Login.Request, account: LoadableSubject<Account>) { }
+	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>) { }
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) { }
 }

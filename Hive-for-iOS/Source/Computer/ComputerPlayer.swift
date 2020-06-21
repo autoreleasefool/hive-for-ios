@@ -8,8 +8,6 @@
 
 import Foundation
 
-
-
 struct ComputerPlayer {
 	enum Configuration: CaseIterable {
 		case dumbo

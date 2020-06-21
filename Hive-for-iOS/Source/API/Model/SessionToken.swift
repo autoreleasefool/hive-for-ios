@@ -1,5 +1,5 @@
 //
-//  AccessToken.swift
+//  SessionToken.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-03-30.
@@ -8,13 +8,8 @@
 
 import Foundation
 
-struct AccessToken: Decodable {
-	let id: UUID
+struct SessionToken: Decodable {
+	let sessionId: UUID
 	let userId: User.ID
-	let token: String
-}
-
-struct TokenValidation: Decodable {
-	let userId: UUID
 	let token: String
 }

@@ -22,8 +22,8 @@ protocol AccountRepository {
 	func clearAccount()
 
 	func saveAccount(_ account: Account)
-	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError>
-	func signup(_ signupData: SignupData) -> AnyPublisher<Account, AccountRepositoryError>
+	func login(_ loginData: User.Login.Request) -> AnyPublisher<Account, AccountRepositoryError>
+	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<Account, AccountRepositoryError>
 	func logout(fromAccount account: Account) -> AnyPublisher<Bool, AccountRepositoryError>
 }
 
@@ -59,7 +59,7 @@ struct LiveAccountRepository: AccountRepository {
 		.flatMap { account in
 			self.api.fetch(.checkToken(account))
 				.mapError { .apiError($0) }
-				.map { (_: TokenValidation) in account }
+				.map { (_: SessionToken) in account }
 		}
 		.eraseToAnyPublisher()
 	}
@@ -82,17 +82,19 @@ struct LiveAccountRepository: AccountRepository {
 		}
 	}
 
-	func login(_ loginData: LoginData) -> AnyPublisher<Account, AccountRepositoryError> {
+	func login(_ loginData: User.Login.Request) -> AnyPublisher<Account, AccountRepositoryError> {
 		api.fetch(.login(loginData))
 			.mapError { .apiError($0) }
-			.map { (token: AccessToken) in Account(userId: token.userId, token: token.token) }
+			.map { (token: SessionToken) in Account(userId: token.userId, token: token.token) }
 			.eraseToAnyPublisher()
 	}
 
-	func signup(_ signupData: SignupData) -> AnyPublisher<Account, AccountRepositoryError> {
+	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<Account, AccountRepositoryError> {
 		api.fetch(.signup(signupData))
 			.mapError { .apiError($0) }
-			.map { (result: UserSignup) in Account(userId: result.accessToken.userId, token: result.accessToken.token) }
+			.map { (result: User.Signup.Response) in
+				Account(userId: result.token.userId, token: result.token.token)
+			}
 			.eraseToAnyPublisher()
 	}
 
@@ -100,7 +102,7 @@ struct LiveAccountRepository: AccountRepository {
 		clearAccount()
 		return api.fetch(.logout(account))
 			.mapError { .apiError($0) }
-			.map { (result: LogoutResult) in result.success }
+			.map { (result: User.Logout.Response) in result.success }
 			.eraseToAnyPublisher()
 	}
 }

@@ -17,8 +17,8 @@ enum LoginSignupViewAction: BaseViewAction {
 }
 
 enum LoginSignupAction: BaseAction {
-	case login(LoginData)
-	case signup(SignupData)
+	case login(User.Login.Request)
+	case signup(User.Signup.Request)
 }
 
 class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
@@ -83,12 +83,12 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 		}
 	}
 
-	private var loginData: LoginData {
-		LoginData(email: email.lowercased(), password: password)
+	private var loginData: User.Login.Request {
+		User.Login.Request(email: email.lowercased(), password: password)
 	}
 
-	private var signupData: SignupData {
-		SignupData(
+	private var signupData: User.Signup.Request {
+		User.Signup.Request(
 			email: email.lowercased(),
 			displayName: displayName,
 			password: password,
