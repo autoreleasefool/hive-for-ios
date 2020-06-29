@@ -30,6 +30,7 @@
 		CA45F9C4242E758C007EC94D /* HiveRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* HiveRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
 		CA68BBC1244B063200879060 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = CA68BBC0244B063200879060 /* Starscream */; };
+		CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
@@ -142,6 +143,7 @@
 		CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceClassDetails.swift; sourceTree = "<group>"; };
 		CA45F9C3242E758C007EC94D /* HiveRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveRule.swift; sourceTree = "<group>"; };
 		CA45F9C5242E9F7A007EC94D /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
+		CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 				CAAB6FB624766A0600A698F9 /* Loading */,
 				CAAB6FB4247669B200A698F9 /* Presentation */,
 				CAAB6FB724766A2400A698F9 /* TabBar */,
+				CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */,
 				CA797F62246892AC0011E7D1 /* EmptyState.swift */,
 				CABDFD0723DD9FE300C697AD /* UserPreview.swift */,
 			);
@@ -926,6 +929,7 @@
 				CA8F46E9245F3D4500B136D0 /* OnlineRoom.swift in Sources */,
 				CAC73104246DFED5004DB450 /* HistoryViewModel.swift in Sources */,
 				CAFC7A62245C527400747E82 /* RootTabView.swift in Sources */,
+				CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */,
 				CAC73107246E01CB004DB450 /* LobbyViewModel.swift in Sources */,
 				CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */,
 				CA0F93A52428AEE200F6E104 /* DebugSprite.swift in Sources */,

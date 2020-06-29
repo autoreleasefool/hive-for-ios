@@ -73,19 +73,7 @@ struct EmptyState: View {
 	}
 
 	private var refreshButton: some View {
-		Button(action: {
-			self.onRefresh?()
-		}, label: {
-			Text("Refresh")
-				.body()
-				.foregroundColor(Color(.text))
-				.padding(.vertical, length: .m)
-				.frame(minWidth: 0, maxWidth: .infinity)
-				.background(
-					RoundedRectangle(cornerRadius: .s)
-						.fill(Color(.primary))
-				)
-		})
+		BasicButton<Never>("Refresh", action: { self.onRefresh?() })
 	}
 }
 

@@ -114,18 +114,8 @@ struct LoginSignup: View {
 	}
 
 	private var submitButton: some View {
-		Button(action: {
+		BasicButton<Never>(viewModel.submitButtonText, action: {
 			self.viewModel.postViewAction(.submitForm)
-		}, label: {
-			Text(viewModel.submitButtonText)
-				.body()
-				.foregroundColor(Color(.background))
-				.padding(.vertical, length: .m)
-				.frame(minWidth: 0, maxWidth: .infinity)
-				.background(
-					RoundedRectangle(cornerRadius: .s)
-						.fill(Color(.actionSheetBackground))
-				)
 		})
 	}
 

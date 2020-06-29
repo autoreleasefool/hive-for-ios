@@ -93,20 +93,7 @@ struct Settings: View {
 	// MARK: Buttons
 
 	private var logoutButton: some View {
-		Button(action: {
-			self.viewModel.postViewAction(.logout)
-		}, label: {
-			self.logoutButtonLabel
-				.body()
-				.foregroundColor(Color(.text))
-				.frame(minWidth: 0, maxWidth: .infinity)
-				.frame(height: 48)
-				.background(
-					RoundedRectangle(cornerRadius: .s)
-						.fill(Color(.primary))
-				)
-				.padding(.horizontal, length: .m)
-		})
+		BasicButton(action: { self.viewModel.postViewAction(.logout) }, label: { logoutButtonLabel })
 	}
 
 	private var logoutButtonLabel: AnyView {
