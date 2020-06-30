@@ -116,9 +116,9 @@ struct LoginSignup: View {
 	}
 
 	private var submitButton: some View {
-		BasicButton<Never>(viewModel.submitButtonText, action: {
+		BasicButton<Never>(viewModel.submitButtonText) {
 			self.viewModel.postViewAction(.submitForm)
-		})
+		}
 	}
 
 	private var toggleButton: some View {
@@ -138,9 +138,9 @@ struct LoginSignup: View {
 	}
 
 	private var playOfflineButton: some View {
-		BasicButton<Never>(viewModel.playOfflineButtonText, action: {
+		BasicButton<Never>(viewModel.playOfflineButtonText) {
 			self.viewModel.postViewAction(.playOffline)
-		})
+		}
 	}
 
 	private func notice(message: String) -> some View {

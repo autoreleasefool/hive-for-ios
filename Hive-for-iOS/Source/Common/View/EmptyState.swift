@@ -73,7 +73,7 @@ struct EmptyState: View {
 	}
 
 	private var refreshButton: some View {
-		BasicButton<Never>("Refresh", action: { self.onRefresh?() })
+		BasicButton<Never>("Refresh") { self.onRefresh?() }
 	}
 }
 

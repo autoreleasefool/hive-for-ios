@@ -41,6 +41,7 @@ struct Settings: View {
 						UserPreview(userProfile.value?.summary)
 
 						logoutButton
+							.padding(.horizontal, length: .m)
 					}
 				}
 			}
@@ -92,14 +93,14 @@ struct Settings: View {
 
 	// MARK: Buttons
 
-	private var logoutButton: some View {
-		BasicButton(action: { self.viewModel.postViewAction(.logout) }, label: { logoutButtonLabel })
-	}
+	private var logoutButton: AnyView {
+		func action() {
+			self.viewModel.postViewAction(.logout)
+		}
 
-	private var logoutButtonLabel: AnyView {
 		switch viewModel.logoutResult {
-		case .notLoaded, .failed, .loaded: return AnyView(Text("Logout"))
-		case .loading: return AnyView(ActivityIndicator(isAnimating: true, style: .white))
+		case .notLoaded, .failed, .loaded: return AnyView(BasicButton<Never>("Logout", action: action))
+		case .loading: return AnyView(BasicButton(action: action) { ActivityIndicator(isAnimating: true, style: .white) })
 		}
 	}
 
