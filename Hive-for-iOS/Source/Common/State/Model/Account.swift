@@ -15,11 +15,19 @@ extension NSNotification.Name {
 }
 
 struct Account: Equatable {
+	private static let offlineId = UUID(uuidString: "602c977d-168a-4771-8599-9f35ed1abd41")!
+	private static let offlineToken = "offline"
+	static let offline: Account = Account(userId: offlineId, token: offlineToken)
+
 	var userId: User.ID
 	var token: String
 
 	var headers: [String: String] {
 		return ["Authorization": "Bearer \(token)"]
+	}
+
+	var isOffline: Bool {
+		return userId == Account.offlineId || token == Account.offlineToken
 	}
 
 	func applyAuth(to request: inout URLRequest, overridingTokenWith token: String? = nil) {

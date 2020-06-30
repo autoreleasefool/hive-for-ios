@@ -19,6 +19,7 @@ enum GameClientEvent {
 }
 
 enum GameClientError: LocalizedError {
+	case usingOfflineAccount
 	case failedToConnect
 	case missingURL
 	case webSocketError(Error?)
@@ -33,6 +34,10 @@ class HiveGameClient {
 	private(set) var isConnected: Bool = false
 
 	func openConnection(to url: URL, withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
+		guard account?.isOffline != true else {
+			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
+		}
+
 		if isConnected, let subject = subject {
 			if self.url == url {
 				subject.send(.alreadyConnected)
@@ -47,6 +52,10 @@ class HiveGameClient {
 	}
 
 	func reconnect(withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
+		guard account?.isOffline != true else {
+			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
+		}
+
 		if isConnected, let subject = subject {
 			subject.send(.alreadyConnected)
 			return subject.eraseToAnyPublisher()

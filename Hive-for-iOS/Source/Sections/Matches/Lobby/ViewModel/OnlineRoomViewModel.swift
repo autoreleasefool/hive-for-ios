@@ -348,6 +348,7 @@ extension OnlineRoomViewModel {
 		}
 
 		switch matchError {
+		case .usingOfflineAccount: return "You're currently playing offline"
 		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
 		}
 	}

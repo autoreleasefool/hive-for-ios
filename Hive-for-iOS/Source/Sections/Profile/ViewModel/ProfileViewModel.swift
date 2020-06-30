@@ -50,6 +50,7 @@ extension ProfileViewModel {
 		switch userError {
 		case .missingID: return "Account missing"
 		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
+		case .usingOfflineAccount: return "You're currently playing offline"
 		}
 	}
 }

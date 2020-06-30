@@ -18,6 +18,7 @@ enum HiveAPIError: LocalizedError {
 	case missingData
 	case notImplemented
 	case unauthorized
+	case usingOfflineAccount
 
 	var errorDescription: String? {
 		switch self {
@@ -37,6 +38,8 @@ enum HiveAPIError: LocalizedError {
 			return "Could not find data"
 		case .notImplemented:
 			return "The method has not been implemented"
+		case .usingOfflineAccount:
+			return "Currently offline"
 		}
 	}
 
@@ -74,6 +77,10 @@ class HiveAPI: ObservableObject {
 		_ endpoint: Endpoint,
 		withAccount account: Account? = nil
 	) -> AnyPublisher<Output, HiveAPIError> {
+		guard account?.isOffline != true else {
+			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
+		}
+
 		let url = HiveAPI.baseURL
 			.appendingPathComponent("api")
 			.appendingPathComponent(endpoint.path)

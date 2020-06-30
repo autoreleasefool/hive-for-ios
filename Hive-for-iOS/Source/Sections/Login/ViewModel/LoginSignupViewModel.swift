@@ -12,6 +12,7 @@ import UIKit
 enum LoginSignupViewAction: BaseViewAction {
 	case toggleForm
 	case submitForm
+	case playOffline
 	case focusField(LoginSignupViewModel.FieldItem)
 	case didReturn(from: LoginSignupViewModel.FieldItem)
 }
@@ -19,6 +20,7 @@ enum LoginSignupViewAction: BaseViewAction {
 enum LoginSignupAction: BaseAction {
 	case login(User.Login.Request)
 	case signup(User.Signup.Request)
+	case playOffline
 }
 
 class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
@@ -51,6 +53,8 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			handleReturn(from: from)
 		case .focusField(let id):
 			activeField = id
+		case .playOffline:
+			playOffline()
 		}
 	}
 
@@ -106,6 +110,10 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 		case .login: actions.send(.login(loginData))
 		case .signup: actions.send(.signup(signupData))
 		}
+	}
+
+	private func playOffline() {
+		actions.send(.playOffline)
 	}
 }
 
@@ -176,6 +184,10 @@ extension LoginSignupViewModel {
 		}
 	}
 
+	var playOfflineButtonText: String {
+		return "Play offline"
+	}
+
 	var toggleButtonText: String {
 		switch form {
 		case .login: return "create a new account"
@@ -200,6 +212,8 @@ extension LoginSignupViewModel {
 
 	func noticeMessage(for error: HiveAPIError) -> String {
 		switch error {
+		case .usingOfflineAccount:
+			return "You've chosen to play offline"
 		case .unauthorized:
 			return "You entered an incorrect email or password."
 		case .networkingError:

@@ -15,6 +15,7 @@ protocol AccountInteractor {
 	func login(_ loginData: User.Login.Request, account: LoadableSubject<Account>)
 	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>)
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>)
+	func playOffline(account: LoadableSubject<Account>)
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -51,6 +52,12 @@ struct LiveAccountInteractor: AccountInteractor {
 	}
 
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) {
+		guard !account.isOffline else {
+			appState[\.account] = .failed(AccountRepositoryError.loggedOut)
+			result.wrappedValue = .loaded(true)
+			return
+		}
+
 		let cancelBag = CancelBag()
 		result.wrappedValue.setLoading(cancelBag: cancelBag)
 
@@ -98,6 +105,11 @@ struct LiveAccountInteractor: AccountInteractor {
 			}
 			.store(in: cancelBag)
 	}
+
+	func playOffline(account: LoadableSubject<Account>) {
+		account.wrappedValue = .loaded(.offline)
+		appState[\.account] = .loaded(.offline)
+	}
 }
 
 struct StubAccountInteractor: AccountInteractor {
@@ -106,4 +118,5 @@ struct StubAccountInteractor: AccountInteractor {
 	func login(_ loginData: User.Login.Request, account: LoadableSubject<Account>) { }
 	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>) { }
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) { }
+	func playOffline(account: LoadableSubject<Account>) { }
 }

@@ -10,6 +10,7 @@ import Combine
 import Foundation
 
 enum UserRepositoryError: Error {
+	case usingOfflineAccount
 	case missingID
 	case apiError(HiveAPIError)
 }
@@ -26,7 +27,11 @@ struct LiveUserRepository: UserRepository {
 	}
 
 	func loadDetails(id: User.ID, withAccount account: Account?) -> AnyPublisher<User, UserRepositoryError> {
-		api.fetch(.userDetails(id), withAccount: account)
+		guard account?.isOffline != true else {
+			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
+		}
+
+		return api.fetch(.userDetails(id), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}

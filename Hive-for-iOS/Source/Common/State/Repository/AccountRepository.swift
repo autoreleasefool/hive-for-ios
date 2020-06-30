@@ -74,6 +74,8 @@ struct LiveAccountRepository: AccountRepository {
 	}
 
 	func saveAccount(_ account: Account) {
+		guard !account.isOffline else { return }
+
 		do {
 			try keychain.set(account.userId.uuidString, key: Key.userId.rawValue)
 			try keychain.set(account.token, key: Key.token.rawValue)
