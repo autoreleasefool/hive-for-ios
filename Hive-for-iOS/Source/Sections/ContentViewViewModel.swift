@@ -15,12 +15,18 @@ enum ContentViewViewAction: BaseViewAction {
 
 enum ContentViewAction: BaseAction {
 	case loadAccount
+	case loadOfflineAccount
 	case loggedOut
 }
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 	@Published var showWelcome = true
 	@Published var showSettings = false
+	@Published var playingOffline = false {
+		didSet {
+			actions.send(.loadOfflineAccount)
+		}
+	}
 
 	override init() {
 		super.init()

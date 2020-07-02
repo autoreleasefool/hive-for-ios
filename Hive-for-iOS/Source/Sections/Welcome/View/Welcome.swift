@@ -10,6 +10,7 @@ import SwiftUI
 
 struct Welcome: View {
 	@Binding var showWelcome: Bool
+	@Binding var playingOffline: Bool
 	@Binding var showSettings: Bool
 
 	var body: some View {
@@ -23,6 +24,14 @@ struct Welcome: View {
 				.foregroundColor(Color(.primary))
 
 			Button("Play") {
+				self.showWelcome = false
+			}
+			.subtitle()
+			.foregroundColor(Color(.text))
+			.padding(.m)
+
+			Button("Play offline") {
+				self.playingOffline = true
 				self.showWelcome = false
 			}
 			.subtitle()

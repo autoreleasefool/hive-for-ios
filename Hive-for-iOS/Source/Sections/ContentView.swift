@@ -30,6 +30,7 @@ struct ContentView: View {
 				if self.viewModel.showWelcome {
 					Welcome(
 						showWelcome: self.$viewModel.showWelcome,
+						playingOffline: self.$viewModel.playingOffline,
 						showSettings: self.$viewModel.showSettings
 					)
 				} else {
@@ -83,6 +84,8 @@ struct ContentView: View {
 extension ContentView {
 	private func handleAction(_ action: ContentViewAction) {
 		switch action {
+		case .loadOfflineAccount:
+			loadOfflineAccount()
 		case .loadAccount:
 			loadAccount()
 		case .loggedOut:
@@ -92,6 +95,10 @@ extension ContentView {
 
 	private func loadAccount() {
 		container.interactors.accountInteractor.loadAccount()
+	}
+
+	private func loadOfflineAccount() {
+		container.interactors.accountInteractor.playOffline(account: nil)
 	}
 }
 

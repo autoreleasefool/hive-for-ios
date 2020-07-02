@@ -12,7 +12,6 @@ import UIKit
 enum LoginSignupViewAction: BaseViewAction {
 	case toggleForm
 	case submitForm
-	case playOffline
 	case focusField(LoginSignupViewModel.FieldItem)
 	case didReturn(from: LoginSignupViewModel.FieldItem)
 }
@@ -20,7 +19,6 @@ enum LoginSignupViewAction: BaseViewAction {
 enum LoginSignupAction: BaseAction {
 	case login(User.Login.Request)
 	case signup(User.Signup.Request)
-	case playOffline
 }
 
 class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
@@ -53,8 +51,6 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			handleReturn(from: from)
 		case .focusField(let id):
 			activeField = id
-		case .playOffline:
-			playOffline()
 		}
 	}
 
@@ -110,10 +106,6 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 		case .login: actions.send(.login(loginData))
 		case .signup: actions.send(.signup(signupData))
 		}
-	}
-
-	private func playOffline() {
-		actions.send(.playOffline)
 	}
 }
 

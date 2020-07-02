@@ -52,8 +52,6 @@ struct LoginSignup: View {
 
 				submitButton
 				toggleButton
-				Spacer()
-				playOfflineButton
 			}
 		}
 	}
@@ -137,12 +135,6 @@ struct LoginSignup: View {
 		}
 	}
 
-	private var playOfflineButton: some View {
-		BasicButton<Never>(viewModel.playOfflineButtonText) {
-			self.viewModel.postViewAction(.playOffline)
-		}
-	}
-
 	private func notice(message: String) -> some View {
 		Text(message)
 			.body()
@@ -160,8 +152,6 @@ extension LoginSignup {
 			login(data)
 		case .signup(let data):
 			signup(data)
-		case .playOffline:
-			playOffline()
 		}
 	}
 
@@ -173,11 +163,6 @@ extension LoginSignup {
 	private func signup(_ data: User.Signup.Request) {
 		container.interactors.accountInteractor
 			.signup(data, account: $viewModel.account)
-	}
-
-	private func playOffline() {
-		container.interactors.accountInteractor
-			.playOffline(account: $viewModel.account)
 	}
 }
 
