@@ -99,7 +99,7 @@ struct Lobby: View {
 			)
 
 			NavigationLink(
-				destination: LocalRoom(),
+				destination: ComputerPlayerPicker(isActive: self.$viewModel.creatingLocalRoom),
 				isActive: self.$viewModel.creatingLocalRoom,
 				label: { EmptyView() }
 			)
@@ -152,13 +152,17 @@ struct Lobby: View {
 // MARK: - Empty State
 
 extension Lobby {
-	private var emptyState: some View {
-		EmptyState(
-			header: "No matches found",
-			message: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
-				"with the '+' button in the top right",
-			action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
-		)
+	private var emptyState: AnyView {
+		if viewModel.isOffline {
+			return AnyView(offlineState)
+		} else {
+			return AnyView(EmptyState(
+				header: "No matches found",
+				message: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
+					"with the '+' button in the top right",
+				action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
+			))
+		}
 	}
 
 	private func failedState(_ error: Error) -> AnyView {

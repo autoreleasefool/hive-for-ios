@@ -101,7 +101,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
 	private func initialize() {
 		if self.isOffline {
-			self.matches = .failed(MatchRepositoryError.usingOfflineAccount)
+			self.matches = .loaded([])
 		} else {
 			actions.send(.loadOpenMatches)
 		}

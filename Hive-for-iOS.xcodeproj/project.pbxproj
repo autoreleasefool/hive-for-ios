@@ -30,6 +30,7 @@
 		CA45F9C4242E758C007EC94D /* HiveRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* HiveRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
 		CA68BBC1244B063200879060 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = CA68BBC0244B063200879060 /* Starscream */; };
+		CA6CC92924A9579700E8CB27 /* ComputerPlayerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* ComputerPlayerPicker.swift */; };
 		CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
@@ -94,7 +95,7 @@
 		CAD32BF52493070A00984610 /* RoomDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF42493070A00984610 /* RoomDetails.swift */; };
 		CAD32BF72493103200984610 /* LocalRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF62493103200984610 /* LocalRoom.swift */; };
 		CAD32BF92493130000984610 /* LocalRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF82493130000984610 /* LocalRoomViewModel.swift */; };
-		CAD32BFE2495110900984610 /* ComputerPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BFD2495110900984610 /* ComputerPlayer.swift */; };
+		CAD32BFE2495110900984610 /* ComputerEnemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BFD2495110900984610 /* ComputerEnemy.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
 		CAF82556245C6B030064359E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82555245C6B030064359E /* AppState.swift */; };
@@ -143,6 +144,7 @@
 		CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceClassDetails.swift; sourceTree = "<group>"; };
 		CA45F9C3242E758C007EC94D /* HiveRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveRule.swift; sourceTree = "<group>"; };
 		CA45F9C5242E9F7A007EC94D /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
+		CA6CC92824A9579700E8CB27 /* ComputerPlayerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerPlayerPicker.swift; sourceTree = "<group>"; };
 		CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -207,7 +209,7 @@
 		CAD32BF42493070A00984610 /* RoomDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetails.swift; sourceTree = "<group>"; };
 		CAD32BF62493103200984610 /* LocalRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoom.swift; sourceTree = "<group>"; };
 		CAD32BF82493130000984610 /* LocalRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoomViewModel.swift; sourceTree = "<group>"; };
-		CAD32BFD2495110900984610 /* ComputerPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerPlayer.swift; sourceTree = "<group>"; };
+		CAD32BFD2495110900984610 /* ComputerEnemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerEnemy.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAF82555245C6B030064359E /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		CAF82557245C6B2B0064359E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 				CAD32BF62493103200984610 /* LocalRoom.swift */,
 				CA8F46E8245F3D4500B136D0 /* OnlineRoom.swift */,
 				CAD32BF42493070A00984610 /* RoomDetails.swift */,
+				CA6CC92824A9579700E8CB27 /* ComputerPlayerPicker.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -662,7 +665,7 @@
 		CAD32BFC249510F000984610 /* Computer */ = {
 			isa = PBXGroup;
 			children = (
-				CAD32BFD2495110900984610 /* ComputerPlayer.swift */,
+				CAD32BFD2495110900984610 /* ComputerEnemy.swift */,
 			);
 			path = Computer;
 			sourceTree = "<group>";
@@ -940,7 +943,7 @@
 				CAFC7A65245C54EE00747E82 /* Profile.swift in Sources */,
 				CA797F67246930C80011E7D1 /* UserInteractor.swift in Sources */,
 				CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */,
-				CAD32BFE2495110900984610 /* ComputerPlayer.swift in Sources */,
+				CAD32BFE2495110900984610 /* ComputerEnemy.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* Welcome.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* LobbyRow.swift in Sources */,
 				CAC73109246E0505004DB450 /* OnlineRoomViewModel.swift in Sources */,
@@ -958,6 +961,7 @@
 				CA8F46DD245DD27600B136D0 /* LoginSignup.swift in Sources */,
 				CAC730FF246DF74E004DB450 /* ProfileViewModel.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
+				CA6CC92924A9579700E8CB27 /* ComputerPlayerPicker.swift in Sources */,
 				CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */,
 				CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */,
 				CAF8256C245C87340064359E /* Publisher+Extensions.swift in Sources */,

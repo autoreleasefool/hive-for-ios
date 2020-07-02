@@ -1,5 +1,5 @@
 //
-//  ComputerPlayer.swift
+//  ComputerEnemy.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-06-13.
@@ -8,8 +8,14 @@
 
 import Foundation
 
-struct ComputerPlayer {
-	enum Configuration: CaseIterable {
+struct ComputerEnemy {
+	let player: Player
+}
+
+// MARK: - Player
+
+extension ComputerEnemy {
+	enum Player: CaseIterable, Identifiable {
 		case dumbo
 		case hiveMind
 
@@ -29,6 +35,6 @@ struct ComputerPlayer {
 	}
 
 	static func exists(withId id: UUID) -> Bool {
-		Configuration.allCases.contains { $0.id == id }
+		Player.allCases.contains { $0.id == id }
 	}
 }

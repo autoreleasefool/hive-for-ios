@@ -20,7 +20,7 @@ struct Match: Identifiable, Decodable, Equatable {
 		let avatarUrl: String?
 
 		var isComputer: Bool {
-			ComputerPlayer.exists(withId: id)
+			ComputerEnemy.exists(withId: id)
 		}
 	}
 

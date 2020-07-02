@@ -9,11 +9,16 @@
 import SwiftUI
 
 struct LocalRoom: View {
-	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster
 	@Environment(\.container) private var container
+	private let isActive: Binding<Bool>
 
 	@ObservedObject private var viewModel = LocalRoomViewModel()
+
+	init(opponent: ComputerEnemy.Player, isActive: Binding<Bool>) {
+		self.isActive = isActive
+		viewModel.opponent = opponent
+	}
 
 	var body: some View {
 		content
@@ -95,6 +100,13 @@ struct LocalRoom: View {
 
 extension LocalRoom {
 	private func handleAction(_ action: LocalRoomAction) {
+		switch action {
+		case .exitMatch:
+			exitMatch()
+		}
+	}
 
+	private func exitMatch() {
+		isActive.wrappedValue = false
 	}
 }
