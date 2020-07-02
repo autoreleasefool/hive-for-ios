@@ -14,7 +14,7 @@ struct ComputerPlayerPicker: View {
 	var body: some View {
 		List {
 			ForEach(ComputerEnemy.Player.allCases) { player in
-				NavigationLink(destination: LocalRoom(opponent: player, isActive: self.isActive)) {
+				NavigationLink(destination: LocalRoom(opponent: player)) {
 					HStack(spacing: .m) {
 						Text(player.name)
 							.body()
