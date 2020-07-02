@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 
 enum LobbyViewAction: BaseViewAction {
-	case onAppear
+	case onAppear(isOffline: Bool)
 	case refresh
 	case openSettings
 
@@ -60,6 +60,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published var settingsOpened = false
 	@Published var showMatchInProgressWarning = false
 	@Published var showCreateMatchPrompt = false
+	@Published var isOffline = false
 
 	private let actions = PassthroughSubject<LobbyAction, Never>()
 	var actionsPublisher: AnyPublisher<LobbyAction, Never> {
@@ -72,17 +73,15 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
 	override func postViewAction(_ viewAction: LobbyViewAction) {
 		switch viewAction {
-		case .onAppear, .refresh:
+		case .onAppear(let isOffline):
+			self.isOffline = isOffline
+			initialize()
+		case .refresh:
 			actions.send(.loadOpenMatches)
 		case .openSettings:
 			settingsOpened = true
-
 		case .createNewMatch:
-			if inMatch {
-				showMatchInProgressWarning = true
-			} else {
-				showCreateMatchPrompt = true
-			}
+			createNewMatch()
 		case .joinMatch(let id):
 			if inMatch {
 				showMatchInProgressWarning = true
@@ -97,6 +96,26 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 			showCreateMatchPrompt = false
 		case .cancelCreateMatch:
 			showCreateMatchPrompt = false
+		}
+	}
+
+	private func initialize() {
+		if self.isOffline {
+			self.matches = .failed(MatchRepositoryError.usingOfflineAccount)
+		} else {
+			actions.send(.loadOpenMatches)
+		}
+	}
+
+	private func createNewMatch() {
+		if inMatch {
+			showMatchInProgressWarning = true
+		} else {
+			if isOffline {
+				creatingLocalRoom = true
+			} else {
+				showCreateMatchPrompt = true
+			}
 		}
 	}
 }

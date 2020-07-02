@@ -73,7 +73,11 @@ struct Lobby: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.viewModel.postViewAction(.onAppear) }
+			.onAppear {
+				self.viewModel.postViewAction(
+					.onAppear(isOffline: self.container.account?.isOffline ?? false )
+				)
+			}
 	}
 
 	private func loadingView(_ matches: [Match]?) -> some View {
