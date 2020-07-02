@@ -91,10 +91,9 @@ struct OnlineRoom: View {
 	private func failedView(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't fetch the match right now.\n\(viewModel.errorMessage(from: error))"
-		) {
-			self.viewModel.postViewAction(.retryInitialAction)
-		}
+			message: "We can't fetch the match right now.\n\(viewModel.errorMessage(from: error))",
+			action: .init(text: "Refresh") { self.viewModel.postViewAction(.retryInitialAction) }
+		)
 	}
 
 	private func reconnectingView(_ geometry: GeometryProxy) -> some View {

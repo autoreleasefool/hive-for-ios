@@ -67,10 +67,9 @@ struct LocalRoom: View {
 	private var errorView: some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't create this match right now."
-		) {
-			self.viewModel.postViewAction(.createMatch)
-		}
+			message: "We can't create this match right now.",
+			action: .init(text: "Refresh") { self.viewModel.postViewAction(.createMatch) }
+		)
 	}
 
 	// MARK: Buttons

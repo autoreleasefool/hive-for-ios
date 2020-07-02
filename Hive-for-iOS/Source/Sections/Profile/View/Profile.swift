@@ -96,10 +96,9 @@ extension Profile {
 	private func failedState(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't fetch your profile right now.\n\(viewModel.errorMessage(from: error))"
-		) {
-			self.loadProfile()
-		}
+			message: "We can't fetch your profile right now.\n\(viewModel.errorMessage(from: error))",
+			action: .init(text: "Refresh") { self.loadProfile() }
+		)
 	}
 }
 

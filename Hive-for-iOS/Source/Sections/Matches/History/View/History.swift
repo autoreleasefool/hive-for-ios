@@ -158,19 +158,17 @@ extension History {
 		EmptyState(
 			header: "No matches found",
 			message: "Try playing a match and when you're finished, you'll find it here. You'll also be able to see " +
-				"your incomplete matches"
-		) {
-			self.loadMatchHistory()
-		}
+				"your incomplete matches",
+			action: .init(text: "Refresh") { self.loadMatchHistory() }
+		)
 	}
 
 	private func failedState(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't fetch your history right now.\n\(viewModel.errorMessage(from: error))"
-		) {
-			self.loadMatchHistory()
-		}
+			message: "We can't fetch your history right now.\n\(viewModel.errorMessage(from: error))",
+			action: .init(text: "Refresh") { self.loadMatchHistory() }
+		)
 	}
 
 	private var noRoomSelectedState: some View {

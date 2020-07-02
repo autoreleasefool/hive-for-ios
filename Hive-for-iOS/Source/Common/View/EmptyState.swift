@@ -12,13 +12,13 @@ struct EmptyState: View {
 	private let image: UIImage?
 	private let headerText: String
 	private let messageText: String
-	private let onRefresh: (() -> Void)?
+	private let action: Action?
 
-	init(header: String, message: String, image: UIImage? = nil, onRefresh: (() -> Void)? = nil) {
+	init(header: String, message: String, image: UIImage? = nil, action: Action? = nil) {
 		self.image = image
 		self.headerText = header
 		self.messageText = message
-		self.onRefresh = onRefresh
+		self.action = action
 	}
 
 	var body: some View {
@@ -36,8 +36,8 @@ struct EmptyState: View {
 				}
 				.padding(.horizontal, length: .m)
 
-				if self.onRefresh != nil {
-					self.refreshButton
+				if self.action != nil {
+					self.actionButton(action: self.action!)
 						.padding(.horizontal, length: .m)
 				}
 				Spacer()
@@ -72,8 +72,15 @@ struct EmptyState: View {
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}
 
-	private var refreshButton: some View {
-		BasicButton<Never>("Refresh") { self.onRefresh?() }
+	private func actionButton(action: Action) -> some View {
+		BasicButton<Never>(action.text) { action.callback() }
+	}
+}
+
+extension EmptyState {
+	struct Action {
+		let text: String
+		let callback: () -> Void
 	}
 }
 
@@ -84,8 +91,9 @@ struct EmptyStatePreview: PreviewProvider {
 			header: "No matches found",
 			message: "Try playing a match, and when you're finished, you'll be able to find it here. " +
 				"You'll also be able to see your incomplete matches.",
-			image: ImageAsset.joseph
-		) { }
+			image: ImageAsset.joseph,
+			action: EmptyState.Action(text: "Refresh", callback: { })
+		)
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 	}
 }

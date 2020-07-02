@@ -152,19 +152,29 @@ extension Lobby {
 		EmptyState(
 			header: "No matches found",
 			message: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
-				"with the '+' button in the top right"
-		) {
-			self.viewModel.postViewAction(.refresh)
+				"with the '+' button in the top right",
+			action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
+		)
+	}
+
+	private func failedState(_ error: Error) -> AnyView {
+		if let error = error as? MatchRepositoryError, case .usingOfflineAccount = error {
+			return AnyView(offlineState)
+		} else {
+			return AnyView(EmptyState(
+				header: "An error occurred",
+				message: "We can't fetch the lobby right now.\n\(viewModel.errorMessage(from: error))",
+				action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
+			))
 		}
 	}
 
-	private func failedState(_ error: Error) -> some View {
+	private var offlineState: some View {
 		EmptyState(
-			header: "An error occurred",
-			message: "We can't fetch the lobby right now.\n\(viewModel.errorMessage(from: error))"
-		) {
-			self.viewModel.postViewAction(.refresh)
-		}
+			header: "You're offline",
+			message: "You can play a game against the computer by tapping below",
+			action: .init(text: "Play local match") { self.viewModel.postViewAction(.createLocalMatchVsComputer) }
+		)
 	}
 
 	private var noRoomSelectedState: some View {
