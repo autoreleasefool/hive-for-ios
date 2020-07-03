@@ -16,8 +16,8 @@ struct HiveGame: View {
 
 	private let viewModel: HiveGameViewModel
 
-	init(state: GameState, player: Player) {
-		viewModel = HiveGameViewModel(initialState: state, playingAs: player)
+	init(state: GameState, player: Player, mode: ClientInteractorConfiguration) {
+		viewModel = HiveGameViewModel(initialState: state, playingAs: player, mode: mode)
 	}
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {

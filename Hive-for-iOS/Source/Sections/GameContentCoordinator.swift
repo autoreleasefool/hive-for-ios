@@ -35,7 +35,7 @@ struct GameContentCoordinator: View {
 	}
 
 	private func gameView(_ setup: GameSetup) -> some View {
-		HiveGame(state: setup.state, player: setup.player)
+		HiveGame(state: setup.state, player: setup.player, mode: setup.mode)
 	}
 }
 
@@ -45,6 +45,7 @@ extension GameContentCoordinator {
 	struct GameSetup: Equatable {
 		let state: GameState
 		let player: Player
+		let mode: ClientInteractorConfiguration
 	}
 }
 

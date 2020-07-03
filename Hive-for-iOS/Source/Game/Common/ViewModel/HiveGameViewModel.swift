@@ -64,6 +64,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 
 	var userId: User.ID!
 	var playingAs: Player
+	var clientMode: ClientInteractorConfiguration
 	private(set) var gameContent: GameViewContent!
 
 	private var connectionOpened = false
@@ -152,9 +153,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private var viewContentReady = false
 	private var viewInteractionsReady = false
 
-	init(initialState: GameState, playingAs: Player) {
+	init(initialState: GameState, playingAs: Player, mode: ClientInteractorConfiguration) {
 		self.gameStateStore = .init(initialState)
 		self.playingAs = playingAs
+		self.clientMode = mode
 	}
 
 	override func postViewAction(_ viewAction: HiveGameViewAction) {
@@ -212,7 +214,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func openConnection() {
 		guard !connectionOpened else { return }
 		connectionOpened = true
-		clientInteractor.reconnect(.online)
+		clientInteractor.reconnect(clientMode)
 			.sink(
 				receiveCompletion: { [weak self] in
 					if case let .failure(error) = $0 {
@@ -226,7 +228,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func cleanUp() {
-		clientInteractor.close(.online)
+		clientInteractor.close(clientMode)
 	}
 
 	private func setupNewGame() {
@@ -302,7 +304,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func forfeitGame() {
 		guard inGame else { return }
 
-		clientInteractor.send(.online, .forfeit)
+		clientInteractor.send(clientMode, .forfeit)
 		transition(to: .forfeit)
 	}
 
@@ -393,7 +395,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		}
 
 		transition(to: .sendingMovement(movement))
-		clientInteractor.send(.online, .movement(relativeMovement))
+		clientInteractor.send(clientMode, .movement(relativeMovement))
 	}
 
 	private func updateGameState(to newState: GameState) {
