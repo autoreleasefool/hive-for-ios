@@ -212,7 +212,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func openConnection() {
 		guard !connectionOpened else { return }
 		connectionOpened = true
-		clientInteractor.reconnect()
+		clientInteractor.reconnect(.online)
 			.sink(
 				receiveCompletion: { [weak self] in
 					if case let .failure(error) = $0 {
@@ -226,7 +226,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 
 	private func cleanUp() {
-		clientInteractor.closeConnection(code: nil)
+		clientInteractor.close(.online)
 	}
 
 	private func setupNewGame() {
@@ -302,7 +302,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func forfeitGame() {
 		guard inGame else { return }
 
-		clientInteractor.send(.forfeit)
+		clientInteractor.send(.online, .forfeit)
 		transition(to: .forfeit)
 	}
 
@@ -393,7 +393,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		}
 
 		transition(to: .sendingMovement(movement))
-		clientInteractor.send(.movement(relativeMovement))
+		clientInteractor.send(.online, .movement(relativeMovement))
 	}
 
 	private func updateGameState(to newState: GameState) {
@@ -458,7 +458,7 @@ extension HiveGameViewModel {
 	private func handleGameClientError(_ error: GameClientError) {
 		print("Client did not connect: \(error)")
 
-		guard reconnectAttempts < HiveGameClient.maxReconnectAttempts else {
+		guard reconnectAttempts < OnlineGameClient.maxReconnectAttempts else {
 			loafState.send(LoafState("Failed to reconnect", state: .error))
 			transition(to: .gameEnd)
 			return

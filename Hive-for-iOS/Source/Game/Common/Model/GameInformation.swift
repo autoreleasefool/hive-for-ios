@@ -82,7 +82,7 @@ enum GameInformation {
 			return "The connection to the server has been lost. The game will automatically attempt to reconnect, " +
 				"but if a connection cannot be made, you will forfeit the match. This dialog will dismiss " +
 				"automatically if the connection is restored.\n" +
-				"Please wait (\(attempts)/\(HiveGameClient.maxReconnectAttempts))."
+				"Please wait (\(attempts)/\(OnlineGameClient.maxReconnectAttempts))."
 		}
 	}
 

@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import HiveEngine
 import SwiftUI
 
 struct LocalRoom: View {
@@ -102,9 +103,15 @@ struct LocalRoom: View {
 extension LocalRoom {
 	private func handleAction(_ action: LocalRoomAction) {
 		switch action {
+		case .startGame:
+			startGame()
 		case .exitMatch:
 			exitMatch()
 		}
+	}
+
+	private func startGame() {
+		container.appState[\.gameSetup] = .init(state: GameState(options: viewModel.gameOptions), player: viewModel.player)
 	}
 
 	private func exitMatch() {

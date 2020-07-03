@@ -33,7 +33,7 @@ enum OnlineRoomAction: BaseAction {
 	case startGame(GameState, Player)
 
 	case openClientConnection(URL?)
-	case closeConnection(code: CloseCode?)
+	case closeConnection
 	case sendMessage(GameClientMessage)
 	case showLoaf(LoafState)
 
@@ -205,7 +205,7 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 			actions.send(.loadMatchDetails)
 		} else if !userIsHost && id == match.value?.host?.id {
 			actions.send(.showLoaf(LoafState("The host has left!", state: .warning)))
-			actions.send(.closeConnection(code: nil))
+			actions.send(.closeConnection)
 		}
 	}
 
@@ -262,7 +262,7 @@ extension OnlineRoomViewModel {
 	}
 
 	private func handleGameClientError(_ error: GameClientError) {
-		guard reconnectAttempts < HiveGameClient.maxReconnectAttempts else {
+		guard reconnectAttempts < OnlineGameClient.maxReconnectAttempts else {
 			LoadingHUD.shared.hide()
 			actions.send(.failedToReconnect)
 
@@ -339,7 +339,7 @@ extension OnlineRoomViewModel {
 	}
 
 	var reconnectingMessage: String {
-		"Reconnecting (\(reconnectAttempts)/\(HiveGameClient.maxReconnectAttempts))..."
+		"Reconnecting (\(reconnectAttempts)/\(OnlineGameClient.maxReconnectAttempts))..."
 	}
 
 	func errorMessage(from error: Error) -> String {

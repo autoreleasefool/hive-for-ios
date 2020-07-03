@@ -34,6 +34,8 @@
 		CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */; };
 		CA6CC92D24AE94E900E8CB27 /* Dumbo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92C24AE94E900E8CB27 /* Dumbo.swift */; };
 		CA6CC92F24AE952400E8CB27 /* HiveMind.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92E24AE952400E8CB27 /* HiveMind.swift */; };
+		CA6CC93124AF6BC300E8CB27 /* LocalGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC93024AF6BC300E8CB27 /* LocalGameClient.swift */; };
+		CA6CC93424AF6BDE00E8CB27 /* OnlineGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC93324AF6BDE00E8CB27 /* OnlineGameClient.swift */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
 		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
@@ -150,6 +152,8 @@
 		CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
 		CA6CC92C24AE94E900E8CB27 /* Dumbo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dumbo.swift; sourceTree = "<group>"; };
 		CA6CC92E24AE952400E8CB27 /* HiveMind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveMind.swift; sourceTree = "<group>"; };
+		CA6CC93024AF6BC300E8CB27 /* LocalGameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalGameClient.swift; sourceTree = "<group>"; };
+		CA6CC93324AF6BDE00E8CB27 /* OnlineGameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineGameClient.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
@@ -273,6 +277,16 @@
 				CA286D07247140A80044BAAE /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		CA6CC93224AF6BC800E8CB27 /* GameClient */ = {
+			isa = PBXGroup;
+			children = (
+				CABDFCCC23DB73E400C697AD /* HiveGameClient.swift */,
+				CA6CC93024AF6BC300E8CB27 /* LocalGameClient.swift */,
+				CA6CC93324AF6BDE00E8CB27 /* OnlineGameClient.swift */,
+			);
+			path = GameClient;
 			sourceTree = "<group>";
 		};
 		CA7299972393156100AD1285 = {
@@ -576,9 +590,9 @@
 		CAC6861123CE43F600B882D2 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				CA6CC93224AF6BC800E8CB27 /* GameClient */,
 				CA91C32024350CD3007E7D55 /* Model */,
 				CAC6861223CE440A00B882D2 /* HiveAPI.swift */,
-				CABDFCCC23DB73E400C697AD /* HiveGameClient.swift */,
 				CAF8255B245C6C640064359E /* Loadable.swift */,
 			);
 			path = API;
@@ -907,6 +921,7 @@
 				CABDFCCD23DB73E400C697AD /* HiveGameClient.swift in Sources */,
 				CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */,
 				CA45F9C2242E6119007EC94D /* PieceClassDetails.swift in Sources */,
+				CA6CC93424AF6BDE00E8CB27 /* OnlineGameClient.swift in Sources */,
 				CA8F46E1245EBD0D00B136D0 /* Lobby.swift in Sources */,
 				CAC961E3243B105E00B3FC8D /* GameClientMessage.swift in Sources */,
 				CAFA469A23DAD13B003C38AB /* HiveGameViewModel.swift in Sources */,
@@ -986,6 +1001,7 @@
 				CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */,
 				CAF82556245C6B030064359E /* AppState.swift in Sources */,
 				CAFA91F623E958EE0087F1F0 /* PopoverSheet.swift in Sources */,
+				CA6CC93124AF6BC300E8CB27 /* LocalGameClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

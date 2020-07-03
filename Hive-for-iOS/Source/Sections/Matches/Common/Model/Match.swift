@@ -53,7 +53,7 @@ struct Match: Identifiable, Decodable, Equatable {
 
 extension Match {
 	struct User: Identifiable, Decodable, Equatable {
-		private static let offlineId = UUID(uuidString: "238cce9a-bba3-4221-9738-9f8cd59ef766")!
+		static let offlineId = UUID(uuidString: "238cce9a-bba3-4221-9738-9f8cd59ef766")!
 
 		let id: UUID
 		let displayName: String

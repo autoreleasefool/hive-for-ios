@@ -19,10 +19,16 @@ extension AppEnvironment {
 		let appState = Store(AppState())
 		let session = configuredNetworkSession()
 		let api = configuredAPI(session: session)
-		let client = configuredClient()
+		let onlineClient = configuredOnlineClient()
+		let localClient = configuredLocalClient()
 		let keychain = configuredKeychain()
 
-		let repositories = configuredRepositories(keychain: keychain, api: api, client: client)
+		let repositories = configuredRepositories(
+			keychain: keychain,
+			api: api,
+			onlineClient: onlineClient,
+			localClient: localClient
+		)
 		let interactors = configuredInteractors(repositories: repositories, appState: appState)
 
 		let container = AppContainer(appState: appState, interactors: interactors)
@@ -38,8 +44,12 @@ extension AppEnvironment {
 		HiveAPI(session: session)
 	}
 
-	private static func configuredClient() -> HiveGameClient {
-		HiveGameClient()
+	private static func configuredOnlineClient() -> HiveGameClient {
+		OnlineGameClient()
+	}
+
+	private static func configuredLocalClient() -> HiveGameClient {
+		LocalGameClient()
 	}
 
 	private static func configuredKeychain() -> Keychain {
@@ -49,7 +59,8 @@ extension AppEnvironment {
 	private static func configuredRepositories(
 		keychain: Keychain,
 		api: HiveAPI,
-		client: HiveGameClient
+		onlineClient: HiveGameClient,
+		localClient: HiveGameClient
 	) -> RepositoryContainer {
 		let accountRepository = LiveAccountRepository(keychain: keychain, api: api)
 		let matchRepository = LiveMatchRepository(api: api)
@@ -59,7 +70,7 @@ extension AppEnvironment {
 			accountRepository: accountRepository,
 			matchRepository: matchRepository,
 			userRepository: userRepository,
-			client: client
+			clients: (onlineClient, localClient)
 		)
 	}
 
@@ -83,7 +94,7 @@ extension AppEnvironment {
 		)
 
 		let clientInteractor = LiveClientInteractor(
-			client: repositories.client,
+			clients: .init(online: repositories.clients.online, local: repositories.clients.local),
 			appState: appState
 		)
 
@@ -101,6 +112,6 @@ private extension AppEnvironment {
 		let accountRepository: AccountRepository
 		let matchRepository: MatchRepository
 		let userRepository: UserRepository
-		let client: HiveGameClient
+		let clients: (online: HiveGameClient, local: HiveGameClient)
 	}
 }

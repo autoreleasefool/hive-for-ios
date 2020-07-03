@@ -1,8 +1,8 @@
 //
-//  HiveGameClient.swift
+//  OnlineGameClient.swift
 //  Hive-for-iOS
 //
-//  Created by Joseph Roque on 2020-01-24.
+//  Created by Joseph Roque on 2020-07-03.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
@@ -11,47 +11,36 @@ import Foundation
 import HiveEngine
 import Starscream
 
-enum GameClientEvent {
-	case message(GameServerMessage)
-	case connected
-	case alreadyConnected
-	case closed(String, UInt16)
-}
-
-enum GameClientError: LocalizedError {
-	case usingOfflineAccount
-	case failedToConnect
-	case missingURL
-	case webSocketError(Error?)
-}
-
-class HiveGameClient {
+class OnlineGameClient: HiveGameClient {
 	static let maxReconnectAttempts = 5
 
 	private var url: URL?
+	private var account: Account?
 	private var webSocket: WebSocket?
+
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 	private(set) var isConnected: Bool = false
 
-	func openConnection(to url: URL, withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
-		guard account?.isOffline != true else {
-			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
-		}
+	var isPrepared: Bool {
+		url != nil
+	}
 
-		if isConnected, let subject = subject {
-			if self.url == url {
-				subject.send(.alreadyConnected)
-				return subject.eraseToAnyPublisher()
-			} else {
-				close()
-			}
+	func prepare(configuration: HiveGameClientConfiguration) {
+		guard case let .online(url, account) = configuration else { return }
+
+		if self.url != nil, self.url != url {
+			close()
 		}
 
 		self.url = url
-		return openConnection(withAccount: account)
+		self.account = account
 	}
 
-	func reconnect(withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
+	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
+		guard isPrepared, let url = url else {
+			return Fail(error: .notPrepared).eraseToAnyPublisher()
+		}
+
 		guard account?.isOffline != true else {
 			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
 		}
@@ -61,15 +50,30 @@ class HiveGameClient {
 			return subject.eraseToAnyPublisher()
 		}
 
-		return openConnection(withAccount: account)
+		return openConnection(to: url, withAccount: account)
 	}
 
-	private func openConnection(withAccount account: Account?) -> AnyPublisher<GameClientEvent, GameClientError> {
-		guard let url = self.url else {
-			return Fail(error: GameClientError.missingURL)
-				.eraseToAnyPublisher()
+	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
+		guard isPrepared, let url = url else {
+			return Fail(error: .notPrepared).eraseToAnyPublisher()
 		}
 
+		guard account?.isOffline != true else {
+			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
+		}
+
+		if isConnected, let subject = subject {
+			subject.send(.alreadyConnected)
+			return subject.eraseToAnyPublisher()
+		}
+
+		return openConnection(to: url, withAccount: account)
+	}
+
+	private func openConnection(
+		to url: URL,
+		withAccount account: Account?
+	) -> AnyPublisher<GameClientEvent, GameClientError> {
 		let publisher = PassthroughSubject<GameClientEvent, GameClientError>()
 		self.subject = publisher
 
@@ -82,9 +86,10 @@ class HiveGameClient {
 		return publisher.eraseToAnyPublisher()
 	}
 
-	func close(code: CloseCode? = nil) {
-		webSocket?.disconnect(closeCode: code?.rawValue ?? CloseCode.normal.rawValue)
+	func close() {
+		webSocket?.disconnect(closeCode: CloseCode.normal.rawValue)
 		subject?.send(completion: .finished)
+		subject = nil
 	}
 
 	func send(_ message: GameClientMessage) {
@@ -94,7 +99,7 @@ class HiveGameClient {
 
 // MARK: - WebSocketDelegate
 
-extension HiveGameClient: WebSocketDelegate {
+extension OnlineGameClient: WebSocketDelegate {
 	func didReceive(event: WebSocketEvent, client: WebSocket) {
 		switch event {
 		case .connected:

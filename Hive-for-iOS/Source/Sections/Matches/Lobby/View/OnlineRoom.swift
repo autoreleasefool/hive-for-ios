@@ -165,8 +165,8 @@ extension OnlineRoom {
 
 		case .openClientConnection(let url):
 			openClientConnection(to: url)
-		case .closeConnection(let code):
-			close(code: code)
+		case .closeConnection:
+			close()
 		case .sendMessage(let message):
 			send(message)
 
@@ -224,7 +224,7 @@ extension OnlineRoom {
 
 	private func exitMatch() {
 		send(.forfeit)
-		close(code: nil)
+		close()
 		presentationMode.wrappedValue.dismiss()
 	}
 }
@@ -235,11 +235,13 @@ extension OnlineRoom {
 	private func openClientConnection(to url: URL?) {
 		let publisher: AnyPublisher<GameClientEvent, GameClientError>
 		if let url = url {
+			container.interactors.clientInteractor
+				.prepare(.online, clientConfiguration: .online(url, container.account))
 			publisher = container.interactors.clientInteractor
-				.openConnection(to: url)
+				.openConnection(.online)
 		} else {
 			publisher = container.interactors.clientInteractor
-				.reconnect()
+				.reconnect(.online)
 		}
 
 		viewModel.postViewAction(.subscribedToClient(publisher))
@@ -247,17 +249,12 @@ extension OnlineRoom {
 
 	private func send(_ message: GameClientMessage) {
 		container.interactors.clientInteractor
-			.send(message)
+			.send(.online, message)
 	}
 
-	private func close(code: CloseCode?) {
+	private func close() {
 		container.interactors.clientInteractor
-			.closeConnection(code: code)
-	}
-
-	private func closeConnection(code: CloseCode?) {
-		close(code: code)
-		presentationMode.wrappedValue.dismiss()
+			.close(.online)
 	}
 }
 

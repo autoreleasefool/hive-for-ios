@@ -11,52 +11,82 @@ import Foundation
 import Starscream
 
 protocol ClientInteractor {
-	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError>
-	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError>
+	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: HiveGameClientConfiguration)
+	func openConnection(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError>
+	func reconnect(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError>
 
-	func closeConnection(code: CloseCode?)
-	func send(_ message: GameClientMessage)
+	func close(_ configuration: ClientInteractorConfiguration)
+	func send(_ configuration: ClientInteractorConfiguration, _ message: GameClientMessage)
+}
+
+enum ClientInteractorConfiguration {
+	case online
+	case local
 }
 
 struct LiveClientInteractor: ClientInteractor {
-	private let client: HiveGameClient
+	struct Clients {
+		let online: HiveGameClient
+		let local: HiveGameClient
+	}
+
+	private let clients: Clients
 	private let appState: Store<AppState>
 
-	init(client: HiveGameClient, appState: Store<AppState>) {
-		self.client = client
+	init(clients: Clients, appState: Store<AppState>) {
+		self.clients = clients
 		self.appState = appState
 	}
 
-	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError> {
-		client.openConnection(to: url, withAccount: appState.value.account.value)
+	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: HiveGameClientConfiguration) {
+		client(forConfiguration: configuration).prepare(configuration: clientConfiguration)
+	}
+
+	func openConnection(
+		_ configuration: ClientInteractorConfiguration
+	) -> AnyPublisher<GameClientEvent, GameClientError> {
+		client(forConfiguration: configuration)
+			.openConnection()
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 
-	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
-		client.reconnect(withAccount: appState.value.account.value)
+	func reconnect(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError> {
+		client(forConfiguration: configuration)
+			.reconnect()
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 
-	func closeConnection(code: CloseCode?) {
-		client.close(code: code)
+	func close(_ configuration: ClientInteractorConfiguration) {
+		client(forConfiguration: configuration)
+			.close()
 	}
 
-	func send(_ message: GameClientMessage) {
-		client.send(message)
+	func send(_ configuration: ClientInteractorConfiguration, _ message: GameClientMessage) {
+		client(forConfiguration: configuration)
+			.send(message)
+	}
+
+	private func client(forConfiguration: ClientInteractorConfiguration) -> HiveGameClient {
+		switch forConfiguration {
+		case .online: return clients.online
+		case .local: return clients.local
+		}
 	}
 }
 
 struct StubClientInteractor: ClientInteractor {
-	func openConnection(to url: URL) -> AnyPublisher<GameClientEvent, GameClientError> {
+	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: HiveGameClientConfiguration) { }
+
+	func openConnection(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError> {
 		Fail(error: .failedToConnect).eraseToAnyPublisher()
 	}
 
-	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
+	func reconnect(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError> {
 		Fail(error: .failedToConnect).eraseToAnyPublisher()
 	}
 
-	func closeConnection(code: CloseCode?) { }
-	func send(_ message: GameClientMessage) { }
+	func close(_ configuration: ClientInteractorConfiguration) { }
+	func send(_ configuration: ClientInteractorConfiguration, _ message: GameClientMessage) { }
 }

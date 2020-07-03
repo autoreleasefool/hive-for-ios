@@ -20,6 +20,7 @@ enum LocalRoomViewAction: BaseViewAction {
 }
 
 enum LocalRoomAction: BaseAction {
+	case startGame
 	case exitMatch
 }
 
@@ -69,7 +70,7 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 	}
 
 	private func startGame() {
-
+		actions.send(.startGame)
 	}
 
 	func optionEnabled(option: Match.Option) -> Binding<Bool> {
