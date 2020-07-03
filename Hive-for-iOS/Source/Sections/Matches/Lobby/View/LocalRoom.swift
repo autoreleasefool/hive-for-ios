@@ -15,7 +15,7 @@ struct LocalRoom: View {
 
 	@ObservedObject private var viewModel = LocalRoomViewModel()
 
-	init(opponent: ComputerEnemy.Player) {
+	init(opponent: ComputerConfiguration) {
 		viewModel.opponent = opponent
 	}
 

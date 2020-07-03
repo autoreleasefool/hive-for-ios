@@ -13,46 +13,6 @@ typealias CreateMatchResponse = Match
 typealias JoinMatchResponse = Match
 
 struct Match: Identifiable, Decodable, Equatable {
-	struct User: Identifiable, Decodable, Equatable {
-		let id: UUID
-		let displayName: String
-		let elo: Int
-		let avatarUrl: String?
-
-		var isComputer: Bool {
-			ComputerEnemy.exists(withId: id)
-		}
-	}
-
-	enum Status: Int, Decodable {
-		case notStarted = 1
-		case active = 2
-		case ended = 3
-	}
-
-	struct Move: Identifiable, Decodable, Equatable {
-		let id: UUID
-		let notation: String
-		let ordinal: Int
-		let date: Date
-	}
-
-	enum Option: String, CaseIterable {
-		case hostIsWhite = "HostIsWhite"
-		case asyncPlay = "AsyncPlay"
-
-		var enabled: Bool {
-			switch self {
-			case .hostIsWhite: return true
-			case .asyncPlay: return false
-			}
-		}
-
-		static var enabledOptions: [Option] {
-			allCases.filter { $0.enabled }
-		}
-	}
-
 	let id: UUID
 
 	let host: User?
@@ -71,9 +31,100 @@ struct Match: Identifiable, Decodable, Equatable {
 		guard let host = HiveAPI.baseURL.host else { return nil }
 		return URL(string: "wss://\(host)/\(id)/play")
 	}
+
+	static func createOfflineMatch(against enemy: ComputerConfiguration) -> Match {
+		Match(
+			id: UUID(),
+			host: User.createOfflineUser(),
+			opponent: enemy.user,
+			winner: nil,
+			moves: [],
+			options: OptionSet.encode(Option.defaultOfflineSet),
+			gameOptions: OptionSet.encode(GameState().options),
+			createdAt: Date(),
+			duration: nil,
+			status: .notStarted,
+			isComplete: false
+		)
+	}
 }
 
-// MARK: Formatting
+// MARK: - User
+
+extension Match {
+	struct User: Identifiable, Decodable, Equatable {
+		private static let offlineId = UUID(uuidString: "238cce9a-bba3-4221-9738-9f8cd59ef766")!
+
+		let id: UUID
+		let displayName: String
+		let elo: Int
+		let avatarUrl: String?
+
+		var isComputer: Bool {
+			ComputerConfiguration.exists(withId: id)
+		}
+
+		var isOffline: Bool {
+			id == User.offlineId
+		}
+
+		static func createOfflineUser() -> User {
+			User(
+				id: offlineId,
+				displayName: "Local",
+				elo: 0,
+				avatarUrl: nil
+			)
+		}
+	}
+}
+
+// MARK: - Option
+
+extension Match {
+	enum Option: String, CaseIterable {
+		static var defaultOfflineSet: Set<Option> {
+			[.hostIsWhite]
+		}
+
+		case hostIsWhite = "HostIsWhite"
+		case asyncPlay = "AsyncPlay"
+
+		var enabled: Bool {
+			switch self {
+			case .hostIsWhite: return true
+			case .asyncPlay: return false
+			}
+		}
+
+		static var enabledOptions: [Option] {
+			allCases.filter { $0.enabled }
+		}
+	}
+}
+
+// MARK: - Status
+
+extension Match {
+	enum Status: Int, Decodable {
+		case notStarted = 1
+		case active = 2
+		case ended = 3
+	}
+}
+
+// MARK: - Move
+
+extension Match {
+	struct Move: Identifiable, Decodable, Equatable {
+		let id: UUID
+		let notation: String
+		let ordinal: Int
+		let date: Date
+	}
+}
+
+// MARK: - Formatting
 
 extension Match {
 	var optionSet: Set<Match.Option> {

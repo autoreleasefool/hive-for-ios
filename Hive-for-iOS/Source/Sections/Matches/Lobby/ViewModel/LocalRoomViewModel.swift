@@ -41,7 +41,7 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 		actions.eraseToAnyPublisher()
 	}
 
-	var opponent: ComputerEnemy.Player!
+	var opponent: ComputerConfiguration!
 
 	var player: Player {
 		matchOptions.contains(.hostIsWhite) ? .white : .black
@@ -65,7 +65,7 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 	}
 
 	private func createMatch() {
-
+		self.match = .loaded(Match.createOfflineMatch(against: opponent))
 	}
 
 	private func startGame() {

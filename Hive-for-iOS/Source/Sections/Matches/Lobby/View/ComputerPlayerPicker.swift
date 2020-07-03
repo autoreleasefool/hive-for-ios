@@ -13,16 +13,17 @@ struct ComputerPlayerPicker: View {
 
 	var body: some View {
 		List {
-			ForEach(ComputerEnemy.Player.allCases) { player in
-				NavigationLink(destination: LocalRoom(opponent: player)) {
+			ForEach(ComputerConfiguration.allCases) { computer in
+				NavigationLink(destination: LocalRoom(opponent: computer)) {
 					HStack(spacing: .m) {
-						Text(player.name)
+						Text(computer.name)
 							.body()
 							.foregroundColor(Color(.text))
 					}
 				}
 			}
 		}
+		.background(Color(.background).edgesIgnoringSafeArea(.all))
 		.listRowInsets(EdgeInsets(equalTo: .m))
 		.navigationBarTitle("Pick an opponent")
 	}
