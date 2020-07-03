@@ -141,6 +141,8 @@ struct OnlineRoom: View {
 			opponent: match.opponent?.summary,
 			opponentIsReady: viewModel.isPlayerReady(id: match.opponent?.id),
 			optionsDisabled: !viewModel.userIsHost,
+			gameOptions: $viewModel.gameOptions,
+			matchOptions: $viewModel.matchOptions,
 			isGameOptionEnabled: viewModel.gameOptionEnabled,
 			isOptionEnabled: viewModel.optionEnabled
 		)

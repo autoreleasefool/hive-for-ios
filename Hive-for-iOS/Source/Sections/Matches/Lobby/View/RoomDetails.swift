@@ -15,18 +15,24 @@ struct RoomDetails: View {
 	let opponent: UserPreview.UserSummary?
 	let opponentIsReady: Bool
 	let optionsDisabled: Bool
+
+	var gameOptions: Binding<Set<GameState.Option>>
+	var matchOptions: Binding<Set<Match.Option>>
 	let isGameOptionEnabled: (GameState.Option) -> Binding<Bool>
 	let isOptionEnabled: (Match.Option) -> Binding<Bool>
 
 	var body: some View {
-		VStack(spacing: .m) {
-			playerSection
-			Divider().background(Color(.divider))
-			expansionsSection
-			Divider().background(Color(.divider))
-			matchOptionsSection
-			Divider().background(Color(.divider))
-			otherOptionsSection
+		ScrollView {
+			VStack(spacing: .m) {
+				playerSection
+				Divider().background(Color(.divider))
+				expansionsSection
+				Divider().background(Color(.divider))
+				matchOptionsSection
+				Divider().background(Color(.divider))
+				otherOptionsSection
+				Spacer()
+			}
 		}
 		.padding(.all, length: .m)
 	}
@@ -57,7 +63,7 @@ struct RoomDetails: View {
 			HStack(spacing: .l) {
 				Spacer()
 				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-					self.expansionOption(for: option, enabled: self.isGameOptionEnabled(option).wrappedValue)
+					self.expansionOption(for: option, enabled: self.gameOptions.wrappedValue.contains(option))
 				}
 				Spacer()
 			}
@@ -66,7 +72,7 @@ struct RoomDetails: View {
 
 	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
 		Button(action: {
-			self.isGameOptionEnabled(option).wrappedValue.toggle()
+			self.gameOptions.wrappedValue.toggle(option)
 		}, label: {
 			ZStack {
 				Text(name(forOption: option))

@@ -66,8 +66,8 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 	let initialMatchId: Match.ID?
 	private var userId: User.ID!
 
-	@Published private(set) var matchOptions: Set<Match.Option> = Set()
-	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
+	@Published var matchOptions: Set<Match.Option> = Set()
+	@Published var gameOptions: Set<GameState.Option> = Set()
 	@Published private(set) var readyPlayers: Set<UUID> = Set()
 
 	@Published var exiting = false

@@ -31,8 +31,8 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 		}
 	}
 
-	@Published private(set) var matchOptions: Set<Match.Option> = Set()
-	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
+	@Published var matchOptions: Set<Match.Option> = Set()
+	@Published var gameOptions: Set<GameState.Option> = Set()
 
 	@Published var exiting = false
 
@@ -75,20 +75,14 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 	func optionEnabled(option: Match.Option) -> Binding<Bool> {
 		Binding(
 			get: { [weak self] in self?.matchOptions.contains(option) ?? false },
-			set: { [weak self] newValue in
-				guard let self = self else { return }
-				self.matchOptions.set(option, to: newValue)
-			}
+			set: { [weak self] newValue in self?.matchOptions.set(option, to: newValue) }
 		)
 	}
 
 	func gameOptionEnabled(option: GameState.Option) -> Binding<Bool> {
 		Binding(
 			get: { [weak self] in self?.gameOptions.contains(option) ?? false },
-			set: { [weak self] newValue in
-				guard let self = self else { return }
-				self.gameOptions.set(option, to: newValue)
-			}
+			set: { [weak self] newValue in self?.gameOptions.set(option, to: newValue) }
 		)
 	}
 }
