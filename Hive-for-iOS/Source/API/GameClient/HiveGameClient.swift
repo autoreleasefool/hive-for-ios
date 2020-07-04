@@ -27,7 +27,7 @@ enum GameClientError: LocalizedError {
 }
 
 enum HiveGameClientConfiguration {
-	case offline(GameState, ComputerConfiguration)
+	case offline(GameState, Player, ComputerConfiguration)
 	case online(URL, Account?)
 }
 

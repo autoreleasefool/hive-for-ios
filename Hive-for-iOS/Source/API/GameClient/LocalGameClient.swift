@@ -12,6 +12,8 @@ import HiveEngine
 
 class LocalGameClient: HiveGameClient {
 	private var gameState: GameState?
+	private var localPlayer: Player?
+	private var computerConfiguration: ComputerConfiguration?
 	private var computerPlayer: ComputerPlayer?
 
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
@@ -21,12 +23,15 @@ class LocalGameClient: HiveGameClient {
 	}
 
 	var isPrepared: Bool {
-		gameState != nil && computerPlayer != nil
+		gameState != nil && computerPlayer != nil && localPlayer != nil && computerConfiguration != nil
 	}
 
 	func prepare(configuration: HiveGameClientConfiguration) {
-		guard case let .offline(gameState, computerConfiguration) = configuration else { return }
-		computerPlayer = computerConfiguration.player
+		guard case let .offline(gameState, player, computerConfiguration) = configuration else { return }
+		self.gameState = gameState
+		self.localPlayer = player
+		self.computerConfiguration = computerConfiguration
+		self.computerPlayer = computerConfiguration.player
 	}
 
 	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
@@ -70,9 +75,7 @@ class LocalGameClient: HiveGameClient {
 
 	func close() {
 		subject?.send(completion: .finished)
-		computerPlayer = nil
-		gameState = nil
-		subject = nil
+		resetState()
 	}
 
 	func send(_ message: GameClientMessage) {
@@ -81,52 +84,111 @@ class LocalGameClient: HiveGameClient {
 			playerForfeit()
 		case .movement(let movement):
 			playerMovement(movement)
-		case .message, .readyToPlay, .setOption:
+		case .readyToPlay:
+			playComputerMoveIfFirst()
+		case .message, .setOption:
 			// Ignored for offline play
 			break
 		}
+	}
+
+	private func resetState() {
+		computerPlayer = nil
+		computerConfiguration = nil
+		localPlayer = nil
+		gameState = nil
+		subject = nil
 	}
 }
 
 // MARK: - Player actions
 
-extension LocalGameClient {
-	private func playerForfeit() {
+private extension LocalGameClient {
+	func playerForfeit() {
 		subject?.send(.message(.forfeit(Match.User.offlineId)))
 	}
 
-	private func playerMovement(_ movement: RelativeMovement) {
+	func playerMovement(_ movement: RelativeMovement) {
+		guard let gameState = gameState else {
+			subject?.send(.message(.error(GameServerError(
+				code: .invalidCommand,
+				description: "There doesn't appear to be a game in progress."
+			))))
+			return
+		}
 
+		guard gameState.currentPlayer == localPlayer else {
+			subject?.send(.message(.error(GameServerError(
+				code: .notPlayerTurn,
+				description: "It's not your turn."
+			))))
+			return
+		}
+
+		guard gameState.apply(relativeMovement: movement) else {
+			subject?.send(.message(.error(GameServerError(
+				code: .invalidMovement,
+				description: #"Move "\#(movement)" not valid."#
+			))))
+			return
+		}
+
+		subject?.send(.message(.gameState(GameState(from: gameState))))
+		if gameState.isEndGame {
+			endGame()
+		} else {
+			playComputerMove()
+		}
 	}
 }
 
-//extension OnlineGameClient: WebSocketDelegate {
-//	func didReceive(event: WebSocketEvent, client: WebSocket) {
-//		switch event {
-//		case .connected:
-//			isConnected = true
-//			subject?.send(.connected)
-//		case .disconnected(let reason, let code):
-//			isConnected = false
-//			print("WebSocket disconnected: \(reason) with code: \(code)")
-//			subject?.send(.closed(reason, code))
-//			subject?.send(completion: .finished)
-//		case .cancelled:
-//			isConnected = false
-//			subject?.send(completion: .failure(.failedToConnect))
-//		case .error(let error):
-//			isConnected = false
-//			subject?.send(completion: .failure(.webSocketError(error)))
-//		case .text(let text):
-//			guard let message = GameServerMessage(text) else { return }
-//			subject?.send(.message(message))
-//		case .binary, .ping, .pong:
-//			// Ignore non-text responses
-//			break
-//		case .viabilityChanged, .reconnectSuggested:
-//			// viabilityChanged -- when connection goes down/up
-//			// reconnectSuggested -- when a better connection is available
-//			break
-//		}
-//	}
-//}
+// MARK: - Computer actions
+
+private extension LocalGameClient {
+	func playComputerMoveIfFirst() {
+		guard gameState?.move == 0, gameState?.currentPlayer != localPlayer else { return }
+		playComputerMove()
+	}
+
+	func playComputerMove() {
+		guard let gameState = gameState else {
+			subject?.send(.message(.error(GameServerError(
+				code: .unknownError,
+				description: "There doesn't appear to be a game in progress."
+			))))
+			return
+		}
+
+		guard let computerMove = computerPlayer?.playMove(in: gameState),
+			gameState.apply(computerMove) else {
+			return
+		}
+
+		subject?.send(.message(.gameState(GameState(from: gameState))))
+		if gameState.isEndGame {
+			endGame()
+		}
+	}
+}
+
+// MARK: - Game actions
+
+private extension LocalGameClient {
+	var winner: UUID? {
+		guard let winner = gameState?.winner else { return nil }
+		if winner.count == 2 {
+			return nil
+		}
+
+		switch winner.first {
+		case .white: return localPlayer == .white ? Match.User.offlineId : computerConfiguration?.id
+		case .black: return localPlayer == .black ? Match.User.offlineId : computerConfiguration?.id
+		case .none: return nil
+		}
+	}
+
+	func endGame() {
+		guard gameState?.isEndGame == true else { return }
+		subject?.send(.message(.gameOver(winner)))
+	}
+}

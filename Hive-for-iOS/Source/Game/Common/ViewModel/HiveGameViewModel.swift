@@ -238,6 +238,11 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		} else {
 			transition(to: .opponentTurn)
 		}
+
+		// Let the computer know it's time to play, if offline
+		if case .local = clientMode {
+			clientInteractor.send(.local, .readyToPlay)
+		}
 	}
 
 	private func setupView(content: GameViewContent) {

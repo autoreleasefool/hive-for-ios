@@ -147,6 +147,8 @@ struct GameServerError {
 		case optionNonModifiable = 103
 		case invalidCommand = 199
 		case optionValueNotUpdated = 201
+		case failedToEndMatch = 202
+		case failedToStartMatch = 203
 		case unknownError = 999
 	}
 
@@ -160,6 +162,12 @@ struct GameServerError {
 		user = UUID(uuidString: String(components[1]))
 		code = Code(rawValue: Int(String(components[2])) ?? 999) ?? .unknownError
 		description = components[3...].joined(separator: " ")
+	}
+
+	init(user: UUID? = nil, code: Code, description: String) {
+		self.user = user
+		self.code = code
+		self.description = description
 	}
 
 	var loaf: LoafState {

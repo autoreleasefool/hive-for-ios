@@ -114,7 +114,7 @@ extension LocalRoom {
 		let gameState = GameState(options: viewModel.gameOptions)
 
 		container.interactors.clientInteractor
-			.prepare(.local, clientConfiguration: .offline(gameState, viewModel.opponent))
+			.prepare(.local, clientConfiguration: .offline(gameState, viewModel.player, viewModel.opponent))
 		container.appState[\.gameSetup] = .init(state: gameState, player: viewModel.player, mode: .local)
 	}
 
