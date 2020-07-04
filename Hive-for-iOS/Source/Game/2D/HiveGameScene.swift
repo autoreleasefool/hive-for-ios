@@ -154,6 +154,9 @@ class HiveGameScene: SKScene {
 			addUnownedChild(sprite)
 		}
 
+		// Ensure the origin is always visible
+		addUnownedChild(self.sprite(for: .origin))
+
 		updateSpriteScaleAndOffset()
 		updateSpriteAlpha()
 	}
