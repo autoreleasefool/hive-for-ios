@@ -33,11 +33,12 @@ struct GameHUD: View {
 		Button(action: {
 			self.viewModel.postViewAction(.openSettings)
 		}, label: {
-			HexImage(ImageAsset.Icon.info, stroke: .textSecondary)
-				.placeholderTint(.textSecondary)
-				.squareInnerImage(.s)
+			Image(uiImage: ImageAsset.Icon.info)
+				.resizable()
+				.scaledToFit()
+				.squareImage(.s)
+				.foregroundColor(Color(.textSecondary))
 		})
-		.squareImage(buttonSize)
 		.position(
 			x: geometry.size.width - (buttonSize.rawValue / 2 + buttonDistanceFromEdge.rawValue),
 			y: buttonDistanceFromEdge.rawValue
