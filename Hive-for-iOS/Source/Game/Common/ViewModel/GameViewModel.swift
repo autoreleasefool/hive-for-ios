@@ -394,9 +394,9 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private func updateGameState(to newState: GameState) {
 		guard inGame else { return }
+		let previousState = gameState
 		self.gameStateStore.send(newState)
 
-		let previousState = gameState
 		let opponent = playingAs.next
 		guard let previousUpdate = newState.updates.last,
 			previousUpdate != previousState.updates.last else {
