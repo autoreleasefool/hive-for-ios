@@ -10,7 +10,7 @@ import SwiftUI
 import HiveEngine
 
 struct InformationHUD: View {
-	@EnvironmentObject var viewModel: HiveGameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
 
 	@State private var subtitleHeight: CGFloat = 100
 

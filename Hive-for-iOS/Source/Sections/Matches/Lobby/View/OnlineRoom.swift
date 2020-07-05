@@ -230,7 +230,7 @@ extension OnlineRoom {
 	}
 }
 
-// MARK: - HiveGameClient
+// MARK: - GameClient
 
 extension OnlineRoom {
 	private func openClientConnection(to url: URL?) {

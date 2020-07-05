@@ -26,14 +26,14 @@ enum GameInformation {
 	case piece(Piece)
 	case pieceClass(Piece.Class)
 	case stack([Piece])
-	case rule(HiveRule?)
+	case rule(GameRule?)
 	case gameEnd(EndState)
 	case reconnecting(Int)
 
 	init?(fromLink link: String) {
 		if link.starts(with: "class:"), let pieceClass = Piece.Class(fromName: String(link.substring(from: 6))) {
 			self = .pieceClass(pieceClass)
-		} else if link.starts(with: "rule:"), let rule = HiveRule(rawValue: String(link.substring(from: 5))) {
+		} else if link.starts(with: "rule:"), let rule = GameRule(rawValue: String(link.substring(from: 5))) {
 			self = .rule(rule)
 		} else {
 			return nil

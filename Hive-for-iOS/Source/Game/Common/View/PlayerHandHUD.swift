@@ -13,7 +13,7 @@ struct PlayerHandHUD: View {
 	private static let cardWidth: CGFloat = 240
 	private static let cardHeight: CGFloat = 150
 
-	@EnvironmentObject var viewModel: HiveGameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
 
 	private func title(hand: PlayerHand, playingAs: Player) -> Text {
 		Text(

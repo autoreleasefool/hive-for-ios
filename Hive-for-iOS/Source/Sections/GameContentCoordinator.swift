@@ -35,7 +35,7 @@ struct GameContentCoordinator: View {
 	}
 
 	private func gameView(_ setup: GameSetup) -> some View {
-		HiveGame(state: setup.state, player: setup.player, mode: setup.mode)
+		Game(state: setup.state, player: setup.player, mode: setup.mode)
 	}
 }
 

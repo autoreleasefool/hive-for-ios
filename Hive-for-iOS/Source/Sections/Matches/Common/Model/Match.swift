@@ -32,7 +32,7 @@ struct Match: Identifiable, Decodable, Equatable {
 		return URL(string: "wss://\(host)/\(id)/play")
 	}
 
-	static func createOfflineMatch(against enemy: ComputerConfiguration) -> Match {
+	static func createOfflineMatch(against enemy: AgentConfiguration) -> Match {
 		Match(
 			id: UUID(),
 			host: User.createOfflineUser(),
@@ -61,7 +61,7 @@ extension Match {
 		let avatarUrl: String?
 
 		var isComputer: Bool {
-			ComputerConfiguration.exists(withId: id)
+			AgentConfiguration.exists(withId: id)
 		}
 
 		var isOffline: Bool {

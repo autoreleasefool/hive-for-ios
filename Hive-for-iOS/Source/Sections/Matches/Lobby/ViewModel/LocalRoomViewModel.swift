@@ -42,7 +42,7 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 		actions.eraseToAnyPublisher()
 	}
 
-	var opponent: ComputerConfiguration!
+	var opponent: AgentConfiguration!
 
 	var player: Player {
 		matchOptions.contains(.hostIsWhite) ? .white : .black

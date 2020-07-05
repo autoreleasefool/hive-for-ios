@@ -10,9 +10,9 @@ import SwiftUI
 import SpriteKit
 
 class GameView2DController: UIViewController {
-	private let viewModel: HiveGameViewModel
+	private let viewModel: GameViewModel
 
-	init(viewModel: HiveGameViewModel) {
+	init(viewModel: GameViewModel) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -49,8 +49,8 @@ class GameView2DController: UIViewController {
 
 // MARK: - UIViewControllerRepresentable
 
-struct Hive2DGame: UIViewControllerRepresentable {
-	let viewModel: HiveGameViewModel
+struct GameView2DContainer: UIViewControllerRepresentable {
+	let viewModel: GameViewModel
 
 	func makeUIViewController(context: Context) -> GameView2DController {
 		GameView2DController(viewModel: viewModel)

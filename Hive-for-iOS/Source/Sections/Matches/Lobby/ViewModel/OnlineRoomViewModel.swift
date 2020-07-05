@@ -224,7 +224,7 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 	}
 }
 
-// MARK: - HiveGameClient
+// MARK: - GameClient
 
 extension OnlineRoomViewModel {
 	private func openClientConnection(to match: Match) {

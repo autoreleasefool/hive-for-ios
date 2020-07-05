@@ -13,7 +13,7 @@ class GameView2D: SKScene {
 	private let BASE_HEX_SCALE: CGPoint = CGPoint(x: 64, y: 64)
 	private let BASE_HEX_SIZE: CGSize = CGSize(width: 109, height: 95)
 
-	private let viewModel: HiveGameViewModel
+	private let viewModel: GameViewModel
 	private var debugSprite = DebugSprite()
 	private var spriteManager = SpriteManager()
 
@@ -63,7 +63,7 @@ class GameView2D: SKScene {
 		return gestureRecognizer
 	}()
 
-	init(viewModel: HiveGameViewModel, size: CGSize) {
+	init(viewModel: GameViewModel, size: CGSize) {
 		self.viewModel = viewModel
 		super.init(size: size)
 	}
@@ -162,8 +162,8 @@ class GameView2D: SKScene {
 	}
 
 	private func present(
-		deselectedPiece: HiveGameViewModel.DeselectedPiece?,
-		selectedPiece: HiveGameViewModel.SelectedPiece?
+		deselectedPiece: GameViewModel.DeselectedPiece?,
+		selectedPiece: GameViewModel.SelectedPiece?
 	) {
 		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
 			guard $0 != selectedPiece?.piece else { return }
@@ -395,10 +395,10 @@ extension GameView2D: UIGestureRecognizerDelegate {
 	}
 }
 
-// MARK: - HiveGameViewModel.State
+// MARK: - GameViewModel.State
 
 extension GameView2D {
-	private func handleTransition(to newState: HiveGameViewModel.State) {
+	private func handleTransition(to newState: GameViewModel.State) {
 		switch newState {
 		case .gameStart:
 			prepareGame()

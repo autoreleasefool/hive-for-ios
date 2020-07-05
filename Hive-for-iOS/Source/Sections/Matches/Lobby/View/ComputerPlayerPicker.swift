@@ -13,7 +13,7 @@ struct ComputerPlayerPicker: View {
 
 	var body: some View {
 		List {
-			ForEach(ComputerConfiguration.allCases) { computer in
+			ForEach(AgentConfiguration.allCases) { computer in
 				NavigationLink(destination: LocalRoom(opponent: computer)) {
 					HStack(spacing: .m) {
 						Text(computer.name)

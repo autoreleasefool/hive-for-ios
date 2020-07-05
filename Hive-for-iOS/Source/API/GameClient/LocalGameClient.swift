@@ -10,11 +10,11 @@ import Combine
 import Foundation
 import HiveEngine
 
-class LocalGameClient: HiveGameClient {
+class LocalGameClient: GameClient {
 	private var gameState: GameState?
 	private var localPlayer: Player?
-	private var computerConfiguration: ComputerConfiguration?
-	private var computerPlayer: ComputerPlayer?
+	private var computerConfiguration: AgentConfiguration?
+	private var computerPlayer: AIAgent?
 
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
@@ -26,7 +26,7 @@ class LocalGameClient: HiveGameClient {
 		gameState != nil && computerPlayer != nil && localPlayer != nil && computerConfiguration != nil
 	}
 
-	func prepare(configuration: HiveGameClientConfiguration) {
+	func prepare(configuration: GameClientConfiguration) {
 		guard case let .offline(gameState, player, computerConfiguration) = configuration else { return }
 		self.gameState = gameState
 		self.localPlayer = player

@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct RuleList: View {
-	@EnvironmentObject var viewModel: HiveGameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
 
 	var body: some View {
 		VStack(spacing: .s) {
-			ForEach(HiveRule.allCases, id: \.rawValue) { rule in
+			ForEach(GameRule.allCases, id: \.rawValue) { rule in
 				Button(action: {
 					self.viewModel.postViewAction(.presentInformation(.rule(rule)))
 				}, label: {

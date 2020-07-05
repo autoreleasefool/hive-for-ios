@@ -16,7 +16,7 @@ struct LocalRoom: View {
 
 	@ObservedObject private var viewModel = LocalRoomViewModel()
 
-	init(opponent: ComputerConfiguration) {
+	init(opponent: AgentConfiguration) {
 		viewModel.opponent = opponent
 	}
 

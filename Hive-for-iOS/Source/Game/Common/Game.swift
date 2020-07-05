@@ -1,5 +1,5 @@
 //
-//  HiveGame.swift
+//  Game.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-22.
@@ -11,16 +11,16 @@ import Combine
 import HiveEngine
 import Loaf
 
-struct HiveGame: View {
+struct Game: View {
 	@Environment(\.container) private var container
 
-	private let viewModel: HiveGameViewModel
+	private let viewModel: GameViewModel
 
 	init(state: GameState, player: Player, mode: ClientInteractorConfiguration) {
-		viewModel = HiveGameViewModel(initialState: state, playingAs: player, mode: mode)
+		viewModel = GameViewModel(initialState: state, playingAs: player, mode: mode)
 	}
 
-	private func handleTransition(to newState: HiveGameViewModel.State) {
+	private func handleTransition(to newState: GameViewModel.State) {
 		switch newState {
 		case .shutDown, .forfeit:
 			container.appState[\.gameSetup] = nil
@@ -55,11 +55,11 @@ struct HiveGame: View {
 
 	private var gameView: AnyView {
 		#if targetEnvironment(simulator)
-		return AnyView(Hive2DGame(viewModel: viewModel))
+		return AnyView(GameView2DContainer(viewModel: viewModel))
 		#else
 		switch container.appState.value.preferences.gameMode {
-		case .ar: return AnyView(HiveARGame(viewModel: viewModel))
-		case .sprite: return AnyView(Hive2DGame(viewModel: viewModel))
+		case .ar: return AnyView(GameViewARContainer(viewModel: viewModel))
+		case .sprite: return AnyView(GameView2DContainer(viewModel: viewModel))
 		}
 		#endif
 	}

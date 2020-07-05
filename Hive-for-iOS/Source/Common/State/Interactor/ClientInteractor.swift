@@ -11,7 +11,7 @@ import Foundation
 import Starscream
 
 protocol ClientInteractor {
-	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: HiveGameClientConfiguration)
+	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: GameClientConfiguration)
 	func openConnection(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError>
 	func reconnect(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError>
 
@@ -26,8 +26,8 @@ enum ClientInteractorConfiguration {
 
 struct LiveClientInteractor: ClientInteractor {
 	struct Clients {
-		let online: HiveGameClient
-		let local: HiveGameClient
+		let online: GameClient
+		let local: GameClient
 	}
 
 	private let clients: Clients
@@ -38,7 +38,7 @@ struct LiveClientInteractor: ClientInteractor {
 		self.appState = appState
 	}
 
-	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: HiveGameClientConfiguration) {
+	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: GameClientConfiguration) {
 		client(forConfiguration: configuration).prepare(configuration: clientConfiguration)
 	}
 
@@ -68,7 +68,7 @@ struct LiveClientInteractor: ClientInteractor {
 			.send(message)
 	}
 
-	private func client(forConfiguration: ClientInteractorConfiguration) -> HiveGameClient {
+	private func client(forConfiguration: ClientInteractorConfiguration) -> GameClient {
 		switch forConfiguration {
 		case .online: return clients.online
 		case .local: return clients.local
@@ -77,7 +77,7 @@ struct LiveClientInteractor: ClientInteractor {
 }
 
 struct StubClientInteractor: ClientInteractor {
-	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: HiveGameClientConfiguration) { }
+	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: GameClientConfiguration) { }
 
 	func openConnection(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError> {
 		Fail(error: .failedToConnect).eraseToAnyPublisher()

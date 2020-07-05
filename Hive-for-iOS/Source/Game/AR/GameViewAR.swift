@@ -21,13 +21,13 @@ class GameViewAR: UIView { }
 
 class GameViewAR: UIView {
 
-	private var viewModel: HiveGameViewModel
+	private var viewModel: GameViewModel
 
 	private var arView = ARView(frame: .zero)
 
 	private let debugOverlay = DebugOverlay(enabled: true)
 
-	init(viewModel: HiveGameViewModel) {
+	init(viewModel: GameViewModel) {
 		self.viewModel = viewModel
 		super.init(frame: .zero)
 	}
@@ -139,8 +139,8 @@ class GameViewAR: UIView {
 	}
 
 	private func present(
-		deselectedPiece: HiveGameViewModel.DeselectedPiece?,
-		selectedPiece: HiveGameViewModel.SelectedPiece?
+		deselectedPiece: GameViewModel.DeselectedPiece?,
+		selectedPiece: GameViewModel.SelectedPiece?
 	) {
 		guard let game = viewModel.gameAnchor else { return }
 		game.openPosition?.isEnabled = false

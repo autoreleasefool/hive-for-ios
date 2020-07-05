@@ -1,5 +1,5 @@
 //
-//  HiveGameViewModel.swift
+//  GameViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-24.
@@ -11,7 +11,7 @@ import Combine
 import HiveEngine
 import Loaf
 
-enum HiveGameViewAction: BaseViewAction {
+enum GameViewAction: BaseViewAction {
 	case onAppear
 	case viewContentDidLoad(GameViewContent)
 	case viewContentReady
@@ -38,7 +38,7 @@ enum HiveGameViewAction: BaseViewAction {
 	case onDisappear
 }
 
-class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
+class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	var clientInteractor: ClientInteractor!
 
 	@Published private(set) var presentedPlayerHand: PlayerHand?
@@ -144,7 +144,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		self.clientMode = mode
 	}
 
-	override func postViewAction(_ viewAction: HiveGameViewAction) {
+	override func postViewAction(_ viewAction: GameViewAction) {
 		switch viewAction {
 		case .onAppear:
 			openConnection()
@@ -448,9 +448,9 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	}
 }
 
-// MARK: - HiveGameClient
+// MARK: - GameClient
 
-extension HiveGameViewModel {
+extension GameViewModel {
 	private func handleGameClientError(_ error: GameClientError) {
 		print("Client did not connect: \(error)")
 
@@ -519,7 +519,7 @@ extension HiveGameViewModel {
 
 // MARK: - Position
 
-extension HiveGameViewModel {
+extension GameViewModel {
 	/// Returns the position in the stack and the total number of pieces in the stack
 	func positionInStack(of piece: Piece) -> (Int, Int) {
 		let position = self.position(of: piece)
@@ -565,7 +565,7 @@ extension HiveGameViewModel {
 
 // MARK: - State
 
-extension HiveGameViewModel {
+extension GameViewModel {
 	enum State: Equatable {
 		case begin
 		case gameStart
@@ -633,7 +633,7 @@ extension HiveGameViewModel {
 
 // MARK: - Strings
 
-extension HiveGameViewModel {
+extension GameViewModel {
 	var displayState: String {
 		switch currentState {
 		case .playerTurn:
@@ -652,7 +652,7 @@ extension HiveGameViewModel {
 
 // MARK: - Logging
 
-extension HiveGameViewModel {
+extension GameViewModel {
 	func debugLog(_ message: String) {
 		guard debugModeStore.value else { return }
 		print("HIVE_DEBUG: \(message)")

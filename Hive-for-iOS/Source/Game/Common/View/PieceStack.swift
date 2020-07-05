@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct PieceStack: View {
-	@EnvironmentObject var viewModel: HiveGameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
 	let stack: [Piece]
 
 	func row(piece: Piece) -> some View {

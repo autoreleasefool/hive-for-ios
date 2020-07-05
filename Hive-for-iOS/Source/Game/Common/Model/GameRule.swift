@@ -1,12 +1,12 @@
 //
-//  HiveRule.swift
+//  GameRule.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-03-27.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-enum HiveRule: String, CaseIterable {
+enum GameRule: String, CaseIterable {
 	case objective
 	case placement
 	case movement

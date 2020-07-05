@@ -1,5 +1,5 @@
 //
-//  DumboPlayer.swift
+//  HiveMindAgent.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-07-02.
@@ -8,7 +8,7 @@
 
 import HiveEngine
 
-class DumboPlayer: ComputerPlayer {
+class HiveMindAgent: AIAgent {
 	func playMove(in state: GameState) -> Movement {
 		state.availableMoves.first ?? .pass
 	}

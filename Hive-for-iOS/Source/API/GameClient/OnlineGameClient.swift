@@ -11,7 +11,7 @@ import Foundation
 import HiveEngine
 import Starscream
 
-class OnlineGameClient: HiveGameClient {
+class OnlineGameClient: GameClient {
 	static let maxReconnectAttempts = 5
 
 	private var url: URL?
@@ -25,7 +25,7 @@ class OnlineGameClient: HiveGameClient {
 		url != nil
 	}
 
-	func prepare(configuration: HiveGameClientConfiguration) {
+	func prepare(configuration: GameClientConfiguration) {
 		guard case let .online(url, account) = configuration else { return }
 
 		if self.url != nil, self.url != url {

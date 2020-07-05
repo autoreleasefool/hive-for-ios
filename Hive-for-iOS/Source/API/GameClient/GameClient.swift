@@ -1,5 +1,5 @@
 //
-//  HiveGameClient.swift
+//  GameClient.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-24.
@@ -26,17 +26,17 @@ enum GameClientError: LocalizedError {
 	case webSocketError(Error?)
 }
 
-enum HiveGameClientConfiguration {
-	case offline(GameState, Player, ComputerConfiguration)
+enum GameClientConfiguration {
+	case offline(GameState, Player, AgentConfiguration)
 	case online(URL, Account?)
 }
 
-protocol HiveGameClient {
+protocol GameClient {
 	var subject: PassthroughSubject<GameClientEvent, GameClientError>? { get }
 	var isConnected: Bool { get }
 	var isPrepared: Bool { get }
 
-	func prepare(configuration: HiveGameClientConfiguration)
+	func prepare(configuration: GameClientConfiguration)
 	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError>
 	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError>
 	func close()

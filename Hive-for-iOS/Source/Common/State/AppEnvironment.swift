@@ -44,11 +44,11 @@ extension AppEnvironment {
 		HiveAPI(session: session)
 	}
 
-	private static func configuredOnlineClient() -> HiveGameClient {
+	private static func configuredOnlineClient() -> GameClient {
 		OnlineGameClient()
 	}
 
-	private static func configuredLocalClient() -> HiveGameClient {
+	private static func configuredLocalClient() -> GameClient {
 		LocalGameClient()
 	}
 
@@ -59,8 +59,8 @@ extension AppEnvironment {
 	private static func configuredRepositories(
 		keychain: Keychain,
 		api: HiveAPI,
-		onlineClient: HiveGameClient,
-		localClient: HiveGameClient
+		onlineClient: GameClient,
+		localClient: GameClient
 	) -> RepositoryContainer {
 		let accountRepository = LiveAccountRepository(keychain: keychain, api: api)
 		let matchRepository = LiveMatchRepository(api: api)
@@ -112,6 +112,6 @@ private extension AppEnvironment {
 		let accountRepository: AccountRepository
 		let matchRepository: MatchRepository
 		let userRepository: UserRepository
-		let clients: (online: HiveGameClient, local: HiveGameClient)
+		let clients: (online: GameClient, local: GameClient)
 	}
 }

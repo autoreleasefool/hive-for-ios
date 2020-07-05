@@ -11,12 +11,12 @@ import Combine
 import HiveEngine
 
 struct GameHUD: View {
-	@EnvironmentObject var viewModel: HiveGameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
 
 	private let buttonSize: Metrics.Image = .xl
 	private let buttonDistanceFromEdge: Metrics.Spacing = .xl
 
-	@State private var state: HiveGameViewModel.State = .begin
+	@State private var state: GameViewModel.State = .begin
 
 	func stateIndicator(_ geometry: GeometryProxy) -> some View {
 		Text(viewModel.displayState)
@@ -86,7 +86,7 @@ struct GameHUD: View {
 struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {
 		GameHUD()
-			.environmentObject(HiveGameViewModel(initialState: GameState(), playingAs: .white, mode: .online))
+			.environmentObject(GameViewModel(initialState: GameState(), playingAs: .white, mode: .online))
 			.background(Color(.backgroundDark).edgesIgnoringSafeArea(.all))
 	}
 }

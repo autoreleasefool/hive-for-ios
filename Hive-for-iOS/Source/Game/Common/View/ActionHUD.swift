@@ -10,7 +10,7 @@ import SwiftUI
 import HiveEngine
 
 struct ActionHUD: View {
-	@EnvironmentObject var viewModel: HiveGameViewModel
+	@EnvironmentObject var viewModel: GameViewModel
 
 	private func cancelButton(from config: PopoverSheetConfig) -> PopoverSheetConfig.ButtonConfig? {
 		config.buttons.first(where: { $0.type == .cancel })

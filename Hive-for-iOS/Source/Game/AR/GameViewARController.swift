@@ -20,9 +20,9 @@ class GameViewARController: UIViewController { }
 #else
 
 class GameViewARController: UIViewController {
-	private var viewModel: HiveGameViewModel
+	private var viewModel: GameViewModel
 
-	init(viewModel: HiveGameViewModel) {
+	init(viewModel: GameViewModel) {
 		self.viewModel = viewModel
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -51,8 +51,8 @@ class GameViewARController: UIViewController {
 
 // MARK: - UIViewControllerRepresentable
 
-struct HiveARGame: UIViewControllerRepresentable {
-	let viewModel: HiveGameViewModel
+struct GameViewARContainer: UIViewControllerRepresentable {
+	let viewModel: GameViewModel
 
 	func makeUIViewController(context: Context) -> GameViewARController {
 		GameViewARController(viewModel: viewModel)

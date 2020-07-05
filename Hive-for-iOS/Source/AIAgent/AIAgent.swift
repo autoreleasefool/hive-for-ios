@@ -1,5 +1,5 @@
 //
-//  ComputerPlayer.swift
+//  AIAgent.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-06-13.
@@ -9,13 +9,13 @@
 import Foundation
 import HiveEngine
 
-protocol ComputerPlayer {
+protocol AIAgent {
 	func playMove(in state: GameState) -> Movement
 }
 
 // MARK: - Configuration
 
-enum ComputerConfiguration: CaseIterable, Identifiable {
+enum AgentConfiguration: CaseIterable, Identifiable {
 	case dumbo
 //	case hiveMind
 
@@ -37,14 +37,14 @@ enum ComputerConfiguration: CaseIterable, Identifiable {
 		Match.User(id: id, displayName: name, elo: 0, avatarUrl: nil)
 	}
 
-	var player: ComputerPlayer {
+	var player: AIAgent {
 		switch self {
-		case .dumbo: return DumboPlayer()
+		case .dumbo: return DumboAgent()
 //		case .hiveMind: return HiveMindPlayer()
 		}
 	}
 
 	static func exists(withId id: UUID) -> Bool {
-		ComputerConfiguration.allCases.contains { $0.id == id }
+		AgentConfiguration.allCases.contains { $0.id == id }
 	}
 }
