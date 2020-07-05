@@ -1,5 +1,5 @@
 //
-//  HiveARGameView.swift
+//  GameViewAR.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-03-24.
@@ -15,11 +15,11 @@ import Loaf
 
 #if targetEnvironment(simulator)
 
-class HiveARGameView: UIView { }
+class GameViewAR: UIView { }
 
 #else
 
-class HiveARGameView: UIView {
+class GameViewAR: UIView {
 
 	private var viewModel: HiveGameViewModel
 
@@ -287,14 +287,14 @@ class HiveARGameView: UIView {
 
 // MARK: - ARSessionDelegate
 
-extension HiveARGameView: ARSessionDelegate {
+extension GameViewAR: ARSessionDelegate {
 	func session(_ session: ARSession, didAdd anchors: [ARAnchor]) {
 	}
 }
 
 // MARK: - ARCoachingOverlayViewDelegate
 
-extension HiveARGameView: ARCoachingOverlayViewDelegate {
+extension GameViewAR: ARCoachingOverlayViewDelegate {
 	func coachingOverlayViewDidDeactivate(_ coachingOverlayView: ARCoachingOverlayView) {
 		viewModel.postViewAction(.viewInteractionsReady)
 		coachingOverlayView.removeFromSuperview()
@@ -303,7 +303,7 @@ extension HiveARGameView: ARCoachingOverlayViewDelegate {
 
 // MARK: - Debug
 
-extension HiveARGameView {
+extension GameViewAR {
 	private var debugEnabled: Bool {
 		get {
 			viewModel.debugModeStore.value

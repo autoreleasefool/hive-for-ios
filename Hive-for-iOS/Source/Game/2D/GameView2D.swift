@@ -1,5 +1,5 @@
 //
-//  HiveGameScene.swift
+//  GameView2D.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-03-21.
@@ -9,13 +9,13 @@
 import SpriteKit
 import HiveEngine
 
-class HiveGameScene: SKScene {
+class GameView2D: SKScene {
 	private let BASE_HEX_SCALE: CGPoint = CGPoint(x: 64, y: 64)
 	private let BASE_HEX_SIZE: CGSize = CGSize(width: 109, height: 95)
 
 	private let viewModel: HiveGameViewModel
 	private var debugSprite = DebugSprite()
-	private var spriteManager = HiveSpriteManager()
+	private var spriteManager = SpriteManager()
 
 	private var piecesInPlay: [Piece] { spriteManager.piecesWithSprites }
 	private var positionsInPlay: [Position] { spriteManager.positionsWithSprites }
@@ -215,8 +215,8 @@ class HiveGameScene: SKScene {
 			// Check if the piece is part of a stack and, if so, offset it based on its position in the stack
 			let (positionInStack, stackCount) = viewModel.positionInStack(of: piece)
 			if stackCount > 1 {
-				let incrementor = HiveGameScene.topStackOffset / CGFloat(stackCount - 1)
-				sprite.position.x += (HiveGameScene.bottomStackOffset + incrementor * CGFloat(positionInStack - 1))
+				let incrementor = GameView2D.topStackOffset / CGFloat(stackCount - 1)
+				sprite.position.x += (GameView2D.bottomStackOffset + incrementor * CGFloat(positionInStack - 1))
 					* currentScaleMultiplier
 			}
 		}
@@ -293,7 +293,7 @@ class HiveGameScene: SKScene {
 
 // MARK: - Gesture Recognizers
 
-extension HiveGameScene: UIGestureRecognizerDelegate {
+extension GameView2D: UIGestureRecognizerDelegate {
 	private func setupGestureRecognizers(in view: SKView) {
 		view.addGestureRecognizer(tapGesture)
 		view.addGestureRecognizer(panGesture)
@@ -397,7 +397,7 @@ extension HiveGameScene: UIGestureRecognizerDelegate {
 
 // MARK: - HiveGameViewModel.State
 
-extension HiveGameScene {
+extension GameView2D {
 	private func handleTransition(to newState: HiveGameViewModel.State) {
 		switch newState {
 		case .gameStart:
@@ -422,7 +422,7 @@ extension HiveGameScene {
 
 // MARK: - Sprites
 
-extension HiveGameScene {
+extension GameView2D {
 	private func sprite(for piece: Piece) -> SKSpriteNode {
 		let (positionInStack, stackCount) = viewModel.positionInStack(of: piece)
 
@@ -447,7 +447,7 @@ extension HiveGameScene {
 
 // MARK: - Debug
 
-extension HiveGameScene {
+extension GameView2D {
 	private var debugEnabled: Bool {
 		get {
 			viewModel.debugModeStore.value
@@ -467,7 +467,7 @@ extension HiveGameScene {
 
 // MARK: - Animation
 
-extension HiveGameScene {
+extension GameView2D {
 	enum AnimationKey: String {
 		case toPosition
 	}

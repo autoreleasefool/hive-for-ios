@@ -1,5 +1,5 @@
 //
-//  HiveARViewController.swift
+//  GameViewARController.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-01-22.
@@ -15,11 +15,11 @@ import Loaf
 
 #if targetEnvironment(simulator)
 
-class HiveARViewController: UIViewController { }
+class GameViewARController: UIViewController { }
 
 #else
 
-class HiveARViewController: UIViewController {
+class GameViewARController: UIViewController {
 	private var viewModel: HiveGameViewModel
 
 	init(viewModel: HiveGameViewModel) {
@@ -32,7 +32,7 @@ class HiveARViewController: UIViewController {
 	}
 
 	override func loadView() {
-		self.view = HiveARGameView(viewModel: viewModel)
+		self.view = GameViewAR(viewModel: viewModel)
 	}
 
 	override func viewDidLoad() {
@@ -54,11 +54,11 @@ class HiveARViewController: UIViewController {
 struct HiveARGame: UIViewControllerRepresentable {
 	let viewModel: HiveGameViewModel
 
-	func makeUIViewController(context: Context) -> HiveARViewController {
-		HiveARViewController(viewModel: viewModel)
+	func makeUIViewController(context: Context) -> GameViewARController {
+		GameViewARController(viewModel: viewModel)
 	}
 
-	func updateUIViewController(_ uiViewController: HiveARViewController, context: Context) {}
+	func updateUIViewController(_ uiViewController: GameViewARController, context: Context) {}
 }
 
 #endif

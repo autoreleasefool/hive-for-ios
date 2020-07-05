@@ -1,5 +1,5 @@
 //
-//  Hive2DViewController.swift
+//  GameView2DController.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-03-21.
@@ -9,7 +9,7 @@
 import SwiftUI
 import SpriteKit
 
-class Hive2DGameViewController: UIViewController {
+class GameView2DController: UIViewController {
 	private let viewModel: HiveGameViewModel
 
 	init(viewModel: HiveGameViewModel) {
@@ -27,8 +27,8 @@ class Hive2DGameViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		let scene = HiveGameScene(viewModel: viewModel, size: view.bounds.size)
-		guard let view = view as? SKView else { fatalError("Hive2DGameViewController view must be SKView") }
+		let scene = GameView2D(viewModel: viewModel, size: view.bounds.size)
+		guard let view = view as? SKView else { fatalError("GameView2DController view must be SKView") }
 		view.showsFPS = true
 		view.showsNodeCount = true
 		view.ignoresSiblingOrder = true
@@ -52,16 +52,16 @@ class Hive2DGameViewController: UIViewController {
 struct Hive2DGame: UIViewControllerRepresentable {
 	let viewModel: HiveGameViewModel
 
-	func makeUIViewController(context: Context) -> Hive2DGameViewController {
-		Hive2DGameViewController(viewModel: viewModel)
+	func makeUIViewController(context: Context) -> GameView2DController {
+		GameView2DController(viewModel: viewModel)
 	}
 
-	func updateUIViewController(_ uiViewController: Hive2DGameViewController, context: Context) {}
+	func updateUIViewController(_ uiViewController: GameView2DController, context: Context) {}
 }
 
 // MARK: - Debug
 
-extension Hive2DGameViewController {
+extension GameView2DController {
 	override var canBecomeFirstResponder: Bool {
 		true
 	}

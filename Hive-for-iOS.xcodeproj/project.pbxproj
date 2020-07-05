@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0523EF23E57813008F8A94 /* GameViewContent.swift */; };
 		CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F938E2422C80800F6E104 /* DebugOverlay.swift */; };
-		CA0F93942426003800F6E104 /* Hive2DViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93932426003800F6E104 /* Hive2DViewController.swift */; };
-		CA0F9396242602BA00F6E104 /* HiveGameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F9395242602BA00F6E104 /* HiveGameScene.swift */; };
-		CA0F939824264CB700F6E104 /* HiveSpriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F939724264CB700F6E104 /* HiveSpriteManager.swift */; };
+		CA0F93942426003800F6E104 /* GameView2DController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93932426003800F6E104 /* GameView2DController.swift */; };
+		CA0F9396242602BA00F6E104 /* GameView2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F9395242602BA00F6E104 /* GameView2D.swift */; };
+		CA0F939824264CB700F6E104 /* SpriteManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F939724264CB700F6E104 /* SpriteManager.swift */; };
 		CA0F939A24264DE400F6E104 /* GameState+2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F939924264DE400F6E104 /* GameState+2D.swift */; };
 		CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93A02427DCE600F6E104 /* CoreGraphics+Extensions.swift */; };
 		CA0F93A32427E83500F6E104 /* SKView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93A22427E83500F6E104 /* SKView+Extensions.swift */; };
@@ -42,7 +42,7 @@
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
 		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
-		CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* HiveARGameView.swift */; };
+		CA75CE45242AB65300998719 /* GameViewAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* GameViewAR.swift */; };
 		CA797F61246868000011E7D1 /* History.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F60246868000011E7D1 /* History.swift */; };
 		CA797F63246892AC0011E7D1 /* EmptyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F62246892AC0011E7D1 /* EmptyState.swift */; };
 		CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F64246930BB0011E7D1 /* UserRepository.swift */; };
@@ -115,7 +115,7 @@
 		CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */ = {isa = PBXBuildFile; productRef = CAFA466C23D24BE7003C38AB /* Loaf */; };
 		CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA466F23D25B21003C38AB /* ViewModel.swift */; };
 		CAFA467423D8B3B1003C38AB /* HiveGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA467323D8B3B1003C38AB /* HiveGame.swift */; };
-		CAFA467623D8BCEF003C38AB /* HiveARViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA467523D8BCEF003C38AB /* HiveARViewController.swift */; };
+		CAFA467623D8BCEF003C38AB /* GameViewARController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA467523D8BCEF003C38AB /* GameViewARController.swift */; };
 		CAFA469A23DAD13B003C38AB /* HiveGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469923DAD13B003C38AB /* HiveGameViewModel.swift */; };
 		CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469B23DAD215003C38AB /* GameHUD.swift */; };
 		CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */; };
@@ -129,9 +129,9 @@
 /* Begin PBXFileReference section */
 		CA0523EF23E57813008F8A94 /* GameViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewContent.swift; sourceTree = "<group>"; };
 		CA0F938E2422C80800F6E104 /* DebugOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOverlay.swift; sourceTree = "<group>"; };
-		CA0F93932426003800F6E104 /* Hive2DViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Hive2DViewController.swift; sourceTree = "<group>"; };
-		CA0F9395242602BA00F6E104 /* HiveGameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameScene.swift; sourceTree = "<group>"; };
-		CA0F939724264CB700F6E104 /* HiveSpriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveSpriteManager.swift; sourceTree = "<group>"; };
+		CA0F93932426003800F6E104 /* GameView2DController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView2DController.swift; sourceTree = "<group>"; };
+		CA0F9395242602BA00F6E104 /* GameView2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView2D.swift; sourceTree = "<group>"; };
+		CA0F939724264CB700F6E104 /* SpriteManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteManager.swift; sourceTree = "<group>"; };
 		CA0F939924264DE400F6E104 /* GameState+2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+2D.swift"; sourceTree = "<group>"; };
 		CA0F93A02427DCE600F6E104 /* CoreGraphics+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Extensions.swift"; sourceTree = "<group>"; };
 		CA0F93A22427E83500F6E104 /* SKView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKView+Extensions.swift"; sourceTree = "<group>"; };
@@ -162,7 +162,7 @@
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA75CE42242A98D200998719 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
-		CA75CE44242AB65300998719 /* HiveARGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveARGameView.swift; sourceTree = "<group>"; };
+		CA75CE44242AB65300998719 /* GameViewAR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewAR.swift; sourceTree = "<group>"; };
 		CA797F60246868000011E7D1 /* History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = History.swift; sourceTree = "<group>"; };
 		CA797F62246892AC0011E7D1 /* EmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyState.swift; sourceTree = "<group>"; };
 		CA797F64246930BB0011E7D1 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
@@ -231,7 +231,7 @@
 		CAF8256F245D59730064359E /* AppEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppEnvironment.swift; sourceTree = "<group>"; };
 		CAFA466F23D25B21003C38AB /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
 		CAFA467323D8B3B1003C38AB /* HiveGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGame.swift; sourceTree = "<group>"; };
-		CAFA467523D8BCEF003C38AB /* HiveARViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveARViewController.swift; sourceTree = "<group>"; };
+		CAFA467523D8BCEF003C38AB /* GameViewARController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewARController.swift; sourceTree = "<group>"; };
 		CAFA469923DAD13B003C38AB /* HiveGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveGameViewModel.swift; sourceTree = "<group>"; };
 		CAFA469B23DAD215003C38AB /* GameHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHUD.swift; sourceTree = "<group>"; };
 		CAFA469D23DAD254003C38AB /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
@@ -262,13 +262,46 @@
 		CA0F93922425FFF200F6E104 /* 2D */ = {
 			isa = PBXGroup;
 			children = (
-				CA0F939924264DE400F6E104 /* GameState+2D.swift */,
-				CA0F9395242602BA00F6E104 /* HiveGameScene.swift */,
-				CA0F939724264CB700F6E104 /* HiveSpriteManager.swift */,
-				CA0F93932426003800F6E104 /* Hive2DViewController.swift */,
-				CA0F93A42428AEE200F6E104 /* DebugSprite.swift */,
+				CA16F2AE24B2166E007969AF /* Debug */,
+				CA16F2AD24B21556007969AF /* Extensions */,
+				CA0F9395242602BA00F6E104 /* GameView2D.swift */,
+				CA0F93932426003800F6E104 /* GameView2DController.swift */,
+				CA0F939724264CB700F6E104 /* SpriteManager.swift */,
 			);
 			path = 2D;
+			sourceTree = "<group>";
+		};
+		CA16F2AC24B21548007969AF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */,
+				CAFA91F123E77B290087F1F0 /* GameState+AR.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CA16F2AD24B21556007969AF /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				CA0F939924264DE400F6E104 /* GameState+2D.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		CA16F2AE24B2166E007969AF /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				CA0F93A42428AEE200F6E104 /* DebugSprite.swift */,
+			);
+			path = Debug;
+			sourceTree = "<group>";
+		};
+		CA16F2AF24B21676007969AF /* Debug */ = {
+			isa = PBXGroup;
+			children = (
+				CA0F938E2422C80800F6E104 /* DebugOverlay.swift */,
+			);
+			path = Debug;
 			sourceTree = "<group>";
 		};
 		CA286D06247140950044BAAE /* ViewModel */ = {
@@ -465,11 +498,10 @@
 		CABDFD1523E1A5D900C697AD /* AR */ = {
 			isa = PBXGroup;
 			children = (
-				CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */,
-				CAFA91F123E77B290087F1F0 /* GameState+AR.swift */,
-				CA75CE44242AB65300998719 /* HiveARGameView.swift */,
-				CAFA467523D8BCEF003C38AB /* HiveARViewController.swift */,
-				CA0F938E2422C80800F6E104 /* DebugOverlay.swift */,
+				CA16F2AF24B21676007969AF /* Debug */,
+				CA16F2AC24B21548007969AF /* Extensions */,
+				CA75CE44242AB65300998719 /* GameViewAR.swift */,
+				CAFA467523D8BCEF003C38AB /* GameViewARController.swift */,
 			);
 			path = AR;
 			sourceTree = "<group>";
@@ -914,7 +946,7 @@
 				CA45F9BA242B7C4C007EC94D /* ActionHUD.swift in Sources */,
 				CAC730EB246979C5004DB450 /* Date+Extensions.swift in Sources */,
 				CA41ACB2245616F500B6F88E /* Set+Extensions.swift in Sources */,
-				CAFA467623D8BCEF003C38AB /* HiveARViewController.swift in Sources */,
+				CAFA467623D8BCEF003C38AB /* GameViewARController.swift in Sources */,
 				CAF82570245D59730064359E /* AppEnvironment.swift in Sources */,
 				CAC730F7246BDF26004DB450 /* Settings.swift in Sources */,
 				CAF8255C245C6C640064359E /* Loadable.swift in Sources */,
@@ -928,7 +960,7 @@
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
 				CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */,
 				CA0F939A24264DE400F6E104 /* GameState+2D.swift in Sources */,
-				CA0F939824264CB700F6E104 /* HiveSpriteManager.swift in Sources */,
+				CA0F939824264CB700F6E104 /* SpriteManager.swift in Sources */,
 				CA41ACAC2454A30B00B6F88E /* Toaster.swift in Sources */,
 				CAD32BF72493103200984610 /* LocalRoom.swift in Sources */,
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
@@ -943,9 +975,9 @@
 				CAC426D82433989800E513BC /* KeyboardAvoidance.swift in Sources */,
 				CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */,
 				CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */,
-				CA0F9396242602BA00F6E104 /* HiveGameScene.swift in Sources */,
+				CA0F9396242602BA00F6E104 /* GameView2D.swift in Sources */,
 				CAC73101246DFA6C004DB450 /* ContentViewViewModel.swift in Sources */,
-				CA75CE45242AB65300998719 /* HiveARGameView.swift in Sources */,
+				CA75CE45242AB65300998719 /* GameViewAR.swift in Sources */,
 				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Match.swift in Sources */,
 				CAFA91FA23EA1B410087F1F0 /* String+Extensions.swift in Sources */,
@@ -995,7 +1027,7 @@
 				CAFA467423D8B3B1003C38AB /* HiveGame.swift in Sources */,
 				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,
 				CABDFD0E23DF8B4000C697AD /* Experience+Extensions.swift in Sources */,
-				CA0F93942426003800F6E104 /* Hive2DViewController.swift in Sources */,
+				CA0F93942426003800F6E104 /* GameView2DController.swift in Sources */,
 				CA0F93A32427E83500F6E104 /* SKView+Extensions.swift in Sources */,
 				CAF8255E245C75C50064359E /* AppContainer.swift in Sources */,
 				CAC961E5243B109D00B3FC8D /* GameServerMessage.swift in Sources */,

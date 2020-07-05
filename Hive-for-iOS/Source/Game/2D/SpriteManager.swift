@@ -1,5 +1,5 @@
 //
-//  HiveSpriteManager.swift
+//  SpriteManager.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-03-21.
@@ -9,7 +9,7 @@
 import SpriteKit
 import HiveEngine
 
-class HiveSpriteManager {
+class SpriteManager {
 	private var pieceSprites: [Piece: SKSpriteNode] = [:]
 	private var pieceSpriteVisibility: [Piece: Bool] = [:]
 	private var positionSprites: [Position: SKSpriteNode] = [:]
@@ -107,7 +107,7 @@ class HiveSpriteManager {
 
 // MARK: - Debug
 
-extension HiveSpriteManager {
+extension SpriteManager {
 	private func addPositionLabel(to position: Position) {
 		let sprite = self.sprite(for: position, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
 		guard sprite.childNode(withName: "Label") == nil else { return }
