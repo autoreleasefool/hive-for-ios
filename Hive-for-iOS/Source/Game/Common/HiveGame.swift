@@ -22,9 +22,9 @@ struct HiveGame: View {
 
 	private func handleTransition(to newState: HiveGameViewModel.State) {
 		switch newState {
-		case .forfeit, .gameEnd:
+		case .shutDown, .forfeit:
 			container.appState[\.gameSetup] = nil
-		case .begin, .gameStart, .opponentTurn, .playerTurn, .sendingMovement:
+		case .begin, .gameStart, .opponentTurn, .playerTurn, .sendingMovement, .gameEnd:
 			break
 		}
 	}

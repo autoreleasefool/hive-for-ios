@@ -16,12 +16,7 @@ struct GameHUD: View {
 	private let buttonSize: Metrics.Image = .xl
 	private let buttonDistanceFromEdge: Metrics.Spacing = .xl
 
-	private func handleTransition(to newState: HiveGameViewModel.State) {
-		switch newState {
-		case .forfeit, .begin, .gameEnd, .gameStart, .opponentTurn, .playerTurn, .sendingMovement:
-			#warning("TODO: handle remaining state changes in hud")
-		}
-	}
+	@State private var state: HiveGameViewModel.State = .begin
 
 	func stateIndicator(_ geometry: GeometryProxy) -> some View {
 		Text(viewModel.displayState)
@@ -83,7 +78,7 @@ struct GameHUD: View {
 				.edgesIgnoringSafeArea(.bottom)
 		}
 		.padding(.top, length: .l)
-		.onReceive(viewModel.stateStore) { self.handleTransition(to: $0) }
+		.onReceive(viewModel.stateStore) { self.state = $0 }
 	}
 }
 

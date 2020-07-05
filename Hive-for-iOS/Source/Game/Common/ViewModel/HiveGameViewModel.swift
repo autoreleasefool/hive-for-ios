@@ -122,21 +122,6 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		)
 	}
 
-	var displayState: String {
-		switch currentState {
-		case .playerTurn:
-			return "Your turn"
-		case .sendingMovement:
-			return "Sending movement..."
-		case .opponentTurn:
-			return "Opponent's turn"
-		case .gameEnd:
-			return gameState.displayWinner ?? ""
-		case .begin, .forfeit, .gameStart:
-			return ""
-		}
-	}
-
 	var shouldHideHUDControls: Bool {
 		presentingPlayerHand.wrappedValue || presentingGameInformation.wrappedValue || presentingGameAction.wrappedValue
 	}
@@ -585,10 +570,11 @@ extension HiveGameViewModel {
 		case sendingMovement(Movement)
 		case gameEnd
 		case forfeit
+		case shutDown
 
 		var inGame: Bool {
 			switch self {
-			case .begin, .gameStart, .gameEnd, .forfeit: return false
+			case .begin, .gameStart, .gameEnd, .forfeit, .shutDown: return false
 			case .playerTurn, .opponentTurn, .sendingMovement: return true
 			}
 		}
@@ -602,9 +588,15 @@ extension HiveGameViewModel {
 	private func canTransition(from currentState: State, to nextState: State) -> Bool {
 		switch (currentState, nextState) {
 
+		// Forfeit and shutDown are final states
+		case (.forfeit, _): return false
+		case (.shutDown, _): return false
+
 		// Forfeiting possible at any time
 		case (_, .forfeit): return true
-		case (.forfeit, _): return false
+
+		// View can be dismissed at any time
+		case (_, .shutDown): return true
 
 		// Game can be ended at any time
 		case (_, .gameEnd): return true
@@ -631,6 +623,25 @@ extension HiveGameViewModel {
 		case (.sendingMovement, _), (_, .sendingMovement): return false
 		case (_, .playerTurn), (_, .opponentTurn): return false
 
+		}
+	}
+}
+
+// MARK: - Strings
+
+extension HiveGameViewModel {
+	var displayState: String {
+		switch currentState {
+		case .playerTurn:
+			return "Your turn"
+		case .sendingMovement:
+			return "Sending movement..."
+		case .opponentTurn:
+			return "Opponent's turn"
+		case .gameEnd:
+			return gameState.displayWinner ?? ""
+		case .begin, .forfeit, .gameStart, .shutDown:
+			return ""
 		}
 	}
 }
