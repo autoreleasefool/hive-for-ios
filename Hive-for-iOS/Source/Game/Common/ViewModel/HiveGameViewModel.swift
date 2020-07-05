@@ -185,7 +185,7 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 		case .forfeitConfirmed:
 			forfeitGame()
 		case .returnToLobby:
-			endGame()
+			shutDownGame()
 		case .arViewError(let error):
 			loafState.send(LoafState(error.localizedDescription, state: .error))
 
@@ -301,6 +301,10 @@ class HiveGameViewModel: ViewModel<HiveGameViewAction>, ObservableObject {
 	private func endGame() {
 		guard inGame else { return }
 		transition(to: .gameEnd)
+	}
+
+	private func shutDownGame() {
+		transition(to: .shutDown)
 	}
 
 	private func promptForfeit() {
