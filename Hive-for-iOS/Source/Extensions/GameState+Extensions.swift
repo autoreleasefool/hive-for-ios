@@ -77,14 +77,12 @@ extension GameState {
 	}
 
 	var displayWinner: String? {
-		let winner = self.winner
-		if winner.count == 2 {
-			return "It's a tie!"
-		} else if winner.count == 1 {
-			return winner.first == .white ? "White wins!" : "Black wins!"
+		switch endState {
+		case .draw: return "It's a tie!"
+		case .playerWins(.black): return "Black wins!"
+		case .playerWins(.white): return "White wins!"
+		case .none: return nil
 		}
-
-		return nil
 	}
 
 	var hiveBorder: Set<Position> {

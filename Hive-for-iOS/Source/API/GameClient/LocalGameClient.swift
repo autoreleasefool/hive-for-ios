@@ -134,7 +134,7 @@ private extension LocalGameClient {
 		}
 
 		subject?.send(.message(.gameState(GameState(from: gameState))))
-		if gameState.isEndGame {
+		if gameState.hasGameEnded {
 			endGame()
 		} else {
 			playComputerMove()
@@ -165,7 +165,7 @@ private extension LocalGameClient {
 		}
 
 		subject?.send(.message(.gameState(GameState(from: gameState))))
-		if gameState.isEndGame {
+		if gameState.hasGameEnded {
 			endGame()
 		}
 	}
@@ -175,20 +175,15 @@ private extension LocalGameClient {
 
 private extension LocalGameClient {
 	var winner: UUID? {
-		guard let winner = gameState?.winner else { return nil }
-		if winner.count == 2 {
-			return nil
-		}
-
-		switch winner.first {
-		case .white: return localPlayer == .white ? Match.User.offlineId : computerConfiguration?.id
-		case .black: return localPlayer == .black ? Match.User.offlineId : computerConfiguration?.id
-		case .none: return nil
+		switch gameState?.endState {
+		case .draw, .none: return nil
+		case .playerWins(.black): return localPlayer == .white ? Match.User.offlineId : computerConfiguration?.id
+		case .playerWins(.white): return localPlayer == .white ? computerConfiguration?.id : Match.User.offlineId
 		}
 	}
 
 	func endGame() {
-		guard gameState?.isEndGame == true else { return }
+		guard gameState?.hasGameEnded == true else { return }
 		subject?.send(.message(.gameOver(winner)))
 	}
 }

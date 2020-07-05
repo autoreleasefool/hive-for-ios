@@ -405,7 +405,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		let wasOpponentMove = previousUpdate.player == opponent
 
-		if newState.isEndGame {
+		if newState.hasGameEnded {
 			endGame()
 		} else {
 			transition(to: wasOpponentMove ? .playerTurn : .opponentTurn)
