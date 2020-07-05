@@ -402,10 +402,10 @@ extension HiveGameScene {
 		switch newState {
 		case .gameStart:
 			prepareGame()
-		case .begin, .gameEnd, .forfeit, .opponentTurn, .sendingMovement:
-			#warning("TODO: handle remaining state changes in view")
-		case .playerTurn:
-			startPlayerTurn()
+		case .playerTurn, .opponentTurn:
+			resetForPlayerTurn()
+		case .begin, .gameEnd, .forfeit, .sendingMovement, .shutDown:
+			break
 		}
 	}
 
@@ -415,8 +415,8 @@ extension HiveGameScene {
 		viewModel.postViewAction(.viewContentReady)
 	}
 
-	private func startPlayerTurn() {
-
+	private func resetForPlayerTurn() {
+		present(gameState: viewModel.gameState)
 	}
 }
 

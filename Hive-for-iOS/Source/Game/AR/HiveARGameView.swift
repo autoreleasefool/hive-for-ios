@@ -161,10 +161,13 @@ class HiveARGameView: UIView {
 		switch newState {
 		case .gameStart:
 			prepareGame()
-		case .begin, .gameEnd, .forfeit, .opponentTurn, .sendingMovement:
-			#warning("TODO: handle remaining state changes in view")
 		case .playerTurn:
 			startPlayerTurn()
+			resetForPlayerTurn()
+		case .opponentTurn:
+			resetForPlayerTurn()
+		case .begin, .gameEnd, .forfeit, .sendingMovement, .shutDown:
+			break
 		}
 	}
 
@@ -218,6 +221,10 @@ class HiveARGameView: UIView {
 					gestureRecognizer.addTarget(self, action: #selector(self.handlePieceTranslation))
 				}
 			}
+	}
+
+	private func resetForPlayerTurn() {
+		#warning("TODO: reset pieces to positions for a player's turn")
 	}
 
 	private var initialTouchPosition: SIMD3<Float>?
