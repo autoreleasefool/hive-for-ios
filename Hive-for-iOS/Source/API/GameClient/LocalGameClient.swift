@@ -105,7 +105,7 @@ class LocalGameClient: GameClient {
 
 private extension LocalGameClient {
 	func playerForfeit() {
-		subject?.send(.message(.forfeit(Match.User.offlineId)))
+		subject?.send(.message(.forfeit(Account.offline.userId)))
 	}
 
 	func playerMovement(_ movement: RelativeMovement) {
@@ -177,8 +177,8 @@ private extension LocalGameClient {
 	var winner: UUID? {
 		switch gameState?.endState {
 		case .draw, .none: return nil
-		case .playerWins(.black): return localPlayer == .white ? Match.User.offlineId : computerConfiguration?.id
-		case .playerWins(.white): return localPlayer == .white ? computerConfiguration?.id : Match.User.offlineId
+		case .playerWins(.white): return localPlayer == .white ? Account.offline.userId : computerConfiguration?.id
+		case .playerWins(.black): return localPlayer == .white ? computerConfiguration?.id : Account.offline.userId
 		}
 	}
 
