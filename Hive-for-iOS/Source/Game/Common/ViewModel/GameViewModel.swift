@@ -179,7 +179,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			pickUpHand()
 
 		case .openSettings:
-			#warning("TODO: open game settings")
+			openSettings()
+
 		case .forfeit:
 			promptForfeit()
 		case .forfeitConfirmed:
@@ -289,6 +290,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		gameState.unitsInHand[playingAs]?.forEach {
 			updatePosition(of: $0, to: nil, shouldMove: true)
 		}
+	}
+
+	private func openSettings() {
+		presentedGameInformation = .settings
 	}
 
 	private func forfeitGame() {

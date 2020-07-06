@@ -28,6 +28,7 @@ enum GameInformation {
 	case stack([Piece])
 	case rule(GameRule?)
 	case gameEnd(EndState)
+	case settings
 	case reconnecting(Int)
 
 	init?(fromLink link: String) {
@@ -57,6 +58,7 @@ enum GameInformation {
 			} else {
 				return "It's a tie!"
 			}
+		case .settings: return "Settings"
 		case .reconnecting: return "Disconnected from server"
 		}
 	}
@@ -78,6 +80,7 @@ enum GameInformation {
 					"\(state.playerIsWinner ? "your opponent's" : "your") queen and won the game! " +
 					"Return to the lobby to play another game."
 			}
+		case .settings: return nil
 		case .reconnecting(let attempts):
 			return "The connection to the server has been lost. The game will automatically attempt to reconnect, " +
 				"but if a connection cannot be made, you will forfeit the match. This dialog will dismiss " +
@@ -89,7 +92,7 @@ enum GameInformation {
 	var dismissable: Bool {
 		switch self {
 		case .reconnecting: return false
-		case .gameEnd, .piece, .pieceClass, .rule, .stack: return true
+		case .gameEnd, .piece, .pieceClass, .rule, .stack, .settings: return true
 		}
 	}
 }

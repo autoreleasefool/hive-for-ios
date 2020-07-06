@@ -12,6 +12,7 @@ struct BasicButton<Label>: View where Label: View {
 	private let label: Label?
 	private let title: String?
 	private let action: () -> Void
+	private var background: ColorAsset = .primary
 
 	init(_ title: String, action: @escaping () -> Void) {
 		self.title = title
@@ -38,9 +39,19 @@ struct BasicButton<Label>: View where Label: View {
 					.frame(height: 48)
 					.background(
 						RoundedRectangle(cornerRadius: .s)
-							.fill(Color(.primary))
+							.fill(Color(background))
 					)
 			}
 		})
+	}
+}
+
+// MARK: - Modifiers
+
+extension BasicButton where Label == Never {
+	func buttonBackground(_ color: ColorAsset) -> BasicButton<Never> {
+		var button = self
+		button.background = color
+		return button
 	}
 }

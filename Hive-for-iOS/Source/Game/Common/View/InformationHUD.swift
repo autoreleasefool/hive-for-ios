@@ -16,7 +16,7 @@ struct InformationHUD: View {
 
 	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
 		switch information {
-		case .piece, .pieceClass, .rule: return maxHeight * 0.75
+		case .piece, .pieceClass, .rule, .settings: return maxHeight * 0.75
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
 		case .gameEnd: return maxHeight * 0.5
 		case .reconnecting: return maxHeight * 0.25
@@ -106,6 +106,8 @@ struct InformationHUD: View {
 						self.viewModel.postViewAction(.returnToLobby)
 					}
 				)
+			case .settings:
+				return AnyView(GameSettings())
 			case .reconnecting:
 				return AnyView(ActivityIndicator(isAnimating: true, style: .whiteLarge))
 			}
