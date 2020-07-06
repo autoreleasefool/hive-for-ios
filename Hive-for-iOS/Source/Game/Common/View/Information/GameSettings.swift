@@ -19,8 +19,6 @@ struct GameSettings: View {
 				rulesButton
 				forfeitButton
 			}
-			Divider().background(Color(.divider))
-			closeButton
 		}
 	}
 
@@ -42,12 +40,5 @@ struct GameSettings: View {
 			self.viewModel.presentingGameInformation.wrappedValue = false
 			self.viewModel.postViewAction(.forfeit)
 		}
-	}
-
-	private var closeButton: some View {
-		BasicButton<Never>("Close") {
-			self.viewModel.presentingGameInformation.wrappedValue = false
-		}
-		.buttonBackground(.backgroundLight)
 	}
 }

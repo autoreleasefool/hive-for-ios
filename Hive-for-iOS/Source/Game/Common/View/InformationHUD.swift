@@ -52,6 +52,10 @@ struct InformationHUD: View {
 				.background(Color(.divider))
 				.padding(.horizontal, length: .m)
 			details(information: information, state: state)
+			if information.hasCloseButton {
+				Divider().background(Color(.divider))
+				closeButton
+			}
 		}
 	}
 
@@ -112,7 +116,13 @@ struct InformationHUD: View {
 				return AnyView(ActivityIndicator(isAnimating: true, style: .whiteLarge))
 			}
 		}
-		.padding(.horizontal, length: .m)
+	}
+
+	private var closeButton: some View {
+		BasicButton<Never>("Close") {
+			self.viewModel.presentingGameInformation.wrappedValue = false
+		}
+		.buttonBackground(.backgroundLight)
 	}
 }
 

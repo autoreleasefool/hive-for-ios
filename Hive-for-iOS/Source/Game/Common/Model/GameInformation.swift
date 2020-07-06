@@ -95,4 +95,11 @@ enum GameInformation {
 		case .gameEnd, .piece, .pieceClass, .rule, .stack, .settings: return true
 		}
 	}
+
+	var hasCloseButton: Bool {
+		switch self {
+		case .reconnecting, .gameEnd: return false
+		case .piece, .pieceClass, .rule, .stack, .settings: return true
+		}
+	}
 }
