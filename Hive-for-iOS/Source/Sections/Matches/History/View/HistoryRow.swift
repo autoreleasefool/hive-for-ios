@@ -97,7 +97,7 @@ private extension GameState.Option {
 		case .mosquito: return "M"
 		case .ladyBug: return "L"
 		case .pillBug: return "P"
-		default: return nil
+		case .noFirstMoveQueen, .allowSpecialAbilityAfterYoink: return nil
 		}
 	}
 }

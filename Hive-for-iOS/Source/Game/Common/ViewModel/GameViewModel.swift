@@ -486,7 +486,7 @@ extension GameViewModel {
 
 		switch presentedGameInformation {
 		case .reconnecting: presentedGameInformation = nil
-		default: break
+		case .piece, .pieceClass, .stack, .rule, .gameEnd, .settings, .none: break
 		}
 	}
 

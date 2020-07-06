@@ -103,7 +103,7 @@ extension GameState.Option {
 	var isExpansion: Bool {
 		switch self {
 		case .mosquito, .ladyBug, .pillBug: return true
-		default: return false
+		case .allowSpecialAbilityAfterYoink, .noFirstMoveQueen: return false
 		}
 	}
 
