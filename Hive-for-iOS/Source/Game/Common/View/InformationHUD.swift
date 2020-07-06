@@ -48,15 +48,14 @@ struct InformationHUD: View {
 	fileprivate func HUD(information: GameInformation, state: GameState) -> some View {
 		VStack(spacing: .m) {
 			header(information: information)
-			Divider()
-				.background(Color(.divider))
-				.padding(.horizontal, length: .m)
+			Divider().background(Color(.divider))
 			details(information: information, state: state)
 			if information.hasCloseButton {
 				Divider().background(Color(.divider))
 				closeButton
 			}
 		}
+		.padding(.horizontal, length: .m)
 	}
 
 	private func header(information: GameInformation) -> some View {
@@ -77,7 +76,6 @@ struct InformationHUD: View {
 				.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
 			}
 		}
-		.padding(.horizontal, length: .m)
 		.scaledToFit()
 	}
 

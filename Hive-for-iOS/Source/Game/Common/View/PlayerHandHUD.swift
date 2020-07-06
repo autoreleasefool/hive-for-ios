@@ -50,11 +50,12 @@ struct PlayerHandHUD: View {
 
 	private func tile(pieceClass: Piece.Class, owner: Player, playingAs: Player) -> some View {
 		Button(action: {
+			self.viewModel.presentingPlayerHand.wrappedValue = false
 			if self.didLongPress {
 				self.didLongPress = false
 				self.viewModel.postViewAction(.enquiredFromHand(pieceClass))
 			} else {
-				self.viewModel.postViewAction(.selectedFromHand(pieceClass))
+				self.viewModel.postViewAction(.selectedFromHand(owner, pieceClass))
 			}
 		}, label: {
 			Image(uiImage: pieceClass.image)

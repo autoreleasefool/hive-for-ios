@@ -19,7 +19,7 @@ enum GameViewAction: BaseViewAction {
 
 	case presentPlayerHand(Player)
 	case presentInformation(GameInformation)
-	case selectedFromHand(Piece.Class)
+	case selectedFromHand(Player, Piece.Class)
 	case enquiredFromHand(Piece.Class)
 	case tappedPiece(Piece)
 	case tappedGamePiece(Piece)
@@ -162,8 +162,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			presentedPlayerHand = PlayerHand(player: player, state: gameState)
 		case .presentInformation(let information):
 			presentedGameInformation = information
-		case .selectedFromHand(let pieceClass):
-			selectFromHand(pieceClass)
+		case .selectedFromHand(let player, let pieceClass):
+			selectFromHand(player, pieceClass)
 		case .enquiredFromHand(let pieceClass):
 			enquireFromHand(pieceClass)
 		case .tappedPiece(let piece):
@@ -241,14 +241,13 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		}
 	}
 
-	private func selectFromHand(_ pieceClass: Piece.Class) {
+	private func selectFromHand(_ player: Player, _ pieceClass: Piece.Class) {
 		guard inGame else { return }
-		if presentedPlayerHand?.player == playingAs {
+		if player == playingAs {
 			placeFromHand(pieceClass)
 		} else {
 			enquireFromHand(pieceClass)
 		}
-		presentedPlayerHand = nil
 	}
 
 	private func placeFromHand(_ pieceClass: Piece.Class) {
@@ -470,11 +469,7 @@ extension GameViewModel {
 
 		reconnecting = true
 		reconnectAttempts += 1
-
-		switch presentedGameInformation {
-		case .reconnecting: break
-		default: presentedGameInformation = .reconnecting(reconnectAttempts)
-		}
+		presentedGameInformation = .reconnecting(reconnectAttempts)
 
 		openConnection()
 	}
