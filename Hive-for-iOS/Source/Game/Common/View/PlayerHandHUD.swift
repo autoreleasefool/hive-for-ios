@@ -13,7 +13,8 @@ struct PlayerHandHUD: View {
 	private static let cardWidth: CGFloat = 240
 	private static let cardHeight: CGFloat = 150
 
-	@EnvironmentObject var viewModel: GameViewModel
+	@EnvironmentObject private var viewModel: GameViewModel
+	@State private var didLongPress = false
 
 	private func title(hand: PlayerHand, playingAs: Player) -> Text {
 		Text(
@@ -49,7 +50,12 @@ struct PlayerHandHUD: View {
 
 	private func tile(pieceClass: Piece.Class, owner: Player, playingAs: Player) -> some View {
 		Button(action: {
-			self.viewModel.postViewAction(.selectedFromHand(pieceClass))
+			if self.didLongPress {
+				self.didLongPress = false
+				self.viewModel.postViewAction(.enquiredFromHand(pieceClass))
+			} else {
+				self.viewModel.postViewAction(.selectedFromHand(pieceClass))
+			}
 		}, label: {
 			Image(uiImage: pieceClass.image)
 				.renderingMode(.template)
@@ -58,6 +64,9 @@ struct PlayerHandHUD: View {
 				.squareImage(.l)
 				.foregroundColor(Color(owner.color))
 		})
+		.simultaneousGesture(
+			LongPressGesture().onEnded { _ in self.didLongPress = true }
+		)
 	}
 
 	fileprivate func HUD(hand: PlayerHand, playingAs: Player) -> some View {
@@ -81,8 +90,7 @@ struct PlayerHandHUD: View {
 			BottomSheet(
 				isOpen: self.viewModel.presentingPlayerHand,
 				minHeight: 0,
-				maxHeight: geometry.size.height / 3.0,
-				backgroundColor: .clear
+				maxHeight: geometry.size.height / 2
 			) {
 				if self.viewModel.presentingPlayerHand.wrappedValue {
 					self.HUD(hand: self.viewModel.presentedPlayerHand!, playingAs: self.viewModel.playingAs)

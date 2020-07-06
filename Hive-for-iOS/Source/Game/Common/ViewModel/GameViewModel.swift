@@ -20,6 +20,7 @@ enum GameViewAction: BaseViewAction {
 	case presentPlayerHand(Player)
 	case presentInformation(GameInformation)
 	case selectedFromHand(Piece.Class)
+	case enquiredFromHand(Piece.Class)
 	case tappedPiece(Piece)
 	case tappedGamePiece(Piece)
 
@@ -163,6 +164,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			presentedGameInformation = information
 		case .selectedFromHand(let pieceClass):
 			selectFromHand(pieceClass)
+		case .enquiredFromHand(let pieceClass):
+			enquireFromHand(pieceClass)
 		case .tappedPiece(let piece):
 			tappedPiece(piece)
 		case .tappedGamePiece(let piece):
