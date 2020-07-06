@@ -16,6 +16,7 @@ struct GameSettings: View {
 			if viewModel.gameState.hasGameEnded {
 				returnToLobbyButton
 			} else {
+				rulesButton
 				forfeitButton
 			}
 			Divider().background(Color(.divider))
@@ -27,6 +28,12 @@ struct GameSettings: View {
 		BasicButton<Never>("Return to lobby") {
 			self.viewModel.presentingGameInformation.wrappedValue = false
 			self.viewModel.postViewAction(.returnToLobby)
+		}
+	}
+
+	private var rulesButton: some View {
+		BasicButton<Never>("Game rules") {
+			self.viewModel.postViewAction(.presentInformation(.rule(nil)))
 		}
 	}
 
