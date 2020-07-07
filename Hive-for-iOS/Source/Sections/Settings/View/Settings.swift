@@ -52,6 +52,15 @@ struct Settings: View {
 						logoutButton
 							.padding(.horizontal, length: .m)
 					}
+
+					sectionHeader(title: "About")
+					VStack(spacing: .m) {
+						viewSource
+						attributions
+						developer
+						appInfo
+					}
+					.padding(.horizontal, length: .m)
 				}
 			}
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
@@ -132,6 +141,24 @@ struct Settings: View {
 		}
 	}
 	#endif
+
+	// MARK: About
+
+	private var viewSource: some View {
+		Text("View source")
+	}
+
+	private var attributions: some View {
+		Text("Attributions")
+	}
+
+	private var developer: some View {
+		Text("Created by Joseph Roque")
+	}
+
+	private var appInfo: some View {
+		Text("App info")
+	}
 }
 
 // MARK: - Actions
