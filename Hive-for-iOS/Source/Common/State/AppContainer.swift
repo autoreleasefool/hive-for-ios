@@ -12,10 +12,6 @@ struct AppContainer: EnvironmentKey {
 	let appState: Store<AppState>
 	let interactors: Interactors
 
-	var account: Account? {
-		appState.value.account.value
-	}
-
 	static var defaultValue: AppContainer { AppContainer.default }
 
 	private static let `default` = AppContainer(
@@ -30,6 +26,24 @@ extension EnvironmentValues {
 		set { self[AppContainer.self] = newValue }
 	}
 }
+
+// MARK: - Convenience accessors
+
+extension AppContainer {
+	var account: Account? {
+		appState.value.account.value
+	}
+
+	var features: Features {
+		appState.value.features
+	}
+
+	func has(feature: Feature) -> Bool {
+		appState.value.features.has(feature)
+	}
+}
+
+// MARK: - Injection
 
 extension View {
 	func inject(_ appState: AppState, interactors: AppContainer.Interactors) -> some View {

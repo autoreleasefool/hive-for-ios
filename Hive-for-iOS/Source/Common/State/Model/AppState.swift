@@ -12,4 +12,5 @@ struct AppState: Equatable {
 	var gameSetup: GameContentCoordinator.GameSetup?
 
 	var preferences = Preferences()
+	var features = Features()
 }

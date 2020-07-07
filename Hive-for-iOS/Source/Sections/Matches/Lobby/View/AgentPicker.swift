@@ -1,5 +1,5 @@
 //
-//  ComputerPlayerPicker.swift
+//  AgentPicker.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-06-28.
@@ -8,12 +8,13 @@
 
 import SwiftUI
 
-struct ComputerPlayerPicker: View {
+struct AgentPicker: View {
+	@Environment(\.container) private var container
 	let isActive: Binding<Bool>
 
 	var body: some View {
 		List {
-			ForEach(AgentConfiguration.allCases) { computer in
+			ForEach(AgentConfiguration.allCases.filter { $0.isEnabled(in: container.features) }) { computer in
 				NavigationLink(destination: LocalRoom(opponent: computer)) {
 					HStack(spacing: .m) {
 						Text(computer.name)

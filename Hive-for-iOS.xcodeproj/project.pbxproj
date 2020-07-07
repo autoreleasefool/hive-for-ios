@@ -30,7 +30,7 @@
 		CA45F9C4242E758C007EC94D /* GameRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* GameRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
 		CA68BBC1244B063200879060 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = CA68BBC0244B063200879060 /* Starscream */; };
-		CA6CC92924A9579700E8CB27 /* ComputerPlayerPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* ComputerPlayerPicker.swift */; };
+		CA6CC92924A9579700E8CB27 /* AgentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* AgentPicker.swift */; };
 		CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */; };
 		CA6CC92D24AE94E900E8CB27 /* DumboAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92C24AE94E900E8CB27 /* DumboAgent.swift */; };
 		CA6CC92F24AE952400E8CB27 /* HiveMindAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92E24AE952400E8CB27 /* HiveMindAgent.swift */; };
@@ -58,6 +58,7 @@
 		CA8F46E7245EC36200B136D0 /* MatchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E6245EC36200B136D0 /* MatchRepository.swift */; };
 		CA8F46E9245F3D4500B136D0 /* OnlineRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E8245F3D4500B136D0 /* OnlineRoom.swift */; };
 		CA90799C24B2931700B30CF6 /* GameSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA90799B24B2931700B30CF6 /* GameSettings.swift */; };
+		CA9079A224B41A4000B30CF6 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9079A124B41A4000B30CF6 /* Features.swift */; };
 		CA91C32224350CEA007E7D55 /* UserLoginSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA91C32124350CEA007E7D55 /* UserLoginSignup.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */; };
@@ -149,7 +150,7 @@
 		CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceClassDetails.swift; sourceTree = "<group>"; };
 		CA45F9C3242E758C007EC94D /* GameRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRule.swift; sourceTree = "<group>"; };
 		CA45F9C5242E9F7A007EC94D /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
-		CA6CC92824A9579700E8CB27 /* ComputerPlayerPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerPlayerPicker.swift; sourceTree = "<group>"; };
+		CA6CC92824A9579700E8CB27 /* AgentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentPicker.swift; sourceTree = "<group>"; };
 		CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
 		CA6CC92C24AE94E900E8CB27 /* DumboAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DumboAgent.swift; sourceTree = "<group>"; };
 		CA6CC92E24AE952400E8CB27 /* HiveMindAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveMindAgent.swift; sourceTree = "<group>"; };
@@ -177,6 +178,7 @@
 		CA8F46E6245EC36200B136D0 /* MatchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchRepository.swift; sourceTree = "<group>"; };
 		CA8F46E8245F3D4500B136D0 /* OnlineRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineRoom.swift; sourceTree = "<group>"; };
 		CA90799B24B2931700B30CF6 /* GameSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSettings.swift; sourceTree = "<group>"; };
+		CA9079A124B41A4000B30CF6 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
 		CA91C32124350CEA007E7D55 /* UserLoginSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginSignup.swift; sourceTree = "<group>"; };
 		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterTabBar.swift; sourceTree = "<group>"; };
@@ -417,7 +419,7 @@
 				CAD32BF62493103200984610 /* LocalRoom.swift */,
 				CA8F46E8245F3D4500B136D0 /* OnlineRoom.swift */,
 				CAD32BF42493070A00984610 /* RoomDetails.swift */,
-				CA6CC92824A9579700E8CB27 /* ComputerPlayerPicker.swift */,
+				CA6CC92824A9579700E8CB27 /* AgentPicker.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -766,6 +768,7 @@
 			children = (
 				CAF82555245C6B030064359E /* AppState.swift */,
 				CAF82557245C6B2B0064359E /* Account.swift */,
+				CA9079A124B41A4000B30CF6 /* Features.swift */,
 				CA286D092471E84B0044BAAE /* Preferences.swift */,
 			);
 			path = Model;
@@ -970,6 +973,7 @@
 				CAC961E3243B105E00B3FC8D /* GameClientMessage.swift in Sources */,
 				CAFA469A23DAD13B003C38AB /* GameViewModel.swift in Sources */,
 				CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */,
+				CA9079A224B41A4000B30CF6 /* Features.swift in Sources */,
 				CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */,
 				CA0F939A24264DE400F6E104 /* GameState+2D.swift in Sources */,
 				CA0F939824264CB700F6E104 /* SpriteManager.swift in Sources */,
@@ -1028,7 +1032,7 @@
 				CA8F46DD245DD27600B136D0 /* LoginSignup.swift in Sources */,
 				CAC730FF246DF74E004DB450 /* ProfileViewModel.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
-				CA6CC92924A9579700E8CB27 /* ComputerPlayerPicker.swift in Sources */,
+				CA6CC92924A9579700E8CB27 /* AgentPicker.swift in Sources */,
 				CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */,
 				CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */,
 				CAF8256C245C87340064359E /* Publisher+Extensions.swift in Sources */,

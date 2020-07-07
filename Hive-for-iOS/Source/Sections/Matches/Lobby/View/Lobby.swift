@@ -99,7 +99,7 @@ struct Lobby: View {
 			)
 
 			NavigationLink(
-				destination: ComputerPlayerPicker(isActive: self.$viewModel.creatingLocalRoom),
+				destination: AgentPicker(isActive: self.$viewModel.creatingLocalRoom),
 				isActive: self.$viewModel.creatingLocalRoom,
 				label: { EmptyView() }
 			)

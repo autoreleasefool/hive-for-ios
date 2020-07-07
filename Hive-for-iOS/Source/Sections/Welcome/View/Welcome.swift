@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct Welcome: View {
+	@Environment(\.container) private var container
 	@Binding var showWelcome: Bool
 	@Binding var playingOffline: Bool
 	@Binding var showSettings: Bool
@@ -30,13 +31,15 @@ struct Welcome: View {
 			.foregroundColor(Color(.text))
 			.padding(.m)
 
-			Button("Play offline") {
-				self.playingOffline = true
-				self.showWelcome = false
+			if container.has(feature: .offlineMode) {
+				Button("Play offline") {
+					self.playingOffline = true
+					self.showWelcome = false
+				}
+				.subtitle()
+				.foregroundColor(Color(.text))
+				.padding(.m)
 			}
-			.subtitle()
-			.foregroundColor(Color(.text))
-			.padding(.m)
 
 			Button("Settings") {
 				self.showSettings = true
