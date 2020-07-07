@@ -36,6 +36,12 @@ struct Settings: View {
 						self.viewModel.postViewAction(.switchGameMode(current: $0))
 					}
 
+					#if DEBUG
+					sectionHeader(title: "Features")
+					featureToggles
+						.padding(.horizontal, length: .m)
+					#endif
+
 					if self.viewModel.showAccount {
 						sectionHeader(title: "Account")
 						UserPreview(userProfile.value?.summary)
@@ -113,6 +119,17 @@ struct Settings: View {
 				.foregroundColor(Color(.text))
 		})
 	}
+
+	// MARK: Features
+
+	#if DEBUG
+	private var featureToggles: some View {
+		ForEach(Feature.allCases, id: \.rawValue) { feature in
+			Toggle(feature.rawValue, isOn: self.binding(for: feature))
+				.foregroundColor(Color(.text))
+		}
+	}
+	#endif
 }
 
 // MARK: - Actions
@@ -156,6 +173,13 @@ extension Settings {
 		container.appState.updates(for: \.userProfile)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
+	}
+
+	private func binding(for feature: Feature) -> Binding<Bool> {
+		Binding(
+			get: { self.container.features.has(feature) },
+			set: { self.container.appState[\.features].set(feature, to: $0) }
+		)
 	}
 }
 

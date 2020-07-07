@@ -6,8 +6,6 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import Foundation
-
 struct Features: Equatable {
 	private var enabled: Set<Feature> = Set(Feature.allCases.filter {
 		#if DEBUG
@@ -24,6 +22,12 @@ struct Features: Equatable {
 	mutating func toggle(_ feature: Feature) {
 		#if DEBUG
 		enabled.toggle(feature)
+		#endif
+	}
+
+	mutating func set(_ feature: Feature, to value: Bool) {
+		#if DEBUG
+		enabled.set(feature, to: value)
 		#endif
 	}
 }
