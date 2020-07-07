@@ -37,6 +37,7 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 	}
 
 	@Published var showAccount: Bool
+	@Published var preferences = Preferences()
 
 	private var isOpen: Binding<Bool>
 

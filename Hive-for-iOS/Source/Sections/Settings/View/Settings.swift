@@ -14,7 +14,6 @@ struct Settings: View {
 
 	@ObservedObject private var viewModel: SettingsViewModel
 
-	@State private var preferences = Preferences()
 	@State private var userProfile: Loadable<User>
 
 	init(
@@ -32,7 +31,7 @@ struct Settings: View {
 			ScrollView {
 				VStack(spacing: .m) {
 					sectionHeader(title: "Game")
-					itemToggle(title: "Mode", selected: preferences.gameMode) {
+					itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
 						self.viewModel.postViewAction(.switchGameMode(current: $0))
 					}
 
@@ -55,7 +54,6 @@ struct Settings: View {
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
 			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
-			.onReceive(preferencesUpdate) { self.preferences = $0 }
 			.onReceive(userUpdate) { self.userProfile = $0 }
 			.onAppear { self.viewModel.postViewAction(.onAppear) }
 		}
@@ -140,7 +138,7 @@ extension Settings {
 		case .loadProfile:
 			loadProfile()
 		case .setGameMode(let mode):
-			container.appState[\.preferences.gameMode] = mode
+			preferencesBinding.wrappedValue.gameMode = mode
 		case .logout:
 			logout()
 		}
@@ -163,16 +161,14 @@ extension Settings {
 // MARK: - Updates
 
 extension Settings {
-	private var preferencesUpdate: AnyPublisher<Preferences, Never> {
-		container.appState.updates(for: \.preferences)
-			.receive(on: RunLoop.main)
-			.eraseToAnyPublisher()
-	}
-
 	private var userUpdate: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
+	}
+
+	private var preferencesBinding: Binding<Preferences> {
+		$viewModel.preferences.dispatched(to: container.appState, \.preferences)
 	}
 
 	private func binding(for feature: Feature) -> Binding<Bool> {
