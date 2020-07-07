@@ -38,9 +38,11 @@ struct Settings: View {
 					}
 
 					#if DEBUG
-					sectionHeader(title: "Features")
-					featureToggles
-						.padding(.horizontal, length: .m)
+					if container.has(feature: .featureFlags) {
+						sectionHeader(title: "Features")
+						featureToggles
+							.padding(.horizontal, length: .m)
+					}
 					#endif
 
 					if self.viewModel.showAccount {

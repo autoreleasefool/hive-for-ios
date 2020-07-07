@@ -36,12 +36,14 @@ enum Feature: String, CaseIterable {
 	case arGameMode = "AR Game Mode"
 	case hiveMindAgent = "Hive Mind Agent"
 	case offlineMode = "Offline Mode"
+	case featureFlags = "Feature flags"
 
 	var rollout: Rollout {
 		switch self {
 		case .arGameMode: return .disabled
 		case .hiveMindAgent: return .inDevelopment
 		case .offlineMode: return .inDevelopment
+		case .featureFlags: return .inDevelopment
 		}
 	}
 }
