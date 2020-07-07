@@ -30,9 +30,11 @@ struct Settings: View {
 		NavigationView {
 			ScrollView {
 				VStack(spacing: .m) {
-					sectionHeader(title: "Game")
-					itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
-						self.viewModel.postViewAction(.switchGameMode(current: $0))
+					if container.has(feature: .arGameMode) {
+						sectionHeader(title: "Game")
+						itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
+							self.viewModel.postViewAction(.switchGameMode(current: $0))
+						}
 					}
 
 					#if DEBUG
