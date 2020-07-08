@@ -132,18 +132,6 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 		}
 	}
 
-	var isRefreshing: Binding<Bool> {
-		Binding(
-			get: {
-				if case .loading = self.match {
-					return true
-				}
-				return false
-			},
-			set: { _ in }
-		)
-	}
-
 	private func toggleReadiness() {
 		guard let id = userIsHost ? match.value?.host?.id : match.value?.opponent?.id else {
 			return

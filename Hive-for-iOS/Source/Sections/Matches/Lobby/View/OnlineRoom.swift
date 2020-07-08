@@ -9,7 +9,6 @@
 import Combine
 import SwiftUI
 import HiveEngine
-import SwiftUIRefresh
 
 struct OnlineRoom: View {
 	@Environment(\.presentationMode) private var presentationMode
@@ -80,10 +79,6 @@ struct OnlineRoom: View {
 					matchDetail(match!)
 				}
 			}
-		}
-		.pullToRefresh(isShowing: viewModel.isRefreshing) {
-			guard !self.viewModel.reconnecting else { return }
-			self.viewModel.postViewAction(.refresh)
 		}
 	}
 

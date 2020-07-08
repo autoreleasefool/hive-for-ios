@@ -8,7 +8,6 @@
 
 import Combine
 import SwiftUI
-import SwiftUIRefresh
 
 struct Lobby: View {
 	@Environment(\.container) private var container
@@ -114,9 +113,6 @@ struct Lobby: View {
 						LobbyRow(match: match)
 					})
 				}
-				.pullToRefresh(isShowing: isRefreshing) {
-					self.loadMatches()
-				}
 				.listRowInsets(EdgeInsets(equalTo: .m))
 			}
 		}
@@ -196,18 +192,6 @@ extension Lobby {
 // MARK: - Actions
 
 extension Lobby {
-	var isRefreshing: Binding<Bool> {
-		Binding(
-			get: {
-				if case .loading = self.viewModel.matches {
-					return true
-				}
-				return false
-			},
-			set: { _ in }
-		)
-	}
-
 	private func handleAction(_ action: LobbyAction) {
 		switch action {
 		case .loadOpenMatches:

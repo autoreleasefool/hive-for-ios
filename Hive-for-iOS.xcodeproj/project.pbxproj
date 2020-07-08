@@ -49,7 +49,6 @@
 		CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */; };
 		CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */; };
 		CA88B80C244D89B600C4A276 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
-		CA88BA69244E383500C4A276 /* SwiftUIRefresh in Frameworks */ = {isa = PBXBuildFile; productRef = CA88BA68244E383500C4A276 /* SwiftUIRefresh */; };
 		CA88BA6B244E39A800C4A276 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */; };
 		CA8F46DD245DD27600B136D0 /* LoginSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DC245DD27600B136D0 /* LoginSignup.swift */; };
 		CA8F46E1245EBD0D00B136D0 /* Lobby.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E0245EBD0D00B136D0 /* Lobby.swift */; };
@@ -252,7 +251,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CA88BA69244E383500C4A276 /* SwiftUIRefresh in Frameworks */,
 				CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */,
 				CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */,
 				CA40344923932603006C6BE3 /* HiveEngine in Frameworks */,
@@ -855,7 +853,6 @@
 				CAFA466C23D24BE7003C38AB /* Loaf */,
 				CAD75154242F5ECA0054B164 /* SwiftyMarkdown */,
 				CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */,
-				CA88BA68244E383500C4A276 /* SwiftUIRefresh */,
 			);
 			productName = "Hive for iOS";
 			productReference = CA7299A02393156100AD1285 /* Hive for iOS.app */;
@@ -890,7 +887,6 @@
 				CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */,
 				CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
 				CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				CA88BA67244E383500C4A276 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */,
 			);
 			productRefGroup = CA7299A12393156100AD1285 /* Products */;
 			projectDirPath = "";
@@ -1267,14 +1263,6 @@
 				minimumVersion = 4.1.0;
 			};
 		};
-		CA88BA67244E383500C4A276 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUIRefresh.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.3;
-			};
-		};
 		CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimonFairbairn/SwiftyMarkdown.git";
@@ -1303,11 +1291,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		CA88BA68244E383500C4A276 /* SwiftUIRefresh */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CA88BA67244E383500C4A276 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */;
-			productName = SwiftUIRefresh;
 		};
 		CAD75154242F5ECA0054B164 /* SwiftyMarkdown */ = {
 			isa = XCSwiftPackageProductDependency;

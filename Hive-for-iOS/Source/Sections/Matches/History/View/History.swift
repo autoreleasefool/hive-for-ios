@@ -8,7 +8,6 @@
 
 import Combine
 import SwiftUI
-import SwiftUIRefresh
 
 struct History: View {
 	@Environment(\.container) private var container
