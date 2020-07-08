@@ -78,7 +78,7 @@ class LocalGameClient: GameClient {
 		resetState()
 	}
 
-	func send(_ message: GameClientMessage) {
+	func send(_ message: GameClientMessage, completionHandler: ((Error?) -> Void)?) {
 		switch message {
 		case .forfeit:
 			playerForfeit()
@@ -90,6 +90,7 @@ class LocalGameClient: GameClient {
 			// Ignored for offline play
 			break
 		}
+		completionHandler?(nil)
 	}
 
 	private func resetState() {

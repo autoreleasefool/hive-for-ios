@@ -157,7 +157,7 @@ class GameViewAR: UIView {
 		entity?.isEnabled = true
 	}
 
-	private func handleTransition(to newState: HiveGameViewModel.State) {
+	private func handleTransition(to newState: GameViewModel.State) {
 		switch newState {
 		case .gameStart:
 			prepareGame()

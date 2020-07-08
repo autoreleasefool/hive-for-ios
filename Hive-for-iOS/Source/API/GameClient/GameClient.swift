@@ -9,13 +9,11 @@
 import Combine
 import Foundation
 import HiveEngine
-import Starscream
 
 enum GameClientEvent {
 	case message(GameServerMessage)
 	case connected
 	case alreadyConnected
-	case closed(String, UInt16)
 }
 
 enum GameClientError: LocalizedError {
@@ -40,5 +38,5 @@ protocol GameClient {
 	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError>
 	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError>
 	func close()
-	func send(_ message: GameClientMessage)
+	func send(_ message: GameClientMessage, completionHandler: ((Error?) -> Void)?)
 }

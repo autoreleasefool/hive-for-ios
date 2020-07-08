@@ -10,7 +10,6 @@ import Combine
 import Foundation
 import SwiftUI
 import HiveEngine
-import Starscream
 
 enum OnlineRoomViewAction: BaseViewAction {
 	case onAppear(User.ID?)
@@ -281,8 +280,6 @@ extension OnlineRoomViewModel {
 			reconnecting = false
 			reconnectAttempts = 0
 			LoadingHUD.shared.hide()
-		case .closed:
-			actions.send(.exitSilently)
 		case .message(let message):
 			handleGameClientMessage(message)
 		}

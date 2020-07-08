@@ -8,7 +8,6 @@
 
 import Combine
 import Foundation
-import Starscream
 
 protocol ClientInteractor {
 	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: GameClientConfiguration)
@@ -16,7 +15,11 @@ protocol ClientInteractor {
 	func reconnect(_ configuration: ClientInteractorConfiguration) -> AnyPublisher<GameClientEvent, GameClientError>
 
 	func close(_ configuration: ClientInteractorConfiguration)
-	func send(_ configuration: ClientInteractorConfiguration, _ message: GameClientMessage)
+	func send(
+		_ configuration: ClientInteractorConfiguration,
+		_ message: GameClientMessage,
+		completionHandler: ((Error?) -> Void)?
+	)
 }
 
 enum ClientInteractorConfiguration {
@@ -63,9 +66,13 @@ struct LiveClientInteractor: ClientInteractor {
 			.close()
 	}
 
-	func send(_ configuration: ClientInteractorConfiguration, _ message: GameClientMessage) {
+	func send(
+		_ configuration: ClientInteractorConfiguration,
+		_ message: GameClientMessage,
+		completionHandler: ((Error?) -> Void)?
+	) {
 		client(forConfiguration: configuration)
-			.send(message)
+			.send(message, completionHandler: completionHandler)
 	}
 
 	private func client(forConfiguration: ClientInteractorConfiguration) -> GameClient {
@@ -88,5 +95,9 @@ struct StubClientInteractor: ClientInteractor {
 	}
 
 	func close(_ configuration: ClientInteractorConfiguration) { }
-	func send(_ configuration: ClientInteractorConfiguration, _ message: GameClientMessage) { }
+	func send(
+		_ configuration: ClientInteractorConfiguration,
+		_ message: GameClientMessage,
+		completionHandler: ((Error?) -> Void)?
+	) { }
 }

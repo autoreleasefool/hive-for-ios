@@ -230,7 +230,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		// Let the computer know it's time to play, if offline
 		if case .local = clientMode {
-			clientInteractor.send(.local, .readyToPlay)
+			clientInteractor.send(.local, .readyToPlay, completionHandler: nil)
 		}
 	}
 
@@ -301,7 +301,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private func forfeitGame() {
 		guard inGame else { return }
 
-		clientInteractor.send(clientMode, .forfeit)
+		clientInteractor.send(clientMode, .forfeit, completionHandler: nil)
 		transition(to: .forfeit)
 	}
 
@@ -396,7 +396,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		}
 
 		transition(to: .sendingMovement(movement))
-		clientInteractor.send(clientMode, .movement(relativeMovement))
+		clientInteractor.send(clientMode, .movement(relativeMovement), completionHandler: nil)
 	}
 
 	private func updateGameState(to newState: GameState) {
@@ -489,8 +489,6 @@ extension GameViewModel {
 		switch event {
 		case .connected, .alreadyConnected:
 			onClientConnected()
-		case .closed(let reason, let code):
-			debugLog("Connection to client closed: \(reason) (\(String(describing: code)))")
 			self.connectionOpened = false
 		case .message(let message):
 			handleGameClientMessage(message)

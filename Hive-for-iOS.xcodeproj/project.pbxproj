@@ -29,7 +29,6 @@
 		CA45F9C2242E6119007EC94D /* PieceClassDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */; };
 		CA45F9C4242E758C007EC94D /* GameRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* GameRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
-		CA68BBC1244B063200879060 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = CA68BBC0244B063200879060 /* Starscream */; };
 		CA6CC92924A9579700E8CB27 /* AgentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* AgentPicker.swift */; };
 		CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */; };
 		CA6CC92D24AE94E900E8CB27 /* DumboAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92C24AE94E900E8CB27 /* DumboAgent.swift */; };
@@ -257,7 +256,6 @@
 				CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */,
 				CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */,
 				CA40344923932603006C6BE3 /* HiveEngine in Frameworks */,
-				CA68BBC1244B063200879060 /* Starscream in Frameworks */,
 				CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -857,7 +855,6 @@
 				CAFA466C23D24BE7003C38AB /* Loaf */,
 				CAD75154242F5ECA0054B164 /* SwiftyMarkdown */,
 				CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */,
-				CA68BBC0244B063200879060 /* Starscream */,
 				CA88BA68244E383500C4A276 /* SwiftUIRefresh */,
 			);
 			productName = "Hive for iOS";
@@ -893,7 +890,6 @@
 				CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */,
 				CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
 				CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				CA68BBBF244B063200879060 /* XCRemoteSwiftPackageReference "Starscream" */,
 				CA88BA67244E383500C4A276 /* XCRemoteSwiftPackageReference "SwiftUIRefresh" */,
 			);
 			productRefGroup = CA7299A12393156100AD1285 /* Products */;
@@ -1263,14 +1259,6 @@
 				minimumVersion = 3.1.0;
 			};
 		};
-		CA68BBBF244B063200879060 /* XCRemoteSwiftPackageReference "Starscream" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/daltoniam/Starscream.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 4.0.3;
-			};
-		};
 		CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kishikawakatsumi/KeychainAccess";
@@ -1310,11 +1298,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA40344723932603006C6BE3 /* XCRemoteSwiftPackageReference "hive-engine" */;
 			productName = HiveEngine;
-		};
-		CA68BBC0244B063200879060 /* Starscream */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CA68BBBF244B063200879060 /* XCRemoteSwiftPackageReference "Starscream" */;
-			productName = Starscream;
 		};
 		CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;

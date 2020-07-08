@@ -9,7 +9,6 @@
 import Combine
 import SwiftUI
 import HiveEngine
-import Starscream
 import SwiftUIRefresh
 
 struct OnlineRoom: View {
@@ -250,7 +249,7 @@ extension OnlineRoom {
 
 	private func send(_ message: GameClientMessage) {
 		container.interactors.clientInteractor
-			.send(.online, message)
+			.send(.online, message, completionHandler: nil)
 	}
 
 	private func close() {

@@ -7,7 +7,7 @@
 //
 
 import HiveEngine
-import Starscream
+import Foundation
 
 enum GameClientMessage {
 	enum Option {
@@ -29,19 +29,19 @@ enum GameClientMessage {
 	case forfeit
 }
 
-extension WebSocket {
-	func send(message: GameClientMessage) {
+extension URLSessionWebSocketTask {
+	func send(message: GameClientMessage, completionHandler: @escaping (Error?) -> Void) {
 		switch message {
 		case .movement(let movement):
-			self.write(string: "MOV \(movement.notation)")
+			self.send(.string("MOV \(movement.notation)"), completionHandler: completionHandler)
 		case .setOption(let option, let value):
-			self.write(string: "SET \(option.optionName) \(value)")
+			self.send(.string("SET \(option.optionName) \(value)"), completionHandler: completionHandler)
 		case .message(let string):
-			self.write(string: "MSG \(string)")
+			self.send(.string("MSG \(string)"), completionHandler: completionHandler)
 		case .readyToPlay:
-			self.write(string: "GLHF")
+			self.send(.string("GLHF"), completionHandler: completionHandler)
 		case .forfeit:
-			self.write(string: "FF")
+			self.send(.string("FF"), completionHandler: completionHandler)
 		}
 	}
 }
