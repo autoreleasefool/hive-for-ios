@@ -51,6 +51,7 @@ enum ColorAsset: String {
 	case background = "Colors/Background"
 	case backgroundLight = "Colors/BackgroundLight"
 	case backgroundDark = "Colors/BackgroundDark"
+	case backgroundSectionHeader = "Colors/BackgroundSectionHeader"
 
 	case highlight = "Colors/Highlight"
 	case destructive = "Colors/Destructive"

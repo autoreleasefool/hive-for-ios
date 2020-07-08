@@ -28,40 +28,43 @@ struct Settings: View {
 
 	var body: some View {
 		NavigationView {
-			ScrollView {
-				VStack(spacing: .m) {
-					if container.has(feature: .arGameMode) {
-						sectionHeader(title: "Game")
+			List {
+				if container.has(feature: .arGameMode) {
+					Section(header: sectionHeader(title: "Game")) {
 						itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
 							self.viewModel.postViewAction(.switchGameMode(current: $0))
 						}
 					}
-
-					#if DEBUG
-					if container.has(feature: .featureFlags) {
-						sectionHeader(title: "Features")
-						featureToggles
-							.padding(.horizontal, length: .m)
-					}
-					#endif
-
-					if self.viewModel.showAccount {
-						sectionHeader(title: "Account")
-						UserPreview(userProfile.value?.summary)
-
-						logoutButton
-							.padding(.horizontal, length: .m)
-					}
-
-					sectionHeader(title: "About")
-					VStack(spacing: .m) {
-						viewSource
-						attributions
-						developer
-						appInfo
-					}
-					.padding(.horizontal, length: .m)
 				}
+
+				#if DEBUG
+				if container.has(feature: .featureFlags) {
+					Section(header: sectionHeader(title: "Features")) {
+						featureToggles
+					}
+				}
+				#endif
+
+				if self.viewModel.showAccount {
+					Section(header: sectionHeader(title: "Account")) {
+						VStack(spacing: .m) {
+							UserPreview(userProfile.value?.summary)
+							logoutButton
+						}
+					}
+				}
+
+				Section(header: sectionHeader(title: "About")) {
+					viewSource
+					attributions
+					appInfo
+				}
+
+				NavigationLink(
+					destination: AttributionsList(),
+					isActive: $viewModel.showAttributions,
+					label: { EmptyView() }
+				)
 			}
 			.background(Color(.background).edgesIgnoringSafeArea(.all))
 			.navigationBarTitle("Settings")
@@ -78,13 +81,15 @@ struct Settings: View {
 	private func sectionHeader(title: String) -> some View {
 		HStack {
 			Text(title)
-				.caption()
+				.bold()
+				.body()
 				.foregroundColor(Color(.text))
+				.padding(.horizontal, length: .m)
+				.padding(.vertical, length: .s)
 			Spacer()
 		}
-		.padding(.vertical, length: .s)
-		.padding(.horizontal, length: .m)
-		.background(Color(.backgroundLight))
+		.background(Color(.backgroundSectionHeader))
+		.listRowInsets(.empty)
 	}
 
 	private func itemToggle<I>(
@@ -138,6 +143,7 @@ struct Settings: View {
 		ForEach(Feature.allCases, id: \.rawValue) { feature in
 			Toggle(feature.rawValue, isOn: self.binding(for: feature))
 				.foregroundColor(Color(.text))
+				.padding(.vertical, length: .xs)
 		}
 	}
 	#endif
@@ -145,19 +151,51 @@ struct Settings: View {
 	// MARK: About
 
 	private var viewSource: some View {
-		Text("View source")
+		Button(action: {
+			self.viewModel.postViewAction(.viewSource)
+		}, label: {
+			HStack {
+				Text("View source")
+					.body()
+					.foregroundColor(Color(.text))
+				Spacer()
+				Image(uiImage: UIImage(systemName: "chevron.right")!)
+					.resizable()
+					.frame(width: 8, height: 12)
+					.foregroundColor(Color(.textSecondary))
+			}
+		})
 	}
 
 	private var attributions: some View {
-		Text("Attributions")
-	}
-
-	private var developer: some View {
-		Text("Created by Joseph Roque")
+		Button(action: {
+			self.viewModel.postViewAction(.viewAttributions)
+		}, label: {
+			HStack {
+				Text("Attributions")
+					.body()
+					.foregroundColor(Color(.text))
+				Spacer()
+				Image(uiImage: UIImage(systemName: "chevron.right")!)
+					.resizable()
+					.frame(width: 8, height: 12)
+					.foregroundColor(Color(.textSecondary))
+			}
+		})
 	}
 
 	private var appInfo: some View {
-		Text("App info")
+		HStack {
+			Spacer()
+			VStack(alignment: .trailing, spacing: .xs) {
+				Text(viewModel.appName)
+					.body()
+					.foregroundColor(Color(.textSecondary))
+				Text(viewModel.appVersion)
+					.body()
+					.foregroundColor(Color(.textSecondary))
+			}
+		}
 	}
 }
 

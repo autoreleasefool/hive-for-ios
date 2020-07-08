@@ -13,6 +13,9 @@ enum SettingsViewAction: BaseViewAction {
 	case onAppear
 	case switchGameMode(current: Preferences.GameMode)
 
+	case viewSource
+	case viewAttributions
+
 	case logout
 	case exit
 }
@@ -36,6 +39,7 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 		}
 	}
 
+	@Published var showAttributions: Bool = false
 	@Published var showAccount: Bool
 	@Published var preferences = Preferences()
 
@@ -59,6 +63,11 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 		case .switchGameMode(let current):
 			switchGameMode(from: current)
 
+		case .viewSource:
+			openSource()
+		case .viewAttributions:
+			openAttributions()
+
 		case .exit:
 			isOpen.wrappedValue = false
 		case .logout:
@@ -74,5 +83,26 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 		}
 
 		actions.send(.setGameMode(next))
+	}
+
+	private func openSource() {
+		guard let url = URL(string: "https://github.com/josephroquedev/hive-for-ios") else { return }
+		UIApplication.shared.open(url, options: [:])
+	}
+
+	private func openAttributions() {
+		showAttributions = true
+	}
+}
+
+// MARK: - Strings
+
+extension SettingsViewModel {
+	var appName: String {
+		Bundle.main.infoDictionary?["CFBundleName"] as? String ?? ""
+	}
+
+	var appVersion: String {
+		Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
 	}
 }

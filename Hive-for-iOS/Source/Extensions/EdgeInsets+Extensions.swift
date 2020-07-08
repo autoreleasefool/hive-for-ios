@@ -16,4 +16,6 @@ extension EdgeInsets {
 	init(equalTo equal: Metrics.Spacing) {
 		self.init(equalTo: equal.rawValue)
 	}
+
+	static let empty = EdgeInsets(equalTo: 0)
 }
