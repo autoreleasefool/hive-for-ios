@@ -11,6 +11,7 @@ import Combine
 import HiveEngine
 
 struct GameHUD: View {
+	@Environment(\.container) private var container
 	@EnvironmentObject var viewModel: GameViewModel
 
 	private let buttonSize: Metrics.Image = .xl
@@ -33,13 +34,30 @@ struct GameHUD: View {
 		Button(action: {
 			self.viewModel.postViewAction(.openSettings)
 		}, label: {
-			HexImage(ImageAsset.Icon.info, stroke: .textSecondary)
-				.placeholderTint(.textSecondary)
-				.squareInnerImage(.s)
+			Image(uiImage: ImageAsset.Icon.info)
+				.resizable()
+				.renderingMode(.template)
+				.foregroundColor(Color(.textSecondary))
+				.squareImage(.l)
 		})
-		.squareImage(.l)
 		.position(
 			x: geometry.size.width - (buttonSize.rawValue / 2 + buttonDistanceFromEdge.rawValue),
+			y: buttonDistanceFromEdge.rawValue
+		)
+	}
+
+	func emojiButton(_ geometry: GeometryProxy) -> some View {
+		Button(action: {
+			self.viewModel.postViewAction(.toggleEmojiPicker)
+		}, label: {
+			Image(uiImage: ImageAsset.Icon.smiley)
+				.resizable()
+				.renderingMode(.template)
+				.foregroundColor(Color(.textSecondary))
+				.squareImage(.l)
+		})
+		.position(
+			x: buttonDistanceFromEdge.rawValue + buttonSize.rawValue / 2,
 			y: buttonDistanceFromEdge.rawValue
 		)
 	}
@@ -64,6 +82,7 @@ struct GameHUD: View {
 	var body: some View {
 		GeometryReader { geometry in
 			if !self.viewModel.shouldHideHUDControls {
+				self.emojiButton(geometry)
 				self.settingsButton(geometry)
 				self.stateIndicator(geometry)
 				self.handButton(for: .white, geometry)
@@ -76,6 +95,9 @@ struct GameHUD: View {
 				.edgesIgnoringSafeArea(.bottom)
 			ActionHUD()
 				.edgesIgnoringSafeArea(.bottom)
+			if self.container.has(feature: .emojiReactions) {
+				EmojiPicker(isOpen: self.$viewModel.showingEmojiPicker)
+			}
 		}
 		.padding(.top, length: .l)
 		.onReceive(viewModel.stateStore) { self.state = $0 }

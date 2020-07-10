@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0523EF23E57813008F8A94 /* GameViewContent.swift */; };
+		CA0939D024B6B0E700488713 /* Array+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0939CF24B6B0E700488713 /* Array+Extensions.swift */; };
 		CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F938E2422C80800F6E104 /* DebugOverlay.swift */; };
 		CA0F93942426003800F6E104 /* GameView2DController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F93932426003800F6E104 /* GameView2DController.swift */; };
 		CA0F9396242602BA00F6E104 /* GameView2D.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0F9395242602BA00F6E104 /* GameView2D.swift */; };
@@ -60,6 +61,8 @@
 		CA9079A424B540EC00B30CF6 /* AttributionsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9079A324B540EC00B30CF6 /* AttributionsList.swift */; };
 		CA91C32224350CEA007E7D55 /* UserLoginSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA91C32124350CEA007E7D55 /* UserLoginSignup.swift */; };
 		CA92524A24B63644003DB4F2 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = CA92524924B63644003DB4F2 /* Introspect */; };
+		CA92524C24B6A790003DB4F2 /* EmojiPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA92524B24B6A790003DB4F2 /* EmojiPicker.swift */; };
+		CA92525124B6A83D003DB4F2 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA92525024B6A83D003DB4F2 /* Emoji.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */; };
 		CABDFCCD23DB73E400C697AD /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCCC23DB73E400C697AD /* GameClient.swift */; };
@@ -130,6 +133,7 @@
 
 /* Begin PBXFileReference section */
 		CA0523EF23E57813008F8A94 /* GameViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewContent.swift; sourceTree = "<group>"; };
+		CA0939CF24B6B0E700488713 /* Array+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extensions.swift"; sourceTree = "<group>"; };
 		CA0F938E2422C80800F6E104 /* DebugOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugOverlay.swift; sourceTree = "<group>"; };
 		CA0F93932426003800F6E104 /* GameView2DController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView2DController.swift; sourceTree = "<group>"; };
 		CA0F9395242602BA00F6E104 /* GameView2D.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView2D.swift; sourceTree = "<group>"; };
@@ -181,6 +185,8 @@
 		CA9079A124B41A4000B30CF6 /* Features.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Features.swift; sourceTree = "<group>"; };
 		CA9079A324B540EC00B30CF6 /* AttributionsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributionsList.swift; sourceTree = "<group>"; };
 		CA91C32124350CEA007E7D55 /* UserLoginSignup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserLoginSignup.swift; sourceTree = "<group>"; };
+		CA92524B24B6A790003DB4F2 /* EmojiPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiPicker.swift; sourceTree = "<group>"; };
+		CA92525024B6A83D003DB4F2 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterTabBar.swift; sourceTree = "<group>"; };
 		CABDFCCC23DB73E400C697AD /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
@@ -503,10 +509,11 @@
 		CABDFCDF23DBAC3E00C697AD /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CA92525024B6A83D003DB4F2 /* Emoji.swift */,
 				CA45F9BB242B85C2007EC94D /* GameAction.swift */,
 				CABDFCE023DBAC5700C697AD /* GameInformation.swift */,
-				CABDFD0F23E0C87700C697AD /* PlayerHand.swift */,
 				CA45F9C3242E758C007EC94D /* GameRule.swift */,
+				CABDFD0F23E0C87700C697AD /* PlayerHand.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -614,6 +621,7 @@
 		CAC6860423CD227A00B882D2 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CA0939CF24B6B0E700488713 /* Array+Extensions.swift */,
 				CA0F93A02427DCE600F6E104 /* CoreGraphics+Extensions.swift */,
 				CAC730EA246979C5004DB450 /* Date+Extensions.swift */,
 				CAC6860523CD228A00B882D2 /* EdgeInsets+Extensions.swift */,
@@ -808,6 +816,7 @@
 			children = (
 				CA90799D24B2934C00B30CF6 /* Information */,
 				CA45F9B9242B7C4C007EC94D /* ActionHUD.swift */,
+				CA92524B24B6A790003DB4F2 /* EmojiPicker.swift */,
 				CAFA469B23DAD215003C38AB /* GameHUD.swift */,
 				CABDFD1123E0C97000C697AD /* InformationHUD.swift */,
 				CABDFD1323E0DADD00C697AD /* PlayerHandHUD.swift */,
@@ -990,9 +999,11 @@
 				CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */,
 				CAC426D82433989800E513BC /* KeyboardAvoidance.swift in Sources */,
 				CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */,
+				CA92524C24B6A790003DB4F2 /* EmojiPicker.swift in Sources */,
 				CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */,
 				CA0F9396242602BA00F6E104 /* GameView2D.swift in Sources */,
 				CAC73101246DFA6C004DB450 /* ContentViewViewModel.swift in Sources */,
+				CA0939D024B6B0E700488713 /* Array+Extensions.swift in Sources */,
 				CA75CE45242AB65300998719 /* GameViewAR.swift in Sources */,
 				CAFA467023D25B21003C38AB /* ViewModel.swift in Sources */,
 				CAC6860E23CD236D00B882D2 /* Match.swift in Sources */,
@@ -1027,6 +1038,7 @@
 				CAF8256E245CD14D0064359E /* ContentView.swift in Sources */,
 				CAF82565245C78060064359E /* AccountInteractor.swift in Sources */,
 				CABDFD1423E0DADD00C697AD /* PlayerHandHUD.swift in Sources */,
+				CA92525124B6A83D003DB4F2 /* Emoji.swift in Sources */,
 				CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */,
 				CAF82558245C6B2B0064359E /* Account.swift in Sources */,
 				CA8F46DD245DD27600B136D0 /* LoginSignup.swift in Sources */,

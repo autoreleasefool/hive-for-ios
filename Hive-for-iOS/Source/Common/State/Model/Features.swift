@@ -34,13 +34,15 @@ struct Features: Equatable {
 
 enum Feature: String, CaseIterable {
 	case arGameMode = "AR Game Mode"
+	case emojiReactions = "Emoji Reactions"
+	case featureFlags = "Feature flags"
 	case hiveMindAgent = "Hive Mind Agent"
 	case offlineMode = "Offline Mode"
-	case featureFlags = "Feature flags"
 
 	var rollout: Rollout {
 		switch self {
 		case .arGameMode: return .disabled
+		case .emojiReactions: return .inDevelopment
 		case .hiveMindAgent: return .inDevelopment
 		case .offlineMode: return .inDevelopment
 		case .featureFlags: return .inDevelopment

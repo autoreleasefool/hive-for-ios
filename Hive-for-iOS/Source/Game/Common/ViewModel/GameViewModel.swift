@@ -24,6 +24,9 @@ enum GameViewAction: BaseViewAction {
 	case tappedPiece(Piece)
 	case tappedGamePiece(Piece)
 
+	case toggleEmojiPicker
+	case pickedEmoji(Emoji)
+
 	case gamePieceSnapped(Piece, Position)
 	case gamePieceMoved(Piece, Position)
 	case movementConfirmed(Movement)
@@ -42,6 +45,7 @@ enum GameViewAction: BaseViewAction {
 class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	var clientInteractor: ClientInteractor!
 
+	@Published var showingEmojiPicker: Bool = false
 	@Published private(set) var presentedPlayerHand: PlayerHand?
 	@Published private(set) var presentedGameInformation: GameInformation?
 	@Published private(set) var presentedGameAction: GameAction?
@@ -181,6 +185,12 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		case .cancelMovement:
 			pickUpHand()
 
+		case .toggleEmojiPicker:
+			showingEmojiPicker.toggle()
+		case .pickedEmoji(let emoji):
+			showingEmojiPicker = false
+			pickedEmoji(emoji)
+
 		case .openSettings:
 			openSettings()
 
@@ -239,6 +249,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			self.gameContent = content
 			transition(to: .gameStart)
 		}
+	}
+
+	private func pickedEmoji(_ emoji: Emoji) {
+		clientInteractor.send(clientMode, .message(emoji.rawValue)) { _ in }
 	}
 
 	private func selectFromHand(_ player: Player, _ pieceClass: Piece.Class) {
