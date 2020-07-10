@@ -50,7 +50,7 @@ struct GameHUD: View {
 		return Button(action: {
 			self.viewModel.postViewAction(.presentPlayerHand(player))
 		}, label: {
-			HexImage(ImageAsset.Icon.hand, stroke: player.color)
+			HexImage(ImageAsset.Icon.handFilled, stroke: player.color)
 				.placeholderTint(player.color)
 				.squareInnerImage(.m)
 		})

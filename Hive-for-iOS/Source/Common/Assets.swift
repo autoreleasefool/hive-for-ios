@@ -17,9 +17,11 @@ enum ImageAsset {
 	static let borderlessGlyph = UIImage(named: "Icons/BorderlessGlyph")!
 
 	enum Icon {
-		static let hand = UIImage(named: "Icons/Hand")!
+		static let handFilled = UIImage(named: "Icons/Hand.Filled")!
+		static let handOutlined = UIImage(named: "Icons/Hand.Outlined")!
 		static let close = UIImage(named: "Icons/Close")!
 		static let info = UIImage(named: "Icons/Info")!
+		static let smiley = UIImage(named: "Icons/Smiley")!
 	}
 
 	enum Movement {

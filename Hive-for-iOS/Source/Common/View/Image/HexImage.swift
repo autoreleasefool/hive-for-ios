@@ -100,7 +100,7 @@ struct Hex: Shape {
 struct HexImagePreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
-			HexImage(ImageAsset.Icon.hand, stroke: .primary)
+			HexImage(ImageAsset.Icon.handFilled, stroke: .primary)
 				.placeholderTint(.primary)
 				.squareInnerImage(.m)
 				.squareImage(.l)
