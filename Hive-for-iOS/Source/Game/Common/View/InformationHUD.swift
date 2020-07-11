@@ -17,7 +17,7 @@ struct InformationHUD: View {
 	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
 		switch information {
 		case .piece, .pieceClass, .playerHand, .rule, .settings: return maxHeight * 0.75
-		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
+		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.85 : maxHeight / 2
 		case .gameEnd: return maxHeight * 0.5
 		case .reconnecting: return maxHeight * 0.25
 		case .none: return 0
@@ -162,18 +162,17 @@ struct InformationHUDPreview: PreviewProvider {
 	@State static var isOpen: Bool = true
 
 	static var previews: some View {
-//		let information: GameInformation = .stack([
-//			Piece(class: .ant, owner: .white, index: 1),
-//			Piece(class: .beetle, owner: .black, index: 1),
-//			Piece(class: .beetle, owner: .white, index: 1),
-//			Piece(class: .beetle, owner: .black, index: 2),
-//			Piece(class: .beetle, owner: .white, index: 2),
-//			Piece(class: .mosquito, owner: .white, index: 1),
-//			Piece(class: .mosquito, owner: .black, index: 1),
-//		])
+		let information: GameInformation = .stack([
+			Piece(class: .ant, owner: .white, index: 1),
+			Piece(class: .beetle, owner: .black, index: 1),
+			Piece(class: .beetle, owner: .white, index: 1),
+			Piece(class: .beetle, owner: .black, index: 2),
+			Piece(class: .beetle, owner: .white, index: 2),
+			Piece(class: .mosquito, owner: .white, index: 1),
+			Piece(class: .mosquito, owner: .black, index: 1),
+		])
 //		let information: GameInformation = .pieceClass(.ant)
-		let information: GameInformation = .playerHand(.init(player: .white, playingAs: .white, state: GameState()))
-
+//		let information: GameInformation = .playerHand(.init(player: .white, playingAs: .white, state: GameState()))
 
 		let hud = InformationHUD()
 

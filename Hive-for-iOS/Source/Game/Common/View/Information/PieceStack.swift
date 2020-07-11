@@ -22,7 +22,7 @@ struct PieceStack: View {
 					.renderingMode(.template)
 					.resizable()
 					.scaledToFit()
-					.squareImage(.l)
+					.squareImage(.m)
 					.foregroundColor(Color(piece.owner.color))
 				Text("\(piece.owner.description) \(piece.class.description) #\(piece.index)")
 					.body()
