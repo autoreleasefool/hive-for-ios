@@ -107,6 +107,7 @@
 		CAD32BFE2495110900984610 /* AIAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BFD2495110900984610 /* AIAgent.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
+		CAEBA7CD24B9403D0051100D /* AnimatedEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */; };
 		CAF82556245C6B030064359E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82555245C6B030064359E /* AppState.swift */; };
 		CAF82558245C6B2B0064359E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82557245C6B2B0064359E /* Account.swift */; };
 		CAF8255C245C6C640064359E /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF8255B245C6C640064359E /* Loadable.swift */; };
@@ -230,6 +231,7 @@
 		CAD32BF82493130000984610 /* LocalRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoomViewModel.swift; sourceTree = "<group>"; };
 		CAD32BFD2495110900984610 /* AIAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIAgent.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
+		CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedEmoji.swift; sourceTree = "<group>"; };
 		CAF82555245C6B030064359E /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		CAF82557245C6B2B0064359E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		CAF8255B245C6C640064359E /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
@@ -816,6 +818,7 @@
 			children = (
 				CA90799D24B2934C00B30CF6 /* Information */,
 				CA45F9B9242B7C4C007EC94D /* ActionHUD.swift */,
+				CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */,
 				CA92524B24B6A790003DB4F2 /* EmojiPicker.swift */,
 				CAFA469B23DAD215003C38AB /* GameHUD.swift */,
 				CABDFD1123E0C97000C697AD /* InformationHUD.swift */,
@@ -957,6 +960,7 @@
 				CA8F46E7245EC36200B136D0 /* MatchRepository.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,
 				CA45F9BC242B85C2007EC94D /* GameAction.swift in Sources */,
+				CAEBA7CD24B9403D0051100D /* AnimatedEmoji.swift in Sources */,
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
 				CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */,
 				CA90799C24B2931700B30CF6 /* GameSettings.swift in Sources */,

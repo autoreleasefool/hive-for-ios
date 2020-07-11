@@ -9,9 +9,14 @@
 import SwiftUI
 
 enum Emoji: String, CaseIterable {
+	case noJo = "NoJo"
 	case scottCry = "ScottCry"
 
 	var image: UIImage? {
 		UIImage(named: rawValue)
+	}
+
+	var url: URL {
+		URL(string: "emoji://\(rawValue)")!
 	}
 }
