@@ -9,20 +9,8 @@
 import SwiftUI
 import HiveEngine
 
-struct EndState {
-	let winner: Player?
-	let playingAs: Player
-
-	var playerIsWinner: Bool {
-		playingAs == winner
-	}
-
-	var isTied: Bool {
-		winner == nil
-	}
-}
-
 enum GameInformation {
+	case playerHand(PlayerHand)
 	case piece(Piece)
 	case pieceClass(Piece.Class)
 	case stack([Piece])
@@ -48,7 +36,8 @@ enum GameInformation {
 
 	var title: String {
 		switch self {
-		case .piece(let piece): return GameInformation.pieceClass(piece.class).title
+		case .playerHand(let hand): return (hand.isPlayerHand ? "Your" : "Opponent's") + " hand"
+		case .piece(let piece): return piece.class.description
 		case .pieceClass(let pieceClass): return pieceClass.description
 		case .stack: return "Pieces in stack"
 		case .rule(let rule): return rule?.title ?? "All rules"
@@ -65,7 +54,8 @@ enum GameInformation {
 
 	var subtitle: String? {
 		switch self {
-		case .piece(let piece): return GameInformation.pieceClass(piece.class).subtitle
+		case .playerHand(let hand): return hand.player.description
+		case .piece(let piece): return piece.class.rules
 		case .pieceClass(let pieceClass): return pieceClass.rules
 		case .rule(let rule): return rule?.description
 		case .stack: return
@@ -80,26 +70,70 @@ enum GameInformation {
 					"\(state.playerIsWinner ? "your opponent's" : "your") queen and won the game! " +
 					"Return to the lobby to play another game."
 			}
-		case .settings: return nil
 		case .reconnecting(let attempts):
 			return "The connection to the server has been lost. The game will automatically attempt to reconnect, " +
 				"but if a connection cannot be made, you will forfeit the match. This dialog will dismiss " +
 				"automatically if the connection is restored.\n" +
 				"Please wait (\(attempts)/\(OnlineGameClient.maxReconnectAttempts))."
+		case .settings: return nil
+		}
+	}
+
+	var prefersMarkdown: Bool {
+		switch self {
+		case .playerHand, .settings: return false
+		case .piece, .pieceClass, .rule, .stack, .gameEnd, .reconnecting: return true
 		}
 	}
 
 	var dismissable: Bool {
 		switch self {
 		case .reconnecting: return false
-		case .gameEnd, .piece, .pieceClass, .rule, .stack, .settings: return true
+		case .gameEnd, .piece, .pieceClass, .playerHand, .rule, .stack, .settings: return true
 		}
 	}
 
 	var hasCloseButton: Bool {
 		switch self {
 		case .reconnecting, .gameEnd: return false
-		case .piece, .pieceClass, .rule, .stack, .settings: return true
+		case .piece, .pieceClass, .playerHand, .rule, .stack, .settings: return true
+		}
+	}
+}
+
+// MARK: EndState
+
+extension GameInformation {
+	struct EndState {
+		let winner: Player?
+		let playingAs: Player
+
+		var playerIsWinner: Bool {
+			playingAs == winner
+		}
+
+		var isTied: Bool {
+			winner == nil
+		}
+	}
+}
+
+// MARK: PlayerHand
+
+extension GameInformation {
+	struct PlayerHand {
+		let player: Player
+		let playingAs: Player
+		let piecesInHand: [Piece.Class]
+
+		var isPlayerHand: Bool {
+			playingAs == player
+		}
+
+		init(player: Player, playingAs: Player, state: GameState) {
+			self.player = player
+			self.playingAs = playingAs
+			self.piecesInHand = Array(state.unitsInHand[player] ?? []).map { $0.class }.sorted()
 		}
 	}
 }

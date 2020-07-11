@@ -17,7 +17,6 @@ enum GameViewAction: BaseViewAction {
 	case viewContentReady
 	case viewInteractionsReady
 
-	case presentPlayerHand(Player)
 	case presentInformation(GameInformation)
 	case selectedFromHand(Player, Piece.Class)
 	case enquiredFromHand(Piece.Class)
@@ -46,12 +45,12 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	var clientInteractor: ClientInteractor!
 
 	@Published var showingEmojiPicker: Bool = false
-	@Published private(set) var presentedPlayerHand: PlayerHand?
 	@Published private(set) var presentedGameInformation: GameInformation?
 	@Published private(set) var presentedGameAction: GameAction?
 
 	private(set) var loafState = PassthroughSubject<LoafState, Never>()
 	private(set) var animateToPosition = PassthroughSubject<Position, Never>()
+	private(set) var animatedEmoji = PassthroughSubject<AnimateableEmoji, Never>()
 
 	struct SelectedPiece {
 		let piece: Piece
@@ -96,16 +95,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		}
 	}
 
-	var presentingPlayerHand: Binding<Bool> {
-		Binding(
-			get: { [weak self] in self?.presentedPlayerHand != nil },
-			set: { [weak self] newValue in
-				guard !newValue else { return }
-				self?.presentedPlayerHand = nil
-			}
-		)
-	}
-
 	var presentingGameInformation: Binding<Bool> {
 		Binding(
 			get: { [weak self] in self?.presentedGameInformation != nil },
@@ -128,7 +117,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	}
 
 	var shouldHideHUDControls: Bool {
-		presentingPlayerHand.wrappedValue || presentingGameInformation.wrappedValue || presentingGameAction.wrappedValue
+		presentingGameInformation.wrappedValue || presentingGameAction.wrappedValue
 	}
 
 	private var selectedPieceDefaultPosition: Position {
@@ -162,8 +151,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			viewInteractionsReady = true
 			setupNewGame()
 
-		case .presentPlayerHand(let player):
-			presentedPlayerHand = PlayerHand(player: player, state: gameState)
 		case .presentInformation(let information):
 			presentedGameInformation = information
 		case .selectedFromHand(let player, let pieceClass):
@@ -252,7 +239,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	}
 
 	private func pickedEmoji(_ emoji: Emoji) {
-		clientInteractor.send(clientMode, .message(emoji.rawValue)) { _ in }
+		animatedEmoji.send(.init(emoji: emoji, source: .picked))
+//		clientInteractor.send(clientMode, .message(emoji.rawValue)) { _ in }
 	}
 
 	private func selectFromHand(_ player: Player, _ pieceClass: Piece.Class) {
@@ -495,7 +483,7 @@ extension GameViewModel {
 
 		switch presentedGameInformation {
 		case .reconnecting: presentedGameInformation = nil
-		case .piece, .pieceClass, .stack, .rule, .gameEnd, .settings, .none: break
+		case .piece, .pieceClass, .playerHand, .stack, .rule, .gameEnd, .settings, .none: break
 		}
 	}
 
@@ -515,7 +503,7 @@ extension GameViewModel {
 			updateGameState(to: state)
 		case .gameOver(let winner):
 			endGame()
-			presentedGameInformation = .gameEnd(EndState(
+			presentedGameInformation = .gameEnd(.init(
 				winner: winner == nil
 					? nil
 					: (

@@ -16,7 +16,7 @@ struct InformationHUD: View {
 
 	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
 		switch information {
-		case .piece, .pieceClass, .rule, .settings: return maxHeight * 0.75
+		case .piece, .pieceClass, .playerHand, .rule, .settings: return maxHeight * 0.75
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.75 : maxHeight / 2
 		case .gameEnd: return maxHeight * 0.5
 		case .reconnecting: return maxHeight * 0.25
@@ -61,22 +61,32 @@ struct InformationHUD: View {
 	private func header(information: GameInformation) -> some View {
 		let subtitle = information.subtitle
 
-		return VStack(spacing: .s) {
+		return VStack(alignment: .leading, spacing: .s) {
 			Text(information.title)
 				.subtitle()
 				.foregroundColor(Color(.text))
-				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+				.background(Color.blue)
 
 			if subtitle != nil {
-				Markdown(subtitle!, height: self.$subtitleHeight) { url in
-					if let information = GameInformation(fromLink: url.absoluteString) {
-						self.viewModel.postViewAction(.presentInformation(information))
+				if information.prefersMarkdown {
+					Markdown(subtitle!, height: self.$subtitleHeight) { url in
+						if let information = GameInformation(fromLink: url.absoluteString) {
+							self.viewModel.postViewAction(.presentInformation(information))
+						}
 					}
+					.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
+				} else {
+					Text(subtitle!)
+						.body()
+						.foregroundColor(Color(.text))
+						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+						.background(Color.red)
 				}
-				.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
 			}
 		}
-		.scaledToFit()
+		.scaleForMarkdown(hasMarkdown: information.prefersMarkdown)
+		.background(Color.green)
 	}
 
 	private func details(information: GameInformation, state: GameState) -> some View {
@@ -88,6 +98,8 @@ struct InformationHUD: View {
 				return AnyView(PieceClassDetails(pieceClass: pieceClass, state: state))
 			case .piece(let piece):
 				return AnyView(PieceClassDetails(pieceClass: piece.class, state: state))
+			case .playerHand(let hand):
+				return AnyView(PlayerHandView(hand: hand))
 			case .rule(let rule):
 				if rule != nil {
 					return AnyView(
@@ -136,21 +148,35 @@ extension InformationHUD {
 	}
 }
 
+// MARK: ViewModifier
+
+private extension View {
+	func scaleForMarkdown(hasMarkdown: Bool) -> some View {
+		if hasMarkdown {
+			return AnyView(self.scaledToFit())
+		} else {
+			return AnyView(self)
+		}
+	}
+}
+
 #if DEBUG
 struct InformationHUDPreview: PreviewProvider {
 	@State static var isOpen: Bool = true
 
 	static var previews: some View {
-		let information: GameInformation = .stack([
-			Piece(class: .ant, owner: .white, index: 1),
-			Piece(class: .beetle, owner: .black, index: 1),
-			Piece(class: .beetle, owner: .white, index: 1),
-			Piece(class: .beetle, owner: .black, index: 2),
-			Piece(class: .beetle, owner: .white, index: 2),
-			Piece(class: .mosquito, owner: .white, index: 1),
-			Piece(class: .mosquito, owner: .black, index: 1),
-		])
+//		let information: GameInformation = .stack([
+//			Piece(class: .ant, owner: .white, index: 1),
+//			Piece(class: .beetle, owner: .black, index: 1),
+//			Piece(class: .beetle, owner: .white, index: 1),
+//			Piece(class: .beetle, owner: .black, index: 2),
+//			Piece(class: .beetle, owner: .white, index: 2),
+//			Piece(class: .mosquito, owner: .white, index: 1),
+//			Piece(class: .mosquito, owner: .black, index: 1),
+//		])
 //		let information: GameInformation = .pieceClass(.ant)
+		let information: GameInformation = .playerHand(.init(player: .white, playingAs: .white, state: GameState()))
+
 
 		let hud = InformationHUD()
 

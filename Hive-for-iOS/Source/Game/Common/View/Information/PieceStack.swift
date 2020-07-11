@@ -36,7 +36,7 @@ struct PieceStack: View {
 				}
 			}
 		})
-			.frame(minWidth: 0, maxWidth: .infinity)
+		.frame(minWidth: 0, maxWidth: .infinity)
 	}
 
 	var body: some View {
