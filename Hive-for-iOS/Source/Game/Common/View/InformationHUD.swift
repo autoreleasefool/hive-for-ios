@@ -66,7 +66,6 @@ struct InformationHUD: View {
 				.subtitle()
 				.foregroundColor(Color(.text))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-				.background(Color.blue)
 
 			if subtitle != nil {
 				if information.prefersMarkdown {
@@ -81,12 +80,10 @@ struct InformationHUD: View {
 						.body()
 						.foregroundColor(Color(.text))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-						.background(Color.red)
 				}
 			}
 		}
 		.scaleForMarkdown(hasMarkdown: information.prefersMarkdown)
-		.background(Color.green)
 	}
 
 	private func details(information: GameInformation, state: GameState) -> some View {
