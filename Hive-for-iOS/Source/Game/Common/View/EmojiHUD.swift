@@ -38,7 +38,10 @@ struct EmojiHUD: View {
 				}
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
-			.onReceive(self.viewModel.animatedEmoji) { self.animatingEmoji.append($0) }
+			.onReceive(self.viewModel.animatedEmoji) { emoji in
+				let animations = (0...Int.random(in: (15...20))).map { _ in AnimateableEmoji(emoji: emoji, geometry: geometry) }
+				self.animatingEmoji.append(contentsOf: animations)
+			}
 		}
 	}
 

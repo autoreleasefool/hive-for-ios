@@ -50,7 +50,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private(set) var loafState = PassthroughSubject<LoafState, Never>()
 	private(set) var animateToPosition = PassthroughSubject<Position, Never>()
-	private(set) var animatedEmoji = PassthroughSubject<AnimateableEmoji, Never>()
+	private(set) var animatedEmoji = PassthroughSubject<Emoji, Never>()
 
 	struct SelectedPiece {
 		let piece: Piece
@@ -238,7 +238,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	}
 
 	private func pickedEmoji(_ emoji: Emoji) {
-		animatedEmoji.send(.init(emoji: emoji, source: .picked))
+		animatedEmoji.send(emoji)
 //		clientInteractor.send(clientMode, .message(emoji.rawValue)) { _ in }
 	}
 
