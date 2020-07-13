@@ -64,6 +64,7 @@ struct GameHUD: View {
 
 	func handButton(for player: Player, _ geometry: GeometryProxy) -> some View {
 		let xOffset = (buttonDistanceFromEdge.rawValue + buttonSize.rawValue / 2) * (player == .white ? -1 : 1)
+		let image = viewModel.handImage(for: player)
 
 		return Button(action: {
 			self.viewModel.postViewAction(.presentInformation(.playerHand(.init(
@@ -72,7 +73,7 @@ struct GameHUD: View {
 				state: self.viewModel.gameState
 			))))
 		}, label: {
-			HexImage(ImageAsset.Icon.handFilled, stroke: player.color)
+			HexImage(image, stroke: player.color)
 				.placeholderTint(player.color)
 				.squareInnerImage(.m)
 		})
