@@ -98,7 +98,8 @@ struct GameHUD: View {
 			ActionHUD()
 				.edgesIgnoringSafeArea(.bottom)
 			if self.container.has(feature: .emojiReactions) {
-				EmojiPicker(isOpen: self.$viewModel.showingEmojiPicker)
+				EmojiHUD()
+					.edgesIgnoringSafeArea(.bottom)
 			}
 		}
 		.padding(.top, length: .l)

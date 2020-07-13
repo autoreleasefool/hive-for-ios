@@ -175,7 +175,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		case .toggleEmojiPicker:
 			showingEmojiPicker.toggle()
 		case .pickedEmoji(let emoji):
-			showingEmojiPicker = false
 			pickedEmoji(emoji)
 
 		case .openSettings:
