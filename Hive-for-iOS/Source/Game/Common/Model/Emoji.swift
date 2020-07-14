@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import Regex
 import SwiftUI
 
 enum Emoji: String, CaseIterable {
@@ -17,5 +18,18 @@ enum Emoji: String, CaseIterable {
 
 	var image: UIImage? {
 		UIImage(named: rawValue)
+	}
+}
+
+// MARK: Regex
+
+extension Emoji {
+	private static let messageRegex = Regex(#"EMOJI \{([A-Za-z]+)\}"#)
+
+	static func from(message: String) -> Emoji? {
+		guard let match = Emoji.messageRegex.firstMatch(in: message),
+			let optionalEmojiName = match.captures.first,
+			let emojiName = optionalEmojiName else { return nil }
+		return Emoji(rawValue: emojiName)
 	}
 }

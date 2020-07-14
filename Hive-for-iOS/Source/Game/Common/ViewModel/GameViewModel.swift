@@ -239,7 +239,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private func pickedEmoji(_ emoji: Emoji) {
 		animatedEmoji.send(emoji)
-//		clientInteractor.send(clientMode, .message(emoji.rawValue)) { _ in }
+		clientInteractor.send(clientMode, .message("EMOJI {\(emoji.rawValue)}")) { _ in }
 	}
 
 	private func selectFromHand(_ player: Player, _ pieceClass: Piece.Class) {
@@ -454,6 +454,13 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			}
 		)
 	}
+
+	private func handleMessage(_ message: String, from id: UUID) {
+		guard id != self.userId else { return }
+		if let emoji = Emoji.from(message: message) {
+			animatedEmoji.send(emoji)
+		}
+	}
 }
 
 // MARK: - GameClient
@@ -512,7 +519,9 @@ extension GameViewModel {
 					),
 				playingAs: playingAs
 			))
-		case .error, .forfeit, .message, .playerJoined, .playerLeft, .playerReady, .setOption:
+		case .message(let id, let message):
+			handleMessage(message, from: id)
+		case .error, .forfeit, .playerJoined, .playerLeft, .playerReady, .setOption:
 			#warning("TODO: handle remaining messages in game")
 			debugLog("Received message: \(message)")
 		}
