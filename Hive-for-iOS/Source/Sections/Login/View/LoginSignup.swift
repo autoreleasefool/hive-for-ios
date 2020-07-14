@@ -14,8 +14,11 @@ struct LoginSignup: View {
 	@Environment(\.container) private var container
 	@ObservedObject private var viewModel: LoginSignupViewModel
 
-	init(defaultForm: LoginSignupViewModel.Form = .login, account: Loadable<Account> = .notLoaded) {
-		viewModel = LoginSignupViewModel(defaultForm: defaultForm, account: account)
+	init(
+		defaultForm: LoginSignupViewModel.Form = .login,
+		account: Loadable<Account> = .notLoaded,
+		onCancel: (() -> Void)? = nil) {
+		viewModel = LoginSignupViewModel(defaultForm: defaultForm, account: account, onCancel: onCancel)
 	}
 
 	var body: some View {
@@ -52,6 +55,7 @@ struct LoginSignup: View {
 
 				submitButton
 				toggleButton
+				cancelButton
 			}
 		}
 	}
@@ -121,7 +125,7 @@ struct LoginSignup: View {
 
 	private var toggleButton: some View {
 		HStack(spacing: 0) {
-			Text("or ")
+			Text("you can also ")
 				.caption()
 				.foregroundColor(Color(.text))
 			Button(action: {
@@ -130,9 +134,30 @@ struct LoginSignup: View {
 				Text(viewModel.toggleButtonText)
 					.caption()
 					.foregroundColor(Color(.primary))
-					.padding(.vertical, length: .s)
 			})
 		}
+		.padding(.top, length: .s)
+		.padding(.bottom, length: .xs)
+	}
+
+	private var cancelButton: some View {
+		HStack(spacing: 0) {
+			Text("or")
+				.caption()
+				.foregroundColor(Color(.text))
+			Button(action: {
+				self.viewModel.postViewAction(.exitForm)
+			}, label: {
+				Text(" exit ")
+					.caption()
+					.foregroundColor(Color(.primary))
+			})
+			Text("to main menu")
+				.caption()
+				.foregroundColor(Color(.text))
+		}
+		.padding(.top, length: .xs)
+		.padding(.bottom, length: .s)
 	}
 
 	private func notice(message: String) -> some View {

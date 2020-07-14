@@ -14,6 +14,7 @@ enum LoginSignupViewAction: BaseViewAction {
 	case submitForm
 	case focusField(LoginSignupViewModel.FieldItem)
 	case didReturn(from: LoginSignupViewModel.FieldItem)
+	case exitForm
 }
 
 enum LoginSignupAction: BaseAction {
@@ -31,14 +32,17 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	@Published var displayName: String = ""
 	@Published var confirmPassword: String = ""
 
+	private let onCancel: (() -> Void)?
+
 	private let actions = PassthroughSubject<LoginSignupAction, Never>()
 	var actionsPublisher: AnyPublisher<LoginSignupAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(defaultForm: Form = .login, account: Loadable<Account> = .notLoaded) {
+	init(defaultForm: Form = .login, account: Loadable<Account> = .notLoaded, onCancel: (() -> Void)? = nil) {
 		self._account = .init(initialValue: account)
 		self._form = .init(initialValue: defaultForm)
+		self.onCancel = onCancel
 	}
 
 	override func postViewAction(_ viewAction: LoginSignupViewAction) {
@@ -51,6 +55,8 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			handleReturn(from: from)
 		case .focusField(let id):
 			activeField = id
+		case .exitForm:
+			onCancel?()
 		}
 	}
 

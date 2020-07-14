@@ -75,7 +75,9 @@ struct ContentView: View {
 	}
 
 	private var noAccountView: some View {
-		LoginSignup()
+		LoginSignup {
+			self.viewModel.showWelcome = true
+		}
 	}
 }
 
