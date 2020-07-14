@@ -19,6 +19,10 @@ struct Features: Equatable {
 		enabled.contains(feature)
 	}
 
+	func hasAny(of features: Set<Feature>) -> Bool {
+		return !enabled.isDisjoint(with: features)
+	}
+
 	mutating func toggle(_ feature: Feature) {
 		#if DEBUG
 		enabled.toggle(feature)
@@ -64,5 +68,21 @@ extension Feature {
 			default: return false
 			}
 		}
+	}
+}
+
+// MARK: - AppContainer
+
+extension AppContainer {
+	var features: Features {
+		appState.value.features
+	}
+
+	func has(feature: Feature) -> Bool {
+		features.has(feature)
+	}
+
+	func hasAny(of features: Set<Feature>) -> Bool {
+		self.features.hasAny(of: features)
 	}
 }

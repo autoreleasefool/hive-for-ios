@@ -13,6 +13,11 @@ struct Preferences: Equatable {
 		get { GameMode(rawValue: UserDefaults.standard.string(forKey: Key.gameMode.rawValue) ?? "") ?? .sprite }
 		set { UserDefaults.standard.set(newValue.rawValue, forKey: Key.gameMode.rawValue) }
 	}
+
+	var hasDisabledEmojiReactions: Bool {
+		get { UserDefaults.standard.bool(forKey: Key.disabledEmojiReactions.rawValue) }
+		set { UserDefaults.standard.set(newValue, forKey: Key.disabledEmojiReactions.rawValue) }
+	}
 }
 
 // MARK: - Game Mode
@@ -37,5 +42,6 @@ extension Preferences {
 private extension Preferences {
 	enum Key: String {
 		case gameMode
+		case disabledEmojiReactions
 	}
 }

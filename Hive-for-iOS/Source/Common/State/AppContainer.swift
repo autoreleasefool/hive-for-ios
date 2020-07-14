@@ -33,14 +33,6 @@ extension AppContainer {
 	var account: Account? {
 		appState.value.account.value
 	}
-
-	var features: Features {
-		appState.value.features
-	}
-
-	func has(feature: Feature) -> Bool {
-		appState.value.features.has(feature)
-	}
 }
 
 // MARK: - Injection

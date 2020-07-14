@@ -29,10 +29,18 @@ struct Settings: View {
 	var body: some View {
 		NavigationView {
 			List {
-				if container.has(feature: .arGameMode) {
+				if container.hasAny(of: [.arGameMode, .emojiReactions]) {
 					Section(header: sectionHeader(title: "Game")) {
-						itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
-							self.viewModel.postViewAction(.switchGameMode(current: $0))
+						if container.has(feature: .arGameMode) {
+							itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
+								self.viewModel.postViewAction(.switchGameMode(current: $0))
+							}
+						}
+
+						if container.has(feature: .emojiReactions) {
+							Toggle("Disable emoji reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
+								.foregroundColor(Color(.text))
+								.padding(.vertical, length: .xs)
 						}
 					}
 				}
@@ -109,7 +117,6 @@ struct Settings: View {
 					.body()
 					.foregroundColor(Color(.text))
 			}
-			.padding(.horizontal, length: .m)
 		})
 	}
 
@@ -244,6 +251,13 @@ extension Settings {
 		Binding(
 			get: { self.container.features.has(feature) },
 			set: { self.container.appState[\.features].set(feature, to: $0) }
+		)
+	}
+
+	private func binding(for preference: WritableKeyPath<Preferences, Bool>) -> Binding<Bool> {
+		Binding(
+			get: { self.preferencesBinding.wrappedValue[keyPath: preference] },
+			set: { self.preferencesBinding.wrappedValue[keyPath: preference] = $0 }
 		)
 	}
 }
