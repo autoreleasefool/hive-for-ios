@@ -87,7 +87,9 @@ struct GameHUD: View {
 	var body: some View {
 		GeometryReader { geometry in
 			if !self.viewModel.shouldHideHUDControls {
-				self.emojiButton(geometry)
+				if self.container.has(feature: .emojiReactions) {
+					self.emojiButton(geometry)
+				}
 				self.settingsButton(geometry)
 				self.stateIndicator(geometry)
 				self.handButton(for: .white, geometry)
