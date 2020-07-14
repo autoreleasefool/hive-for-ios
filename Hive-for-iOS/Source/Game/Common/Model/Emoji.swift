@@ -33,3 +33,27 @@ extension Emoji {
 		return Emoji(rawValue: emojiName)
 	}
 }
+
+// MARK: Restrictions
+
+extension Emoji {
+	private static let minimumDelayBetweenEmoji: TimeInterval = 10
+	private static var lastEmojiSentAt: Date = .distantPast
+	private static var lastEmojiReceivedAt: Date = .distantPast
+
+	static func canSend(emoji: Emoji) -> Bool {
+		Date().addingTimeInterval(-minimumDelayBetweenEmoji) > lastEmojiSentAt
+	}
+
+	static func didSend(emoji: Emoji) {
+		lastEmojiSentAt = Date()
+	}
+
+	static func canReceive(emoji: Emoji) -> Bool {
+		Date().addingTimeInterval(-minimumDelayBetweenEmoji) > lastEmojiReceivedAt
+	}
+
+	static func didReceive(emoji: Emoji) {
+		lastEmojiReceivedAt = Date()
+	}
+}

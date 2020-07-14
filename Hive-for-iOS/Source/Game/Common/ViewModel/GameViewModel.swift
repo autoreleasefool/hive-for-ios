@@ -238,8 +238,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	}
 
 	private func pickedEmoji(_ emoji: Emoji) {
+		guard Emoji.canSend(emoji: emoji) else { return }
+
 		animatedEmoji.send(emoji)
 		clientInteractor.send(clientMode, .message("EMOJI {\(emoji.rawValue)}")) { _ in }
+		Emoji.didSend(emoji: emoji)
 	}
 
 	private func selectFromHand(_ player: Player, _ pieceClass: Piece.Class) {
@@ -458,7 +461,9 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private func handleMessage(_ message: String, from id: UUID) {
 		guard id != self.userId else { return }
 		if let emoji = Emoji.from(message: message) {
+			guard Emoji.canReceive(emoji: emoji) else { return }
 			animatedEmoji.send(emoji)
+			Emoji.didReceive(emoji: emoji)
 		}
 	}
 }
