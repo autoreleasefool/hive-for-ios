@@ -637,11 +637,12 @@ extension GameViewModel {
 
 extension GameViewModel {
 	func handImage(for player: Player) -> UIImage {
-		if player == playingAs {
-			return currentState == .playerTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
-		} else {
-			return currentState == .opponentTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
-		}
+		ImageAsset.Icon.handFilled
+//		if player == playingAs {
+//			return currentState == .playerTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
+//		} else {
+//			return currentState == .opponentTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
+//		}
 	}
 }
 

@@ -30,8 +30,10 @@ struct AnimatedEmoji: View {
 	let geometry: GeometryProxy
 
 	@Binding private var isAnimating: Bool
+
 	@State private var flag = false
 	@State private var opacity: Double = 1
+	@State private var scale: CGFloat = 1
 
 	init(emoji: AnimateableEmoji, isAnimating: Binding<Bool>, geometry: GeometryProxy) {
 		self.emoji = emoji
@@ -44,13 +46,18 @@ struct AnimatedEmoji: View {
 			.resizable()
 			.aspectRatio(contentMode: .fit)
 			.squareImage(.l)
-			.clipShape(Circle())
 			.opacity(opacity)
+			.scaleEffect(scale)
 			.modifier(FollowPathEffect(percent: self.flag ? 1 : 0, path: emoji.path))
 			.onAppear {
 				withAnimation(.easeInOut(duration: self.emoji.duration)) {
-					self.opacity = 0
 					self.flag.toggle()
+				}
+				withAnimation(Animation.linear(duration: 1).delay(self.emoji.duration - 1)) {
+					self.opacity = 0
+				}
+				withAnimation(Animation.linear(duration: 0.5).delay(self.emoji.duration - 0.5)) {
+					self.scale = 0
 				}
 
 				DispatchQueue.main.asyncAfter(deadline: .now() + self.emoji.duration) {
