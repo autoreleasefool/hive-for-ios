@@ -65,7 +65,7 @@ enum GameRule: String, CaseIterable {
 			"If a player is ever unale to [place a new piece](rule:placement) or " +
 				"[move an existing piece](rule:movement) they must forfeit their turn. The opponent takes another " +
 				"turn, and continues to do so until the other player can move or their [queen](class:Queen) " +
-				"is surrounded. Please note, if a player is able to move, they they **must do so**."
+				"is surrounded. Please note, if a player is able to move, then they **must do so**."
 		case .endingTheGame: return
 			"The game is over when one player's [queen](class:Queen) becomes surrounded on all 6 sides. " +
 				"The player whose [queen](class:Queen) is surrounded loses, and their opponent wins. In the case " +
