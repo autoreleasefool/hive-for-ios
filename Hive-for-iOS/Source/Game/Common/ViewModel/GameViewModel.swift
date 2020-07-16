@@ -45,8 +45,14 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	var clientInteractor: ClientInteractor!
 
 	@Published var showingEmojiPicker: Bool = false
-	@Published private(set) var presentedGameInformation: GameInformation?
-	@Published private(set) var presentedGameAction: GameAction?
+	@Published var presentedGameAction: GameAction?
+
+	@Published var presentedGameInformation: GameInformation? {
+		didSet {
+			guard case .playerMustPass = oldValue else { return }
+			postViewAction(.movementConfirmed(.pass))
+		}
+	}
 
 	private(set) var loafState = PassthroughSubject<LoafState, Never>()
 	private(set) var animateToPosition = PassthroughSubject<Position, Never>()
@@ -494,7 +500,7 @@ extension GameViewModel {
 
 		switch presentedGameInformation {
 		case .reconnecting: presentedGameInformation = nil
-		case .piece, .pieceClass, .playerHand, .stack, .rule, .gameEnd, .settings, .none: break
+		case .piece, .pieceClass, .playerHand, .stack, .rule, .gameEnd, .settings, .playerMustPass, .none: break
 		}
 	}
 
@@ -603,6 +609,12 @@ extension GameViewModel {
 	func transition(to nextState: State) {
 		guard canTransition(from: currentState, to: nextState) else { return }
 		stateStore.send(nextState)
+
+		guard nextState == .playerTurn else { return }
+
+		if gameState.currentPlayer == playingAs && gameState.availableMoves == [.pass] {
+			presentedGameInformation = .playerMustPass
+		}
 	}
 
 	private func canTransition(from currentState: State, to nextState: State) -> Bool {

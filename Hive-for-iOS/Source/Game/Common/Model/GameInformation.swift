@@ -17,6 +17,7 @@ enum GameInformation {
 	case rule(GameRule?)
 	case gameEnd(EndState)
 	case settings
+	case playerMustPass
 	case reconnecting(Int)
 
 	init?(fromLink link: String) {
@@ -48,6 +49,7 @@ enum GameInformation {
 				return "It's a tie!"
 			}
 		case .settings: return "Settings"
+		case .playerMustPass: return "No moves available"
 		case .reconnecting: return "Disconnected from server"
 		}
 	}
@@ -75,6 +77,10 @@ enum GameInformation {
 				"but if a connection cannot be made, you will forfeit the match. This dialog will dismiss " +
 				"automatically if the connection is restored.\n" +
 				"Please wait (\(attempts)/\(OnlineGameClient.maxReconnectAttempts))."
+		case .playerMustPass:
+			return "Abiding by the rules of the game, there is nowhere for you to place a new piece, " +
+				"or move an existing piece on the board. You are considered blocked and must [pass](rule:Passing) this turn. " +
+				"Your opponent will move again. Dismiss this dialog or tap below to pass your turn."
 		case .settings: return nil
 		}
 	}
@@ -82,20 +88,20 @@ enum GameInformation {
 	var prefersMarkdown: Bool {
 		switch self {
 		case .playerHand, .settings: return false
-		case .piece, .pieceClass, .rule, .stack, .gameEnd, .reconnecting: return true
+		case .piece, .pieceClass, .rule, .stack, .gameEnd, .reconnecting, .playerMustPass: return true
 		}
 	}
 
 	var dismissable: Bool {
 		switch self {
 		case .reconnecting: return false
-		case .gameEnd, .piece, .pieceClass, .playerHand, .rule, .stack, .settings: return true
+		case .gameEnd, .piece, .pieceClass, .playerHand, .rule, .stack, .settings, .playerMustPass: return true
 		}
 	}
 
 	var hasCloseButton: Bool {
 		switch self {
-		case .reconnecting, .gameEnd: return false
+		case .reconnecting, .gameEnd, .playerMustPass: return false
 		case .piece, .pieceClass, .playerHand, .rule, .stack, .settings: return true
 		}
 	}
