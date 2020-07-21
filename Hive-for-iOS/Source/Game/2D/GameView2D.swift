@@ -384,6 +384,17 @@ extension GameView2D: UIGestureRecognizerDelegate {
 
 	private func panScreen(translation: CGPoint) {
 		currentOffset += translation
+
+		if positionsInPlay.contains(where: { piece in
+			let sprite = self.sprite(for: piece)
+			return sprite.parent != nil && frame.contains(sprite.position)
+		}) {
+			guard viewModel.isOutOfBounds else { return }
+			viewModel.postViewAction(.hasMovedInBounds)
+		} else {
+			guard !viewModel.isOutOfBounds else { return }
+			viewModel.postViewAction(.hasMovedOutOfBounds)
+		}
 	}
 
 	func gestureRecognizer(

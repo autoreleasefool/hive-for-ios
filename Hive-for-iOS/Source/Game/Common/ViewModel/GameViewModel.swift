@@ -31,6 +31,10 @@ enum GameViewAction: BaseViewAction {
 	case movementConfirmed(Movement)
 	case cancelMovement
 
+	case hasMovedInBounds
+	case hasMovedOutOfBounds
+	case returnToGameBounds
+
 	case openSettings
 	case forfeit
 	case forfeitConfirmed
@@ -47,6 +51,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	@Published var showingEmojiPicker: Bool = false
 	@Published var presentedGameAction: GameAction?
 
+	@Published var isOutOfBounds = false
 	@Published var presentedGameInformation: GameInformation? {
 		didSet {
 			guard case .playerMustPass = oldValue else { return }
@@ -194,6 +199,14 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			shutDownGame()
 		case .arViewError(let error):
 			loafState.send(LoafState(error.localizedDescription, state: .error))
+
+		case .hasMovedInBounds:
+			isOutOfBounds = false
+		case .hasMovedOutOfBounds:
+			isOutOfBounds = true
+		case .returnToGameBounds:
+			isOutOfBounds = false
+			animateToPosition.send(.origin)
 
 		case .toggleDebug:
 			debugModeStore.send(!debugModeStore.value)

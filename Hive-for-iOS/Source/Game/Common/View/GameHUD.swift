@@ -19,7 +19,7 @@ struct GameHUD: View {
 
 	@State private var state: GameViewModel.State = .begin
 
-	func stateIndicator(_ geometry: GeometryProxy) -> some View {
+	private func stateIndicator(_ geometry: GeometryProxy) -> some View {
 		Text(viewModel.displayState)
 			.body()
 			.foregroundColor(Color(.text))
@@ -30,7 +30,7 @@ struct GameHUD: View {
 			.frame(alignment: .center)
 	}
 
-	func settingsButton(_ geometry: GeometryProxy) -> some View {
+	private func settingsButton(_ geometry: GeometryProxy) -> some View {
 		Button(action: {
 			self.viewModel.postViewAction(.openSettings)
 		}, label: {
@@ -46,7 +46,24 @@ struct GameHUD: View {
 		)
 	}
 
-	func emojiButton(_ geometry: GeometryProxy) -> some View {
+	private func returnToGameButton(_ geometry: GeometryProxy) -> some View {
+		HStack {
+			Spacer()
+			BasicButton<Never>("Return to board") {
+				self.viewModel.postViewAction(.returnToGameBounds)
+			}
+			.opacity(viewModel.isOutOfBounds ? 1 : 0)
+			.animation(.spring())
+			Spacer()
+		}
+		.frame(width: geometry.size.width / 2)
+		.position(
+			x: geometry.size.width / 2,
+			y: buttonDistanceFromEdge.rawValue + buttonSize.rawValue + Metrics.Spacing.m.rawValue
+		)
+	}
+
+	private func emojiButton(_ geometry: GeometryProxy) -> some View {
 		Button(action: {
 			self.viewModel.postViewAction(.toggleEmojiPicker)
 		}, label: {
@@ -62,7 +79,7 @@ struct GameHUD: View {
 		)
 	}
 
-	func handButton(for player: Player, _ geometry: GeometryProxy) -> some View {
+	private func handButton(for player: Player, _ geometry: GeometryProxy) -> some View {
 		let xOffset = (buttonDistanceFromEdge.rawValue + buttonSize.rawValue / 2) * (player == .white ? -1 : 1)
 		let image = viewModel.handImage(for: player)
 
@@ -94,6 +111,7 @@ struct GameHUD: View {
 				self.stateIndicator(geometry)
 				self.handButton(for: .white, geometry)
 				self.handButton(for: .black, geometry)
+				self.returnToGameButton(geometry)
 			}
 
 			InformationHUD()
