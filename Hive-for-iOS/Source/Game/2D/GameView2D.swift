@@ -120,9 +120,9 @@ class GameView2D: SKScene {
 			}
 			.store(in: viewModel)
 
-		viewModel.selectedPiece
+		viewModel.$selectedPiece
 			.sink { [weak self] in
-				self?.present(deselectedPiece: $0.0, selectedPiece: $0.1)
+				self?.present(deselectedPiece: $0.deselected, selectedPiece: $0.selected)
 			}
 			.store(in: viewModel)
 
@@ -172,7 +172,7 @@ class GameView2D: SKScene {
 	}
 
 	private func present(
-		deselectedPiece: GameViewModel.DeselectedPiece?,
+		deselectedPiece: GameViewModel.SelectedPiece?,
 		selectedPiece: GameViewModel.SelectedPiece?
 	) {
 		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {

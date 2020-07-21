@@ -52,10 +52,17 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	@Published var gameState: GameState
 	@Published var debugMode = false
 
+	@Published var isOutOfBounds = false
+
+	struct SelectedPiece {
+		let piece: Piece
+		let position: Position
+	}
+
+	@Published var selectedPiece: (deselected: SelectedPiece?, selected: SelectedPiece?) = (nil, nil)
+
 	@Published var showingEmojiPicker: Bool = false
 	@Published var presentedGameAction: GameAction?
-
-	@Published var isOutOfBounds = false
 	@Published var presentedGameInformation: GameInformation? {
 		didSet {
 			guard case .playerMustPass = oldValue else { return }
@@ -66,16 +73,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private(set) var loafState = PassthroughSubject<LoafState, Never>()
 	private(set) var animateToPosition = PassthroughSubject<Position, Never>()
 	private(set) var animatedEmoji = PassthroughSubject<Emoji, Never>()
-
-	struct SelectedPiece {
-		let piece: Piece
-		let position: Position
-	}
-
-	typealias DeselectedPiece = SelectedPiece
-
-	private(set) var selectedPiece = Store<(DeselectedPiece?, SelectedPiece?)>((nil, nil))
-	var currentSelectedPiece: SelectedPiece? { selectedPiece.value.1 }
 
 	var userId: User.ID!
 	var playingAs: Player
@@ -269,13 +266,13 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		guard inGame else { return }
 		if let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
 			let position = selectedPieceDefaultPosition
-			selectedPiece.send((
-				selectedPiece.value.1,
+			selectedPiece = (
+				selectedPiece.selected,
 				SelectedPiece(
 					piece: piece,
 					position: position
 				)
-			))
+			)
 			animateToPosition.send(position)
 		}
 	}
@@ -295,7 +292,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 			let (_, stackCount) = self.positionInStack(of: piece)
 			if stackCount > 1 {
-				let stackAddition = stackCount > stack.count ? [selectedPiece.value.1?.piece].compactMap { $0 } : []
+				let stackAddition = stackCount > stack.count ? [selectedPiece.selected?.piece].compactMap { $0 } : []
 				presentedGameInformation = .stack(stack + stackAddition)
 				return
 			}
@@ -358,12 +355,12 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private func updatePosition(of piece: Piece, to position: Position?, shouldMove: Bool) {
 		guard inGame else { return }
 		guard let targetPosition = position else {
-			selectedPiece.send((selectedPiece.value.1, nil))
+			selectedPiece = (selectedPiece.selected, nil)
 			return
 		}
 
 		guard shouldMove else {
-			selectedPiece.send((selectedPiece.value.1, SelectedPiece(piece: piece, position: targetPosition)))
+			selectedPiece = (selectedPiece.selected, SelectedPiece(piece: piece, position: targetPosition))
 			return
 		}
 
@@ -374,7 +371,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			return
 		}
 
-		selectedPiece.send((selectedPiece.value.1, SelectedPiece(piece: piece, position: targetPosition)))
+		selectedPiece = (selectedPiece.selected, SelectedPiece(piece: piece, position: targetPosition))
 
 		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
 
@@ -554,7 +551,7 @@ extension GameViewModel {
 			let selectedPieceInStack: Bool
 			let selectedPieceOnStack: Bool
 			let selectedPieceFromStack: Bool
-			if let selectedPiece = currentSelectedPiece {
+			if let selectedPiece = selectedPiece.selected {
 				selectedPieceInStack = stack.contains(selectedPiece.piece)
 				selectedPieceOnStack = !selectedPieceInStack && selectedPiece.position == position
 				selectedPieceFromStack = selectedPieceInStack && selectedPiece.position != position
@@ -579,8 +576,8 @@ extension GameViewModel {
 
 	/// Returns the current position of the piece, accounting for the selected piece, and it's in game position
 	func position(of piece: Piece) -> Position {
-		if currentSelectedPiece?.piece == piece,
-			let selectedPosition = currentSelectedPiece?.position {
+		if selectedPiece.selected?.piece == piece,
+			let selectedPosition = selectedPiece.selected?.position {
 			return selectedPosition
 		} else if let gamePosition = gameState.position(of: piece) {
 			return gamePosition
