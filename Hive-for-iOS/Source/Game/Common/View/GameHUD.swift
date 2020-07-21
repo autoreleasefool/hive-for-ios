@@ -17,8 +17,6 @@ struct GameHUD: View {
 	private let buttonSize: Metrics.Image = .xl
 	private let buttonDistanceFromEdge: Metrics.Spacing = .xl
 
-	@State private var state: GameViewModel.State = .begin
-
 	private func stateIndicator(_ geometry: GeometryProxy) -> some View {
 		Text(viewModel.displayState)
 			.body()
@@ -124,7 +122,6 @@ struct GameHUD: View {
 			}
 		}
 		.padding(.top, length: .l)
-		.onReceive(viewModel.stateStore) { self.state = $0 }
 	}
 }
 

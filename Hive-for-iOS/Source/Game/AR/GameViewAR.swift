@@ -56,7 +56,7 @@ class GameViewAR: UIView {
 	}
 
 	private func subscribeToPublishers() {
-		viewModel.stateStore
+		viewModel.$state
 			.sink { [weak self] in
 				self?.handleTransition(to: $0)
 			}

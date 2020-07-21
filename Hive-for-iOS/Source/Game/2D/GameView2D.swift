@@ -98,7 +98,7 @@ class GameView2D: SKScene {
 	}
 
 	override func didChangeSize(_ oldSize: CGSize) {
-		guard !viewModel.stateStore.value.inGame, size.equalTo(.zero) == false else { return }
+		guard !viewModel.inGame, size.equalTo(.zero) == false else { return }
 		currentOffset = CGPoint(x: size.width / 2, y: size.height / 2)
 
 		hasChangedSize = true
@@ -108,7 +108,7 @@ class GameView2D: SKScene {
 	}
 
 	private func subscribeToPublishers() {
-		viewModel.stateStore
+		viewModel.$state
 			.sink { [weak self] in
 				self?.handleTransition(to: $0)
 			}

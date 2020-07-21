@@ -37,7 +37,7 @@ struct Game: View {
 				.environmentObject(viewModel)
 		}
 		.onAppear { self.viewModel.userId = self.container.account?.userId }
-		.onReceive(viewModel.stateStore) { self.handleTransition(to: $0) }
+		.onReceive(viewModel.$state) { self.handleTransition(to: $0) }
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
 		.navigationBarBackButtonHidden(true)

@@ -48,6 +48,8 @@ enum GameViewAction: BaseViewAction {
 class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	var clientInteractor: ClientInteractor!
 
+	@Published var state: State = .begin
+
 	@Published var showingEmojiPicker: Bool = false
 	@Published var presentedGameAction: GameAction?
 
@@ -73,7 +75,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private(set) var selectedPiece = Store<(DeselectedPiece?, SelectedPiece?)>((nil, nil))
 	var currentSelectedPiece: SelectedPiece? { selectedPiece.value.1 }
 
-	private(set) var stateStore = Store<State>(State.begin)
 	private(set) var debugModeStore = Store<Bool>(false)
 	private(set) var gameStateStore: Store<GameState>
 
@@ -90,12 +91,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		gameStateStore.value
 	}
 
-	var currentState: State {
-		stateStore.value
-	}
-
 	var inGame: Bool {
-		currentState.inGame
+		state.inGame
 	}
 
 	var gameAnchor: Experience.HiveGame? {
@@ -620,8 +617,8 @@ extension GameViewModel {
 	}
 
 	func transition(to nextState: State) {
-		guard canTransition(from: currentState, to: nextState) else { return }
-		stateStore.send(nextState)
+		guard canTransition(from: state, to: nextState) else { return }
+		state = nextState
 
 		guard nextState == .playerTurn else { return }
 
@@ -676,12 +673,11 @@ extension GameViewModel {
 
 extension GameViewModel {
 	func handImage(for player: Player) -> UIImage {
-		ImageAsset.Icon.handFilled
-//		if player == playingAs {
-//			return currentState == .playerTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
-//		} else {
-//			return currentState == .opponentTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
-//		}
+		if player == playingAs {
+			return state == .playerTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
+		} else {
+			return state == .opponentTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
+		}
 	}
 }
 
@@ -689,7 +685,7 @@ extension GameViewModel {
 
 extension GameViewModel {
 	var displayState: String {
-		switch currentState {
+		switch state {
 		case .playerTurn:
 			return "Your turn"
 		case .sendingMovement:
