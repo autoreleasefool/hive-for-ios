@@ -62,7 +62,7 @@ class GameViewAR: UIView {
 			}
 			.store(in: viewModel)
 
-		viewModel.gameStateStore
+		viewModel.$gameState
 			.sink { [weak self] in
 				self?.present(gameState: $0)
 			}

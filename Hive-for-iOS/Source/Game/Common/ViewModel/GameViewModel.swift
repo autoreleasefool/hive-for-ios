@@ -49,6 +49,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	var clientInteractor: ClientInteractor!
 
 	@Published var state: State = .begin
+	@Published var gameState: GameState
 
 	@Published var showingEmojiPicker: Bool = false
 	@Published var presentedGameAction: GameAction?
@@ -76,7 +77,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	var currentSelectedPiece: SelectedPiece? { selectedPiece.value.1 }
 
 	private(set) var debugModeStore = Store<Bool>(false)
-	private(set) var gameStateStore: Store<GameState>
 
 	var userId: User.ID!
 	var playingAs: Player
@@ -86,10 +86,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private var connectionOpened = false
 	private var reconnectAttempts = 0
 	private var reconnecting = false
-
-	var gameState: GameState {
-		gameStateStore.value
-	}
 
 	var inGame: Bool {
 		state.inGame
@@ -141,7 +137,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private var viewInteractionsReady = false
 
 	init(initialState: GameState, playingAs: Player, mode: ClientInteractorConfiguration) {
-		self.gameStateStore = .init(initialState)
+		self.gameState = initialState
 		self.playingAs = playingAs
 		self.clientMode = mode
 	}
@@ -422,7 +418,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private func updateGameState(to newState: GameState) {
 		guard inGame else { return }
 		let previousState = gameState
-		self.gameStateStore.send(newState)
+		self.gameState = newState
 
 		let opponent = playingAs.next
 		guard let previousUpdate = newState.updates.last,
