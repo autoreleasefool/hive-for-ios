@@ -50,6 +50,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	@Published var state: State = .begin
 	@Published var gameState: GameState
+	@Published var debugMode = false
 
 	@Published var showingEmojiPicker: Bool = false
 	@Published var presentedGameAction: GameAction?
@@ -75,8 +76,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private(set) var selectedPiece = Store<(DeselectedPiece?, SelectedPiece?)>((nil, nil))
 	var currentSelectedPiece: SelectedPiece? { selectedPiece.value.1 }
-
-	private(set) var debugModeStore = Store<Bool>(false)
 
 	var userId: User.ID!
 	var playingAs: Player
@@ -202,7 +201,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			animateToPosition.send(.origin)
 
 		case .toggleDebug:
-			debugModeStore.send(!debugModeStore.value)
+			debugMode.toggle()
 		case .onDisappear:
 			cleanUp()
 		}
@@ -700,7 +699,7 @@ extension GameViewModel {
 
 extension GameViewModel {
 	func debugLog(_ message: String) {
-		guard debugModeStore.value else { return }
+		guard debugMode else { return }
 		print("HIVE_DEBUG: \(message)")
 	}
 }

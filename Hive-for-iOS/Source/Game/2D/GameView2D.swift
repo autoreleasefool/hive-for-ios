@@ -126,8 +126,18 @@ class GameView2D: SKScene {
 			}
 			.store(in: viewModel)
 
-		viewModel.debugModeStore
-			.assign(to: \.debugEnabled, on: self)
+		viewModel.$debugMode
+			.sink { [weak self] enabled in
+				self?.spriteManager.debugEnabled = enabled
+				DispatchQueue.main.async {
+					guard let self = self else { return }
+					if enabled {
+						self.addUnownedChild(self.debugSprite)
+					} else {
+						self.debugSprite.removeFromParent()
+					}
+				}
+			}
 			.store(in: viewModel)
 
 		viewModel.animateToPosition
@@ -422,7 +432,6 @@ extension GameView2D {
 
 	private func prepareGame() {
 		resetGame()
-		debugEnabled = viewModel.debugModeStore.value
 		viewModel.postViewAction(.viewContentReady)
 	}
 
@@ -453,26 +462,6 @@ extension GameView2D {
 			initialScale: currentScale,
 			initialOffset: currentOffset
 		)
-	}
-}
-
-// MARK: - Debug
-
-extension GameView2D {
-	private var debugEnabled: Bool {
-		get {
-			viewModel.debugModeStore.value
-		}
-		set {
-			spriteManager.debugEnabled = newValue
-			DispatchQueue.main.async {
-				if newValue {
-					self.addUnownedChild(self.debugSprite)
-				} else {
-					self.debugSprite.removeFromParent()
-				}
-			}
-		}
 	}
 }
 

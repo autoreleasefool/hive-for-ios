@@ -74,8 +74,12 @@ class GameViewAR: UIView {
 			}
 			.store(in: viewModel)
 
-		viewModel.debugModeStore
-			.assign(to: \.debugEnabled, on: self)
+		viewModel.$debugMode
+			.sink { [weak self] enabled in
+				DispatchQueue.main.async {
+					self?.debugOverlay.enabled = enabled
+				}
+			}
 			.store(in: viewModel)
 	}
 
@@ -304,17 +308,6 @@ extension GameViewAR: ARCoachingOverlayViewDelegate {
 // MARK: - Debug
 
 extension GameViewAR {
-	private var debugEnabled: Bool {
-		get {
-			viewModel.debugModeStore.value
-		}
-		set {
-			DispatchQueue.main.async {
-				self.debugOverlay.enabled = newValue
-			}
-		}
-	}
-
 	override var canBecomeFirstResponder: Bool {
 		true
 	}
