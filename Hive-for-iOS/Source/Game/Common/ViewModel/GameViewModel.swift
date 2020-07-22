@@ -120,15 +120,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		presentingGameInformation.wrappedValue || presentingGameAction.wrappedValue
 	}
 
-	private var selectedPieceDefaultPosition: Position {
-		let positions = gameState.stacks.keys
-		let startX = positions.first?.x ?? 0
-		let minX = positions.reduce(startX, { minX, position in min(minX, position.x) })
-		let x = minX - 2
-		let z = x < 0 ? -x / 2 : Int((Double(-x) / 2.0).rounded(.down))
-		return Position(x: x, y: -x - z, z: z)
-	}
-
 	private var viewContentReady = false
 	private var viewInteractionsReady = false
 
@@ -584,6 +575,41 @@ extension GameViewModel {
 		} else {
 			return .origin
 		}
+	}
+
+	private var selectedPieceDefaultPosition: Position {
+		let piecePositions = Set(gameState.stacks.keys)
+		let placeablePositions = gameState.placeablePositions(for: playingAs)
+		let adjacentToPiecePositions = Set(piecePositions.flatMap { $0.adjacent() })
+			.subtracting(piecePositions)
+		let adjacentToAdjacentPositions = Set(adjacentToPiecePositions.flatMap { $0.adjacent() })
+			.subtracting(adjacentToPiecePositions)
+			.subtracting(piecePositions)
+			.sorted()
+
+		guard let startingPosition = adjacentToAdjacentPositions.first else {
+			// Fallback for when the algorithm fails, which it shouldn't ever do
+			// Places the piece to the far left of the board, vertically centred.
+			let startX = piecePositions.first?.x ?? 0
+			let minX = piecePositions.reduce(startX, { minX, position in min(minX, position.x) })
+			let x = minX - 2
+			let z = x < 0 ? -x / 2 : Int((Double(-x) / 2.0).rounded(.down))
+			return Position(x: x, y: -x - z, z: z)
+		}
+
+		let closest = adjacentToAdjacentPositions.reduce(
+			(startingPosition, CGFloat.greatestFiniteMagnitude)
+		) { closest, position in
+			let totalDistanceToPlaceable = placeablePositions.reduce(.zero) { total, next in
+				total + position.distance(to: next)
+			}
+
+			return totalDistanceToPlaceable < closest.1
+				? (position, totalDistanceToPlaceable)
+				: closest
+		}
+
+		return closest.0
 	}
 }
 

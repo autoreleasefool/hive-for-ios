@@ -25,6 +25,12 @@ extension Position {
 		let y: CGFloat = sqrt(CGFloat(3.0)) / 2.0 * q + sqrt(CGFloat(3.0)) * r
 		return CGPoint(x: offset.x + scale.x * x, y: offset.y + scale.y * y)
 	}
+
+	func distance(to: Position) -> CGFloat {
+		let point = self.point(scale: CGPoint(x: 1, y: 1), offset: .zero)
+		let otherPoint = to.point(scale: CGPoint(x: 1, y: 1), offset: .zero)
+		return point.euclideanDistance(to: otherPoint)
+	}
 }
 
 extension CGPoint {
