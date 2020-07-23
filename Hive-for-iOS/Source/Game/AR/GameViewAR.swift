@@ -68,9 +68,9 @@ class GameViewAR: UIView {
 			}
 			.store(in: viewModel)
 
-		viewModel.selectedPiece
+		viewModel.$selectedPiece
 			.sink { [weak self] in
-				self?.present(deselectedPiece: $0.0, selectedPiece: $0.1)
+				self?.present(deselectedPiece: $0.deselected, selectedPiece: $0.selected)
 			}
 			.store(in: viewModel)
 
@@ -135,15 +135,17 @@ class GameViewAR: UIView {
 		viewModel.gameState.unitsInHand[.black]?.forEach { $0.entity(in: game)?.isEnabled = false }
 
 		// Set position for pieces in play
-		viewModel.gameState.allUnitsInPlay.forEach {
-			guard let entity = $0.key.entity(in: game) else { return }
-			entity.position = $0.value.vector
-			entity.isEnabled = true
+		viewModel.gameState.unitsInPlay.forEach { (_, units) in
+			units.forEach {
+				guard let entity = $0.key.entity(in: game) else { return }
+				entity.position = $0.value.vector
+				entity.isEnabled = true
+			}
 		}
 	}
 
 	private func present(
-		deselectedPiece: GameViewModel.DeselectedPiece?,
+		deselectedPiece: GameViewModel.SelectedPiece?,
 		selectedPiece: GameViewModel.SelectedPiece?
 	) {
 		guard let game = viewModel.gameAnchor else { return }
