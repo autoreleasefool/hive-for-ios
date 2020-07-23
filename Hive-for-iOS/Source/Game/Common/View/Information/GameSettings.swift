@@ -24,7 +24,7 @@ struct GameSettings: View {
 
 	private var returnToLobbyButton: some View {
 		BasicButton<Never>("Return to lobby") {
-			self.viewModel.presentingGameInformation.wrappedValue = false
+			self.viewModel.postViewAction(.closeInformation(withFeedback: true))
 			self.viewModel.postViewAction(.returnToLobby)
 		}
 	}
@@ -37,7 +37,7 @@ struct GameSettings: View {
 
 	private var forfeitButton: some View {
 		BasicButton<Never>("Forfeit") {
-			self.viewModel.presentingGameInformation.wrappedValue = false
+			self.viewModel.postViewAction(.closeInformation(withFeedback: true))
 			self.viewModel.postViewAction(.forfeit)
 		}
 	}

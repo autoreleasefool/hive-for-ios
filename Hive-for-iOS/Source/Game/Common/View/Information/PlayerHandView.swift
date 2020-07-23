@@ -37,7 +37,7 @@ struct PlayerHandView: View {
 
 	private func piece(pieceClass: Piece.Class) -> some View {
 		Button(action: {
-			self.viewModel.presentingGameInformation.wrappedValue = false
+			self.viewModel.postViewAction(.closeInformation(withFeedback: false))
 			if self.didLongPress {
 				self.didLongPress = false
 				self.viewModel.postViewAction(.enquiredFromHand(pieceClass))

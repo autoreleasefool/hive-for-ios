@@ -18,6 +18,9 @@ enum GameViewAction: BaseViewAction {
 	case viewInteractionsReady
 
 	case presentInformation(GameInformation)
+	case closeInformation(withFeedback: Bool)
+
+	case openHand(Player)
 	case selectedFromHand(Player, Piece.Class)
 	case enquiredFromHand(Piece.Class)
 	case tappedPiece(Piece)
@@ -83,6 +86,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private var reconnectAttempts = 0
 	private var reconnecting = false
 
+	private let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
+	private let actionFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
+	private let promptFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+
 	var inGame: Bool {
 		state.inGame
 	}
@@ -144,6 +151,15 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		case .presentInformation(let information):
 			presentedGameInformation = information
+		case .closeInformation(let withFeedback):
+			if withFeedback {
+				actionFeedbackGenerator.impactOccurred()
+			}
+			presentingGameInformation.wrappedValue = false
+
+		case .openHand(let player):
+			promptFeedbackGenerator.impactOccurred()
+			postViewAction(.presentInformation(.playerHand(.init(player: player, playingAs: playingAs, state: gameState))))
 		case .selectedFromHand(let player, let pieceClass):
 			selectFromHand(player, pieceClass)
 		case .enquiredFromHand(let pieceClass):
@@ -164,6 +180,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			pickUpHand()
 
 		case .toggleEmojiPicker:
+			promptFeedbackGenerator.impactOccurred()
 			showingEmojiPicker.toggle()
 		case .pickedEmoji(let emoji):
 			pickedEmoji(emoji)
@@ -239,6 +256,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private func pickedEmoji(_ emoji: Emoji) {
 		guard Emoji.canSend(emoji: emoji) else { return }
 
+		promptFeedbackGenerator.impactOccurred()
 		animatedEmoji.send(emoji)
 		clientInteractor.send(clientMode, .message("EMOJI {\(emoji.rawValue)}")) { _ in }
 		Emoji.didSend(emoji: emoji)
@@ -255,6 +273,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private func placeFromHand(_ pieceClass: Piece.Class) {
 		guard inGame else { return }
+		actionFeedbackGenerator.impactOccurred()
 		if let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
 			let position = selectedPieceDefaultPosition
 			selectedPiece = (
@@ -270,10 +289,12 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private func enquireFromHand(_ pieceClass: Piece.Class) {
 		guard inGame else { return }
+		actionFeedbackGenerator.impactOccurred()
 		presentedGameInformation = .pieceClass(pieceClass)
 	}
 
 	private func tappedPiece(_ piece: Piece, showStack: Bool = false) {
+		promptFeedbackGenerator.impactOccurred()
 		if showStack {
 			let position = self.position(of: piece)
 			guard let stack = gameState.stacks[position] else {
@@ -298,6 +319,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	}
 
 	private func openSettings() {
+		promptFeedbackGenerator.impactOccurred()
 		presentedGameInformation = .settings
 	}
 
@@ -340,6 +362,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			]
 		)
 
+		promptFeedbackGenerator.impactOccurred()
 		presentedGameAction = GameAction(config: popoverSheet, onClose: nil)
 	}
 
@@ -359,6 +382,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			$0.movedUnit == piece && $0.targetPosition == targetPosition
 		}) else {
 			debugLog("Did not find \"\(piece) to \(targetPosition)\" in \(gameState.availableMoves)")
+			notificationFeedbackGenerator.notificationOccurred(.warning)
 			return
 		}
 
@@ -387,6 +411,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			]
 		)
 
+		promptFeedbackGenerator.impactOccurred()
 		presentedGameAction = GameAction(config: popoverSheet) { [weak self] in
 			self?.postViewAction(.cancelMovement)
 		}
@@ -394,10 +419,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private func apply(movement: Movement) {
 		guard let relativeMovement = movement.relative(in: gameState) else {
-			#warning("TODO: present an error here when the move is invalid")
+			notificationFeedbackGenerator.notificationOccurred(.error)
 			return
 		}
 
+		notificationFeedbackGenerator.notificationOccurred(.success)
 		transition(to: .sendingMovement(movement))
 		clientInteractor.send(clientMode, .movement(relativeMovement), completionHandler: nil)
 	}
@@ -471,7 +497,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 extension GameViewModel {
 	private func handleGameClientError(_ error: GameClientError) {
-		print("Client did not connect: \(error)")
+		debugLog("Client did not connect: \(error)")
 
 		guard reconnectAttempts < OnlineGameClient.maxReconnectAttempts else {
 			loafState.send(LoafState("Failed to reconnect", state: .error))
@@ -513,6 +539,7 @@ extension GameViewModel {
 			updateGameState(to: state)
 		case .gameOver(let winner):
 			endGame()
+			promptFeedbackGenerator.impactOccurred()
 			presentedGameInformation = .gameEnd(.init(
 				winner: winner == nil
 					? nil

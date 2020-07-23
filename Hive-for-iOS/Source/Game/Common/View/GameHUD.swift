@@ -82,11 +82,7 @@ struct GameHUD: View {
 		let image = viewModel.handImage(for: player)
 
 		return Button(action: {
-			self.viewModel.postViewAction(.presentInformation(.playerHand(.init(
-				player: player,
-				playingAs: self.viewModel.playingAs,
-				state: self.viewModel.gameState
-			))))
+			self.viewModel.postViewAction(.openHand(player))
 		}, label: {
 			HexImage(image, stroke: player.color)
 				.placeholderTint(player.color)

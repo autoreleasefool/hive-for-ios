@@ -14,7 +14,7 @@ struct PieceStack: View {
 
 	func row(piece: Piece) -> some View {
 		Button(action: {
-			self.viewModel.presentingGameInformation.wrappedValue = false
+			self.viewModel.postViewAction(.closeInformation(withFeedback: false))
 			self.viewModel.postViewAction(.tappedPiece(piece))
 		}, label: {
 			HStack(spacing: .m) {

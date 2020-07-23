@@ -120,7 +120,7 @@ struct InformationHUD: View {
 			case .playerMustPass:
 				return AnyView(
 					BasicButton<Never>("Pass turn") {
-						self.viewModel.presentingGameInformation.wrappedValue = false
+						self.viewModel.postViewAction(.closeInformation(withFeedback: false))
 					}
 				)
 			case .settings:
@@ -133,7 +133,7 @@ struct InformationHUD: View {
 
 	private var closeButton: some View {
 		BasicButton<Never>("Close") {
-			self.viewModel.presentingGameInformation.wrappedValue = false
+			self.viewModel.postViewAction(.closeInformation(withFeedback: true))
 		}
 		.buttonBackground(.backgroundLight)
 	}
