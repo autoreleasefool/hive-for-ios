@@ -152,10 +152,12 @@ class GameView2D: SKScene {
 		viewModel.gameState.allPiecesInHands.forEach { resetPiece($0) }
 
 		// Set position for pieces in play
-		viewModel.gameState.allUnitsInPlay.forEach {
-			let sprite = self.sprite(for: $0.key)
-			sprite.position = $0.value.point(scale: currentScale, offset: currentOffset)
-			addUnownedChild(sprite)
+		viewModel.gameState.unitsInPlay.forEach { (_, units) in
+			units.forEach {
+				let sprite = self.sprite(for: $0.key)
+				sprite.position = $0.value.point(scale: currentScale, offset: currentOffset)
+				addUnownedChild(sprite)
+			}
 		}
 
 		// Show border of the field
