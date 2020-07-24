@@ -177,7 +177,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			debugLog("Sending move \(movement)")
 			apply(movement: movement)
 		case .cancelMovement:
-			pickUpHand()
+			clearSelectedPiece()
+			updateGameState(to: gameState)
 
 		case .toggleEmojiPicker:
 			promptFeedbackGenerator.impactOccurred()
@@ -262,6 +263,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		Emoji.didSend(emoji: emoji)
 	}
 
+	private func clearSelectedPiece() {
+		selectedPiece = (selectedPiece.selected, nil)
+	}
+
 	private func selectFromHand(_ player: Player, _ pieceClass: Piece.Class) {
 		guard inGame else { return }
 		if player == playingAs {
@@ -310,12 +315,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			}
 		}
 		presentedGameInformation = .piece(piece)
-	}
-
-	private func pickUpHand() {
-		gameState.unitsInHand[playingAs]?.forEach {
-			updatePosition(of: $0, to: nil, shouldMove: true)
-		}
 	}
 
 	private func openSettings() {
