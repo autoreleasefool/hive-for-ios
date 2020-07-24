@@ -380,7 +380,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		guard let movement = gameState.availableMoves.first(where: {
 			$0.movedUnit == piece && $0.targetPosition == targetPosition
-		}) else {
+		}), let relativeMovement = movement.relative(in: gameState) else {
 			debugLog("Did not find \"\(piece) to \(targetPosition)\" in \(gameState.availableMoves)")
 			notificationFeedbackGenerator.notificationOccurred(.warning)
 			return
@@ -388,11 +388,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		selectedPiece = (selectedPiece.selected, SelectedPiece(piece: piece, position: targetPosition))
 
-		let currentPosition = gameState.position(of: piece)?.description ?? "in hand"
+		let inHand = gameState.position(of: piece) == nil
 
 		let popoverSheet = PopoverSheetConfig(
-			title: "Move \(piece.class.description)?",
-			message: "From \(currentPosition) to \(targetPosition.description)",
+			title: "\(inHand ? "Place" : "Move") \(piece.class.description)?",
+			message: description(of: relativeMovement, inHand: inHand),
 			buttons: [
 				PopoverSheetConfig.ButtonConfig(
 					title: "Move",
@@ -741,6 +741,31 @@ extension GameViewModel {
 			return gameState.displayWinner ?? ""
 		case .begin, .forfeit, .gameStart, .shutDown:
 			return ""
+		}
+	}
+
+	private func description(of movement: RelativeMovement, inHand: Bool) -> String {
+		if let adjacent = movement.adjacent {
+			let direction = adjacent.direction.flipped
+			return "\(inHand ? "Place" : "Move") "
+				+ "\(movement.movedUnit.description) \(direction.description.lowercased()) of \(adjacent.unit)?"
+		} else {
+			return "Place \(movement.movedUnit.description)?"
+		}
+
+	}
+}
+
+private extension Direction {
+	var flipped: Direction {
+		switch self {
+		case .north: return .south
+		case .northWest: return .southWest
+		case .northEast: return .southEast
+		case .south: return .north
+		case .southWest: return .northWest
+		case .southEast: return .northEast
+		case .onTop: return .onTop
 		}
 	}
 }
