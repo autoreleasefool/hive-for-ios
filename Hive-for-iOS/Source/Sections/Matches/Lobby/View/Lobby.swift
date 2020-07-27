@@ -114,6 +114,12 @@ struct Lobby: View {
 					})
 				}
 				.listRowInsets(EdgeInsets(equalTo: .m))
+				.onAppear {
+					self.viewModel.postViewAction(.onListAppear)
+				}
+				.onDisappear {
+					self.viewModel.postViewAction(.onListDisappear)
+				}
 			}
 		}
 	}

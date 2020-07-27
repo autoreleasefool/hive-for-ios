@@ -11,6 +11,8 @@ import SwiftUI
 
 enum LobbyViewAction: BaseViewAction {
 	case onAppear(isOffline: Bool)
+	case onListAppear
+	case onListDisappear
 	case refresh
 	case openSettings
 
@@ -62,6 +64,8 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	@Published var showCreateMatchPrompt = false
 	@Published var isOffline = false
 
+	private var refreshTimer: Timer?
+
 	private let actions = PassthroughSubject<LobbyAction, Never>()
 	var actionsPublisher: AnyPublisher<LobbyAction, Never> {
 		actions.eraseToAnyPublisher()
@@ -76,6 +80,10 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		case .onAppear(let isOffline):
 			self.isOffline = isOffline
 			initialize()
+		case .onListAppear:
+			startRefreshTimer()
+		case .onListDisappear:
+			refreshTimer?.invalidate()
 		case .refresh:
 			actions.send(.loadOpenMatches)
 		case .openSettings:
@@ -116,6 +124,13 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 			} else {
 				showCreateMatchPrompt = true
 			}
+		}
+	}
+
+	private func startRefreshTimer() {
+		refreshTimer?.invalidate()
+		refreshTimer = Timer.scheduledTimer(withTimeInterval: 8, repeats: true) { [weak self] _ in
+			self?.actions.send(.loadOpenMatches)
 		}
 	}
 }
