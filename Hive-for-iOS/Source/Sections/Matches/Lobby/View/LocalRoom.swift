@@ -64,10 +64,10 @@ struct LocalRoom: View {
 			opponent: match.opponent?.summary,
 			opponentIsReady: false,
 			optionsDisabled: false,
-			gameOptions: $viewModel.gameOptions,
-			matchOptions: $viewModel.matchOptions,
-			isGameOptionEnabled: viewModel.gameOptionEnabled,
-			isOptionEnabled: viewModel.optionEnabled
+			gameOptionsEnabled: viewModel.gameOptions,
+			matchOptionsEnabled: viewModel.matchOptions,
+			gameOptionBinding: viewModel.gameOptionEnabled,
+			matchOptionBinding: viewModel.optionEnabled
 		)
 	}
 

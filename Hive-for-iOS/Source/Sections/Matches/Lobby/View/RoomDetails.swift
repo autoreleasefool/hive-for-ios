@@ -16,10 +16,10 @@ struct RoomDetails: View {
 	let opponentIsReady: Bool
 	let optionsDisabled: Bool
 
-	var gameOptions: Binding<Set<GameState.Option>>
-	var matchOptions: Binding<Set<Match.Option>>
-	let isGameOptionEnabled: (GameState.Option) -> Binding<Bool>
-	let isOptionEnabled: (Match.Option) -> Binding<Bool>
+	let gameOptionsEnabled: Set<GameState.Option>
+	let matchOptionsEnabled: Set<Match.Option>
+	let gameOptionBinding: (GameState.Option) -> Binding<Bool>
+	let matchOptionBinding: (Match.Option) -> Binding<Bool>
 
 	var body: some View {
 		ScrollView {
@@ -63,7 +63,7 @@ struct RoomDetails: View {
 			HStack(spacing: .l) {
 				Spacer()
 				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-					self.expansionOption(for: option, enabled: self.gameOptions.wrappedValue.contains(option))
+					self.expansionOption(for: option, enabled: self.gameOptionBinding(option).wrappedValue)
 				}
 				Spacer()
 			}
@@ -72,7 +72,7 @@ struct RoomDetails: View {
 
 	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
 		Button(action: {
-			self.gameOptions.wrappedValue.toggle(option)
+			self.gameOptionBinding(option).wrappedValue.toggle()
 		}, label: {
 			ZStack {
 				Text(name(forOption: option))
@@ -99,7 +99,7 @@ struct RoomDetails: View {
 		VStack(alignment: .leading) {
 			optionSectionHeader(title: "Match options")
 			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
-				Toggle(self.name(forOption: option), isOn: self.isOptionEnabled(option))
+				Toggle(self.name(forOption: option), isOn: self.matchOptionBinding(option))
 					.disabled(self.optionsDisabled)
 					.foregroundColor(Color(.text))
 			}
@@ -110,7 +110,7 @@ struct RoomDetails: View {
 		VStack(alignment: .leading) {
 			optionSectionHeader(title: "Other options")
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
-				Toggle(self.name(forOption: option), isOn: self.isGameOptionEnabled(option))
+				Toggle(self.name(forOption: option), isOn: self.gameOptionBinding(option))
 					.disabled(self.optionsDisabled)
 					.foregroundColor(Color(.text))
 			}

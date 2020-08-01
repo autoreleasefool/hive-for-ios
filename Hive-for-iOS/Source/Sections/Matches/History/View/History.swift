@@ -110,12 +110,12 @@ struct History: View {
 				opponent: match.opponent?.summary,
 				opponentIsReady: match.winner?.id == match.opponent?.id,
 				optionsDisabled: true,
-				gameOptions: .constant(match.gameOptionSet),
-				matchOptions: .constant(match.optionSet),
-				isGameOptionEnabled: { option in
+				gameOptionsEnabled: match.gameOptionSet,
+				matchOptionsEnabled: match.optionSet,
+				gameOptionBinding: { option in
 					.constant(match.gameOptionSet.contains(option))
 				},
-				isOptionEnabled: { option in
+				matchOptionBinding: { option in
 					.constant(match.optionSet.contains(option))
 				}
 			)

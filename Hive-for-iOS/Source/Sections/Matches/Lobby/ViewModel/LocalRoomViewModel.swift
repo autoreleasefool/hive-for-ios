@@ -32,8 +32,8 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 		}
 	}
 
-	@Published var matchOptions: Set<Match.Option> = Set()
-	@Published var gameOptions: Set<GameState.Option> = Set()
+	@Published private(set) var matchOptions: Set<Match.Option> = Set()
+	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
 
 	@Published var exiting = false
 
