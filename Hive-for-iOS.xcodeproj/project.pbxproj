@@ -60,7 +60,6 @@
 		CA9079A224B41A4000B30CF6 /* Features.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9079A124B41A4000B30CF6 /* Features.swift */; };
 		CA9079A424B540EC00B30CF6 /* AttributionsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9079A324B540EC00B30CF6 /* AttributionsList.swift */; };
 		CA91C32224350CEA007E7D55 /* UserLoginSignup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA91C32124350CEA007E7D55 /* UserLoginSignup.swift */; };
-		CA92524A24B63644003DB4F2 /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = CA92524924B63644003DB4F2 /* Introspect */; };
 		CA92524C24B6A790003DB4F2 /* EmojiHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA92524B24B6A790003DB4F2 /* EmojiHUD.swift */; };
 		CA92525124B6A83D003DB4F2 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA92525024B6A83D003DB4F2 /* Emoji.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
@@ -258,7 +257,6 @@
 			files = (
 				CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */,
 				CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */,
-				CA92524A24B63644003DB4F2 /* Introspect in Frameworks */,
 				CA40344923932603006C6BE3 /* HiveEngine in Frameworks */,
 				CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */,
 			);
@@ -853,7 +851,6 @@
 				CAFA466C23D24BE7003C38AB /* Loaf */,
 				CAD75154242F5ECA0054B164 /* SwiftyMarkdown */,
 				CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */,
-				CA92524924B63644003DB4F2 /* Introspect */,
 			);
 			productName = "Hive for iOS";
 			productReference = CA7299A02393156100AD1285 /* Hive for iOS.app */;
@@ -888,7 +885,6 @@
 				CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */,
 				CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
 				CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				CA92524824B63644003DB4F2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 			);
 			productRefGroup = CA7299A12393156100AD1285 /* Products */;
 			projectDirPath = "";
@@ -1267,14 +1263,6 @@
 				minimumVersion = 4.1.0;
 			};
 		};
-		CA92524824B63644003DB4F2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
-			};
-		};
 		CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimonFairbairn/SwiftyMarkdown.git";
@@ -1303,11 +1291,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		CA92524924B63644003DB4F2 /* Introspect */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CA92524824B63644003DB4F2 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
-			productName = Introspect;
 		};
 		CAD75154242F5ECA0054B164 /* SwiftyMarkdown */ = {
 			isa = XCSwiftPackageProductDependency;
