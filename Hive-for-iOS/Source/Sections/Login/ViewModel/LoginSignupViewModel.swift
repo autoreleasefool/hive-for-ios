@@ -12,8 +12,6 @@ import UIKit
 enum LoginSignupViewAction: BaseViewAction {
 	case toggleForm
 	case submitForm
-	case focusField(LoginSignupViewModel.FieldItem)
-	case didReturn(from: LoginSignupViewModel.FieldItem)
 	case exitForm
 }
 
@@ -25,7 +23,6 @@ enum LoginSignupAction: BaseAction {
 class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	@Published var account: Loadable<Account>
 	@Published var form: Form
-	@Published var activeField: FieldItem?
 
 	@Published var email: String = ""
 	@Published var password: String = ""
@@ -51,10 +48,6 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 			toggleForm()
 		case .submitForm:
 			submitForm()
-		case .didReturn(let from):
-			handleReturn(from: from)
-		case .focusField(let id):
-			activeField = id
 		case .exitForm:
 			onCancel?()
 		}
@@ -66,17 +59,6 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 		switch account {
 		case .failed: return true
 		case .loaded, .loading, .notLoaded: return false
-		}
-	}
-
-	// MARK: Actions
-
-	private func handleReturn(from id: FieldItem) {
-		if let field = nextField(after: id) {
-			activeField = field
-		} else {
-			activeField = nil
-			submitForm()
 		}
 	}
 
@@ -107,7 +89,6 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	}
 
 	private func submitForm() {
-		activeField = nil
 		switch form {
 		case .login: actions.send(.login(loginData))
 		case .signup: actions.send(.signup(signupData))

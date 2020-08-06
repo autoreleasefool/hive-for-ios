@@ -75,7 +75,6 @@
 		CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */; };
 		CABDFD0E23DF8B4000C697AD /* Experience+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */; };
 		CABDFD1223E0C97000C697AD /* InformationHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFD1123E0C97000C697AD /* InformationHUD.swift */; };
-		CAC426D82433989800E513BC /* KeyboardAvoidance.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC426D72433989800E513BC /* KeyboardAvoidance.swift */; };
 		CAC650AC2461FC1900835209 /* ClientInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC650AB2461FC1900835209 /* ClientInteractor.swift */; };
 		CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
 		CAC6860023CD18C100B882D2 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
@@ -199,7 +198,6 @@
 		CABDFD0923DDAB4C00C697AD /* GameState+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameState+Extensions.swift"; sourceTree = "<group>"; };
 		CABDFD0D23DF8B4000C697AD /* Experience+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Experience+Extensions.swift"; sourceTree = "<group>"; };
 		CABDFD1123E0C97000C697AD /* InformationHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationHUD.swift; sourceTree = "<group>"; };
-		CAC426D72433989800E513BC /* KeyboardAvoidance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidance.swift; sourceTree = "<group>"; };
 		CAC650AB2461FC1900835209 /* ClientInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientInteractor.swift; sourceTree = "<group>"; };
 		CAC685FD23CCF67300B882D2 /* Assets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Assets.swift; sourceTree = "<group>"; };
 		CAC685FF23CD18C100B882D2 /* Metrics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Metrics.swift; sourceTree = "<group>"; };
@@ -541,14 +539,6 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
-		CAC426D62433988600E513BC /* ViewModifier */ = {
-			isa = PBXGroup;
-			children = (
-				CAC426D72433989800E513BC /* KeyboardAvoidance.swift */,
-			);
-			path = ViewModifier;
-			sourceTree = "<group>";
-		};
 		CAC650A92461533900835209 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -595,7 +585,6 @@
 				CAF82561245C77B20064359E /* State */,
 				CAFA466E23D25B10003C38AB /* MVVM */,
 				CAC6861B23CE6AFD00B882D2 /* View */,
-				CAC426D62433988600E513BC /* ViewModifier */,
 				CAC685FD23CCF67300B882D2 /* Assets.swift */,
 				CAC6860F23CE3F3700B882D2 /* HostingController.swift */,
 				CAC6861923CE615800B882D2 /* ImageLoader.swift */,
@@ -998,7 +987,6 @@
 				CAA87BC124328F53006E418B /* User.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
 				CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */,
-				CAC426D82433989800E513BC /* KeyboardAvoidance.swift in Sources */,
 				CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */,
 				CA92524C24B6A790003DB4F2 /* EmojiHUD.swift in Sources */,
 				CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */,

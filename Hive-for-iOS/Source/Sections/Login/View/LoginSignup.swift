@@ -8,7 +8,6 @@
 
 import Combine
 import SwiftUI
-import Introspect
 
 struct LoginSignup: View {
 	@Environment(\.container) private var container
@@ -24,7 +23,6 @@ struct LoginSignup: View {
 	var body: some View {
 		content
 			.padding(.all, length: .m)
-			.avoidingKeyboard()
 			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
 	}
 
@@ -75,37 +73,13 @@ struct LoginSignup: View {
 	// MARK: Form
 
 	private func secureField(for id: LoginSignupViewModel.FieldItem) -> some View {
-		SecureField(
-			id.title,
-			text: text(for: id),
-			onCommit: {
-				self.viewModel.postViewAction(.didReturn(from: id))
-			}
-		)
-		.introspectTextField {
-			if self.viewModel.activeField == id {
-				$0.becomeFirstResponder()
-			}
-		}
-		.onTapGesture { self.viewModel.postViewAction(.focusField(id)) }
-		.modifier(LoginFieldAppearance(id: id, isActive: viewModel.activeField == id))
+		SecureField(id.title, text: text(for: id))
+			.modifier(LoginFieldAppearance(id: id))
 	}
 
 	private func field(for id: LoginSignupViewModel.FieldItem) -> some View {
-		TextField(
-			id.title,
-			text: text(for: id),
-			onCommit: {
-				self.viewModel.postViewAction(.didReturn(from: id))
-			}
-		)
-		.introspectTextField {
-			if self.viewModel.activeField == id {
-				$0.becomeFirstResponder()
-			}
-		}
-		.onTapGesture { self.viewModel.postViewAction(.focusField(id)) }
-		.modifier(LoginFieldAppearance(id: id, isActive: viewModel.activeField == id))
+		TextField(id.title, text: text(for: id))
+			.modifier(LoginFieldAppearance(id: id))
 	}
 
 	private func text(for id: LoginSignupViewModel.FieldItem) -> Binding<String> {
@@ -196,18 +170,17 @@ extension LoginSignup {
 private extension LoginSignup {
 	struct LoginFieldAppearance: ViewModifier {
 		let id: LoginSignupViewModel.FieldItem
-		let isActive: Bool
 
 		func body(content: Content) -> some View {
 			content
 				.textContentType(id.textContentType)
 				.keyboardType(id.keyboardType)
-				.foregroundColor(Color(isActive ? .primary : .text))
+				.foregroundColor(Color(.text))
 				.padding(.all, length: .m)
 				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
 				.overlay(
 					RoundedRectangle(cornerRadius: .s)
-						.stroke(Color(isActive ? .primary : .text), lineWidth: 1)
+						.stroke(Color(.text), lineWidth: 1)
 				)
 		}
 	}
