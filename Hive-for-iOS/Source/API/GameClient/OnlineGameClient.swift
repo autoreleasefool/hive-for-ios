@@ -88,7 +88,15 @@ class OnlineGameClient: GameClient {
 		request.timeoutInterval = 10
 		account?.applyAuth(to: &request)
 		webSocket = session.webSocketTask(with: request)
+		setupWebSocketReceiver()
+
+		webSocket?.resume()
+		return publisher.eraseToAnyPublisher()
+	}
+
+	private func setupWebSocketReceiver() {
 		webSocket?.receive { [weak self] result in
+			defer { self?.setupWebSocketReceiver() }
 			switch result {
 			case .success(let message):
 				switch message {
@@ -101,8 +109,6 @@ class OnlineGameClient: GameClient {
 				self?.didReceive(error: error)
 			}
 		}
-		webSocket?.resume()
-		return publisher.eraseToAnyPublisher()
 	}
 
 	func close() {
