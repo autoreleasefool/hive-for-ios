@@ -19,7 +19,6 @@ class OnlineGameClient: GameClient {
 	private lazy var session = URLSession(configuration: .default)
 
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
-	private(set) var isConnected: Bool = false
 
 	var isPrepared: Bool {
 		url != nil
@@ -45,7 +44,7 @@ class OnlineGameClient: GameClient {
 			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
 		}
 
-		if isConnected, let subject = subject {
+		if let subject = subject {
 			subject.send(.alreadyConnected)
 			return subject.eraseToAnyPublisher()
 		}
@@ -62,7 +61,7 @@ class OnlineGameClient: GameClient {
 			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
 		}
 
-		if isConnected, let subject = subject {
+		if let subject = subject {
 			subject.send(.alreadyConnected)
 			return subject.eraseToAnyPublisher()
 		}

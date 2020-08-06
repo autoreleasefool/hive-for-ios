@@ -31,7 +31,6 @@ enum GameClientConfiguration {
 
 protocol GameClient {
 	var subject: PassthroughSubject<GameClientEvent, GameClientError>? { get }
-	var isConnected: Bool { get }
 	var isPrepared: Bool { get }
 
 	func prepare(configuration: GameClientConfiguration)

@@ -18,10 +18,6 @@ class LocalGameClient: GameClient {
 
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
-	var isConnected: Bool {
-		subject != nil
-	}
-
 	var isPrepared: Bool {
 		gameState != nil && computerPlayer != nil && localPlayer != nil && computerConfiguration != nil
 	}
@@ -39,7 +35,7 @@ class LocalGameClient: GameClient {
 			return Fail(error: .notPrepared).eraseToAnyPublisher()
 		}
 
-		if isConnected, let subject = subject {
+		if let subject = subject {
 			subject.send(.alreadyConnected)
 			return subject.eraseToAnyPublisher()
 		}
@@ -52,7 +48,7 @@ class LocalGameClient: GameClient {
 			return Fail(error: .notPrepared).eraseToAnyPublisher()
 		}
 
-		if isConnected, let subject = subject {
+		if let subject = subject {
 			subject.send(.alreadyConnected)
 			return subject.eraseToAnyPublisher()
 		}
