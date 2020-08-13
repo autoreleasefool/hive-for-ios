@@ -16,10 +16,9 @@ struct InformationHUD: View {
 
 	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
 		switch information {
-		case .piece, .pieceClass, .playerHand, .rule, .settings: return maxHeight * 0.75
+		case .piece, .pieceClass, .playerHand, .rule, .settings, .reconnecting: return maxHeight * 0.75
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.85 : maxHeight / 2
 		case .gameEnd, .playerMustPass: return maxHeight * 0.5
-		case .reconnecting: return maxHeight * 0.25
 		case .none: return 0
 		}
 	}
@@ -179,6 +178,7 @@ struct InformationHUDPreview: PreviewProvider {
 		])
 //		let information: GameInformation = .pieceClass(.ant)
 //		let information: GameInformation = .playerHand(.init(player: .white, playingAs: .white, state: GameState()))
+//		let information: GameInformation = .reconnecting(4)
 
 		let hud = InformationHUD()
 
