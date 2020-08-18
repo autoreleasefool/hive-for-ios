@@ -9,13 +9,14 @@
 import SwiftUI
 
 struct EmojiHUD: View {
-	private static let size = CGSize(width: 80, height: 400)
+	private static let width: CGFloat = 80
 
 	@EnvironmentObject private var viewModel: GameViewModel
 
-	@GestureState private var pickerTransation: CGFloat = 0
 	private var pickerOffset: CGFloat {
-		viewModel.showingEmojiPicker ? Metrics.Spacing.m.rawValue : -(EmojiHUD.size.width + Metrics.Spacing.m.rawValue)
+		viewModel.showingEmojiPicker
+			? Metrics.Spacing.m.rawValue
+			: -EmojiHUD.width
 	}
 
 	@State private var animatingEmoji: [AnimateableEmoji] = []
@@ -59,36 +60,28 @@ struct EmojiHUD: View {
 
 	private var picker: some View {
 		GeometryReader { geometry in
-			VStack(alignment: .center, spacing: .m) {
-				ForEach(Emoji.allCases.indices) { index in
-					Button(action: {
-						self.viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
-					}, label: {
-						Image(uiImage: Emoji.allCases[index].image ?? UIImage())
-							.resizable()
-							.aspectRatio(contentMode: .fit)
-							.squareImage(.l)
-							.clipShape(Circle())
-					})
+			Group {
+				VStack(alignment: .center, spacing: .m) {
+					ForEach(Emoji.allCases.indices) { index in
+						Button(action: {
+							self.viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
+						}, label: {
+							Image(uiImage: Emoji.allCases[index].image ?? UIImage())
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.squareImage(.l)
+								.clipShape(Circle())
+						})
+					}
 				}
+				.padding(.vertical, length: .m)
+				.frame(width: EmojiHUD.width, alignment: .top)
+				.background(Color(.actionSheetBackground))
+				.cornerRadius(EmojiHUD.width / 2)
+				.animation(.interactiveSpring())
+				.offset(x: self.pickerOffset)
 			}
-			.padding(.vertical, length: .m)
-			.frame(width: EmojiHUD.size.width, height: EmojiHUD.size.height, alignment: .top)
-			.background(Color(.actionSheetBackground))
-			.cornerRadius(EmojiHUD.size.width / 2)
-			.padding()
-			.frame(width: geometry.size.width, alignment: .center)
-			.animation(.interactiveSpring())
-			.gesture(
-				DragGesture().updating(self.$pickerTransation) { value, state, _ in
-					state = value.translation.width
-				}.onEnded { value in
-					guard abs(value.translation.width) > EmojiHUD.size.width / 4 else { return }
-					self.viewModel.showingEmojiPicker = value.translation.width > 0
-				}
-			)
-			.offset(x: max(self.pickerOffset + self.pickerTransation, -EmojiHUD.size.width))
+			.offset(x: -geometry.size.width / 2 + EmojiHUD.width / 2)
 		}
-		.offset(x: -EmojiHUD.size.width * 2 - Metrics.Spacing.m.rawValue / 2)
 	}
 }

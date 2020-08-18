@@ -37,7 +37,7 @@ extension Emoji {
 // MARK: Restrictions
 
 extension Emoji {
-	private static let minimumDelayBetweenEmoji: TimeInterval = 10
+	private static let minimumDelayBetweenEmoji: TimeInterval = 3
 	private static var lastEmojiSentAt: Date = .distantPast
 	private static var lastEmojiReceivedAt: Date = .distantPast
 
