@@ -40,6 +40,8 @@ enum Feature: String, CaseIterable {
 	case arGameMode = "AR Game Mode"
 	case emojiReactions = "Emoji Reactions"
 	case featureFlags = "Feature flags"
+	case matchHistory = "Match History"
+	case userProfile = "User Profile"
 	case hiveMindAgent = "Hive Mind Agent"
 	case offlineMode = "Offline Mode"
 
@@ -50,6 +52,8 @@ enum Feature: String, CaseIterable {
 		case .hiveMindAgent: return .inDevelopment
 		case .offlineMode: return .inDevelopment
 		case .featureFlags: return .inDevelopment
+		case .matchHistory: return .disabled
+		case .userProfile: return .disabled
 		}
 	}
 }

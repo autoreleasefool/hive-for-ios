@@ -9,16 +9,20 @@
 import SwiftUI
 
 struct RootTabView: View {
+	@Environment(\.container) private var container
+
 	var body: some View {
 		BetterTabView(
-			Tab.allCases.map {
-				BetterTabView.Tab(
-					view: $0.view,
-					title: $0.title,
-					image: $0.imageName,
-					selectedImage: $0.selectedImageName
-				)
-			}
+			Tab.allCases
+				.filter { $0.isEnabled(features: container.features) }
+				.map {
+					BetterTabView.Tab(
+						view: $0.view,
+						title: $0.title,
+						image: $0.imageName,
+						selectedImage: $0.selectedImageName
+					)
+				}
 		)
 	}
 }
@@ -56,6 +60,14 @@ extension RootTabView {
 			case .lobby: return AnyView(Lobby())
 			case .matchHistory: return AnyView(History())
 			case .profile: return AnyView(Profile())
+			}
+		}
+
+		func isEnabled(features: Features) -> Bool {
+			switch self {
+			case .lobby: return true
+			case .matchHistory: return features.has(.matchHistory)
+			case .profile: return features.has(.userProfile)
 			}
 		}
 	}
