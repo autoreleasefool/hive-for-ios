@@ -334,7 +334,7 @@ extension GameView2D: UIGestureRecognizerDelegate {
 		let intermediateTouch = gesture.location(in: self.view)
 		let touchPoint = convertPoint(fromView: intermediateTouch)
 
-		if gesture.state == .began {
+		if gesture.state == .began, viewModel.state == .playerTurn {
 			nodeBeingMoved = nodes(at: touchPoint).first(where: {
 				guard let piece = spriteManager.piece(from: $0) else { return false }
 				return viewModel.gameState.pieceHasMoves(piece)
