@@ -496,7 +496,18 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 extension GameViewModel {
 	private func handleGameClientError(_ error: GameClientError) {
-		debugLog("Client did not connect: \(error)")
+		switch error {
+		case .usingOfflineAccount, .notPrepared, .missingURL:
+			break
+		case .failedToConnect:
+			attemptToReconnect(error: error)
+		case .webSocketError(let error):
+			attemptToReconnect(error: error)
+		}
+	}
+
+	private func attemptToReconnect(error: Error?) {
+		debugLog("Client did not connect: \(String(describing: error))")
 
 		guard reconnectAttempts < OnlineGameClient.maxReconnectAttempts else {
 			loafState.send(LoafState("Failed to reconnect", state: .error))
@@ -517,8 +528,10 @@ extension GameViewModel {
 		debugLog("Connected to client.")
 
 		switch presentedGameInformation {
-		case .reconnecting: presentedGameInformation = nil
-		case .piece, .pieceClass, .playerHand, .stack, .rule, .gameEnd, .settings, .playerMustPass, .none: break
+		case .reconnecting:
+			postViewAction(.closeInformation(withFeedback: true))
+		case .piece, .pieceClass, .playerHand, .stack, .rule, .gameEnd, .settings, .playerMustPass, .none:
+			break
 		}
 	}
 
