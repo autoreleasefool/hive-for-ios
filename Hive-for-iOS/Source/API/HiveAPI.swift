@@ -129,9 +129,12 @@ class HiveAPI: ObservableObject {
 
 	private func body(for endpoint: Endpoint) throws -> Data? {
 		switch endpoint {
-		case .login(let data): return try encoder.encode(data)
-		case .signup(let data): return try encoder.encode(data)
-		case .openMatches, .checkToken, .logout, .userDetails, .matchDetails, .joinMatch, .createMatch: return nil
+		case .login(let data):
+			return try encoder.encode(data)
+		case .signup(let data):
+			return try encoder.encode(data)
+		case .openMatches, .activeMatches, .checkToken, .logout, .userDetails, .matchDetails, .joinMatch, .createMatch:
+			return nil
 		}
 	}
 
@@ -164,6 +167,7 @@ extension HiveAPI {
 		// Matches
 		case matchDetails(Match.ID)
 		case openMatches
+		case activeMatches
 		case joinMatch(Match.ID)
 		case createMatch
 
@@ -178,6 +182,7 @@ extension HiveAPI {
 
 			case .matchDetails(let id): return "matches/\(id.uuidString)/details"
 			case .openMatches: return "matches/open"
+			case .activeMatches: return "matches/active"
 			case .joinMatch(let id): return "matches/\(id.uuidString)/join"
 			case .createMatch: return "matches/new"
 			}
@@ -192,7 +197,7 @@ extension HiveAPI {
 				return ["Authorization": "Basic \(base64Auth)"]
 			case .logout(let account), .checkToken(let account):
 				return account.headers
-			case .signup, .openMatches, .userDetails, .matchDetails, .joinMatch, .createMatch:
+			case .signup, .openMatches, .activeMatches, .userDetails, .matchDetails, .joinMatch, .createMatch:
 				return [:]
 			}
 		}
@@ -201,7 +206,7 @@ extension HiveAPI {
 			switch self {
 			case .login, .signup, .createMatch, .joinMatch: return .post
 			case .logout: return .delete
-			case .checkToken, .openMatches, .userDetails, .matchDetails: return .get
+			case .checkToken, .openMatches, .activeMatches, .userDetails, .matchDetails: return .get
 			}
 		}
 	}

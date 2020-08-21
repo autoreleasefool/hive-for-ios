@@ -16,6 +16,8 @@ enum MatchRepositoryError: Error {
 
 protocol MatchRepository {
 	func loadOpenMatches(withAccount account: Account?) -> AnyPublisher<[Match], MatchRepositoryError>
+	func loadActiveMatches(withAccount account: Account?) -> AnyPublisher<[Match], MatchRepositoryError>
+
 	func loadMatchDetails(id: Match.ID, withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError>
 	func joinMatch(id: Match.ID, withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError>
 	func createNewMatch(withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError>
@@ -34,6 +36,16 @@ struct LiveMatchRepository: MatchRepository {
 		}
 
 		return api.fetch(.openMatches, withAccount: account)
+			.mapError { .apiError($0) }
+			.eraseToAnyPublisher()
+	}
+
+	func loadActiveMatches(withAccount account: Account?) -> AnyPublisher<[Match], MatchRepositoryError> {
+		guard account?.isOffline != true else {
+			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
+		}
+
+		return api.fetch(.activeMatches, withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
