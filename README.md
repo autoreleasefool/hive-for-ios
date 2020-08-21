@@ -1,3 +1,5 @@
+![Header](media/header.png)
+
 # Hive for iOS
 
 Hive for iOS allows you to play a game of Hive against your friends.
@@ -11,13 +13,13 @@ To learn more about Hive, visit [Board Game Geek](https://www.boardgamegeek.com/
 
 ## Screenshots
 
-| Home                          | Lobby                           | Game Details                                 |
-| ----------------------------- | ------------------------------- | -------------------------------------------- |
-| ![Home](screenshots/home.png) | ![Lobby](screenshots/lobby.png) | ![Game details](screenshots/gamedetails.png) |
+| Home                    | Lobby                     | Game Details                           |
+| ----------------------- | ------------------------- | -------------------------------------- |
+| ![Home](media/home.png) | ![Lobby](media/lobby.png) | ![Game details](media/gamedetails.png) |
 
-| 2D Game                            | AR Game                            | Overlay                             |
-| ---------------------------------- | ---------------------------------- | ----------------------------------- |
-| ![2D game](screenshots/2dgame.png) | ![AR game](screenshots/argame.png) | ![Overlay](screenshots/overlay.png) |
+| 2D Game                      | AR Game                      | Overlay                       |
+| ---------------------------- | ---------------------------- | ----------------------------- |
+| ![2D game](media/2dgame.png) | ![AR game](media/argame.png) | ![Overlay](media/overlay.png) |
 
 ## Contributing
 
