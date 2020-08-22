@@ -68,8 +68,13 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	@Published var presentedGameAction: GameAction?
 	@Published var presentedGameInformation: GameInformation? {
 		didSet {
-			guard case .playerMustPass = oldValue else { return }
-			postViewAction(.movementConfirmed(.pass))
+			if presentedGameInformation != nil && showingEmojiPicker {
+				showingEmojiPicker = false
+			}
+
+			if case .playerMustPass = oldValue {
+				postViewAction(.movementConfirmed(.pass))
+			}
 		}
 	}
 
