@@ -52,8 +52,8 @@ enum Feature: String, CaseIterable {
 		case .hiveMindAgent: return .inDevelopment
 		case .offlineMode: return .released
 		case .featureFlags: return .inDevelopment
-		case .matchHistory: return .disabled
-		case .userProfile: return .disabled
+		case .matchHistory: return .inDevelopment
+		case .userProfile: return .inDevelopment
 		}
 	}
 }
