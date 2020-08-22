@@ -48,9 +48,9 @@ enum Feature: String, CaseIterable {
 	var rollout: Rollout {
 		switch self {
 		case .arGameMode: return .disabled
-		case .emojiReactions: return .inDevelopment
+		case .emojiReactions: return .released
 		case .hiveMindAgent: return .inDevelopment
-		case .offlineMode: return .inDevelopment
+		case .offlineMode: return .released
 		case .featureFlags: return .inDevelopment
 		case .matchHistory: return .disabled
 		case .userProfile: return .disabled
