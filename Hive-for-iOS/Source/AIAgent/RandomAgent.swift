@@ -1,5 +1,5 @@
 //
-//  DumboAgent.swift
+//  RandomAgent.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-07-02.
@@ -8,7 +8,7 @@
 
 import HiveEngine
 
-class DumboAgent: AIAgent {
+class RandomAgent: AIAgent {
 	func playMove(in state: GameState) -> Movement {
 		state.availableMoves.first ?? .pass
 	}

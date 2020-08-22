@@ -16,19 +16,19 @@ protocol AIAgent {
 // MARK: - Configuration
 
 enum AgentConfiguration: CaseIterable, Identifiable {
-	case dumbo
+	case random
 	case hiveMind
 
 	var name: String {
 		switch self {
-		case .dumbo: return "Dumbo"
+		case .random: return "Random"
 		case .hiveMind: return "Hive Mind"
 		}
 	}
 
 	var id: UUID {
 		switch self {
-		case .dumbo: return UUID(uuidString: "d00a0d1c-eaf6-4d4f-8cf5-8f8840fe495d")!
+		case .random: return UUID(uuidString: "d00a0d1c-eaf6-4d4f-8cf5-8f8840fe495d")!
 		case .hiveMind: return UUID(uuidString: "c354b191-3f26-4d3e-bea5-d5e00bbc3eb4")!
 		}
 	}
@@ -39,14 +39,14 @@ enum AgentConfiguration: CaseIterable, Identifiable {
 
 	var player: AIAgent {
 		switch self {
-		case .dumbo: return DumboAgent()
+		case .random: return RandomAgent()
 		case .hiveMind: return HiveMindAgent()
 		}
 	}
 
 	func isEnabled(in features: Features) -> Bool {
 		switch self {
-		case .dumbo: return true
+		case .random: return true
 		case .hiveMind: return features.has(.hiveMindAgent)
 		}
 	}
