@@ -9,9 +9,9 @@
 struct Features: Equatable {
 	private var enabled: Set<Feature> = Set(Feature.allCases.filter {
 		#if DEBUG
-		return $0.rollout >= .inDevelopment
+		return $0.rollout == .inDevelopment || $0.rollout == .released
 		#else
-		return $0.rollout >= .released
+		return $0.rollout == .released
 		#endif
 	})
 
@@ -61,17 +61,10 @@ enum Feature: String, CaseIterable {
 // MARK: - Rollout
 
 extension Feature {
-	enum Rollout: Comparable {
+	enum Rollout {
 		case disabled
 		case inDevelopment
 		case released
-
-		static func < (lhs: Rollout, rhs: Rollout) -> Bool {
-			switch (lhs, rhs) {
-			case (.disabled, .inDevelopment), (.inDevelopment, .released): return true
-			default: return false
-			}
-		}
 	}
 }
 
