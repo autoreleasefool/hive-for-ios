@@ -215,7 +215,7 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 
 extension OnlineRoomViewModel {
 	private func openClientConnection(to match: Match) {
-		if let url = match.webSocketURL {
+		if let url = match.webSocketPlayingUrl {
 			openClientConnection(to: url)
 		} else {
 			actions.send(.failedToJoinMatch)

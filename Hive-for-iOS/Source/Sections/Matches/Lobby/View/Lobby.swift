@@ -104,7 +104,7 @@ struct Lobby: View {
 			)
 
 			NavigationLink(
-				destination: SpectatingRoom(id: self.viewModel.currentSpectatingMatchId),
+				destination: SpectatorRoom(id: self.viewModel.currentSpectatingMatchId),
 				isActive: self.viewModel.spectatingMatch,
 				label: { EmptyView() }
 			)

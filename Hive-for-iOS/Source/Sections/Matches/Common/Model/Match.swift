@@ -27,9 +27,14 @@ struct Match: Identifiable, Decodable, Equatable {
 	let status: Status
 	let isComplete: Bool
 
-	var webSocketURL: URL? {
+	var webSocketPlayingUrl: URL? {
 		guard let host = HiveAPI.baseURL.host else { return nil }
 		return URL(string: "wss://\(host)/\(id)/play")
+	}
+
+	var webSocketSpectatingUrl: URL? {
+		guard let host = HiveAPI.baseURL.host else { return nil }
+		return URL(string: "wss://\(host)/\(id)/spectate")
 	}
 
 	static func createOfflineMatch(against enemy: AgentConfiguration) -> Match {

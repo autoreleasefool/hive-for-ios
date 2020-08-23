@@ -30,7 +30,8 @@
 		CA45F9C2242E6119007EC94D /* PieceClassDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */; };
 		CA45F9C4242E758C007EC94D /* GameRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* GameRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
-		CA6C952824EF486300F58289 /* SpectatingRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952724EF486300F58289 /* SpectatingRoom.swift */; };
+		CA6C952824EF486300F58289 /* SpectatorRoom.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952724EF486300F58289 /* SpectatorRoom.swift */; };
+		CA6C952C24EF5B0600F58289 /* SpectatorRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */; };
 		CA6CC92924A9579700E8CB27 /* AgentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* AgentPicker.swift */; };
 		CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */; };
 		CA6CC92D24AE94E900E8CB27 /* RandomAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92C24AE94E900E8CB27 /* RandomAgent.swift */; };
@@ -153,7 +154,8 @@
 		CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceClassDetails.swift; sourceTree = "<group>"; };
 		CA45F9C3242E758C007EC94D /* GameRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRule.swift; sourceTree = "<group>"; };
 		CA45F9C5242E9F7A007EC94D /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
-		CA6C952724EF486300F58289 /* SpectatingRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatingRoom.swift; sourceTree = "<group>"; };
+		CA6C952724EF486300F58289 /* SpectatorRoom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorRoom.swift; sourceTree = "<group>"; };
+		CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorRoomViewModel.swift; sourceTree = "<group>"; };
 		CA6CC92824A9579700E8CB27 /* AgentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentPicker.swift; sourceTree = "<group>"; };
 		CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
 		CA6CC92C24AE94E900E8CB27 /* RandomAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAgent.swift; sourceTree = "<group>"; };
@@ -332,7 +334,7 @@
 		CA6C952924EF486600F58289 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CA6C952724EF486300F58289 /* SpectatingRoom.swift */,
+				CA6C952724EF486300F58289 /* SpectatorRoom.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -340,6 +342,7 @@
 		CA6C952A24EF5AF800F58289 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1024,11 +1027,12 @@
 				CAD32BF92493130000984610 /* LocalRoomViewModel.swift in Sources */,
 				CAC650AC2461FC1900835209 /* ClientInteractor.swift in Sources */,
 				CA8F46E9245F3D4500B136D0 /* OnlineRoom.swift in Sources */,
-				CA6C952824EF486300F58289 /* SpectatingRoom.swift in Sources */,
+				CA6C952824EF486300F58289 /* SpectatorRoom.swift in Sources */,
 				CAC73104246DFED5004DB450 /* HistoryViewModel.swift in Sources */,
 				CAFC7A62245C527400747E82 /* RootTabView.swift in Sources */,
 				CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */,
 				CAC73107246E01CB004DB450 /* LobbyViewModel.swift in Sources */,
+				CA6C952C24EF5B0600F58289 /* SpectatorRoomViewModel.swift in Sources */,
 				CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */,
 				CA0F93A52428AEE200F6E104 /* DebugSprite.swift in Sources */,
 				CA8F46E5245EC35800B136D0 /* MatchInteractor.swift in Sources */,
