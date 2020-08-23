@@ -14,15 +14,15 @@ struct Lobby: View {
 
 	@ObservedObject private var viewModel: LobbyViewModel
 
-	init(matches: Loadable<[Match]> = .notLoaded) {
-		viewModel = LobbyViewModel(matches: matches)
+	init(spectating: Bool, matches: Loadable<[Match]> = .notLoaded) {
+		viewModel = LobbyViewModel(spectating: spectating, matches: matches)
 	}
 
 	var body: some View {
 		NavigationView {
 			content
 				.background(Color(.background).edgesIgnoringSafeArea(.all))
-				.navigationBarTitle("Lobby")
+				.navigationBarTitle(viewModel.spectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 				.sheet(isPresented: $viewModel.settingsOpened) {
@@ -103,6 +103,12 @@ struct Lobby: View {
 				label: { EmptyView() }
 			)
 
+			NavigationLink(
+				destination: SpectatingRoom(id: self.viewModel.currentSpectatingMatchId),
+				isActive: self.viewModel.spectatingMatch,
+				label: { EmptyView() }
+			)
+
 			if !loading && matches.count == 0 {
 				emptyState
 			} else {
@@ -131,23 +137,25 @@ struct Lobby: View {
 	// MARK: Lobby
 
 	private var newMatchButton: some View {
-		Button(action: {
+		guard !viewModel.spectating else { return AnyView(EmptyView()) }
+		return AnyView(Button(action: {
 			self.viewModel.postViewAction(.createNewMatch)
 		}, label: {
 			Image(systemName: "plus")
 				.imageScale(.large)
 				.accessibility(label: Text("Create Match"))
-		})
+		}))
 	}
 
-	private var settingsButton: some View {
-		Button(action: {
+	private var settingsButton: AnyView {
+		guard !viewModel.spectating else { return AnyView(EmptyView()) }
+		return AnyView(Button(action: {
 			self.viewModel.postViewAction(.openSettings)
 		}, label: {
 			Image(systemName: "gear")
 				.imageScale(.large)
 				.accessibility(label: Text("Settings"))
-		})
+		}))
 	}
 }
 
@@ -160,8 +168,10 @@ extension Lobby {
 		} else {
 			return AnyView(EmptyState(
 				header: "No matches found",
-				message: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
-					"with the '+' button in the top right",
+				message: viewModel.spectating
+					? "There don't seem to be any active games right now. Go to the lobby to start your own"
+					: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
+						"with the '+' button in the top right",
 				action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
 			))
 		}
@@ -182,8 +192,12 @@ extension Lobby {
 	private var offlineState: some View {
 		EmptyState(
 			header: "You're offline",
-			message: "You can play a game against the computer by tapping below",
-			action: .init(text: "Play local match") { self.viewModel.postViewAction(.createLocalMatchVsComputer) }
+			message: viewModel.spectating
+				? "You can't spectate offline. Log in to spectate"
+				: "You can play a game against the computer by tapping below",
+			action: viewModel.spectating
+				? .init(text: "Log in") { self.viewModel.postViewAction(.logIn) }
+				: .init(text: "Play local match") { self.viewModel.postViewAction(.createLocalMatchVsComputer) }
 		)
 	}
 
@@ -200,14 +214,19 @@ extension Lobby {
 extension Lobby {
 	private func handleAction(_ action: LobbyAction) {
 		switch action {
-		case .loadOpenMatches:
+		case .loadMatches:
 			loadMatches()
 		}
 	}
 
 	private func loadMatches() {
-		container.interactors.matchInteractor
-			.loadOpenMatches(matches: $viewModel.matches)
+		if viewModel.spectating {
+			container.interactors.matchInteractor
+				.loadActiveMatches(matches: $viewModel.matches)
+		} else {
+			container.interactors.matchInteractor
+				.loadOpenMatches(matches: $viewModel.matches)
+		}
 	}
 }
 
@@ -215,7 +234,7 @@ extension Lobby {
 struct LobbyPreview: PreviewProvider {
 	static var previews: some View {
 		let loadable: Loadable<[Match]> = .loaded(Match.matches)
-		return Lobby(matches: loadable)
+		return Lobby(spectating: false, matches: loadable)
 	}
 }
 #endif

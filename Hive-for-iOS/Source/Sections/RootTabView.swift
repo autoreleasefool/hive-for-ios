@@ -32,12 +32,14 @@ struct RootTabView: View {
 extension RootTabView {
 	enum Tab: CaseIterable {
 		case lobby
+		case spectate
 		case matchHistory
 		case profile
 
 		var title: String {
 			switch self {
 			case .lobby: return "Lobby"
+			case .spectate: return "Spectate"
 			case .matchHistory: return "History"
 			case .profile: return "Profile"
 			}
@@ -46,6 +48,7 @@ extension RootTabView {
 		var imageName: String {
 			switch self {
 			case .lobby: return "gamecontroller"
+			case .spectate: return "eye"
 			case .matchHistory: return "clock"
 			case .profile: return "person"
 			}
@@ -57,7 +60,8 @@ extension RootTabView {
 
 		var view: AnyView {
 			switch self {
-			case .lobby: return AnyView(Lobby())
+			case .lobby: return AnyView(Lobby(spectating: false))
+			case .spectate: return AnyView(Lobby(spectating: true))
 			case .matchHistory: return AnyView(History())
 			case .profile: return AnyView(Profile())
 			}
@@ -66,6 +70,7 @@ extension RootTabView {
 		func isEnabled(features: Features) -> Bool {
 			switch self {
 			case .lobby: return true
+			case .spectate: return features.has(.spectating)
 			case .matchHistory: return features.has(.matchHistory)
 			case .profile: return features.has(.userProfile)
 			}

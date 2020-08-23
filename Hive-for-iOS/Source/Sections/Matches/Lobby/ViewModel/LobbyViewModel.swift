@@ -21,10 +21,12 @@ enum LobbyViewAction: BaseViewAction {
 	case createOnlineMatchVsPlayer
 	case createLocalMatchVsComputer
 	case cancelCreateMatch
+
+	case logIn
 }
 
 enum LobbyAction: BaseAction {
-	case loadOpenMatches
+	case loadMatches
 }
 
 class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
@@ -58,11 +60,15 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		}
 	}
 
+	@Published var currentSpectatingMatchId: Match.ID?
+
 	@Published var matches: Loadable<[Match]>
 	@Published var settingsOpened = false
 	@Published var showMatchInProgressWarning = false
 	@Published var showCreateMatchPrompt = false
 	@Published var isOffline = false
+
+	let spectating: Bool
 
 	private var refreshTimer: Timer?
 
@@ -71,7 +77,8 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(matches: Loadable<[Match]>) {
+	init(spectating: Bool, matches: Loadable<[Match]>) {
+		self.spectating = spectating
 		self._matches = .init(initialValue: matches)
 	}
 
@@ -85,17 +92,13 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		case .onListDisappear:
 			refreshTimer?.invalidate()
 		case .refresh:
-			actions.send(.loadOpenMatches)
+			actions.send(.loadMatches)
 		case .openSettings:
 			settingsOpened = true
 		case .createNewMatch:
 			createNewMatch()
 		case .joinMatch(let id):
-			if inMatch {
-				showMatchInProgressWarning = true
-			} else {
-				currentMatchId = id
-			}
+			joinMatch(withId: id)
 		case .createOnlineMatchVsPlayer:
 			creatingOnlineRoom = true
 			showCreateMatchPrompt = false
@@ -104,6 +107,9 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 			showCreateMatchPrompt = false
 		case .cancelCreateMatch:
 			showCreateMatchPrompt = false
+
+		case .logIn:
+			#warning("Log in")
 		}
 	}
 
@@ -111,7 +117,19 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		if self.isOffline {
 			self.matches = .loaded([])
 		} else {
-			actions.send(.loadOpenMatches)
+			actions.send(.loadMatches)
+		}
+	}
+
+	private func joinMatch(withId id: Match.ID) {
+		if inMatch {
+			showMatchInProgressWarning = true
+		} else {
+			if spectating {
+				currentSpectatingMatchId = id
+			} else {
+				currentMatchId = id
+			}
 		}
 	}
 
@@ -130,7 +148,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	private func startRefreshTimer() {
 		refreshTimer?.invalidate()
 		refreshTimer = Timer.scheduledTimer(withTimeInterval: 8, repeats: true) { [weak self] _ in
-			self?.actions.send(.loadOpenMatches)
+			self?.actions.send(.loadMatches)
 		}
 	}
 }
@@ -149,6 +167,17 @@ extension LobbyViewModel {
 			set: { [weak self] in
 				if !$0 {
 					self?.currentMatchId = nil
+				}
+			}
+		)
+	}
+
+	var spectatingMatch: Binding<Bool> {
+		Binding(
+			get: { [weak self] in self?.currentSpectatingMatchId != nil },
+			set: { [weak self] in
+				if !$0 {
+					self?.currentSpectatingMatchId = nil
 				}
 			}
 		)
