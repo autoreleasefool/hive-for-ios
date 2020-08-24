@@ -16,8 +16,8 @@ struct Game: View {
 
 	private let viewModel: GameViewModel
 
-	init(state: GameState, player: Player, mode: ClientInteractorConfiguration) {
-		viewModel = GameViewModel(initialState: state, playingAs: player, mode: mode)
+	init(setup: Setup) {
+		viewModel = GameViewModel(setup: setup)
 	}
 
 	private func handleTransition(to newState: GameViewModel.State) {
@@ -62,5 +62,21 @@ struct Game: View {
 		case .sprite: return AnyView(GameView2DContainer(viewModel: viewModel))
 		}
 		#endif
+	}
+}
+
+// MARK: Game Setup
+
+extension Game {
+	struct Setup: Equatable {
+		let state: GameState
+		let mode: Mode
+	}
+}
+
+extension Game.Setup {
+	enum Mode: Equatable {
+		case play(player: Player, configuration: ClientInteractorConfiguration)
+		case spectate
 	}
 }

@@ -135,10 +135,16 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private var viewContentReady = false
 	private var viewInteractionsReady = false
 
-	init(initialState: GameState, playingAs: Player, mode: ClientInteractorConfiguration) {
-		self.gameState = initialState
-		self.playingAs = playingAs
-		self.clientMode = mode
+	init(setup: Game.Setup) {
+		self.gameState = setup.state
+		switch setup.mode {
+		case .spectate:
+			self.playingAs = .white
+			self.clientMode = .online
+		case .play(let player, let configuration):
+			self.playingAs = player
+			self.clientMode = configuration
+		}
 	}
 
 	override func postViewAction(_ viewAction: GameViewAction) {

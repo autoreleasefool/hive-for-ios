@@ -179,10 +179,9 @@ extension OnlineRoom {
 	}
 
 	private func startGame(state: GameState, player: Player) {
-		container.appState[\.gameSetup] = GameContentCoordinator.GameSetup(
+		container.appState[\.gameSetup] = Game.Setup(
 			state: state,
-			player: player,
-			mode: .online
+			mode: .play(player: player, configuration: .online)
 		)
 	}
 

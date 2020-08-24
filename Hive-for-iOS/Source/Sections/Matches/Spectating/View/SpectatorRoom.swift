@@ -90,7 +90,7 @@ extension SpectatorRoom {
 		case .openClientConnection(let url):
 			openClientConnection(to: url)
 		case .startGame(let state):
-			container.appState[\.gameSetup] = .init(state: state, player: .white, mode: .online)
+			container.appState[\.gameSetup] = .init(state: state, mode: .spectate)
 
 		case .exit:
 			presentationMode.wrappedValue.dismiss()

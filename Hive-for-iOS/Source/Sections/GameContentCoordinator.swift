@@ -13,7 +13,7 @@ import HiveEngine
 struct GameContentCoordinator: View {
 	@Environment(\.container) private var container
 
-	@State private var gameSetup: GameSetup?
+	@State private var gameSetup: Game.Setup?
 
 	var body: some View {
 		content
@@ -34,25 +34,15 @@ struct GameContentCoordinator: View {
 		RootTabView()
 	}
 
-	private func gameView(_ setup: GameSetup) -> some View {
-		Game(state: setup.state, player: setup.player, mode: setup.mode)
-	}
-}
-
-// MARK: - GameSetup
-
-extension GameContentCoordinator {
-	struct GameSetup: Equatable {
-		let state: GameState
-		let player: Player
-		let mode: ClientInteractorConfiguration
+	private func gameView(_ setup: Game.Setup) -> some View {
+		Game(setup: setup)
 	}
 }
 
 // MARK: - Updates
 
 extension GameContentCoordinator {
-	var setupUpdates: AnyPublisher<GameSetup?, Never> {
+	var setupUpdates: AnyPublisher<Game.Setup?, Never> {
 		container.appState.updates(for: \.gameSetup)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()

@@ -125,7 +125,10 @@ struct GameHUD: View {
 struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {
 		GameHUD()
-			.environmentObject(GameViewModel(initialState: GameState(), playingAs: .white, mode: .online))
+			.environmentObject(GameViewModel(setup: .init(
+				state: GameState(),
+				mode: .play(player: .white, configuration: .online)
+			)))
 			.background(Color(.backgroundDark).edgesIgnoringSafeArea(.all))
 	}
 }
