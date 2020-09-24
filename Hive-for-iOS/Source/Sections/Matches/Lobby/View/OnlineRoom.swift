@@ -67,7 +67,7 @@ struct OnlineRoom: View {
 			if match == nil {
 				HStack {
 					Spacer()
-					ActivityIndicator(isAnimating: true, style: .whiteLarge)
+					ActivityIndicator(isAnimating: true, style: .large)
 					Spacer()
 				}
 				.padding(.top, length: .m)
@@ -96,7 +96,7 @@ struct OnlineRoom: View {
 				.multilineTextAlignment(.center)
 				.body()
 				.foregroundColor(Color(.textRegular))
-			ActivityIndicator(isAnimating: true, style: .whiteLarge)
+			ActivityIndicator(isAnimating: true, style: .large)
 			Text(viewModel.reconnectingMessage)
 				.multilineTextAlignment(.center)
 				.body()

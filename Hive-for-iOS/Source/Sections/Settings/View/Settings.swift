@@ -129,7 +129,12 @@ struct Settings: View {
 
 		switch viewModel.logoutResult {
 		case .notLoaded, .failed, .loaded: return AnyView(BasicButton<Never>("Logout", action: action))
-		case .loading: return AnyView(BasicButton(action: action) { ActivityIndicator(isAnimating: true, style: .white) })
+		case .loading:
+			return AnyView(
+				BasicButton(action: action) {
+					ActivityIndicator(isAnimating: true, style: .medium)
+				}
+			)
 		}
 	}
 

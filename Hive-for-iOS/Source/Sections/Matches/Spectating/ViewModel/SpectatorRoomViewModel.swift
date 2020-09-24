@@ -36,9 +36,8 @@ enum SpectatorRoomCancellable: Int, Identifiable {
 	}
 }
 
-class SpectatorRoomViewModel:
-	ExtendedViewModel<SpectatorRoomViewAction, SpectatorRoomCancellable>,
-	ObservableObject {
+class SpectatorRoomViewModel: ExtendedViewModel<SpectatorRoomViewAction, SpectatorRoomCancellable>,
+															ObservableObject {
 	let matchId: Match.ID?
 
 	@Published var match: Loadable<Match> = .notLoaded {

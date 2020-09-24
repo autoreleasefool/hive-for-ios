@@ -115,7 +115,10 @@ extension LocalRoom {
 
 		container.interactors.clientInteractor
 			.prepare(.local, clientConfiguration: .offline(gameState, viewModel.player, viewModel.opponent))
-		container.appState[\.gameSetup] = .init(state: gameState, mode: .play(player: viewModel.player, configuration: .local))
+		container.appState[\.gameSetup] = .init(
+			state: gameState,
+			mode: .play(player: viewModel.player, configuration: .local)
+		)
 	}
 
 	private func exitMatch() {

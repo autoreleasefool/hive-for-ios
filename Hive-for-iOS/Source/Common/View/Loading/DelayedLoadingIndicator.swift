@@ -25,7 +25,7 @@ struct DelayedLoadingIndicator: View {
 		VStack(spacing: .m) {
 			Spacer()
 			if showTimeoutMessage {
-				ActivityIndicator(isAnimating: true, style: .whiteLarge)
+				ActivityIndicator(isAnimating: true, style: .large)
 				timeoutMessage
 			}
 			Spacer()

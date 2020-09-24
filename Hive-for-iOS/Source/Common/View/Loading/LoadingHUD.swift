@@ -12,7 +12,7 @@ class LoadingHUD {
 	static let shared = LoadingHUD()
 
 	private let window: UIWindow
-	private let loadingView = UIActivityIndicatorView(style: .whiteLarge)
+	private let loadingView = UIActivityIndicatorView(style: .large)
 
 	private init() {
 		window = UIWindow(frame: UIScreen.main.bounds)

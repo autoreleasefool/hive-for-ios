@@ -62,7 +62,7 @@ struct SpectatorRoom: View {
 			Spacer()
 			HStack {
 				Spacer()
-				ActivityIndicator(isAnimating: true, style: .whiteLarge)
+				ActivityIndicator(isAnimating: true, style: .large)
 				Spacer()
 			}
 			Spacer()

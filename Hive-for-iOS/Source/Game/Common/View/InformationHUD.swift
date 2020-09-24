@@ -125,7 +125,7 @@ struct InformationHUD: View {
 			case .settings:
 				return AnyView(GameSettings())
 			case .reconnecting:
-				return AnyView(ActivityIndicator(isAnimating: true, style: .whiteLarge))
+				return AnyView(ActivityIndicator(isAnimating: true, style: .large))
 			}
 		}
 	}
