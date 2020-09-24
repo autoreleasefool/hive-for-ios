@@ -19,12 +19,12 @@ struct AgentPicker: View {
 					HStack(spacing: .m) {
 						Text(computer.name)
 							.body()
-							.foregroundColor(Color(.text))
+							.foregroundColor(Color(.textRegular))
 					}
 				}
 			}
 		}
-		.background(Color(.background).edgesIgnoringSafeArea(.all))
+		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 		.listRowInsets(EdgeInsets(equalTo: .m))
 		.navigationBarTitle("Pick an opponent")
 	}

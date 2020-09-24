@@ -43,7 +43,7 @@ struct DelayedLoadingIndicator: View {
 struct DelayedLoadingIndicatorPreview: PreviewProvider {
 	static var previews: some View {
 		DelayedLoadingIndicator(timeout: 3, message: "Logging in...")
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

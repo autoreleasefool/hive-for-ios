@@ -38,7 +38,7 @@ struct ContentView: View {
 				}
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 			.onReceive(self.accountUpdate) { self.account = $0 }
 			.sheet(isPresented: self.$viewModel.showSettings) {

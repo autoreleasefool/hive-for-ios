@@ -130,7 +130,7 @@ extension Player {
 	var color: ColorAsset {
 		switch self {
 		case .white: return .white
-		case .black: return .primary
+		case .black: return .highlightPrimary
 		}
 	}
 }

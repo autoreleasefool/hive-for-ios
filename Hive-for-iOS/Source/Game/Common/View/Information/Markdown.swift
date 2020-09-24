@@ -120,8 +120,8 @@ struct MarkdownPreview: PreviewProvider {
 			height: $height
 		)
 		.frame(minHeight: height, maxHeight: height)
-		.background(Color(.background))
-		.background(Color(.primary).edgesIgnoringSafeArea(.all))
+		.background(Color(.backgroundRegular))
+		.background(Color(.highlightPrimary).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

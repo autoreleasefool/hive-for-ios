@@ -19,7 +19,7 @@ struct RuleList: View {
 				}, label: {
 					Text(rule.title)
 						.body()
-						.foregroundColor(Color(.primary))
+						.foregroundColor(Color(.highlightPrimary))
 						.padding(.vertical, length: .xs)
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 				})

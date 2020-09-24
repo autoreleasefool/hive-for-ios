@@ -21,7 +21,7 @@ struct Lobby: View {
 	var body: some View {
 		NavigationView {
 			content
-				.background(Color(.background).edgesIgnoringSafeArea(.all))
+				.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle(viewModel.spectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }

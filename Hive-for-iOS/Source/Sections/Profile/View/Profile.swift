@@ -26,7 +26,7 @@ struct Profile: View {
 	var body: some View {
 		NavigationView {
 			content
-				.background(Color(.background).edgesIgnoringSafeArea(.all))
+				.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle(viewModel.title(forUser: user.value))
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
@@ -69,8 +69,8 @@ struct Profile: View {
 
 	private func loadedView(_ user: User) -> some View {
 		List {
-			HexImage(url: user.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .primary)
-				.placeholderTint(.primary)
+			HexImage(url: user.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .highlightPrimary)
+				.placeholderTint(.highlightPrimary)
 				.squareImage(.m)
 		}
 	}

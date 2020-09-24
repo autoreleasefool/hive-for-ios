@@ -33,7 +33,7 @@ struct BottomSheet<Content: View>: View {
 
 	private var indicator: some View {
 		RoundedRectangle(cornerRadius: Constants.radius)
-			.fill(Color(.text))
+			.fill(Color(.textRegular))
 			.frame(
 				width: Constants.indicatorWidth,
 				height: Constants.indicatorHeight
@@ -42,7 +42,7 @@ struct BottomSheet<Content: View>: View {
 		}
 	}
 
-	init(isOpen: Binding<Bool>, minHeight: CGFloat, maxHeight: CGFloat, showsDragIndicator: Bool = true, dragGestureEnabled: Bool = true, backgroundColor: ColorAsset = .background, @ViewBuilder content: () -> Content) {
+	init(isOpen: Binding<Bool>, minHeight: CGFloat, maxHeight: CGFloat, showsDragIndicator: Bool = true, dragGestureEnabled: Bool = true, backgroundColor: ColorAsset = .backgroundRegular, @ViewBuilder content: () -> Content) {
 		self.minHeight = minHeight
 		self.maxHeight = maxHeight
 		self.showsDragIndicator = showsDragIndicator

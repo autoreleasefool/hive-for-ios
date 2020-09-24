@@ -85,7 +85,7 @@ struct RemoteImagePreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
 			RemoteImage(url: nil, placeholder: ImageAsset.Icon.handFilled)
-				.placeholderTint(.primary)
+				.placeholderTint(.highlightPrimary)
 				.squareImage(.xl)
 			RemoteImage(url: nil, placeholder: ImageAsset.joseph)
 				.imageFrame(width: .l, height: .m)

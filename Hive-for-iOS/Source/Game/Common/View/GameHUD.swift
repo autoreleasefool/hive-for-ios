@@ -20,7 +20,7 @@ struct GameHUD: View {
 	private func stateIndicator(_ geometry: GeometryProxy) -> some View {
 		Text(viewModel.displayState)
 			.body()
-			.foregroundColor(Color(.text))
+			.foregroundColor(Color(.textRegular))
 			.position(
 				x: geometry.size.width / 2,
 				y: geometry.size.height - (buttonSize + Metrics.Spacing.xl + Metrics.Spacing.m.rawValue)

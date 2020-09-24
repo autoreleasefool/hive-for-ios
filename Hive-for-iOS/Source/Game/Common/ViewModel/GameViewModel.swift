@@ -481,8 +481,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		loafState.send(LoafState(
 			message,
 			state: .custom(Loaf.Style(
-				backgroundColor: UIColor(.background),
-				textColor: UIColor(.text),
+				backgroundColor: UIColor(.backgroundRegular),
+				textColor: UIColor(.textRegular),
 				icon: image)
 			)) { [weak self] dismissalReason in
 				guard let self = self,

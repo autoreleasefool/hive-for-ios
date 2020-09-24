@@ -25,11 +25,11 @@ struct RoomDetails: View {
 		ScrollView {
 			VStack(spacing: .m) {
 				playerSection
-				Divider().background(Color(.divider))
+				Divider().background(Color(.dividerRegular))
 				expansionsSection
-				Divider().background(Color(.divider))
+				Divider().background(Color(.dividerRegular))
 				matchOptionsSection
-				Divider().background(Color(.divider))
+				Divider().background(Color(.dividerRegular))
 				otherOptionsSection
 				Spacer()
 			}
@@ -58,7 +58,7 @@ struct RoomDetails: View {
 			Text("Expansions")
 				.bold()
 				.body()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 			HStack(spacing: .l) {
 				Spacer()
@@ -79,13 +79,13 @@ struct RoomDetails: View {
 					.subtitle()
 					.foregroundColor(
 						enabled
-							? Color(.primary)
+							? Color(.highlightPrimary)
 							: Color(.textSecondary)
 					)
 				Hex()
 					.stroke(
 						enabled
-							? Color(.primary)
+							? Color(.highlightPrimary)
 							: Color(.textSecondary),
 						lineWidth: CGFloat(5)
 					)
@@ -101,7 +101,7 @@ struct RoomDetails: View {
 			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
 				Toggle(self.name(forOption: option), isOn: self.matchOptionBinding(option))
 					.disabled(self.optionsDisabled)
-					.foregroundColor(Color(.text))
+					.foregroundColor(Color(.textRegular))
 			}
 		}
 	}
@@ -112,7 +112,7 @@ struct RoomDetails: View {
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
 				Toggle(self.name(forOption: option), isOn: self.gameOptionBinding(option))
 					.disabled(self.optionsDisabled)
-					.foregroundColor(Color(.text))
+					.foregroundColor(Color(.textRegular))
 			}
 		}
 	}
@@ -121,7 +121,7 @@ struct RoomDetails: View {
 		Text(title)
 			.bold()
 			.body()
-			.foregroundColor(Color(.text))
+			.foregroundColor(Color(.textRegular))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}
 }

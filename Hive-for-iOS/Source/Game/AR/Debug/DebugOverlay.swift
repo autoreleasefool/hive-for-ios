@@ -111,7 +111,7 @@ class DebugOverlay: UIView {
 
 	private func setupView() {
 		self.alpha = 0.5
-		self.backgroundColor = UIColor(.background)
+		self.backgroundColor = UIColor(.backgroundRegular)
 
 		touchPositionLabel.numberOfLines = 0
 		hivePositionLabel.numberOfLines = 0

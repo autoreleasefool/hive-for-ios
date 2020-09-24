@@ -25,7 +25,7 @@ struct OnlineRoom: View {
 		GeometryReader { geometry in
 			self.content(geometry)
 		}
-		.background(Color(.background).edgesIgnoringSafeArea(.all))
+		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 		.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.navigationBarItems(leading: exitButton, trailing: startButton)
@@ -95,12 +95,12 @@ struct OnlineRoom: View {
 			Text("The connection to the server was lost.\nPlease wait while we try to reconnect you.")
 				.multilineTextAlignment(.center)
 				.body()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 			ActivityIndicator(isAnimating: true, style: .whiteLarge)
 			Text(viewModel.reconnectingMessage)
 				.multilineTextAlignment(.center)
 				.body()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 			Spacer()
 		}
 		.padding(.all, length: .m)

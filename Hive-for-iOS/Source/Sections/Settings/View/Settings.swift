@@ -39,7 +39,7 @@ struct Settings: View {
 
 						if container.has(feature: .emojiReactions) {
 							Toggle("Disable emoji reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
-								.foregroundColor(Color(.text))
+								.foregroundColor(Color(.textRegular))
 								.padding(.vertical, length: .xs)
 						}
 					}
@@ -74,7 +74,7 @@ struct Settings: View {
 					label: { EmptyView() }
 				)
 			}
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
 			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
@@ -91,7 +91,7 @@ struct Settings: View {
 			Text(title)
 				.bold()
 				.body()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 				.padding(.horizontal, length: .m)
 				.padding(.vertical, length: .s)
 			Spacer()
@@ -111,11 +111,11 @@ struct Settings: View {
 			HStack {
 				Text(title)
 					.body()
-					.foregroundColor(Color(.text))
+					.foregroundColor(Color(.textRegular))
 				Spacer()
 				Text(selected.description)
 					.body()
-					.foregroundColor(Color(.text))
+					.foregroundColor(Color(.textRegular))
 			}
 		})
 	}
@@ -139,7 +139,7 @@ struct Settings: View {
 		}, label: {
 			Text("Done")
 				.body()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 		})
 	}
 
@@ -149,7 +149,7 @@ struct Settings: View {
 	private var featureToggles: some View {
 		ForEach(Feature.allCases, id: \.rawValue) { feature in
 			Toggle(feature.rawValue, isOn: self.binding(for: feature))
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 				.padding(.vertical, length: .xs)
 		}
 	}
@@ -164,7 +164,7 @@ struct Settings: View {
 			HStack {
 				Text("View source")
 					.body()
-					.foregroundColor(Color(.text))
+					.foregroundColor(Color(.textRegular))
 				Spacer()
 				Image(uiImage: UIImage(systemName: "chevron.right")!)
 					.resizable()
@@ -181,7 +181,7 @@ struct Settings: View {
 			HStack {
 				Text("Attributions")
 					.body()
-					.foregroundColor(Color(.text))
+					.foregroundColor(Color(.textRegular))
 				Spacer()
 				Image(uiImage: UIImage(systemName: "chevron.right")!)
 					.resizable()

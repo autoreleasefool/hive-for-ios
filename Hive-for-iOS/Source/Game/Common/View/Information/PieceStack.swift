@@ -54,7 +54,7 @@ struct PieceStackPreview: PreviewProvider {
 			Piece(class: .beetle, owner: .black, index: 1),
 			Piece(class: .beetle, owner: .white, index: 1),
 		])
-			.background(Color(.background))
+			.background(Color(.backgroundRegular))
 	}
 }
 #endif

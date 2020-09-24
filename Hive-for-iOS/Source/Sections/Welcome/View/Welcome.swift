@@ -22,13 +22,13 @@ struct Welcome: View {
 			Spacer()
 
 			Image(uiImage: ImageAsset.glyph)
-				.foregroundColor(Color(.primary))
+				.foregroundColor(Color(.highlightPrimary))
 
 			Button("Play") {
 				self.showWelcome = false
 			}
 			.subtitle()
-			.foregroundColor(Color(.text))
+			.foregroundColor(Color(.textRegular))
 			.padding(.m)
 
 			if container.has(feature: .offlineMode) {
@@ -37,7 +37,7 @@ struct Welcome: View {
 					self.showWelcome = false
 				}
 				.subtitle()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 				.padding(.m)
 			}
 
@@ -45,7 +45,7 @@ struct Welcome: View {
 				self.showSettings = true
 			}
 			.subtitle()
-			.foregroundColor(Color(.text))
+			.foregroundColor(Color(.textRegular))
 			.padding(.m)
 
 			Spacer()

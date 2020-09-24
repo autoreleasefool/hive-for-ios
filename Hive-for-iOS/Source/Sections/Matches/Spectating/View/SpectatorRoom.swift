@@ -22,7 +22,7 @@ struct SpectatorRoom: View {
 
 	var body: some View {
 		content
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.navigationBarTitle(Text("Spectating..."), displayMode: .inline)
 			.navigationBarBackButtonHidden(true)
 			.navigationBarItems(leading: cancelButton)

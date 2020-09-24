@@ -47,10 +47,10 @@ struct InformationHUD: View {
 	fileprivate func HUD(information: GameInformation, state: GameState) -> some View {
 		VStack(spacing: .m) {
 			header(information: information)
-			Divider().background(Color(.divider))
+			Divider().background(Color(.dividerRegular))
 			details(information: information, state: state)
 			if information.hasCloseButton {
-				Divider().background(Color(.divider))
+				Divider().background(Color(.dividerRegular))
 				closeButton
 			}
 		}
@@ -63,7 +63,7 @@ struct InformationHUD: View {
 		return VStack(alignment: .leading, spacing: .s) {
 			Text(information.title)
 				.subtitle()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 
 			if subtitle != nil {
@@ -77,7 +77,7 @@ struct InformationHUD: View {
 				} else {
 					Text(subtitle!)
 						.body()
-						.foregroundColor(Color(.text))
+						.foregroundColor(Color(.textRegular))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 				}
 			}
@@ -103,7 +103,7 @@ struct InformationHUD: View {
 							self.viewModel.postViewAction(.presentInformation(.rule(nil)))
 						}, label: {
 							Text("See all rules")
-								.foregroundColor(Color(.primary))
+								.foregroundColor(Color(.highlightPrimary))
 								.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 						})
 					)

@@ -49,22 +49,22 @@ enum ImageAsset {
 // MARK: - Colors
 
 enum ColorAsset: String {
-	case primary = "Colors/Primary"
-	case background = "Colors/Background"
+	case backgroundRegular = "Colors/Background"
 	case backgroundLight = "Colors/BackgroundLight"
 	case backgroundDark = "Colors/BackgroundDark"
 	case backgroundSectionHeader = "Colors/BackgroundSectionHeader"
 
-	case highlight = "Colors/Highlight"
-	case destructive = "Colors/Destructive"
-	case success = "Colors/Success"
+	case highlightPrimary = "Colors/Primary"
+	case highlightRegular = "Colors/Highlight"
+	case highlightDestructive = "Colors/Destructive"
+	case highlightSuccess = "Colors/Success"
 
-	case text = "Colors/Text"
+	case textRegular = "Colors/Text"
 	case textSecondary = "Colors/TextSecondary"
 	case textContrasting = "Colors/TextContrasting"
 	case textContrastingSecondary = "Colors/TextContrastingSecondary"
 
-	case divider = "Colors/Divider"
+	case dividerRegular = "Colors/Divider"
 
 	case actionSheetBackground = "Colors/ActionSheet"
 

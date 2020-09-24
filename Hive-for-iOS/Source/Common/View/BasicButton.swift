@@ -12,7 +12,7 @@ struct BasicButton<Label>: View where Label: View {
 	private let label: Label?
 	private let title: String?
 	private let action: () -> Void
-	private var background: ColorAsset = .primary
+	private var background: ColorAsset = .highlightPrimary
 
 	init(_ title: String, action: @escaping () -> Void) {
 		self.title = title
@@ -33,7 +33,7 @@ struct BasicButton<Label>: View where Label: View {
 			} else {
 				Text(title ?? "")
 					.body()
-					.foregroundColor(Color(.text))
+					.foregroundColor(Color(.textRegular))
 					.padding(.vertical, length: .m)
 					.frame(minWidth: 0, maxWidth: .infinity)
 					.frame(height: 48)

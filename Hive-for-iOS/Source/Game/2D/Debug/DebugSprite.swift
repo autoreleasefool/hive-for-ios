@@ -42,10 +42,10 @@ class DebugSprite: SKNode {
 		positionLabel.horizontalAlignmentMode = .left
 		background.addChild(positionLabel)
 
-		touchIndicator.fillColor = UIColor(.primary)
+		touchIndicator.fillColor = UIColor(.highlightPrimary)
 		addChild(touchIndicator)
 
-		positionIndicator.fillColor = UIColor(.highlight)
+		positionIndicator.fillColor = UIColor(.highlightRegular)
 		addChild(positionIndicator)
 
 		self.alpha = 0.5

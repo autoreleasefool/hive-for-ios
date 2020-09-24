@@ -25,7 +25,7 @@ struct ActionHUD: View {
 			HStack {
 				if button.type == .destructive {
 					Text(button.title)
-						.foregroundColor(Color(.destructive))
+						.foregroundColor(Color(.highlightDestructive))
 						.body()
 				} else if button.type == .cancel {
 					Text(button.title)

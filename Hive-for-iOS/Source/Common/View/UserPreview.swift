@@ -59,9 +59,9 @@ struct UserPreview: View {
 	}
 
 	var userImage: some View {
-		let stroke: ColorAsset = user != nil && highlight ? .success : .primary
+		let stroke: ColorAsset = user != nil && highlight ? .highlightSuccess : .highlightPrimary
 		return HexImage(url: user?.avatarURL, placeholder: ImageAsset.borderlessGlyph, stroke: stroke)
-			.placeholderTint(.primary)
+			.placeholderTint(.highlightPrimary)
 			.squareImage(iconSize)
 	}
 
@@ -69,7 +69,7 @@ struct UserPreview: View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
 				.body()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 				.multilineTextAlignment(textAlignment == .leading ? .leading : .trailing)
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if user != nil {
@@ -99,32 +99,32 @@ struct UserPreviewPreview: PreviewProvider {
 	static var previews: some View {
 		VStack(spacing: .m) {
 			UserPreview(Match.User.users[0].summary)
-				.border(Color(.highlight), width: 1)
+				.border(Color(.highlightRegular), width: 1)
 			UserPreview(Match.User.users[0].summary, highlight: true)
-				.border(Color(.highlight), width: 1)
+				.border(Color(.highlightRegular), width: 1)
 			UserPreview(Match.User.users[0].summary, iconSize: .l)
-				.border(Color(.highlight), width: 1)
+				.border(Color(.highlightRegular), width: 1)
 			UserPreview(Match.User.users[0].summary, alignment: .trailing)
-				.border(Color(.highlight), width: 1)
+				.border(Color(.highlightRegular), width: 1)
 			UserPreview(nil)
-				.border(Color(.highlight), width: 1)
+				.border(Color(.highlightRegular), width: 1)
 			UserPreview(nil, highlight: true)
-				.border(Color(.highlight), width: 1)
+				.border(Color(.highlightRegular), width: 1)
 			UserPreview(nil, iconSize: .l)
-				.border(Color(.highlight), width: 1)
+				.border(Color(.highlightRegular), width: 1)
 			UserPreview(nil, alignment: .trailing)
-				.border(Color(.highlight), width: 1)
+				.border(Color(.highlightRegular), width: 1)
 
 			HStack(spacing: .xs) {
 				UserPreview(Match.User.users[0].summary, iconSize: .l)
-					.border(Color(.highlight), width: 1)
+					.border(Color(.highlightRegular), width: 1)
 				Spacer()
 				UserPreview(Match.User.users[1].summary, alignment: .trailing, iconSize: .l)
-					.border(Color(.highlight), width: 1)
+					.border(Color(.highlightRegular), width: 1)
 			}
 		}
 		.frame(width: UIScreen.main.bounds.width)
-		.background(Color(.background))
+		.background(Color(.backgroundRegular))
 	}
 }
 #endif

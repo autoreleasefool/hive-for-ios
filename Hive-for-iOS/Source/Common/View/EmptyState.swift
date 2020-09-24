@@ -43,7 +43,7 @@ struct EmptyState: View {
 				Spacer()
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 		}
 	}
 
@@ -60,7 +60,7 @@ struct EmptyState: View {
 		Text(headerText)
 			.subtitle()
 			.multilineTextAlignment(.center)
-			.foregroundColor(Color(.text))
+			.foregroundColor(Color(.textRegular))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}
 
@@ -94,7 +94,7 @@ struct EmptyStatePreview: PreviewProvider {
 			image: ImageAsset.joseph,
 			action: EmptyState.Action(text: "Refresh", callback: { })
 		)
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

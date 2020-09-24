@@ -26,7 +26,7 @@ struct History: View {
 	var body: some View {
 		NavigationView {
 			content
-				.background(Color(.background).edgesIgnoringSafeArea(.all))
+				.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(userUpdates) { self.user = $0 }
@@ -216,7 +216,7 @@ private extension User {
 struct HistoryPreview: PreviewProvider {
 	static var previews: some View {
 		History(user: .loaded(User.users[0]))
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

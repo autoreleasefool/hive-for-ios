@@ -22,7 +22,7 @@ struct LocalRoom: View {
 
 	var body: some View {
 		content
-			.background(Color(.background).edgesIgnoringSafeArea(.all))
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
 			.navigationBarBackButtonHidden(true)
 			.navigationBarItems(leading: exitButton, trailing: startButton)

@@ -25,14 +25,14 @@ struct LobbyRow: View {
 			Text(option.preview ?? "")
 				.caption()
 				.foregroundColor(enabled
-					? Color(.text)
+					? Color(.textRegular)
 					: Color(.textSecondary)
 				)
 			Hex()
 				.stroke(
 					enabled
-						? Color(.primary)
-						: Color(.primary).opacity(0.4),
+						? Color(.highlightPrimary)
+						: Color(.highlightPrimary).opacity(0.4),
 					lineWidth: CGFloat(2)
 				)
 				.squareImage(.m)
@@ -64,7 +64,7 @@ private extension GameState.Option {
 struct LobbyRowPreview: PreviewProvider {
 	static var previews: some View {
 		LobbyRow(match: Match.matches[0])
-			.background(Color(.background))
+			.background(Color(.backgroundRegular))
 	}
 }
 #endif

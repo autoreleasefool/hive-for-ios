@@ -15,7 +15,7 @@ struct AttributionsList: View {
 				Section(header: self.sectionHeader(title: attribution.name)) {
 					Text(attribution.license)
 						.body()
-						.foregroundColor(Color(.text))
+						.foregroundColor(Color(.textRegular))
 						.multilineTextAlignment(.leading)
 				}
 			}
@@ -28,7 +28,7 @@ struct AttributionsList: View {
 			Text(title)
 				.bold()
 				.body()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 				.padding(.horizontal, length: .m)
 				.padding(.vertical, length: .s)
 			Spacer()

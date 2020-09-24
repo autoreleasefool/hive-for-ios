@@ -106,7 +106,7 @@ private extension GameState.Option {
 struct HistoryRowPreview: PreviewProvider {
 	static var previews: some View {
 		HistoryRow(match: Match.matches[0])
-			.background(Color(.background))
+			.background(Color(.backgroundRegular))
 	}
 }
 #endif

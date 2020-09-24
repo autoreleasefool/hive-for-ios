@@ -16,13 +16,13 @@ struct HexImage: View {
 	private var imageHeight: Metrics.Image?
 	private var placeholderTint: ColorAsset?
 
-	init(url: URL?, placeholder: UIImage = UIImage(), stroke: ColorAsset = .primary) {
+	init(url: URL?, placeholder: UIImage = UIImage(), stroke: ColorAsset = .highlightPrimary) {
 		self.url = url
 		self.placeholder = placeholder
 		self.stroke = stroke
 	}
 
-	init(_ image: UIImage, stroke: ColorAsset = .primary) {
+	init(_ image: UIImage, stroke: ColorAsset = .highlightPrimary) {
 		self.url = nil
 		self.placeholder = image
 		self.stroke = stroke
@@ -100,14 +100,14 @@ struct Hex: Shape {
 struct HexImagePreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
-			HexImage(ImageAsset.Icon.handFilled, stroke: .primary)
-				.placeholderTint(.primary)
+			HexImage(ImageAsset.Icon.handFilled, stroke: .highlightPrimary)
+				.placeholderTint(.highlightPrimary)
 				.squareInnerImage(.m)
 				.squareImage(.l)
-			HexImage(ImageAsset.Icon.close, stroke: .primary)
+			HexImage(ImageAsset.Icon.close, stroke: .highlightPrimary)
 				.squareInnerImage(.s)
 				.squareImage(.l)
-			HexImage(ImageAsset.joseph, stroke: .primary)
+			HexImage(ImageAsset.joseph, stroke: .highlightPrimary)
 				.imageFrame(width: .xxl, height: .xxl)
 		}
 	}

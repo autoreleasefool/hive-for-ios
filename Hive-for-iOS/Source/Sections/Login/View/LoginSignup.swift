@@ -101,13 +101,13 @@ struct LoginSignup: View {
 		HStack(spacing: 0) {
 			Text("you can also ")
 				.caption()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 			Button(action: {
 				self.viewModel.postViewAction(.toggleForm)
 			}, label: {
 				Text(viewModel.toggleButtonText)
 					.caption()
-					.foregroundColor(Color(.primary))
+					.foregroundColor(Color(.highlightPrimary))
 			})
 		}
 		.padding(.top, length: .s)
@@ -118,17 +118,17 @@ struct LoginSignup: View {
 		HStack(spacing: 0) {
 			Text("or")
 				.caption()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 			Button(action: {
 				self.viewModel.postViewAction(.exitForm)
 			}, label: {
 				Text(" exit ")
 					.caption()
-					.foregroundColor(Color(.primary))
+					.foregroundColor(Color(.highlightPrimary))
 			})
 			Text("to main menu")
 				.caption()
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 		}
 		.padding(.top, length: .xs)
 		.padding(.bottom, length: .s)
@@ -137,7 +137,7 @@ struct LoginSignup: View {
 	private func notice(message: String) -> some View {
 		Text(message)
 			.body()
-			.foregroundColor(Color(.highlight))
+			.foregroundColor(Color(.highlightRegular))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 	}
 }
@@ -175,12 +175,12 @@ private extension LoginSignup {
 			content
 				.textContentType(id.textContentType)
 				.keyboardType(id.keyboardType)
-				.foregroundColor(Color(.text))
+				.foregroundColor(Color(.textRegular))
 				.padding(.all, length: .m)
 				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
 				.overlay(
 					RoundedRectangle(cornerRadius: .s)
-						.stroke(Color(.text), lineWidth: 1)
+						.stroke(Color(.textRegular), lineWidth: 1)
 				)
 		}
 	}
@@ -193,7 +193,7 @@ struct LoginSignupPreview: PreviewProvider {
 			LoginSignup(defaultForm: .login)
 			LoginSignup(defaultForm: .signup)
 		}
-		.background(Color(.background).edgesIgnoringSafeArea(.all))
+		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif
