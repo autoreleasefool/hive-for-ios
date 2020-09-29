@@ -130,6 +130,8 @@ struct ActionHUD: View {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct ActionHUDPreview: PreviewProvider {
 	@State static var isOpen: Bool = true

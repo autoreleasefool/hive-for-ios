@@ -102,6 +102,8 @@ private extension GameState.Option {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct HistoryRowPreview: PreviewProvider {
 	static var previews: some View {

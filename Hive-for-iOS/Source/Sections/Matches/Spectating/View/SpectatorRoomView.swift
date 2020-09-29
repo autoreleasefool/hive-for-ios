@@ -124,3 +124,13 @@ extension SpectatorRoomView {
 		viewModel.postViewAction(.subscribedToClient(publisher))
 	}
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct SpectatorRoomViewPreview: PreviewProvider {
+	static var previews: some View {
+		SpectatorRoomView(id: Match.matches[1].id, match: .loaded(Match.matches[1]))
+	}
+}
+#endif

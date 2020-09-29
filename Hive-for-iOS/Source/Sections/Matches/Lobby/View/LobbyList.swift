@@ -230,6 +230,8 @@ extension LobbyList {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct LobbyPreview: PreviewProvider {
 	static var previews: some View {

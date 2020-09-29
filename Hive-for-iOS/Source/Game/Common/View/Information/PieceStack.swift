@@ -46,6 +46,8 @@ struct PieceStack: View {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct PieceStackPreview: PreviewProvider {
 	static var previews: some View {

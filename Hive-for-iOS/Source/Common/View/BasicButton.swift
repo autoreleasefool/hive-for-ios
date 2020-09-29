@@ -55,3 +55,18 @@ extension BasicButton where Label == Never {
 		return button
 	}
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct BasicButtonPreview: PreviewProvider {
+	static var previews: some View {
+		VStack {
+			BasicButton<Never>("Logout") { }
+			BasicButton(action: { }, label: {
+				Image(uiImage: UIImage(systemName: "clock")!)
+			})
+		}
+	}
+}
+#endif

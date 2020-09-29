@@ -151,3 +151,27 @@ private extension GameState.Option {
 		}
 	}
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct RoomDetailsViewPreview: PreviewProvider {
+	private static let gameOptions: Set<GameState.Option> = [.mosquito, .allowSpecialAbilityAfterYoink]
+	private static let matchOptions: Set<Match.Option> = [.hostIsWhite]
+
+	static var previews: some View {
+		RoomDetailsView(
+			host: User.users[0].summary,
+			hostIsReady: true,
+			opponent: User.users[0].summary,
+			opponentIsReady: false,
+			optionsDisabled: true,
+			gameOptionsEnabled: Self.gameOptions,
+			matchOptionsEnabled: Self.matchOptions,
+			gameOptionBinding: { .constant(Self.gameOptions.contains($0)) },
+			matchOptionBinding: { .constant(Self.matchOptions.contains($0)) }
+		)
+		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
+	}
+}
+#endif

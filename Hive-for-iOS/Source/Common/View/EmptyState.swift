@@ -84,6 +84,8 @@ extension EmptyState {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct EmptyStatePreview: PreviewProvider {
 	static var previews: some View {

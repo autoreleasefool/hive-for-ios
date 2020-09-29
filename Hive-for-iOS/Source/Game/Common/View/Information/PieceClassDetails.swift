@@ -52,8 +52,10 @@ struct PieceClassDetails: View {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
-struct PieceClassDetails_Previews: PreviewProvider {
+struct PieceClassDetailsPreviews: PreviewProvider {
 	static var previews: some View {
 		PieceClassDetails(pieceClass: .ant, state: GameState())
 	}

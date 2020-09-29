@@ -162,6 +162,8 @@ private extension View {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct InformationHUDPreview: PreviewProvider {
 	@State static var isOpen: Bool = true

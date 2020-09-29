@@ -60,6 +60,8 @@ private extension GameState.Option {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct LobbyRowPreview: PreviewProvider {
 	static var previews: some View {

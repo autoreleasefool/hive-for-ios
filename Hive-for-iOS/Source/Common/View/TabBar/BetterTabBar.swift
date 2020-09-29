@@ -74,3 +74,15 @@ struct TabBarController: UIViewControllerRepresentable {
 		}
 	}
 }
+
+#if DEBUG
+struct BetterTabBarPreview: PreviewProvider {
+	static var previews: some View {
+		EmptyView()
+//		BetterTabView([
+//			BetterTabView.Tab(view: Text("First"), title: "First", image: "clock"),
+//			BetterTabView.Tab(view: Text("Second"), title: "Second", image: "hand.raised"),
+//		])
+	}
+}
+#endif

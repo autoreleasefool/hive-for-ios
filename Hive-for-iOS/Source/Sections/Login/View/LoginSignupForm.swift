@@ -186,6 +186,8 @@ private extension LoginSignupForm {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct LoginSignupPreview: PreviewProvider {
 	static var previews: some View {

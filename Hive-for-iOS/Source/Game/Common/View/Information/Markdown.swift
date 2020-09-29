@@ -102,6 +102,7 @@ struct MarkdownView: View {
 
 // MARK: - Preview
 
+#if DEBUG
 struct MarkdownPreview: PreviewProvider {
 	@State static var height: CGFloat = 90
 
@@ -123,3 +124,4 @@ struct MarkdownPreview: PreviewProvider {
 		.background(Color(.highlightPrimary).edgesIgnoringSafeArea(.all))
 	}
 }
+#endif

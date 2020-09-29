@@ -55,6 +55,7 @@ struct WelcomeView: View {
 	}
 }
 
+#if DEBUG
 struct WelcomeViewPreview: PreviewProvider {
 	static var previews: some View {
 		WelcomeView(
@@ -64,3 +65,4 @@ struct WelcomeViewPreview: PreviewProvider {
 		)
 	}
 }
+#endif

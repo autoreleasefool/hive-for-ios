@@ -80,3 +80,18 @@ struct BottomSheet<Content: View>: View {
 		}
 	}
 }
+
+#if DEBUG
+struct BottomSheetPreview: PreviewProvider {
+	static var previews: some View {
+		BottomSheet(isOpen: .constant(true), minHeight: 0, maxHeight: 300) {
+			VStack {
+				Text("First")
+				Text("Second")
+				Text("Third")
+			}
+		}
+		.edgesIgnoringSafeArea(.all)
+	}
+}
+#endif

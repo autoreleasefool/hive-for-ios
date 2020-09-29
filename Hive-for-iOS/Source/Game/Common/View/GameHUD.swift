@@ -121,6 +121,8 @@ struct GameHUD: View {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {

@@ -252,6 +252,8 @@ extension OnlineRoomView {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct OnlineRoomPreview: PreviewProvider {
 	static var previews: some View {

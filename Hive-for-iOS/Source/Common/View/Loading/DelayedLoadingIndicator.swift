@@ -39,6 +39,8 @@ struct DelayedLoadingIndicator: View {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct DelayedLoadingIndicatorPreview: PreviewProvider {
 	static var previews: some View {

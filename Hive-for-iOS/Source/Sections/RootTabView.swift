@@ -78,6 +78,8 @@ extension RootTabView {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct RootTabViewPreview: PreviewProvider {
 	static var previews: some View {

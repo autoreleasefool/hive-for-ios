@@ -132,3 +132,13 @@ extension AttributionsList {
 		].sorted { $0.name < $1.name }
 	}
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct AttributionsListPreview: PreviewProvider {
+	static var previews: some View {
+		AttributionsList()
+	}
+}
+#endif

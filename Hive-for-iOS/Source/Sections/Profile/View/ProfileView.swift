@@ -126,6 +126,8 @@ extension ProfileView {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct ProfilePreview: PreviewProvider {
 	static var previews: some View {

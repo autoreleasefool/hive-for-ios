@@ -212,6 +212,8 @@ private extension User {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct HistoryPreview: PreviewProvider {
 	static var previews: some View {

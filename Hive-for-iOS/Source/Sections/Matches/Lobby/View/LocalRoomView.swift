@@ -125,3 +125,13 @@ extension LocalRoomView {
 		presentationMode.wrappedValue.dismiss()
 	}
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct LocalRoomViewPreview: PreviewProvider {
+	static var previews: some View {
+		LocalRoomView(opponent: .random)
+	}
+}
+#endif

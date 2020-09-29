@@ -96,6 +96,8 @@ struct Hex: Shape {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct HexImagePreview: PreviewProvider {
 	static var previews: some View {

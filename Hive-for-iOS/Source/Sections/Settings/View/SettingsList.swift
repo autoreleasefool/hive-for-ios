@@ -269,6 +269,7 @@ extension SettingsList {
 
 // MARK: - Preview
 
+#if DEBUG
 struct SettingsListPreviews: PreviewProvider {
 	@State private static var isOpen = true
 
@@ -280,3 +281,4 @@ struct SettingsListPreviews: PreviewProvider {
 		)
 	}
 }
+#endif

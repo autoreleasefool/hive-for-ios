@@ -29,3 +29,13 @@ struct AgentPicker: View {
 		.navigationBarTitle("Pick an opponent")
 	}
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct AgentPickerPreview: PreviewProvider {
+	static var previews: some View {
+		AgentPicker(isActive: .constant(true))
+	}
+}
+#endif

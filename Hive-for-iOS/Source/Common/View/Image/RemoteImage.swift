@@ -80,6 +80,8 @@ struct RemoteImage: View {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct RemoteImagePreview: PreviewProvider {
 	static var previews: some View {

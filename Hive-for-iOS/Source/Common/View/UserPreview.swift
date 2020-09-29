@@ -94,6 +94,8 @@ extension User {
 	}
 }
 
+// MARK: - Preview
+
 #if DEBUG
 struct UserPreviewPreview: PreviewProvider {
 	static var previews: some View {
