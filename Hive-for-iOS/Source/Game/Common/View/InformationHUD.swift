@@ -68,7 +68,7 @@ struct InformationHUD: View {
 
 			if subtitle != nil {
 				if information.prefersMarkdown {
-					Markdown(subtitle!, height: self.$subtitleHeight) { url in
+					MarkdownView(subtitle!, height: self.$subtitleHeight) { url in
 						if let information = GameInformation(fromLink: url.absoluteString) {
 							self.viewModel.postViewAction(.presentInformation(information))
 						}

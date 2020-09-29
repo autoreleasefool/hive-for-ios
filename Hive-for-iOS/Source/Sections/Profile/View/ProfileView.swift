@@ -1,5 +1,5 @@
 //
-//  Profile.swift
+//  ProfileView.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-01.
@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-struct Profile: View {
+struct ProfileView: View {
 	@Environment(\.container) private var container
 
 	@ObservedObject private var viewModel: ProfileViewModel
@@ -32,7 +32,7 @@ struct Profile: View {
 				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
 				.onReceive(userUpdates) { self.user = $0 }
 				.sheet(isPresented: $viewModel.settingsOpened) {
-					Settings(isOpen: self.$viewModel.settingsOpened)
+					SettingsList(isOpen: self.$viewModel.settingsOpened)
 						.inject(self.container)
 				}
 		}
@@ -92,7 +92,7 @@ struct Profile: View {
 
 // MARK: - EmptyState
 
-extension Profile {
+extension ProfileView {
 	private func failedState(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
@@ -104,7 +104,7 @@ extension Profile {
 
 // MARK: - Actions
 
-extension Profile {
+extension ProfileView {
 	private func handleAction(_ action: ProfileAction) {
 		switch action {
 		case .loadProfile:
@@ -120,7 +120,7 @@ extension Profile {
 
 // MARK: - Updates
 
-extension Profile {
+extension ProfileView {
 	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
 	}
@@ -129,7 +129,7 @@ extension Profile {
 #if DEBUG
 struct ProfilePreview: PreviewProvider {
 	static var previews: some View {
-		Profile(user: .loaded(User.users[0]))
+		ProfileView(user: .loaded(User.users[0]))
 	}
 }
 #endif

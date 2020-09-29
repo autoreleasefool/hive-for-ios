@@ -1,5 +1,5 @@
 //
-//  Settings.swift
+//  SettingsList.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-13.
@@ -9,10 +9,10 @@
 import Combine
 import SwiftUI
 
-struct Settings: View {
+struct SettingsList: View {
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: SettingsViewModel
+	@ObservedObject private var viewModel: SettingsListViewModel
 
 	@State private var userProfile: Loadable<User>
 
@@ -23,7 +23,7 @@ struct Settings: View {
 		logoutResult: Loadable<Bool> = .notLoaded
 	) {
 		self._userProfile = .init(initialValue: user)
-		viewModel = SettingsViewModel(isOpen: isOpen, logoutResult: logoutResult, showAccount: showAccount)
+		viewModel = SettingsListViewModel(isOpen: isOpen, logoutResult: logoutResult, showAccount: showAccount)
 	}
 
 	var body: some View {
@@ -213,8 +213,8 @@ struct Settings: View {
 
 // MARK: - Actions
 
-extension Settings {
-	private func handleAction(_ action: SettingsAction) {
+extension SettingsList {
+	private func handleAction(_ action: SettingsListAction) {
 		switch action {
 		case .loadProfile:
 			loadProfile()
@@ -241,7 +241,7 @@ extension Settings {
 
 // MARK: - Updates
 
-extension Settings {
+extension SettingsList {
 	private var userUpdate: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
 			.receive(on: RunLoop.main)
@@ -267,16 +267,16 @@ extension Settings {
 	}
 }
 
-#if DEBUG
-struct Settings_Previews: PreviewProvider {
+// MARK: - Preview
+
+struct SettingsListPreviews: PreviewProvider {
 	@State private static var isOpen = true
 
 	static var previews: some View {
-		Settings(
+		SettingsList(
 			isOpen: $isOpen,
 			user: .loaded(User.users[0]),
 			logoutResult: .loading(cached: nil, cancelBag: CancelBag())
 		)
 	}
 }
-#endif

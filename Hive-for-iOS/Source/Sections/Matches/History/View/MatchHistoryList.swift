@@ -1,5 +1,5 @@
 //
-//  History.swift
+//  MatchHistoryList.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-10.
@@ -9,10 +9,10 @@
 import Combine
 import SwiftUI
 
-struct History: View {
+struct MatchHistoryList: View {
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: HistoryViewModel
+	@ObservedObject private var viewModel: MatchHistoryListViewModel
 
 	// This value can't be moved to the ViewModel because it mirrors the AppState and
 	// was causing a re-render loop when in the @ObservedObject view model
@@ -20,7 +20,7 @@ struct History: View {
 
 	init(user: Loadable<User> = .notLoaded) {
 		self._user = .init(initialValue: user)
-		self.viewModel = HistoryViewModel()
+		self.viewModel = MatchHistoryListViewModel()
 	}
 
 	var body: some View {
@@ -32,7 +32,7 @@ struct History: View {
 				.onReceive(userUpdates) { self.user = $0 }
 				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
 				.sheet(isPresented: $viewModel.settingsOpened) {
-					Settings(isOpen: self.$viewModel.settingsOpened)
+					SettingsList(isOpen: self.$viewModel.settingsOpened)
 						.inject(self.container)
 				}
 
@@ -104,7 +104,7 @@ struct History: View {
 
 	private func completeMatchDetails(for match: Match) -> some View {
 		ScrollView {
-			RoomDetails(
+			RoomDetailsView(
 				host: match.host?.summary,
 				hostIsReady: match.winner?.id == match.host?.id,
 				opponent: match.opponent?.summary,
@@ -129,7 +129,7 @@ struct History: View {
 
 // MARK: - Sections
 
-extension History {
+extension MatchHistoryList {
 	enum ListSection: Int, CaseIterable {
 		case inProgress
 		case completed
@@ -154,7 +154,7 @@ extension History {
 
 // MARK: - EmptyState
 
-extension History {
+extension MatchHistoryList {
 	private var emptyState: some View {
 		EmptyState(
 			header: "No matches found",
@@ -182,8 +182,8 @@ extension History {
 
 // MARK: - Actions
 
-extension History {
-	private func handleAction(_ action: HistoryAction) {
+extension MatchHistoryList {
+	private func handleAction(_ action: MatchHistoryListAction) {
 		switch action {
 		case .loadMatchHistory:
 			loadMatchHistory()
@@ -198,7 +198,7 @@ extension History {
 
 // MARK: - Updates
 
-extension History {
+extension MatchHistoryList {
 	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
 	}
@@ -215,7 +215,7 @@ private extension User {
 #if DEBUG
 struct HistoryPreview: PreviewProvider {
 	static var previews: some View {
-		History(user: .loaded(User.users[0]))
+		MatchHistoryList(user: .loaded(User.users[0]))
 			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }

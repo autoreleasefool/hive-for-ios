@@ -1,5 +1,5 @@
 //
-//  BasicRoom.swift
+//  RoomDetailsView.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-06-11.
@@ -9,7 +9,7 @@
 import SwiftUI
 import HiveEngine
 
-struct RoomDetails: View {
+struct RoomDetailsView: View {
 	let host: UserPreview.UserSummary?
 	let hostIsReady: Bool
 	let opponent: UserPreview.UserSummary?
@@ -128,7 +128,7 @@ struct RoomDetails: View {
 
 // MARK: - Strings
 
-extension RoomDetails {
+extension RoomDetailsView {
 	private func name(forOption option: Match.Option) -> String {
 		switch option {
 		case .asyncPlay: return "Asynchronous play"

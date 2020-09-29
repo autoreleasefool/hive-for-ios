@@ -6,10 +6,10 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import SwiftUI
 import SwiftyMarkdown
+import SwiftUI
 
-struct MarkdownInternal: UIViewRepresentable {
+private struct MarkdownInternal: UIViewRepresentable {
 	@Binding var height: CGFloat
 
 	private let markdown: String
@@ -83,7 +83,7 @@ struct MarkdownInternal: UIViewRepresentable {
 	}
 }
 
-struct Markdown: View {
+struct MarkdownView: View {
 	private let markdown: String
 	private var dynamicHeight: Binding<CGFloat>
 	let didTapURL: ((URL) -> Void)?
@@ -102,12 +102,11 @@ struct Markdown: View {
 
 // MARK: - Preview
 
-#if DEBUG
 struct MarkdownPreview: PreviewProvider {
 	@State static var height: CGFloat = 90
 
 	static var previews: some View {
-		Markdown(
+		MarkdownView(
 			"On 2 your turn you can either move a piece or [place a piece](rule:placement). " +
 			"Each type of piece moves in a unique way, and can be learned by looking through the rules, " +
 			"or by tapping on any piece on the board or in your hand. Moving a piece must always " +
@@ -124,4 +123,3 @@ struct MarkdownPreview: PreviewProvider {
 		.background(Color(.highlightPrimary).edgesIgnoringSafeArea(.all))
 	}
 }
-#endif

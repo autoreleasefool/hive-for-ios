@@ -15,7 +15,7 @@ struct AgentPicker: View {
 	var body: some View {
 		List {
 			ForEach(AgentConfiguration.allCases.filter { $0.isEnabled(in: container.features) }) { computer in
-				NavigationLink(destination: LocalRoom(opponent: computer)) {
+				NavigationLink(destination: LocalRoomView(opponent: computer)) {
 					HStack(spacing: .m) {
 						Text(computer.name)
 							.body()

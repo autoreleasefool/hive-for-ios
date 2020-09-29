@@ -1,5 +1,5 @@
 //
-//  SettingsViewModel.swift
+//  SettingsListViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-17.
@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-enum SettingsViewAction: BaseViewAction {
+enum SettingsListViewAction: BaseViewAction {
 	case onAppear
 	case switchGameMode(current: Preferences.GameMode)
 
@@ -20,13 +20,13 @@ enum SettingsViewAction: BaseViewAction {
 	case exit
 }
 
-enum SettingsAction: BaseAction {
+enum SettingsListAction: BaseAction {
 	case loadProfile
 	case setGameMode(Preferences.GameMode)
 	case logout
 }
 
-class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
+class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject {
 	@Published var logoutResult: Loadable<Bool> {
 		didSet {
 			switch logoutResult {
@@ -45,8 +45,8 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 
 	private var isOpen: Binding<Bool>
 
-	private let actions = PassthroughSubject<SettingsAction, Never>()
-	var actionsPublisher: AnyPublisher<SettingsAction, Never> {
+	private let actions = PassthroughSubject<SettingsListAction, Never>()
+	var actionsPublisher: AnyPublisher<SettingsListAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
@@ -56,7 +56,7 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 		self.showAccount = showAccount
 	}
 
-	override func postViewAction(_ viewAction: SettingsViewAction) {
+	override func postViewAction(_ viewAction: SettingsListViewAction) {
 		switch viewAction {
 		case .onAppear:
 			actions.send(.loadProfile)
@@ -97,7 +97,7 @@ class SettingsViewModel: ViewModel<SettingsViewAction>, ObservableObject {
 
 // MARK: - Strings
 
-extension SettingsViewModel {
+extension SettingsListViewModel {
 	var appName: String {
 		Bundle.main.infoDictionary?["CFBundleName"] as? String ?? ""
 	}

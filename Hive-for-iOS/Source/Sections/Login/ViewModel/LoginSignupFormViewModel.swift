@@ -1,5 +1,5 @@
 //
-//  LoginSignupViewModel.swift
+//  LoginSignupFormViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-14.
@@ -20,7 +20,7 @@ enum LoginSignupAction: BaseAction {
 	case signup(User.Signup.Request)
 }
 
-class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
+class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 	@Published var account: Loadable<Account>
 	@Published var form: Form
 
@@ -98,7 +98,7 @@ class LoginSignupViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
 
 // MARK: - Form
 
-extension LoginSignupViewModel {
+extension LoginSignupFormViewModel {
 	enum Form {
 		case login
 		case signup
@@ -107,7 +107,7 @@ extension LoginSignupViewModel {
 
 // MARK: - FieldItem
 
-extension LoginSignupViewModel {
+extension LoginSignupFormViewModel {
 	enum FieldItem {
 		case email
 		case password
@@ -155,7 +155,7 @@ extension LoginSignupViewModel {
 
 // MARK: - Strings
 
-extension LoginSignupViewModel {
+extension LoginSignupFormViewModel {
 	var submitButtonText: String {
 		switch form {
 		case .login: return "Login"
@@ -203,7 +203,7 @@ extension LoginSignupViewModel {
 	}
 }
 
-extension LoginSignupViewModel.FieldItem {
+extension LoginSignupFormViewModel.FieldItem {
 	var title: String {
 		switch self {
 		case .email: return "Email"

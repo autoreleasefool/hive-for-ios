@@ -28,7 +28,7 @@ struct ContentView: View {
 		GeometryReader { geometry in
 			Group {
 				if self.viewModel.showWelcome {
-					Welcome(
+					WelcomeView(
 						showWelcome: self.$viewModel.showWelcome,
 						playingOffline: self.$viewModel.playingOffline,
 						showSettings: self.$viewModel.showSettings
@@ -42,7 +42,7 @@ struct ContentView: View {
 			.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 			.onReceive(self.accountUpdate) { self.account = $0 }
 			.sheet(isPresented: self.$viewModel.showSettings) {
-				Settings(isOpen: self.$viewModel.showSettings, showAccount: false)
+				SettingsList(isOpen: self.$viewModel.showSettings, showAccount: false)
 					.inject(self.container)
 			}
 			.inject(self.container)
@@ -71,11 +71,11 @@ struct ContentView: View {
 	}
 
 	private var loadedView: some View {
-		GameContentCoordinator()
+		GameContentCoordinatorView()
 	}
 
 	private var noAccountView: some View {
-		LoginSignup {
+		LoginSignupForm {
 			self.viewModel.showWelcome = true
 		}
 	}

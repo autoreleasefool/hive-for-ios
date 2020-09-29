@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct Welcome: View {
+struct WelcomeView: View {
 	@Environment(\.container) private var container
 	@Binding var showWelcome: Bool
 	@Binding var playingOffline: Bool
@@ -52,5 +52,15 @@ struct Welcome: View {
 		}
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
+	}
+}
+
+struct WelcomeViewPreview: PreviewProvider {
+	static var previews: some View {
+		WelcomeView(
+			showWelcome: .constant(true),
+			playingOffline: .constant(false),
+			showSettings: .constant(true)
+		)
 	}
 }

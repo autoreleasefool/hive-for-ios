@@ -1,5 +1,5 @@
 //
-//  LocalRoom.swift
+//  LocalRoomView.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-06-11.
@@ -9,7 +9,7 @@
 import HiveEngine
 import SwiftUI
 
-struct LocalRoom: View {
+struct LocalRoomView: View {
 	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster
 	@Environment(\.container) private var container
@@ -58,7 +58,7 @@ struct LocalRoom: View {
 	}
 
 	private func loadedView(_ match: Match) -> some View {
-		RoomDetails(
+		RoomDetailsView(
 			host: match.host?.summary,
 			hostIsReady: false,
 			opponent: match.opponent?.summary,
@@ -100,7 +100,7 @@ struct LocalRoom: View {
 
 // MARK: - Actions
 
-extension LocalRoom {
+extension LocalRoomView {
 	private func handleAction(_ action: LocalRoomAction) {
 		switch action {
 		case .startGame:

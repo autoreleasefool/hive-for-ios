@@ -1,5 +1,5 @@
 //
-//  SpectatorRoom.swift
+//  SpectatorRoomView.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-08-20.
@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-struct SpectatorRoom: View {
+struct SpectatorRoomView: View {
 	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster
 	@Environment(\.container) private var container
@@ -82,7 +82,7 @@ struct SpectatorRoom: View {
 
 // MARK: - Actions
 
-extension SpectatorRoom {
+extension SpectatorRoomView {
 	private func handleAction(_ action: SpectatorRoomAction) {
 		switch action {
 		case .loadMatch(let matchId):
@@ -108,7 +108,7 @@ extension SpectatorRoom {
 
 // MARK: GameClient
 
-extension SpectatorRoom {
+extension SpectatorRoomView {
 	private func openClientConnection(to url: URL?) {
 		let publisher: AnyPublisher<GameClientEvent, GameClientError>
 		if let url = url {

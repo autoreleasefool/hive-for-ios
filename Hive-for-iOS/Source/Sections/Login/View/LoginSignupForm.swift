@@ -1,5 +1,5 @@
 //
-//  LoginSignup.swift
+//  LoginSignupForm.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-02.
@@ -9,15 +9,15 @@
 import Combine
 import SwiftUI
 
-struct LoginSignup: View {
+struct LoginSignupForm: View {
 	@Environment(\.container) private var container
-	@ObservedObject private var viewModel: LoginSignupViewModel
+	@ObservedObject private var viewModel: LoginSignupFormViewModel
 
 	init(
-		defaultForm: LoginSignupViewModel.Form = .login,
+		defaultForm: LoginSignupFormViewModel.Form = .login,
 		account: Loadable<Account> = .notLoaded,
 		onCancel: (() -> Void)? = nil) {
-		viewModel = LoginSignupViewModel(defaultForm: defaultForm, account: account, onCancel: onCancel)
+		viewModel = LoginSignupFormViewModel(defaultForm: defaultForm, account: account, onCancel: onCancel)
 	}
 
 	var body: some View {
@@ -72,17 +72,17 @@ struct LoginSignup: View {
 
 	// MARK: Form
 
-	private func secureField(for id: LoginSignupViewModel.FieldItem) -> some View {
+	private func secureField(for id: LoginSignupFormViewModel.FieldItem) -> some View {
 		SecureField(id.title, text: text(for: id))
 			.modifier(LoginFieldAppearance(id: id))
 	}
 
-	private func field(for id: LoginSignupViewModel.FieldItem) -> some View {
+	private func field(for id: LoginSignupFormViewModel.FieldItem) -> some View {
 		TextField(id.title, text: text(for: id))
 			.modifier(LoginFieldAppearance(id: id))
 	}
 
-	private func text(for id: LoginSignupViewModel.FieldItem) -> Binding<String> {
+	private func text(for id: LoginSignupFormViewModel.FieldItem) -> Binding<String> {
 		switch id {
 		case .email: return $viewModel.email
 		case .password: return $viewModel.password
@@ -144,7 +144,7 @@ struct LoginSignup: View {
 
 // MARK: - Actions
 
-extension LoginSignup {
+extension LoginSignupForm {
 	private func handleAction(_ action: LoginSignupAction) {
 		switch action {
 		case .login(let data):
@@ -167,9 +167,9 @@ extension LoginSignup {
 
 // MARK: Login Field Modifier
 
-private extension LoginSignup {
+private extension LoginSignupForm {
 	struct LoginFieldAppearance: ViewModifier {
-		let id: LoginSignupViewModel.FieldItem
+		let id: LoginSignupFormViewModel.FieldItem
 
 		func body(content: Content) -> some View {
 			content
@@ -190,8 +190,8 @@ private extension LoginSignup {
 struct LoginSignupPreview: PreviewProvider {
 	static var previews: some View {
 		VStack(spacing: .m) {
-			LoginSignup(defaultForm: .login)
-			LoginSignup(defaultForm: .signup)
+			LoginSignupForm(defaultForm: .login)
+			LoginSignupForm(defaultForm: .signup)
 		}
 		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}

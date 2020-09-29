@@ -1,5 +1,5 @@
 //
-//  HistoryViewModel.swift
+//  MatchHistoryListViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-15.
@@ -8,24 +8,24 @@
 
 import Combine
 
-enum HistoryViewAction: BaseViewAction {
+enum MatchHistoryListViewAction: BaseViewAction {
 	case onAppear
 	case openSettings
 }
 
-enum HistoryAction: BaseAction {
+enum MatchHistoryListAction: BaseAction {
 	case loadMatchHistory
 }
 
-class HistoryViewModel: ViewModel<HistoryViewAction>, ObservableObject {
+class MatchHistoryListViewModel: ViewModel<MatchHistoryListViewAction>, ObservableObject {
 	@Published var settingsOpened = false
 
-	private let actions = PassthroughSubject<HistoryAction, Never>()
-	var actionsPublisher: AnyPublisher<HistoryAction, Never> {
+	private let actions = PassthroughSubject<MatchHistoryListAction, Never>()
+	var actionsPublisher: AnyPublisher<MatchHistoryListAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
-	override func postViewAction(_ viewAction: HistoryViewAction) {
+	override func postViewAction(_ viewAction: MatchHistoryListViewAction) {
 		switch viewAction {
 		case .onAppear:
 			actions.send(.loadMatchHistory)
@@ -34,7 +34,7 @@ class HistoryViewModel: ViewModel<HistoryViewAction>, ObservableObject {
 		}
 	}
 
-	func matches(for section: History.ListSection, fromUser user: User?) -> [Match] {
+	func matches(for section: MatchHistoryList.ListSection, fromUser user: User?) -> [Match] {
 		switch section {
 		case .inProgress: return user?.activeMatches ?? []
 		case .completed: return user?.pastMatches ?? []
@@ -44,7 +44,7 @@ class HistoryViewModel: ViewModel<HistoryViewAction>, ObservableObject {
 
 // MARK: - Strings
 
-extension HistoryViewModel {
+extension MatchHistoryListViewModel {
 	func errorMessage(from error: Error) -> String {
 		guard let userError = error as? UserRepositoryError else {
 			return error.localizedDescription
@@ -58,7 +58,7 @@ extension HistoryViewModel {
 	}
 }
 
-extension History.ListSection {
+extension MatchHistoryList.ListSection {
 	var headerText: String {
 		switch self {
 		case .inProgress: return "Matches in progress"

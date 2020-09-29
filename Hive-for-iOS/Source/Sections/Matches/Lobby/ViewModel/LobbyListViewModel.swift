@@ -1,5 +1,5 @@
 //
-//  LobbyViewModel.swift
+//  LobbyListViewModel.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-15.
@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-enum LobbyViewAction: BaseViewAction {
+enum LobbyListViewAction: BaseViewAction {
 	case onAppear(isOffline: Bool)
 	case onListAppear
 	case onListDisappear
@@ -25,11 +25,11 @@ enum LobbyViewAction: BaseViewAction {
 	case logIn
 }
 
-enum LobbyAction: BaseAction {
+enum LobbyListAction: BaseAction {
 	case loadMatches
 }
 
-class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
+class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 
 	@Published var creatingOnlineRoom = false {
 		didSet {
@@ -72,8 +72,8 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 
 	private var refreshTimer: Timer?
 
-	private let actions = PassthroughSubject<LobbyAction, Never>()
-	var actionsPublisher: AnyPublisher<LobbyAction, Never> {
+	private let actions = PassthroughSubject<LobbyListAction, Never>()
+	var actionsPublisher: AnyPublisher<LobbyListAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
@@ -82,7 +82,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 		self._matches = .init(initialValue: matches)
 	}
 
-	override func postViewAction(_ viewAction: LobbyViewAction) {
+	override func postViewAction(_ viewAction: LobbyListViewAction) {
 		switch viewAction {
 		case .onAppear(let isOffline):
 			self.isOffline = isOffline
@@ -153,7 +153,7 @@ class LobbyViewModel: ViewModel<LobbyViewAction>, ObservableObject {
 	}
 }
 
-extension LobbyViewModel {
+extension LobbyListViewModel {
 	var inMatch: Bool {
 		creatingOnlineRoom || creatingLocalRoom || currentMatchId != nil
 	}
@@ -186,7 +186,7 @@ extension LobbyViewModel {
 
 // MARK: - Strings
 
-extension LobbyViewModel {
+extension LobbyListViewModel {
 	func errorMessage(from error: Error) -> String {
 		guard let matchError = error as? MatchRepositoryError else {
 			return error.localizedDescription

@@ -1,5 +1,5 @@
 //
-//  OnlineRoom.swift
+//  OnlineRoomView.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-03.
@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import HiveEngine
 
-struct OnlineRoom: View {
+struct OnlineRoomView: View {
 	@Environment(\.presentationMode) private var presentationMode
 	@Environment(\.toaster) private var toaster
 	@Environment(\.container) private var container
@@ -129,7 +129,7 @@ struct OnlineRoom: View {
 	// MARK: Match Detail
 
 	private func matchDetail(_ match: Match) -> some View {
-		RoomDetails(
+		RoomDetailsView(
 			host: match.host?.summary,
 			hostIsReady: viewModel.isPlayerReady(id: match.host?.id),
 			opponent: match.opponent?.summary,
@@ -145,7 +145,7 @@ struct OnlineRoom: View {
 
 // MARK: - Actions
 
-extension OnlineRoom {
+extension OnlineRoomView {
 	private func handleAction(_ action: OnlineRoomAction) {
 		switch action {
 		case .createNewMatch:
@@ -225,7 +225,7 @@ extension OnlineRoom {
 
 // MARK: - GameClient
 
-extension OnlineRoom {
+extension OnlineRoomView {
 	private func openClientConnection(to url: URL?) {
 		let publisher: AnyPublisher<GameClientEvent, GameClientError>
 		if let url = url {
@@ -255,7 +255,7 @@ extension OnlineRoom {
 #if DEBUG
 struct OnlineRoomPreview: PreviewProvider {
 	static var previews: some View {
-		return OnlineRoom(
+		return OnlineRoomView(
 			id: Match.matches[0].id,
 			creatingNewMatch: false,
 			match: .loaded(Match.matches[0])

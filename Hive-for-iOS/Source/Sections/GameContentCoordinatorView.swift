@@ -1,5 +1,5 @@
 //
-//  GameContentCoordinator.swift
+//  GameContentCoordinatorView.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-13.
@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 import HiveEngine
 
-struct GameContentCoordinator: View {
+struct GameContentCoordinatorView: View {
 	@Environment(\.container) private var container
 
 	@State private var gameSetup: Game.Setup?
@@ -41,7 +41,7 @@ struct GameContentCoordinator: View {
 
 // MARK: - Updates
 
-extension GameContentCoordinator {
+extension GameContentCoordinatorView {
 	var setupUpdates: AnyPublisher<Game.Setup?, Never> {
 		container.appState.updates(for: \.gameSetup)
 			.receive(on: RunLoop.main)

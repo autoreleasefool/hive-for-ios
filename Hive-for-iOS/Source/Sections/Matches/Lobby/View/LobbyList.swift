@@ -1,5 +1,5 @@
 //
-//  Lobby.swift
+//  LobbyList.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-05-03.
@@ -9,13 +9,13 @@
 import Combine
 import SwiftUI
 
-struct Lobby: View {
+struct LobbyList: View {
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: LobbyViewModel
+	@ObservedObject private var viewModel: LobbyListViewModel
 
 	init(spectating: Bool, matches: Loadable<[Match]> = .notLoaded) {
-		viewModel = LobbyViewModel(spectating: spectating, matches: matches)
+		viewModel = LobbyListViewModel(spectating: spectating, matches: matches)
 	}
 
 	var body: some View {
@@ -26,7 +26,7 @@ struct Lobby: View {
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
 				.sheet(isPresented: $viewModel.settingsOpened) {
-					Settings(isOpen: self.$viewModel.settingsOpened)
+					SettingsList(isOpen: self.$viewModel.settingsOpened)
 						.inject(self.container)
 				}
 				.alert(isPresented: $viewModel.showMatchInProgressWarning) {
@@ -86,13 +86,13 @@ struct Lobby: View {
 	private func loadedView(_ matches: [Match], loading: Bool) -> some View {
 		Group {
 			NavigationLink(
-				destination: OnlineRoom(id: self.viewModel.currentMatchId, creatingNewMatch: false),
+				destination: OnlineRoomView(id: self.viewModel.currentMatchId, creatingNewMatch: false),
 				isActive: self.viewModel.joiningMatch,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
-				destination: OnlineRoom(id: nil, creatingNewMatch: true),
+				destination: OnlineRoomView(id: nil, creatingNewMatch: true),
 				isActive: self.$viewModel.creatingOnlineRoom,
 				label: { EmptyView() }
 			)
@@ -104,7 +104,7 @@ struct Lobby: View {
 			)
 
 			NavigationLink(
-				destination: SpectatorRoom(id: self.viewModel.currentSpectatingMatchId),
+				destination: SpectatorRoomView(id: self.viewModel.currentSpectatingMatchId),
 				isActive: self.viewModel.spectatingMatch,
 				label: { EmptyView() }
 			)
@@ -161,7 +161,7 @@ struct Lobby: View {
 
 // MARK: - Empty State
 
-extension Lobby {
+extension LobbyList {
 	private var emptyState: AnyView {
 		if viewModel.isOffline {
 			return AnyView(offlineState)
@@ -211,8 +211,8 @@ extension Lobby {
 
 // MARK: - Actions
 
-extension Lobby {
-	private func handleAction(_ action: LobbyAction) {
+extension LobbyList {
+	private func handleAction(_ action: LobbyListAction) {
 		switch action {
 		case .loadMatches:
 			loadMatches()
@@ -234,7 +234,7 @@ extension Lobby {
 struct LobbyPreview: PreviewProvider {
 	static var previews: some View {
 		let loadable: Loadable<[Match]> = .loaded(Match.matches)
-		return Lobby(spectating: false, matches: loadable)
+		return LobbyList(spectating: false, matches: loadable)
 	}
 }
 #endif
