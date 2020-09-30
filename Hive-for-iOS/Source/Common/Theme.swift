@@ -22,13 +22,13 @@ enum Theme {
 		UINavigationBar.appearance().tintColor = .white
 
 		UITabBar.appearance().tintColor = UIColor(.highlightPrimary)
-
-		UITableView.appearance().backgroundColor = UIColor(.backgroundRegular)
-		UITableViewCell.appearance().backgroundColor = UIColor(.backgroundLight)
-
-		let backgroundView = UIView()
-		backgroundView.backgroundColor = UIColor(.backgroundRegular)
-		UITableViewCell.appearance().selectedBackgroundView = backgroundView
+//
+//		UITableView.appearance().backgroundColor = UIColor(.backgroundRegular)
+//		UITableViewCell.appearance().backgroundColor = UIColor(.backgroundLight)
+//
+//		let backgroundView = UIView()
+//		backgroundView.backgroundColor = UIColor(.backgroundRegular)
+//		UITableViewCell.appearance().selectedBackgroundView = backgroundView
 	}
 
 	static func applyMarkdownTheme(to markdown: SwiftyMarkdown) {
