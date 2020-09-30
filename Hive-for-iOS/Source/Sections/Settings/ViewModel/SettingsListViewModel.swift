@@ -13,9 +13,6 @@ enum SettingsListViewAction: BaseViewAction {
 	case onAppear
 	case switchGameMode(current: Preferences.GameMode)
 
-	case viewSource
-	case viewAttributions
-
 	case logout
 	case exit
 }
@@ -63,11 +60,6 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 		case .switchGameMode(let current):
 			switchGameMode(from: current)
 
-		case .viewSource:
-			openSource()
-		case .viewAttributions:
-			openAttributions()
-
 		case .exit:
 			isOpen.wrappedValue = false
 		case .logout:
@@ -83,15 +75,6 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 		}
 
 		actions.send(.setGameMode(next))
-	}
-
-	private func openSource() {
-		guard let url = URL(string: "https://github.com/josephroquedev/hive-for-ios") else { return }
-		UIApplication.shared.open(url, options: [:])
-	}
-
-	private func openAttributions() {
-		showAttributions = true
 	}
 }
 

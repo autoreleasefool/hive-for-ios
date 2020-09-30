@@ -30,8 +30,8 @@ struct SettingsList: View {
 		NavigationView {
 			List {
 				if container.hasAny(of: [.arGameMode, .emojiReactions]) {
-					Section(header: sectionHeader(title: "Game")) {
-						if container.has(feature: .arGameMode) {
+					Section(header: Text("Game")) {
+						if !container.has(feature: .arGameMode) {
 							itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
 								self.viewModel.postViewAction(.switchGameMode(current: $0))
 							}
@@ -39,22 +39,20 @@ struct SettingsList: View {
 
 						if container.has(feature: .emojiReactions) {
 							Toggle("Disable emoji reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
-								.foregroundColor(Color(.textRegular))
-								.padding(.vertical, length: .xs)
 						}
 					}
 				}
 
 				#if DEBUG
 				if container.has(feature: .featureFlags) {
-					Section(header: sectionHeader(title: "Features")) {
+					Section(header: Text("Features")) {
 						featureToggles
 					}
 				}
 				#endif
 
 				if self.viewModel.showAccount {
-					Section(header: sectionHeader(title: "Account")) {
+					Section(header: Text("Account")) {
 						VStack(spacing: .m) {
 							UserPreview(userProfile.value?.summary)
 							logoutButton
@@ -62,21 +60,35 @@ struct SettingsList: View {
 					}
 				}
 
-				Section(header: sectionHeader(title: "About")) {
-					viewSource
-					attributions
-					appInfo
-				}
+				Section(
+					header: Text("About"),
+					footer: HStack {
+						Spacer()
+						 VStack(alignment: .trailing, spacing: .xs) {
+							 Text(viewModel.appName)
+							 Text(viewModel.appVersion)
+						 }
+					 },
+					content: {
+						Link(
+							destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!,
+							label: {
+								Text("View Source")
+						})
+						.buttonStyle(PlainButtonStyle())
 
-				NavigationLink(
-					destination: AttributionsList(),
-					isActive: $viewModel.showAttributions,
-					label: { EmptyView() }
+						NavigationLink(
+							destination: AttributionsList(),
+							label: {
+								Text("Attributions")
+							}
+						)
+					}
 				)
 			}
-			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
+			.listStyle(InsetGroupedListStyle())
 			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
 			.onReceive(userUpdate) { self.userProfile = $0 }
 			.onAppear { self.viewModel.postViewAction(.onAppear) }
@@ -85,20 +97,6 @@ struct SettingsList: View {
 	}
 
 	// MARK: Content
-
-	private func sectionHeader(title: String) -> some View {
-		HStack {
-			Text(title)
-				.bold()
-				.font(.body)
-				.foregroundColor(Color(.textRegular))
-				.padding(.horizontal, length: .m)
-				.padding(.vertical, length: .s)
-			Spacer()
-		}
-		.background(Color(.backgroundSectionHeader))
-		.listRowInsets(.empty)
-	}
 
 	private func itemToggle<I>(
 		title: String,
@@ -110,14 +108,11 @@ struct SettingsList: View {
 		}, label: {
 			HStack {
 				Text(title)
-					.font(.body)
-					.foregroundColor(Color(.textRegular))
 				Spacer()
 				Text(selected.description)
-					.font(.body)
-					.foregroundColor(Color(.textRegular))
 			}
 		})
+		.buttonStyle(PlainButtonStyle())
 	}
 
 	// MARK: Buttons
@@ -143,8 +138,6 @@ struct SettingsList: View {
 			self.viewModel.postViewAction(.exit)
 		}, label: {
 			Text("Done")
-				.font(.body)
-				.foregroundColor(Color(.textRegular))
 		})
 	}
 
@@ -154,61 +147,9 @@ struct SettingsList: View {
 	private var featureToggles: some View {
 		ForEach(Feature.allCases, id: \.rawValue) { feature in
 			Toggle(feature.rawValue, isOn: self.binding(for: feature))
-				.foregroundColor(Color(.textRegular))
-				.padding(.vertical, length: .xs)
 		}
 	}
 	#endif
-
-	// MARK: About
-
-	private var viewSource: some View {
-		Button(action: {
-			self.viewModel.postViewAction(.viewSource)
-		}, label: {
-			HStack {
-				Text("View source")
-					.font(.body)
-					.foregroundColor(Color(.textRegular))
-				Spacer()
-				Image(uiImage: UIImage(systemName: "chevron.right")!)
-					.resizable()
-					.frame(width: 8, height: 12)
-					.foregroundColor(Color(.textSecondary))
-			}
-		})
-	}
-
-	private var attributions: some View {
-		Button(action: {
-			self.viewModel.postViewAction(.viewAttributions)
-		}, label: {
-			HStack {
-				Text("Attributions")
-					.font(.body)
-					.foregroundColor(Color(.textRegular))
-				Spacer()
-				Image(uiImage: UIImage(systemName: "chevron.right")!)
-					.resizable()
-					.frame(width: 8, height: 12)
-					.foregroundColor(Color(.textSecondary))
-			}
-		})
-	}
-
-	private var appInfo: some View {
-		HStack {
-			Spacer()
-			VStack(alignment: .trailing, spacing: .xs) {
-				Text(viewModel.appName)
-					.font(.body)
-					.foregroundColor(Color(.textSecondary))
-				Text(viewModel.appVersion)
-					.font(.body)
-					.foregroundColor(Color(.textSecondary))
-			}
-		}
-	}
 }
 
 // MARK: - Actions
