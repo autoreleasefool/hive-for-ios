@@ -100,13 +100,13 @@ struct LoginSignupForm: View {
 	private var toggleButton: some View {
 		HStack(spacing: 0) {
 			Text("you can also ")
-				.caption()
+				.font(.caption)
 				.foregroundColor(Color(.textRegular))
 			Button(action: {
 				self.viewModel.postViewAction(.toggleForm)
 			}, label: {
 				Text(viewModel.toggleButtonText)
-					.caption()
+					.font(.caption)
 					.foregroundColor(Color(.highlightPrimary))
 			})
 		}
@@ -117,17 +117,17 @@ struct LoginSignupForm: View {
 	private var cancelButton: some View {
 		HStack(spacing: 0) {
 			Text("or")
-				.caption()
+				.font(.caption)
 				.foregroundColor(Color(.textRegular))
 			Button(action: {
 				self.viewModel.postViewAction(.exitForm)
 			}, label: {
 				Text(" exit ")
-					.caption()
+					.font(.caption)
 					.foregroundColor(Color(.highlightPrimary))
 			})
 			Text("to main menu")
-				.caption()
+				.font(.caption)
 				.foregroundColor(Color(.textRegular))
 		}
 		.padding(.top, length: .xs)
@@ -136,7 +136,7 @@ struct LoginSignupForm: View {
 
 	private func notice(message: String) -> some View {
 		Text(message)
-			.body()
+			.font(.body)
 			.foregroundColor(Color(.highlightRegular))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 	}

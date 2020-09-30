@@ -39,11 +39,11 @@ struct PieceClassDetails: View {
 			ForEach([Player.white, Player.black], id: \.description) { player in
 				VStack(alignment: .leading, spacing: .s) {
 					Text(player.description)
-						.body()
+						.font(.body)
 						.foregroundColor(Color(player.color))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 					Text(self.playerPieceStatus(for: player))
-						.body()
+						.font(.body)
 						.foregroundColor(Color(.textSecondary))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 				}

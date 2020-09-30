@@ -18,7 +18,7 @@ struct RuleList: View {
 					self.viewModel.postViewAction(.presentInformation(.rule(rule)))
 				}, label: {
 					Text(rule.title)
-						.body()
+						.font(.body)
 						.foregroundColor(Color(.highlightPrimary))
 						.padding(.vertical, length: .xs)
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)

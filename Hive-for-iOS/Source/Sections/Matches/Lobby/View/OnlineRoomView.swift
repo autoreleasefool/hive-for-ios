@@ -94,12 +94,12 @@ struct OnlineRoomView: View {
 		VStack(spacing: .m) {
 			Text("The connection to the server was lost.\nPlease wait while we try to reconnect you.")
 				.multilineTextAlignment(.center)
-				.body()
+				.font(.body)
 				.foregroundColor(Color(.textRegular))
 			ActivityIndicator(isAnimating: true, style: .large)
 			Text(viewModel.reconnectingMessage)
 				.multilineTextAlignment(.center)
-				.body()
+				.font(.body)
 				.foregroundColor(Color(.textRegular))
 			Spacer()
 		}

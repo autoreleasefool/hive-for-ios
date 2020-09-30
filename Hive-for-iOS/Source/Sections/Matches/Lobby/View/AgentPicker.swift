@@ -18,7 +18,7 @@ struct AgentPicker: View {
 				NavigationLink(destination: LocalRoomView(opponent: computer)) {
 					HStack(spacing: .m) {
 						Text(computer.name)
-							.body()
+							.font(.body)
 							.foregroundColor(Color(.textRegular))
 					}
 				}

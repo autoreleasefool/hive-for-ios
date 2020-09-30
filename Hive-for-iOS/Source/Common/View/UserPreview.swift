@@ -68,13 +68,13 @@ struct UserPreview: View {
 	var userDescription: some View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
-				.body()
+				.font(.body)
 				.foregroundColor(Color(.textRegular))
 				.multilineTextAlignment(textAlignment == .leading ? .leading : .trailing)
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if user != nil {
 				Text(secondaryText)
-					.caption()
+					.font(.caption)
 					.foregroundColor(Color(.textSecondary))
 					.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			}

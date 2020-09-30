@@ -90,7 +90,7 @@ struct SettingsList: View {
 		HStack {
 			Text(title)
 				.bold()
-				.body()
+				.font(.body)
 				.foregroundColor(Color(.textRegular))
 				.padding(.horizontal, length: .m)
 				.padding(.vertical, length: .s)
@@ -110,11 +110,11 @@ struct SettingsList: View {
 		}, label: {
 			HStack {
 				Text(title)
-					.body()
+					.font(.body)
 					.foregroundColor(Color(.textRegular))
 				Spacer()
 				Text(selected.description)
-					.body()
+					.font(.body)
 					.foregroundColor(Color(.textRegular))
 			}
 		})
@@ -143,7 +143,7 @@ struct SettingsList: View {
 			self.viewModel.postViewAction(.exit)
 		}, label: {
 			Text("Done")
-				.body()
+				.font(.body)
 				.foregroundColor(Color(.textRegular))
 		})
 	}
@@ -168,7 +168,7 @@ struct SettingsList: View {
 		}, label: {
 			HStack {
 				Text("View source")
-					.body()
+					.font(.body)
 					.foregroundColor(Color(.textRegular))
 				Spacer()
 				Image(uiImage: UIImage(systemName: "chevron.right")!)
@@ -185,7 +185,7 @@ struct SettingsList: View {
 		}, label: {
 			HStack {
 				Text("Attributions")
-					.body()
+					.font(.body)
 					.foregroundColor(Color(.textRegular))
 				Spacer()
 				Image(uiImage: UIImage(systemName: "chevron.right")!)
@@ -201,10 +201,10 @@ struct SettingsList: View {
 			Spacer()
 			VStack(alignment: .trailing, spacing: .xs) {
 				Text(viewModel.appName)
-					.body()
+					.font(.body)
 					.foregroundColor(Color(.textSecondary))
 				Text(viewModel.appVersion)
-					.body()
+					.font(.body)
 					.foregroundColor(Color(.textSecondary))
 			}
 		}

@@ -23,7 +23,7 @@ struct LobbyRow: View {
 	private func optionPreview(for option: GameState.Option, enabled: Bool) -> some View {
 		ZStack {
 			Text(option.preview ?? "")
-				.caption()
+				.font(.caption)
 				.foregroundColor(enabled
 					? Color(.textRegular)
 					: Color(.textSecondary)

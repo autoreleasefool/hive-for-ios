@@ -57,7 +57,7 @@ struct RoomDetailsView: View {
 		VStack(alignment: .leading) {
 			Text("Expansions")
 				.bold()
-				.body()
+				.font(.body)
 				.foregroundColor(Color(.textRegular))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 			HStack(spacing: .l) {
@@ -76,7 +76,7 @@ struct RoomDetailsView: View {
 		}, label: {
 			ZStack {
 				Text(name(forOption: option))
-					.subtitle()
+					.font(.headline)
 					.foregroundColor(
 						enabled
 							? Color(.highlightPrimary)
@@ -120,7 +120,7 @@ struct RoomDetailsView: View {
 	private func optionSectionHeader(title: String) -> some View {
 		Text(title)
 			.bold()
-			.body()
+			.font(.body)
 			.foregroundColor(Color(.textRegular))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}

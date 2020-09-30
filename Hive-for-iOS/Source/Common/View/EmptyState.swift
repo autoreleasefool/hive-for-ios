@@ -58,7 +58,7 @@ struct EmptyState: View {
 
 	private var header: some View {
 		Text(headerText)
-			.subtitle()
+			.font(.headline)
 			.multilineTextAlignment(.center)
 			.foregroundColor(Color(.textRegular))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
@@ -66,7 +66,7 @@ struct EmptyState: View {
 
 	private var message: some View {
 		Text(messageText)
-			.body()
+			.font(.body)
 			.multilineTextAlignment(.center)
 			.foregroundColor(Color(.textSecondary))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)

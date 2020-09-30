@@ -136,7 +136,7 @@ extension MatchHistoryList {
 
 		var header: some View {
 			Text(headerText)
-				.caption()
+				.font(.caption)
 				.foregroundColor(Color(.textContrasting))
 				.padding(.vertical, length: .s)
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
@@ -144,7 +144,7 @@ extension MatchHistoryList {
 
 		var emptyState: some View {
 			Text("No matches found")
-				.body()
+				.font(.body)
 				.foregroundColor(Color(.textSecondary))
 				.padding(.all, length: .m)
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)

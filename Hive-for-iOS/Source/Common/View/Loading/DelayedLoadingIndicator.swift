@@ -16,7 +16,7 @@ struct DelayedLoadingIndicator: View {
 
 	var timeoutMessage: some View {
 		Text(message)
-			.body()
+			.font(.body)
 			.foregroundColor(Color(.textSecondary))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}

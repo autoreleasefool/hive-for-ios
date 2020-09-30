@@ -25,13 +25,13 @@ struct PieceStack: View {
 					.squareImage(.m)
 					.foregroundColor(Color(piece.owner.color))
 				Text("\(piece.owner.description) \(piece.class.description) #\(piece.index)")
-					.body()
+					.font(.body)
 					.foregroundColor(Color(piece.owner.color))
 					.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 				if piece == stack.first || piece == stack.last {
 					Spacer()
 					Text(piece == stack.first ? "BOTTOM" : "TOP")
-						.caption()
+						.font(.caption)
 						.foregroundColor(Color(.textSecondary))
 				}
 			}

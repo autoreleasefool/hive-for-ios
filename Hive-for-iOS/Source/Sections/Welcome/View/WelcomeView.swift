@@ -27,7 +27,7 @@ struct WelcomeView: View {
 			Button("Play") {
 				self.showWelcome = false
 			}
-			.subtitle()
+			.font(.headline)
 			.foregroundColor(Color(.textRegular))
 			.padding(.m)
 
@@ -36,7 +36,7 @@ struct WelcomeView: View {
 					self.playingOffline = true
 					self.showWelcome = false
 				}
-				.subtitle()
+				.font(.headline)
 				.foregroundColor(Color(.textRegular))
 				.padding(.m)
 			}
@@ -44,7 +44,7 @@ struct WelcomeView: View {
 			Button("Settings") {
 				self.showSettings = true
 			}
-			.subtitle()
+			.font(.headline)
 			.foregroundColor(Color(.textRegular))
 			.padding(.m)
 

@@ -62,7 +62,7 @@ struct InformationHUD: View {
 
 		return VStack(alignment: .leading, spacing: .s) {
 			Text(information.title)
-				.subtitle()
+				.font(.headline)
 				.foregroundColor(Color(.textRegular))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 
@@ -76,7 +76,7 @@ struct InformationHUD: View {
 					.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
 				} else {
 					Text(subtitle!)
-						.body()
+						.font(.body)
 						.foregroundColor(Color(.textRegular))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 				}

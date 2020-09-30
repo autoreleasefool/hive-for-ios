@@ -47,7 +47,7 @@ struct HistoryRow: View {
 
 	private func lastMoveText(_ text: String) -> some View {
 		Text(text)
-			.caption()
+			.font(.caption)
 			.foregroundColor(Color(.textSecondary))
 			.multilineTextAlignment(.leading)
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)

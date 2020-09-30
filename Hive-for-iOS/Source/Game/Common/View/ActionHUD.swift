@@ -26,16 +26,16 @@ struct ActionHUD: View {
 				if button.type == .destructive {
 					Text(button.title)
 						.foregroundColor(Color(.highlightDestructive))
-						.body()
+						.font(.body)
 				} else if button.type == .cancel {
 					Text(button.title)
 						.foregroundColor(Color(.textContrastingSecondary))
-						.body()
+						.font(.body)
 				} else {
 					Text(button.title)
 						.foregroundColor(Color(.textContrasting))
 						.bold()
-						.body()
+						.font(.body)
 				}
 			}
 			.frame(minWidth: 0, maxWidth: .infinity)
@@ -52,10 +52,10 @@ struct ActionHUD: View {
 			VStack {
 				Text(config.title)
 					.bold()
-					.subtitle()
+					.font(.headline)
 					.foregroundColor(Color(.textContrasting))
 				Text(config.message)
-					.body()
+					.font(.body)
 					.foregroundColor(Color(.textContrasting))
 					.padding(.top, length: .s)
 			}

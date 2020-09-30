@@ -32,7 +32,7 @@ struct BasicButton<Label>: View where Label: View {
 				label
 			} else {
 				Text(title ?? "")
-					.body()
+					.font(.body)
 					.foregroundColor(Color(.textRegular))
 					.padding(.vertical, length: .m)
 					.frame(minWidth: 0, maxWidth: .infinity)

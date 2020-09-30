@@ -14,7 +14,7 @@ struct AttributionsList: View {
 			ForEach(AttributionsList.attributions, id: \.name) { attribution in
 				Section(header: self.sectionHeader(title: attribution.name)) {
 					Text(attribution.license)
-						.body()
+						.font(.body)
 						.foregroundColor(Color(.textRegular))
 						.multilineTextAlignment(.leading)
 				}
@@ -27,7 +27,7 @@ struct AttributionsList: View {
 		HStack {
 			Text(title)
 				.bold()
-				.body()
+				.font(.body)
 				.foregroundColor(Color(.textRegular))
 				.padding(.horizontal, length: .m)
 				.padding(.vertical, length: .s)

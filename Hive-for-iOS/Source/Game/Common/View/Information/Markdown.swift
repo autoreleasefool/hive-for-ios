@@ -24,8 +24,6 @@ private struct MarkdownInternal: UIViewRepresentable {
 	func makeUIView(context: Context) -> UITextView {
 		let label = UITextView()
 		label.delegate = context.coordinator
-
-		label.font = UIFont.systemFont(ofSize: Metrics.Text.body.rawValue)
 		label.isEditable = false
 		label.isScrollEnabled = false
 		label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
