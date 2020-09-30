@@ -12,29 +12,15 @@ struct AttributionsList: View {
 	var body: some View {
 		List {
 			ForEach(AttributionsList.attributions, id: \.name) { attribution in
-				Section(header: self.sectionHeader(title: attribution.name)) {
+				Section(header: Text(attribution.name)) {
 					Text(attribution.license)
-						.font(.body)
-						.foregroundColor(Color(.textRegular))
 						.multilineTextAlignment(.leading)
+						.font(.caption)
 				}
 			}
 		}
+		.listStyle(InsetGroupedListStyle())
 		.navigationBarTitle("Attributions")
-	}
-
-	private func sectionHeader(title: String) -> some View {
-		HStack {
-			Text(title)
-				.bold()
-				.font(.body)
-				.foregroundColor(Color(.textRegular))
-				.padding(.horizontal, length: .m)
-				.padding(.vertical, length: .s)
-			Spacer()
-		}
-		.background(Color(.backgroundSectionHeader))
-		.listRowInsets(.empty)
 	}
 }
 
