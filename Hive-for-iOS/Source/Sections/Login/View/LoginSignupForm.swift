@@ -26,10 +26,11 @@ struct LoginSignupForm: View {
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 	}
 
-	private var content: AnyView {
+	@ViewBuilder
+	private var content: some View {
 		switch viewModel.account {
-		case .notLoaded, .failed: return AnyView(formView)
-		case .loading, .loaded: return AnyView(loadingView)
+		case .notLoaded, .failed: formView
+		case .loading, .loaded: loadingView
 		}
 	}
 

@@ -40,12 +40,13 @@ struct MatchHistoryList: View {
 		}
 	}
 
-	private var content: AnyView {
+	@ViewBuilder
+	private var content: some View {
 		switch user {
-		case .notLoaded: return AnyView(notLoadedView)
-		case .loading(let user, _): return AnyView(loadedView(user))
-		case .loaded(let user): return AnyView(loadedView(user))
-		case .failed(let error): return AnyView(failedView(error))
+		case .notLoaded: notLoadedView
+		case .loading(let user, _): loadedView(user)
+		case .loaded(let user): loadedView(user)
+		case .failed(let error): failedView(error)
 		}
 	}
 
@@ -94,11 +95,12 @@ struct MatchHistoryList: View {
 		})
 	}
 
-	private func details(for match: Match) -> AnyView {
+	@ViewBuilder
+	private func details(for match: Match) -> some View {
 		if match.isComplete {
-			return AnyView(completeMatchDetails(for: match))
+			completeMatchDetails(for: match)
 		} else {
-			return AnyView(lobbyDetails(for: match))
+			lobbyDetails(for: match)
 		}
 	}
 

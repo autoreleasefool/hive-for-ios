@@ -117,19 +117,19 @@ struct SettingsList: View {
 
 	// MARK: Buttons
 
-	private var logoutButton: AnyView {
-		func action() {
-			viewModel.postViewAction(.logout)
-		}
-
+	@ViewBuilder
+	private var logoutButton: some View {
 		switch viewModel.logoutResult {
-		case .notLoaded, .failed, .loaded: return AnyView(BasicButton<Never>("Logout", action: action))
+		case .notLoaded, .failed, .loaded:
+			BasicButton<Never>("Logout") {
+				viewModel.postViewAction(.logout)
+			}
 		case .loading:
-			return AnyView(
-				BasicButton(action: action) {
-					ActivityIndicator(isAnimating: true, style: .medium)
-				}
-			)
+			BasicButton(action: {
+				viewModel.postViewAction(.logout)
+			}, label: {
+				ActivityIndicator(isAnimating: true, style: .medium)
+			})
 		}
 	}
 

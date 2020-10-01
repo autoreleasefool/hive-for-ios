@@ -45,11 +45,12 @@ struct LocalRoomView: View {
 
 	// MARK: Content
 
-	private var content: AnyView {
+	@ViewBuilder
+	private var content: some View {
 		switch viewModel.match {
-		case .notLoaded: return AnyView(notLoadedView)
-		case .loaded(let match): return AnyView(loadedView(match))
-		case .loading, .failed: return AnyView(errorView)
+		case .notLoaded: notLoadedView
+		case .loaded(let match): loadedView(match)
+		case .loading, .failed: errorView
 		}
 	}
 

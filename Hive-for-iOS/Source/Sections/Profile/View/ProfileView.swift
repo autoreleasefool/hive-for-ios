@@ -39,12 +39,13 @@ struct ProfileView: View {
 		.navigationViewStyle(StackNavigationViewStyle())
 	}
 
-	private var content: AnyView {
+	@ViewBuilder
+	private var content: some View {
 		switch user {
-		case .notLoaded: return AnyView(notLoadedView)
-		case .loading: return AnyView(loadingView)
-		case .loaded(let user): return AnyView(loadedView(user))
-		case .failed(let error): return AnyView(failedView(error))
+		case .notLoaded: notLoadedView
+		case .loading: loadingView
+		case .loaded(let user): loadedView(user)
+		case .failed(let error): failedView(error)
 		}
 	}
 

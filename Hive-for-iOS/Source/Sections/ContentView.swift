@@ -50,12 +50,13 @@ struct ContentView: View {
 		}
 	}
 
-	private var content: AnyView {
+	@ViewBuilder
+	private var content: some View {
 		switch account {
-		case .notLoaded: return AnyView(notLoadedView)
-		case .loading: return AnyView(loadingView)
-		case .loaded: return AnyView(loadedView)
-		case .failed: return AnyView(noAccountView)
+		case .notLoaded: notLoadedView
+		case .loading: loadingView
+		case .loaded: loadedView
+		case .failed: noAccountView
 		}
 	}
 

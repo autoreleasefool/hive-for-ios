@@ -43,10 +43,11 @@ struct SpectatorRoomView: View {
 			}
 	}
 
-	private var content: AnyView {
+	@ViewBuilder
+	private var content: some View {
 		switch viewModel.match {
-		case .notLoaded: return AnyView(notLoadedView)
-		case .loading, .loaded, .failed: return AnyView(loadingView)
+		case .notLoaded: notLoadedView
+		case .loading, .loaded, .failed: loadingView
 		}
 	}
 

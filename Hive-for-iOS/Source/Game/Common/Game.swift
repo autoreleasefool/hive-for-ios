@@ -53,13 +53,14 @@ struct Game: View {
 		}
 	}
 
-	private var gameView: AnyView {
+	@ViewBuilder
+	private var gameView: some View {
 		#if targetEnvironment(simulator)
-		return AnyView(GameView2DContainer(viewModel: viewModel))
+		GameView2DContainer(viewModel: viewModel)
 		#else
 		switch container.appState.value.preferences.gameMode {
-		case .ar: return AnyView(GameViewARContainer(viewModel: viewModel))
-		case .sprite: return AnyView(GameView2DContainer(viewModel: viewModel))
+		case .ar: GameViewARContainer(viewModel: viewModel)
+		case .sprite: GameView2DContainer(viewModel: viewModel)
 		}
 		#endif
 	}

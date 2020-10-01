@@ -20,11 +20,12 @@ struct GameContentCoordinatorView: View {
 			.onReceive(setupUpdates) { gameSetup = $0 }
 	}
 
-	var content: AnyView {
+	@ViewBuilder
+	var content: some View {
 		if let setup = gameSetup {
-			return AnyView(gameView(setup))
+			gameView(setup)
 		} else {
-			return AnyView(contentView)
+			contentView
 		}
 	}
 

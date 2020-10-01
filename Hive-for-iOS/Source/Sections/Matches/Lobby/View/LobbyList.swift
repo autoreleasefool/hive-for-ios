@@ -138,26 +138,34 @@ struct LobbyList: View {
 
 	// MARK: Lobby
 
+	@ViewBuilder
 	private var newMatchButton: some View {
-		guard !viewModel.spectating else { return AnyView(EmptyView()) }
-		return AnyView(Button(action: {
-			viewModel.postViewAction(.createNewMatch)
-		}, label: {
-			Image(systemName: "plus")
-				.imageScale(.large)
-				.accessibility(label: Text("Create Match"))
-		}))
+		if viewModel.spectating {
+			EmptyView()
+		} else {
+			Button(action: {
+				viewModel.postViewAction(.createNewMatch)
+			}, label: {
+				Image(systemName: "plus")
+					.imageScale(.large)
+					.accessibility(label: Text("Create Match"))
+			})
+		}
 	}
 
-	private var settingsButton: AnyView {
-		guard !viewModel.spectating else { return AnyView(EmptyView()) }
-		return AnyView(Button(action: {
-			viewModel.postViewAction(.openSettings)
-		}, label: {
-			Image(systemName: "gear")
-				.imageScale(.large)
-				.accessibility(label: Text("Settings"))
-		}))
+	@ViewBuilder
+	private var settingsButton: some View {
+		if viewModel.spectating {
+			EmptyView()
+		} else {
+			Button(action: {
+				viewModel.postViewAction(.openSettings)
+			}, label: {
+				Image(systemName: "gear")
+					.imageScale(.large)
+					.accessibility(label: Text("Settings"))
+			})
+		}
 	}
 }
 

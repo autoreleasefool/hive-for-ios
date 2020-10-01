@@ -46,12 +46,13 @@ struct OnlineRoomView: View {
 		}
 	}
 
-	private func content(_ geometry: GeometryProxy) -> AnyView {
+	@ViewBuilder
+	private func content(_ geometry: GeometryProxy) -> some View {
 		switch viewModel.match {
-		case .notLoaded: return AnyView(notLoadedView)
-		case .loading(let match, _): return AnyView(loadedView(match, geometry))
-		case .loaded(let match): return AnyView(loadedView(match, geometry))
-		case .failed(let error): return AnyView(failedView(error))
+		case .notLoaded: notLoadedView
+		case .loading(let match, _): loadedView(match, geometry)
+		case .loaded(let match): loadedView(match, geometry)
+		case .failed(let error): failedView(error)
 		}
 	}
 

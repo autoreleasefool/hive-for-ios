@@ -85,48 +85,41 @@ struct InformationHUD: View {
 		.scaleForMarkdown(hasMarkdown: information.prefersMarkdown)
 	}
 
+	@ViewBuilder
 	private func details(information: GameInformation, state: GameState) -> some View {
-		Group { () -> AnyView in
-			switch information {
-			case .stack(let stack):
-				return AnyView(PieceStack(stack: stack))
-			case .pieceClass(let pieceClass):
-				return AnyView(PieceClassDetails(pieceClass: pieceClass, state: state))
-			case .piece(let piece):
-				return AnyView(PieceClassDetails(pieceClass: piece.class, state: state))
-			case .playerHand(let hand):
-				return AnyView(PlayerHandView(hand: hand))
-			case .rule(let rule):
-				if rule != nil {
-					return AnyView(
-						Button(action: {
-							viewModel.postViewAction(.presentInformation(.rule(nil)))
-						}, label: {
-							Text("See all rules")
-								.foregroundColor(Color(.highlightPrimary))
-								.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-						})
-					)
-				} else {
-					return AnyView(RuleList())
-				}
-			case .gameEnd:
-				return AnyView(
-					BasicButton<Never>("Return to lobby") {
-						viewModel.postViewAction(.returnToLobby)
-					}
-				)
-			case .playerMustPass:
-				return AnyView(
-					BasicButton<Never>("Pass turn") {
-						viewModel.postViewAction(.closeInformation(withFeedback: false))
-					}
-				)
-			case .settings:
-				return AnyView(GameSettings())
-			case .reconnecting:
-				return AnyView(ActivityIndicator(isAnimating: true, style: .large))
+		switch information {
+		case .stack(let stack):
+			PieceStack(stack: stack)
+		case .pieceClass(let pieceClass):
+			PieceClassDetails(pieceClass: pieceClass, state: state)
+		case .piece(let piece):
+			PieceClassDetails(pieceClass: piece.class, state: state)
+		case .playerHand(let hand):
+			PlayerHandView(hand: hand)
+		case .rule(let rule):
+			if rule != nil {
+				Button(action: {
+					viewModel.postViewAction(.presentInformation(.rule(nil)))
+				}, label: {
+					Text("See all rules")
+						.foregroundColor(Color(.highlightPrimary))
+						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+				})
+			} else {
+				RuleList()
 			}
+		case .gameEnd:
+			BasicButton<Never>("Return to lobby") {
+				viewModel.postViewAction(.returnToLobby)
+			}
+		case .playerMustPass:
+			BasicButton<Never>("Pass turn") {
+				viewModel.postViewAction(.closeInformation(withFeedback: false))
+			}
+		case .settings:
+			GameSettings()
+		case .reconnecting:
+			ActivityIndicator(isAnimating: true, style: .large)
 		}
 	}
 
@@ -153,11 +146,12 @@ extension InformationHUD {
 // MARK: ViewModifier
 
 private extension View {
+	@ViewBuilder
 	func scaleForMarkdown(hasMarkdown: Bool) -> some View {
 		if hasMarkdown {
-			return AnyView(scaledToFit())
+			scaledToFit()
 		} else {
-			return AnyView(self)
+			self
 		}
 	}
 }
