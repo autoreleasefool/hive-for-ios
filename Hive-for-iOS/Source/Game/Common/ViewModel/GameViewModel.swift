@@ -99,6 +99,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		state.inGame
 	}
 
+	#if AR_AVAILABLE
 	var gameAnchor: Experience.HiveGame? {
 		if case let .arExperience(anchor) = gameContent {
 			return anchor
@@ -106,6 +107,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			return nil
 		}
 	}
+	#endif
 
 	var presentingGameInformation: Binding<Bool> {
 		Binding(

@@ -9,6 +9,8 @@
 import RealityKit
 import HiveEngine
 
+#if AR_AVAILABLE
+
 extension Experience.HiveGame {
 	var allPieces: [Entity?] {
 		blackPieces + whitePieces
@@ -108,3 +110,5 @@ extension SIMD3 where Scalar == Float {
 		sqrt(pow(self.x - other.x, 2) + pow(self.y - other.y, 2) + pow(self.z - other.z, 2))
 	}
 }
+
+#endif

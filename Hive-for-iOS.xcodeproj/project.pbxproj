@@ -39,7 +39,6 @@
 		CA6CC93124AF6BC300E8CB27 /* LocalGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC93024AF6BC300E8CB27 /* LocalGameClient.swift */; };
 		CA6CC93424AF6BDE00E8CB27 /* OnlineGameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC93324AF6BDE00E8CB27 /* OnlineGameClient.swift */; };
 		CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A32393156100AD1285 /* AppDelegate.swift */; };
-		CA7299A82393156100AD1285 /* Experience.rcproject in Sources */ = {isa = PBXBuildFile; fileRef = CA7299A72393156100AD1285 /* Experience.rcproject */; };
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
@@ -164,7 +163,6 @@
 		CA6CC93324AF6BDE00E8CB27 /* OnlineGameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineGameClient.swift; sourceTree = "<group>"; };
 		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CA7299A72393156100AD1285 /* Experience.rcproject */ = {isa = PBXFileReference; lastKnownFileType = file.rcproject; path = Experience.rcproject; sourceTree = "<group>"; };
 		CA7299A92393156400AD1285 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -416,7 +414,6 @@
 			children = (
 				CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */,
 				CA7299A92393156400AD1285 /* Assets.xcassets */,
-				CA7299A72393156100AD1285 /* Experience.rcproject */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1085,7 +1082,6 @@
 				CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */,
 				CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */,
 				CAFA467423D8B3B1003C38AB /* Game.swift in Sources */,
-				CA7299A82393156100AD1285 /* Experience.rcproject in Sources */,
 				CABDFD0E23DF8B4000C697AD /* Experience+Extensions.swift in Sources */,
 				CA0F93942426003800F6E104 /* GameView2DController.swift in Sources */,
 				CA0F93A32427E83500F6E104 /* SKView+Extensions.swift in Sources */,

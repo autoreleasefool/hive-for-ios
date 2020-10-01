@@ -6,6 +6,8 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+#if AR_AVAILABLE
+
 import RealityKit
 import HiveEngine
 
@@ -57,3 +59,5 @@ extension Piece {
 		game.findEntity(named: self.notation)
 	}
 }
+
+#endif

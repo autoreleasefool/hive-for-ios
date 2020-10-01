@@ -10,6 +10,8 @@ import Foundation
 import SpriteKit
 
 enum GameViewContent {
+	#if AR_AVAILABLE
 	case arExperience(Experience.HiveGame)
+	#endif
 	case skScene(SKScene)
 }
