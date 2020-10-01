@@ -21,7 +21,6 @@ struct LobbyList: View {
 	var body: some View {
 		NavigationView {
 			content
-				.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle(viewModel.spectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
@@ -59,12 +58,13 @@ struct LobbyList: View {
 		}
 	}
 
-	private var content: AnyView {
+	@ViewBuilder
+	private var content: some View {
 		switch viewModel.matches {
-		case .notLoaded: return AnyView(notLoadedView)
-		case .loading(let cached, _): return AnyView(loadingView(cached))
-		case .loaded(let matches): return AnyView(loadedView(matches, loading: false))
-		case .failed(let error): return AnyView(failedView(error))
+		case .notLoaded: notLoadedView
+		case .loading(let cached, _): loadingView(cached)
+		case .loaded(let matches): loadedView(matches, loading: false)
+		case .failed(let error): failedView(error)
 		}
 	}
 
@@ -112,14 +112,16 @@ struct LobbyList: View {
 			if !loading && matches.count == 0 {
 				emptyState
 			} else {
-				List(matches) { match in
-					Button(action: {
-						self.viewModel.postViewAction(.joinMatch(match.id))
-					}, label: {
-						LobbyRow(match: match)
-					})
+				List {
+					ForEach(matches) { match in
+						Button(action: {
+							self.viewModel.postViewAction(.joinMatch(match.id))
+						}, label: {
+							LobbyRow(match: match)
+						})
+					}
 				}
-				.listRowInsets(EdgeInsets(equalTo: .m))
+				.listStyle(PlainListStyle())
 				.onAppear {
 					self.viewModel.postViewAction(.onListAppear)
 				}
@@ -162,30 +164,33 @@ struct LobbyList: View {
 // MARK: - Empty State
 
 extension LobbyList {
-	private var emptyState: AnyView {
+
+	@ViewBuilder
+	private var emptyState: some View {
 		if viewModel.isOffline {
-			return AnyView(offlineState)
+			offlineState
 		} else {
-			return AnyView(EmptyState(
+			EmptyState(
 				header: "No matches found",
 				message: viewModel.spectating
 					? "There don't seem to be any active games right now. Go to the lobby to start your own"
 					: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
 						"with the '+' button in the top right",
 				action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
-			))
+			)
 		}
 	}
 
-	private func failedState(_ error: Error) -> AnyView {
+	@ViewBuilder
+	private func failedState(_ error: Error) -> some View {
 		if let error = error as? MatchRepositoryError, case .usingOfflineAccount = error {
-			return AnyView(offlineState)
+			offlineState
 		} else {
-			return AnyView(EmptyState(
+			EmptyState(
 				header: "An error occurred",
 				message: "We can't fetch the lobby right now.\n\(viewModel.errorMessage(from: error))",
 				action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
-			))
+			)
 		}
 	}
 
@@ -235,8 +240,7 @@ extension LobbyList {
 #if DEBUG
 struct LobbyPreview: PreviewProvider {
 	static var previews: some View {
-		let loadable: Loadable<[Match]> = .loaded(Match.matches)
-		return LobbyList(spectating: false, matches: loadable)
+		return LobbyList(spectating: false, matches: .loaded(Match.matches))
 	}
 }
 #endif
