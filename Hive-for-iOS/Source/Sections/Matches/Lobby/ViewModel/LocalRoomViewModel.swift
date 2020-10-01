@@ -66,7 +66,7 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 	}
 
 	private func createMatch() {
-		self.match = .loaded(Match.createOfflineMatch(against: opponent))
+		match = .loaded(Match.createOfflineMatch(against: opponent))
 	}
 
 	private func startGame() {

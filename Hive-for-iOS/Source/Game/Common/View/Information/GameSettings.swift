@@ -24,21 +24,21 @@ struct GameSettings: View {
 
 	private var returnToLobbyButton: some View {
 		BasicButton<Never>("Return to lobby") {
-			self.viewModel.postViewAction(.closeInformation(withFeedback: true))
-			self.viewModel.postViewAction(.returnToLobby)
+			viewModel.postViewAction(.closeInformation(withFeedback: true))
+			viewModel.postViewAction(.returnToLobby)
 		}
 	}
 
 	private var rulesButton: some View {
 		BasicButton<Never>("Game rules") {
-			self.viewModel.postViewAction(.presentInformation(.rule(nil)))
+			viewModel.postViewAction(.presentInformation(.rule(nil)))
 		}
 	}
 
 	private var forfeitButton: some View {
 		BasicButton<Never>("Forfeit") {
-			self.viewModel.postViewAction(.closeInformation(withFeedback: true))
-			self.viewModel.postViewAction(.forfeit)
+			viewModel.postViewAction(.closeInformation(withFeedback: true))
+			viewModel.postViewAction(.forfeit)
 		}
 	}
 }

@@ -20,26 +20,26 @@ extension UIView {
 	}
 
 	func constrainToFillViewVertically(_ other: UIView) {
-		self.translatesAutoresizingMaskIntoConstraints = false
+		translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate(constraintsToFillViewVertically(other))
 	}
 
 	func constraintsToFillViewVertically(_ other: UIView) -> [NSLayoutConstraint] {
 		[
-			self.topAnchor.constraint(equalTo: other.topAnchor),
-			self.bottomAnchor.constraint(equalTo: other.bottomAnchor),
+			topAnchor.constraint(equalTo: other.topAnchor),
+			bottomAnchor.constraint(equalTo: other.bottomAnchor),
 		]
 	}
 
 	func constrainToFillViewHorizontally(_ other: UIView) {
-		self.translatesAutoresizingMaskIntoConstraints = false
+		translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate(constraintsToFillViewHorizontally(other))
 	}
 
 	func constraintsToFillViewHorizontally(_ other: UIView) -> [NSLayoutConstraint] {
 		[
-			self.leftAnchor.constraint(equalTo: other.leftAnchor),
-			self.rightAnchor.constraint(equalTo: other.rightAnchor),
+			leftAnchor.constraint(equalTo: other.leftAnchor),
+			rightAnchor.constraint(equalTo: other.rightAnchor),
 		]
 	}
 }

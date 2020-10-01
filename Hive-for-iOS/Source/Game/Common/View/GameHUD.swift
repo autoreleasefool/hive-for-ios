@@ -30,7 +30,7 @@ struct GameHUD: View {
 
 	private func settingsButton(_ geometry: GeometryProxy) -> some View {
 		Button(action: {
-			self.viewModel.postViewAction(.openSettings)
+			viewModel.postViewAction(.openSettings)
 		}, label: {
 			Image(uiImage: ImageAsset.Icon.info)
 				.resizable()
@@ -48,7 +48,7 @@ struct GameHUD: View {
 		HStack {
 			Spacer()
 			BasicButton<Never>("Return to board") {
-				self.viewModel.postViewAction(.returnToGameBounds)
+				viewModel.postViewAction(.returnToGameBounds)
 			}
 			.opacity(viewModel.isOutOfBounds ? 1 : 0)
 			.animation(.spring())
@@ -63,7 +63,7 @@ struct GameHUD: View {
 
 	private func emojiButton(_ geometry: GeometryProxy) -> some View {
 		Button(action: {
-			self.viewModel.postViewAction(.toggleEmojiPicker)
+			viewModel.postViewAction(.toggleEmojiPicker)
 		}, label: {
 			Image(uiImage: ImageAsset.Icon.smiley)
 				.resizable()
@@ -82,7 +82,7 @@ struct GameHUD: View {
 		let image = viewModel.handImage(for: player)
 
 		return Button(action: {
-			self.viewModel.postViewAction(.openHand(player))
+			viewModel.postViewAction(.openHand(player))
 		}, label: {
 			HexImage(image, stroke: player.color)
 				.placeholderTint(player.color)
@@ -97,22 +97,22 @@ struct GameHUD: View {
 
 	var body: some View {
 		GeometryReader { geometry in
-			if !self.viewModel.shouldHideHUDControls {
-				if self.container.has(feature: .emojiReactions) {
-					self.emojiButton(geometry)
+			if !viewModel.shouldHideHUDControls {
+				if container.has(feature: .emojiReactions) {
+					emojiButton(geometry)
 				}
-				self.settingsButton(geometry)
-				self.stateIndicator(geometry)
-				self.handButton(for: .white, geometry)
-				self.handButton(for: .black, geometry)
-				self.returnToGameButton(geometry)
+				settingsButton(geometry)
+				stateIndicator(geometry)
+				handButton(for: .white, geometry)
+				handButton(for: .black, geometry)
+				returnToGameButton(geometry)
 			}
 
 			InformationHUD()
 				.edgesIgnoringSafeArea(.bottom)
 			ActionHUD()
 				.edgesIgnoringSafeArea(.bottom)
-			if self.container.has(feature: .emojiReactions) {
+			if container.has(feature: .emojiReactions) {
 				EmojiHUD()
 					.edgesIgnoringSafeArea(.bottom)
 			}

@@ -48,20 +48,20 @@ struct AnimatedEmoji: View {
 			.squareImage(.l)
 			.opacity(opacity)
 			.scaleEffect(scale)
-			.modifier(FollowPathEffect(percent: self.flag ? 1 : 0, path: emoji.path))
+			.modifier(FollowPathEffect(percent: flag ? 1 : 0, path: emoji.path))
 			.onAppear {
-				withAnimation(.easeInOut(duration: self.emoji.duration)) {
-					self.flag.toggle()
+				withAnimation(.easeInOut(duration: emoji.duration)) {
+					flag.toggle()
 				}
-				withAnimation(Animation.linear(duration: 1).delay(self.emoji.duration - 1)) {
-					self.opacity = 0
+				withAnimation(Animation.linear(duration: 1).delay(emoji.duration - 1)) {
+					opacity = 0
 				}
-				withAnimation(Animation.linear(duration: 0.5).delay(self.emoji.duration - 0.5)) {
-					self.scale = 0
+				withAnimation(Animation.linear(duration: 0.5).delay(emoji.duration - 0.5)) {
+					scale = 0
 				}
 
-				DispatchQueue.main.asyncAfter(deadline: .now() + self.emoji.duration) {
-					self.isAnimating = false
+				DispatchQueue.main.asyncAfter(deadline: .now() + emoji.duration) {
+					isAnimating = false
 				}
 			}
 	}

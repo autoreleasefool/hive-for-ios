@@ -113,15 +113,15 @@ struct ActionHUD: View {
 	var body: some View {
 		GeometryReader { geometry in
 			BottomSheet(
-				isOpen: self.viewModel.presentingGameAction,
+				isOpen: viewModel.presentingGameAction,
 				minHeight: 0,
 				maxHeight: geometry.size.height / 2.0,
 				showsDragIndicator: false,
 				dragGestureEnabled: false,
 				backgroundColor: .clear
 			) {
-				if self.viewModel.presentingGameAction.wrappedValue {
-					self.HUD(action: self.viewModel.presentedGameAction!)
+				if viewModel.presentingGameAction.wrappedValue {
+					HUD(action: viewModel.presentedGameAction!)
 				} else {
 					EmptyView()
 				}

@@ -33,7 +33,7 @@ struct SettingsList: View {
 					Section(header: Text("Game")) {
 						if !container.has(feature: .arGameMode) {
 							itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
-								self.viewModel.postViewAction(.switchGameMode(current: $0))
+								viewModel.postViewAction(.switchGameMode(current: $0))
 							}
 						}
 
@@ -51,7 +51,7 @@ struct SettingsList: View {
 				}
 				#endif
 
-				if self.viewModel.showAccount {
+				if viewModel.showAccount {
 					Section(header: Text("Account")) {
 						VStack(spacing: .m) {
 							UserPreview(userProfile.value?.summary)
@@ -89,9 +89,9 @@ struct SettingsList: View {
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
 			.listStyle(InsetGroupedListStyle())
-			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
-			.onReceive(userUpdate) { self.userProfile = $0 }
-			.onAppear { self.viewModel.postViewAction(.onAppear) }
+			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+			.onReceive(userUpdate) { userProfile = $0 }
+			.onAppear { viewModel.postViewAction(.onAppear) }
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
 	}
@@ -119,7 +119,7 @@ struct SettingsList: View {
 
 	private var logoutButton: AnyView {
 		func action() {
-			self.viewModel.postViewAction(.logout)
+			viewModel.postViewAction(.logout)
 		}
 
 		switch viewModel.logoutResult {
@@ -135,7 +135,7 @@ struct SettingsList: View {
 
 	private var doneButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.exit)
+			viewModel.postViewAction(.exit)
 		}, label: {
 			Text("Done")
 		})
@@ -146,7 +146,7 @@ struct SettingsList: View {
 	#if DEBUG
 	private var featureToggles: some View {
 		ForEach(Feature.allCases, id: \.rawValue) { feature in
-			Toggle(feature.rawValue, isOn: self.binding(for: feature))
+			Toggle(feature.rawValue, isOn: binding(for: feature))
 		}
 	}
 	#endif
@@ -195,15 +195,15 @@ extension SettingsList {
 
 	private func binding(for feature: Feature) -> Binding<Bool> {
 		Binding(
-			get: { self.container.features.has(feature) },
-			set: { self.container.appState[\.features].set(feature, to: $0) }
+			get: { container.features.has(feature) },
+			set: { container.appState[\.features].set(feature, to: $0) }
 		)
 	}
 
 	private func binding(for preference: WritableKeyPath<Preferences, Bool>) -> Binding<Bool> {
 		Binding(
-			get: { self.preferencesBinding.wrappedValue[keyPath: preference] },
-			set: { self.preferencesBinding.wrappedValue[keyPath: preference] = $0 }
+			get: { preferencesBinding.wrappedValue[keyPath: preference] },
+			set: { preferencesBinding.wrappedValue[keyPath: preference] = $0 }
 		)
 	}
 }

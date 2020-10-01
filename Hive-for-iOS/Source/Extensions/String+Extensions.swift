@@ -10,6 +10,6 @@ import Foundation
 
 extension String {
 	func substring(from index: Int) -> String {
-		String(self.suffix(from: self.index(self.startIndex, offsetBy: index)))
+		String(suffix(from: self.index(startIndex, offsetBy: index)))
 	}
 }

@@ -32,10 +32,10 @@ struct PopoverSheetConfig {
 			Button(action: {
 				isPresented.wrappedValue = false
 				DispatchQueue.main.async {
-					self.action()
+					action()
 				}
 			}, label: {
-				Text(self.title)
+				Text(title)
 			})
 		}
 
@@ -47,7 +47,7 @@ struct PopoverSheetConfig {
 			case .destructive: style = .destructive
 			}
 			return UIAlertAction(title: title, style: style) { _ in
-				self.action()
+				action()
 			}
 		}
 	}
@@ -66,10 +66,10 @@ struct PopoverSheetConfig {
 
 	func popover(isPresented: Binding<Bool>) -> some View {
 		VStack {
-			Text(self.title).padding(.top, length: .m)
+			Text(title).padding(.top, length: .m)
 			Divider()
 			List {
-				ForEach(Array(self.buttons.enumerated()), id: \.offset) { (_, button) in
+				ForEach(Array(buttons.enumerated()), id: \.offset) { (_, button) in
 					button.popoverButton(isPresented: isPresented)
 				}
 			}

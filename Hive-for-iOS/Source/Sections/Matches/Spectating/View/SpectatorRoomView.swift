@@ -26,17 +26,17 @@ struct SpectatorRoomView: View {
 			.navigationBarTitle(Text("Spectating..."), displayMode: .inline)
 			.navigationBarBackButtonHidden(true)
 			.navigationBarItems(leading: cancelButton)
-			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
+			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.popoverSheet(isPresented: $viewModel.isCancelling) {
 				PopoverSheetConfig(
 					title: "Stop spectating?",
 					message: "Are you sure you want to stop spectating this match?",
 					buttons: [
 						PopoverSheetConfig.ButtonConfig(title: "Stop", type: .destructive) {
-							self.viewModel.postViewAction(.confirmExit)
+							viewModel.postViewAction(.confirmExit)
 						},
 						PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {
-							self.viewModel.postViewAction(.dismissExit)
+							viewModel.postViewAction(.dismissExit)
 						},
 					]
 				)
@@ -54,7 +54,7 @@ struct SpectatorRoomView: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.viewModel.postViewAction(.onAppear) }
+			.onAppear { viewModel.postViewAction(.onAppear) }
 	}
 
 	private var loadingView: some View {
@@ -73,7 +73,7 @@ struct SpectatorRoomView: View {
 
 	private var cancelButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.cancel)
+			viewModel.postViewAction(.cancel)
 		}, label: {
 			Text("Cancel")
 		})

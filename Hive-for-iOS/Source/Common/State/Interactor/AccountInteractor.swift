@@ -80,7 +80,7 @@ struct LiveAccountInteractor: AccountInteractor {
 			.receive(on: RunLoop.main)
 			.sinkToLoadable {
 				if case .loaded = $0, let account = $0.value {
-					self.repository.saveAccount(account)
+					repository.saveAccount(account)
 					weakState?[\.account] = $0
 				}
 				account.wrappedValue = $0
@@ -98,7 +98,7 @@ struct LiveAccountInteractor: AccountInteractor {
 			.receive(on: RunLoop.main)
 			.sinkToLoadable {
 				if case .loaded = $0, let account = $0.value {
-					self.repository.saveAccount(account)
+					repository.saveAccount(account)
 					weakState?[\.account] = $0
 				}
 				account.wrappedValue = $0

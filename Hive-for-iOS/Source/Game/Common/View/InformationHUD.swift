@@ -26,17 +26,17 @@ struct InformationHUD: View {
 	var body: some View {
 		GeometryReader { geometry in
 			BottomSheet(
-				isOpen: self.viewModel.presentingGameInformation,
+				isOpen: viewModel.presentingGameInformation,
 				minHeight: 0,
-				maxHeight: self.hudHeight(
+				maxHeight: hudHeight(
 					maxHeight: geometry.size.height,
-					information: self.viewModel.presentedGameInformation
+					information: viewModel.presentedGameInformation
 				),
-				showsDragIndicator: self.information?.dismissable ?? true,
-				dragGestureEnabled: self.information?.dismissable ?? true
+				showsDragIndicator: information?.dismissable ?? true,
+				dragGestureEnabled: information?.dismissable ?? true
 			) {
-				if self.isPresenting {
-					self.HUD(information: self.information!, state: self.viewModel.gameState)
+				if isPresenting {
+					HUD(information: information!, state: viewModel.gameState)
 				} else {
 					EmptyView()
 				}
@@ -68,12 +68,12 @@ struct InformationHUD: View {
 
 			if subtitle != nil {
 				if information.prefersMarkdown {
-					MarkdownView(subtitle!, height: self.$subtitleHeight) { url in
+					MarkdownView(subtitle!, height: $subtitleHeight) { url in
 						if let information = GameInformation(fromLink: url.absoluteString) {
-							self.viewModel.postViewAction(.presentInformation(information))
+							viewModel.postViewAction(.presentInformation(information))
 						}
 					}
-					.frame(minHeight: self.subtitleHeight, maxHeight: self.subtitleHeight)
+					.frame(minHeight: subtitleHeight, maxHeight: subtitleHeight)
 				} else {
 					Text(subtitle!)
 						.font(.body)
@@ -100,7 +100,7 @@ struct InformationHUD: View {
 				if rule != nil {
 					return AnyView(
 						Button(action: {
-							self.viewModel.postViewAction(.presentInformation(.rule(nil)))
+							viewModel.postViewAction(.presentInformation(.rule(nil)))
 						}, label: {
 							Text("See all rules")
 								.foregroundColor(Color(.highlightPrimary))
@@ -113,13 +113,13 @@ struct InformationHUD: View {
 			case .gameEnd:
 				return AnyView(
 					BasicButton<Never>("Return to lobby") {
-						self.viewModel.postViewAction(.returnToLobby)
+						viewModel.postViewAction(.returnToLobby)
 					}
 				)
 			case .playerMustPass:
 				return AnyView(
 					BasicButton<Never>("Pass turn") {
-						self.viewModel.postViewAction(.closeInformation(withFeedback: false))
+						viewModel.postViewAction(.closeInformation(withFeedback: false))
 					}
 				)
 			case .settings:
@@ -132,7 +132,7 @@ struct InformationHUD: View {
 
 	private var closeButton: some View {
 		BasicButton<Never>("Close") {
-			self.viewModel.postViewAction(.closeInformation(withFeedback: true))
+			viewModel.postViewAction(.closeInformation(withFeedback: true))
 		}
 		.buttonBackground(.backgroundLight)
 	}
@@ -155,7 +155,7 @@ extension InformationHUD {
 private extension View {
 	func scaleForMarkdown(hasMarkdown: Bool) -> some View {
 		if hasMarkdown {
-			return AnyView(self.scaledToFit())
+			return AnyView(scaledToFit())
 		} else {
 			return AnyView(self)
 		}

@@ -44,7 +44,7 @@ enum HiveAPIError: LocalizedError {
 	}
 
 	var loaf: LoafState {
-		LoafState(self.errorDescription ?? "Unknown (API Error)", state: .error)
+		LoafState(errorDescription ?? "Unknown (API Error)", state: .error)
 	}
 }
 
@@ -85,7 +85,7 @@ class HiveAPI: ObservableObject {
 			.appendingPathComponent("api")
 			.appendingPathComponent(endpoint.path)
 
-		var request = self.buildBaseRequest(to: url, withAccount: account)
+		var request = buildBaseRequest(to: url, withAccount: account)
 		request.httpMethod = endpoint.httpMethod.rawValue
 		for (header, value) in endpoint.headers {
 			request.addValue(value, forHTTPHeaderField: header)

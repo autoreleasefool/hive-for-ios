@@ -44,9 +44,9 @@ struct LiveAccountRepository: AccountRepository {
 	func loadAccount() -> AnyPublisher<Account, AccountRepositoryError> {
 		Future<Account, AccountRepositoryError> { promise in
 			do {
-				guard let id = try self.keychain.get(Key.userId.rawValue),
+				guard let id = try keychain.get(Key.userId.rawValue),
 					let userId = UUID(uuidString: id),
-					let token = try self.keychain.get(Key.token.rawValue) else {
+					let token = try keychain.get(Key.token.rawValue) else {
 						return promise(.failure(AccountRepositoryError.notFound))
 				}
 
@@ -57,7 +57,7 @@ struct LiveAccountRepository: AccountRepository {
 			}
 		}
 		.flatMap { account in
-			self.api.fetch(.checkToken(account))
+			api.fetch(.checkToken(account))
 				.mapError { .apiError($0) }
 				.map { (_: SessionToken) in account }
 		}
@@ -66,8 +66,8 @@ struct LiveAccountRepository: AccountRepository {
 
 	func clearAccount() {
 		do {
-			try self.keychain.remove(Key.userId.rawValue)
-			try self.keychain.remove(Key.token.rawValue)
+			try keychain.remove(Key.userId.rawValue)
+			try keychain.remove(Key.token.rawValue)
 		} catch {
 			print("Failed to clear account: \(error)")
 		}

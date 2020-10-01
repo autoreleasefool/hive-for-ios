@@ -23,10 +23,10 @@ struct LobbyList: View {
 			content
 				.navigationBarTitle(viewModel.spectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
-				.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
+				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 				.sheet(isPresented: $viewModel.settingsOpened) {
-					SettingsList(isOpen: self.$viewModel.settingsOpened)
-						.inject(self.container)
+					SettingsList(isOpen: $viewModel.settingsOpened)
+						.inject(container)
 				}
 				.alert(isPresented: $viewModel.showMatchInProgressWarning) {
 					Alert(
@@ -42,13 +42,13 @@ struct LobbyList: View {
 						message: "You can create a new match against another player, or play locally vs the computer.",
 						buttons: [
 							PopoverSheetConfig.ButtonConfig(title: "vs Player", type: .default) {
-								self.viewModel.postViewAction(.createOnlineMatchVsPlayer)
+								viewModel.postViewAction(.createOnlineMatchVsPlayer)
 							},
 							PopoverSheetConfig.ButtonConfig(title: "vs Computer", type: .default) {
-								self.viewModel.postViewAction(.createLocalMatchVsComputer)
+								viewModel.postViewAction(.createLocalMatchVsComputer)
 							},
 							PopoverSheetConfig.ButtonConfig(title: "Cancel", type: .cancel) {
-								self.viewModel.postViewAction(.cancelCreateMatch)
+								viewModel.postViewAction(.cancelCreateMatch)
 							},
 						]
 					)
@@ -73,8 +73,8 @@ struct LobbyList: View {
 	private var notLoadedView: some View {
 		Text("")
 			.onAppear {
-				self.viewModel.postViewAction(
-					.onAppear(isOffline: self.container.account?.isOffline ?? false )
+				viewModel.postViewAction(
+					.onAppear(isOffline: container.account?.isOffline ?? false )
 				)
 			}
 	}
@@ -86,26 +86,26 @@ struct LobbyList: View {
 	private func loadedView(_ matches: [Match], loading: Bool) -> some View {
 		Group {
 			NavigationLink(
-				destination: OnlineRoomView(id: self.viewModel.currentMatchId, creatingNewMatch: false),
-				isActive: self.viewModel.joiningMatch,
+				destination: OnlineRoomView(id: viewModel.currentMatchId, creatingNewMatch: false),
+				isActive: viewModel.joiningMatch,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
 				destination: OnlineRoomView(id: nil, creatingNewMatch: true),
-				isActive: self.$viewModel.creatingOnlineRoom,
+				isActive: $viewModel.creatingOnlineRoom,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
-				destination: AgentPicker(isActive: self.$viewModel.creatingLocalRoom),
-				isActive: self.$viewModel.creatingLocalRoom,
+				destination: AgentPicker(isActive: $viewModel.creatingLocalRoom),
+				isActive: $viewModel.creatingLocalRoom,
 				label: { EmptyView() }
 			)
 
 			NavigationLink(
-				destination: SpectatorRoomView(id: self.viewModel.currentSpectatingMatchId),
-				isActive: self.viewModel.spectatingMatch,
+				destination: SpectatorRoomView(id: viewModel.currentSpectatingMatchId),
+				isActive: viewModel.spectatingMatch,
 				label: { EmptyView() }
 			)
 
@@ -115,7 +115,7 @@ struct LobbyList: View {
 				List {
 					ForEach(matches) { match in
 						Button(action: {
-							self.viewModel.postViewAction(.joinMatch(match.id))
+							viewModel.postViewAction(.joinMatch(match.id))
 						}, label: {
 							LobbyRow(match: match)
 						})
@@ -123,10 +123,10 @@ struct LobbyList: View {
 				}
 				.listStyle(PlainListStyle())
 				.onAppear {
-					self.viewModel.postViewAction(.onListAppear)
+					viewModel.postViewAction(.onListAppear)
 				}
 				.onDisappear {
-					self.viewModel.postViewAction(.onListDisappear)
+					viewModel.postViewAction(.onListDisappear)
 				}
 			}
 		}
@@ -141,7 +141,7 @@ struct LobbyList: View {
 	private var newMatchButton: some View {
 		guard !viewModel.spectating else { return AnyView(EmptyView()) }
 		return AnyView(Button(action: {
-			self.viewModel.postViewAction(.createNewMatch)
+			viewModel.postViewAction(.createNewMatch)
 		}, label: {
 			Image(systemName: "plus")
 				.imageScale(.large)
@@ -152,7 +152,7 @@ struct LobbyList: View {
 	private var settingsButton: AnyView {
 		guard !viewModel.spectating else { return AnyView(EmptyView()) }
 		return AnyView(Button(action: {
-			self.viewModel.postViewAction(.openSettings)
+			viewModel.postViewAction(.openSettings)
 		}, label: {
 			Image(systemName: "gear")
 				.imageScale(.large)
@@ -176,7 +176,7 @@ extension LobbyList {
 					? "There don't seem to be any active games right now. Go to the lobby to start your own"
 					: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
 						"with the '+' button in the top right",
-				action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
+				action: .init(text: "Refresh") { viewModel.postViewAction(.refresh) }
 			)
 		}
 	}
@@ -189,7 +189,7 @@ extension LobbyList {
 			EmptyState(
 				header: "An error occurred",
 				message: "We can't fetch the lobby right now.\n\(viewModel.errorMessage(from: error))",
-				action: .init(text: "Refresh") { self.viewModel.postViewAction(.refresh) }
+				action: .init(text: "Refresh") { viewModel.postViewAction(.refresh) }
 			)
 		}
 	}
@@ -201,8 +201,8 @@ extension LobbyList {
 				? "You can't spectate offline. Log in to spectate"
 				: "You can play a game against the computer by tapping below",
 			action: viewModel.spectating
-				? .init(text: "Log in") { self.viewModel.postViewAction(.logIn) }
-				: .init(text: "Play local match") { self.viewModel.postViewAction(.createLocalMatchVsComputer) }
+				? .init(text: "Log in") { viewModel.postViewAction(.logIn) }
+				: .init(text: "Play local match") { viewModel.postViewAction(.createLocalMatchVsComputer) }
 		)
 	}
 

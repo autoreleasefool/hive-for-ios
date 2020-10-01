@@ -33,25 +33,25 @@ struct EmojiHUD: View {
 	private var animatedEmoji: some View {
 		GeometryReader { geometry in
 			ZStack {
-				ForEach(self.animatingEmoji, id: \.id) { emoji in
-					AnimatedEmoji(emoji: emoji, isAnimating: self.isAnimating(emoji), geometry: geometry)
+				ForEach(animatingEmoji, id: \.id) { emoji in
+					AnimatedEmoji(emoji: emoji, isAnimating: isAnimating(emoji), geometry: geometry)
 						.position(x: geometry.size.width / 2, y: geometry.size.height)
 				}
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
-			.onReceive(self.viewModel.animatedEmoji) { emoji in
+			.onReceive(viewModel.animatedEmoji) { emoji in
 				let animations = (0...Int.random(in: (15...20))).map { _ in AnimateableEmoji(emoji: emoji, geometry: geometry) }
-				self.animatingEmoji.append(contentsOf: animations)
+				animatingEmoji.append(contentsOf: animations)
 			}
 		}
 	}
 
 	private func isAnimating(_ emoji: AnimateableEmoji) -> Binding<Bool> {
 		Binding(
-			get: { self.animatingEmoji.contains(emoji) },
+			get: { animatingEmoji.contains(emoji) },
 			set: { newValue in
-				guard !newValue, let index = self.animatingEmoji.firstIndex(of: emoji) else { return }
-				self.animatingEmoji.remove(at: index)
+				guard !newValue, let index = animatingEmoji.firstIndex(of: emoji) else { return }
+				animatingEmoji.remove(at: index)
 			}
 		)
 	}
@@ -64,7 +64,7 @@ struct EmojiHUD: View {
 				VStack(alignment: .center, spacing: .m) {
 					ForEach(Emoji.allCases.indices) { index in
 						Button(action: {
-							self.viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
+							viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
 						}, label: {
 							Image(uiImage: Emoji.allCases[index].image ?? UIImage())
 								.resizable()
@@ -79,7 +79,7 @@ struct EmojiHUD: View {
 				.background(Color(.actionSheetBackground))
 				.cornerRadius(EmojiHUD.width / 2)
 				.animation(.interactiveSpring())
-				.offset(x: self.pickerOffset)
+				.offset(x: pickerOffset)
 			}
 			.offset(x: -geometry.size.width / 2 + EmojiHUD.width / 2)
 		}

@@ -114,8 +114,8 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 	}
 
 	private func initialize() {
-		if self.isOffline {
-			self.matches = .loaded([])
+		if isOffline {
+			matches = .loaded([])
 		} else {
 			actions.send(.loadMatches)
 		}

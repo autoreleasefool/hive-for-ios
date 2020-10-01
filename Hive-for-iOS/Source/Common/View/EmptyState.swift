@@ -26,24 +26,24 @@ struct EmptyState: View {
 			VStack(spacing: .m) {
 				Spacer()
 
-				if self.image != nil {
-					self.emptyStateImage(self.image!, geometry)
+				if image != nil {
+					emptyStateImage(image!, geometry)
 				}
 
 				VStack(spacing: .s) {
-					self.header
-					self.message
+					header
+					message
 				}
 				.padding(.horizontal, length: .m)
 
-				if self.action != nil {
-					self.actionButton(action: self.action!)
+				if action != nil {
+					actionButton(action: action!)
 						.padding(.horizontal, length: .m)
 				}
 				Spacer()
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
-			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
+//			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 		}
 	}
 

@@ -27,25 +27,25 @@ struct ContentView: View {
 	var body: some View {
 		GeometryReader { geometry in
 			Group {
-				if self.viewModel.showWelcome {
+				if viewModel.showWelcome {
 					WelcomeView(
-						showWelcome: self.$viewModel.showWelcome,
-						playingOffline: self.$viewModel.playingOffline,
-						showSettings: self.$viewModel.showSettings
+						showWelcome: $viewModel.showWelcome,
+						playingOffline: $viewModel.playingOffline,
+						showSettings: $viewModel.showSettings
 					)
 				} else {
-					self.content
+					content
 				}
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
 			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
-			.onReceive(self.viewModel.actionsPublisher) { self.handleAction($0) }
-			.onReceive(self.accountUpdate) { self.account = $0 }
-			.sheet(isPresented: self.$viewModel.showSettings) {
-				SettingsList(isOpen: self.$viewModel.showSettings, showAccount: false)
-					.inject(self.container)
+			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+			.onReceive(accountUpdate) { account = $0 }
+			.sheet(isPresented: $viewModel.showSettings) {
+				SettingsList(isOpen: $viewModel.showSettings, showAccount: false)
+					.inject(container)
 			}
-			.inject(self.container)
+			.inject(container)
 			.plugInToaster()
 		}
 	}
@@ -63,7 +63,7 @@ struct ContentView: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.viewModel.postViewAction(.onAppear) }
+			.onAppear { viewModel.postViewAction(.onAppear) }
 	}
 
 	private var loadingView: some View {
@@ -76,7 +76,7 @@ struct ContentView: View {
 
 	private var noAccountView: some View {
 		LoginSignupForm {
-			self.viewModel.showWelcome = true
+			viewModel.showWelcome = true
 		}
 	}
 }

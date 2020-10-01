@@ -17,7 +17,7 @@ struct GameContentCoordinatorView: View {
 
 	var body: some View {
 		content
-			.onReceive(setupUpdates) { self.gameSetup = $0 }
+			.onReceive(setupUpdates) { gameSetup = $0 }
 	}
 
 	var content: AnyView {

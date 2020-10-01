@@ -15,7 +15,7 @@ struct LobbyRow: View {
 	private func optionsPreview(for options: Set<GameState.Option>) -> some View {
 		HStack(spacing: .s) {
 			ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-				self.optionPreview(for: option, enabled: options.contains(option))
+				optionPreview(for: option, enabled: options.contains(option))
 			}
 		}
 	}

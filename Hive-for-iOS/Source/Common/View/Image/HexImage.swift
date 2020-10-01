@@ -31,11 +31,11 @@ struct HexImage: View {
 	var body: some View {
 		GeometryReader { geometry in
 			ZStack {
-				RemoteImage(url: self.url, placeholder: self.placeholder)
-					.placeholderTint(self.placeholderTint)
+				RemoteImage(url: url, placeholder: placeholder)
+					.placeholderTint(placeholderTint)
 					.frame(
-						width: self.imageWidth?.rawValue ?? geometry.size.width,
-						height: self.imageHeight?.rawValue ?? geometry.size.height
+						width: imageWidth?.rawValue ?? geometry.size.width,
+						height: imageHeight?.rawValue ?? geometry.size.height
 					)
 					.mask(
 						Hex()
@@ -44,7 +44,7 @@ struct HexImage: View {
 					)
 				Hex()
 					.stroke(
-						Color(self.stroke),
+						Color(stroke),
 						lineWidth: min(geometry.size.width, geometry.size.height) * 0.075
 					)
 			}

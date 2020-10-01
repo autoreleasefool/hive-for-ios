@@ -38,7 +38,7 @@ struct BottomSheet<Content: View>: View {
 				width: Constants.indicatorWidth,
 				height: Constants.indicatorHeight
 		).onTapGesture {
-			self.isOpen.toggle()
+			isOpen.toggle()
 		}
 	}
 
@@ -55,26 +55,26 @@ struct BottomSheet<Content: View>: View {
 	var body: some View {
 		GeometryReader { geometry in
 			VStack(spacing: 0) {
-				if self.showsDragIndicator {
-					self.indicator.padding()
+				if showsDragIndicator {
+					indicator.padding()
 				}
-				self.content
+				content
 			}
-			.frame(width: geometry.size.width, height: self.maxHeight, alignment: .top)
-			.background(Color(self.backgroundColor))
+			.frame(width: geometry.size.width, height: maxHeight, alignment: .top)
+			.background(Color(backgroundColor))
 			.cornerRadius(Constants.radius)
 			.frame(height: geometry.size.height, alignment: .bottom)
-			.offset(y: max(self.offset + self.translation, 0))
+			.offset(y: max(offset + translation, 0))
 			.animation(.interactiveSpring())
 			.gesture(
-				DragGesture().updating(self.$translation) { value, state, _ in
-					guard self.dragGestureEnabled else { return }
+				DragGesture().updating($translation) { value, state, _ in
+					guard dragGestureEnabled else { return }
 					state = value.translation.height
 				}.onEnded { value in
-					guard self.dragGestureEnabled else { return }
-					let snapDistance = self.maxHeight * Constants.snapRatio
+					guard dragGestureEnabled else { return }
+					let snapDistance = maxHeight * Constants.snapRatio
 					guard abs(value.translation.height) > snapDistance else { return }
-					self.isOpen = value.translation.height < 0
+					isOpen = value.translation.height < 0
 				}
 			)
 		}

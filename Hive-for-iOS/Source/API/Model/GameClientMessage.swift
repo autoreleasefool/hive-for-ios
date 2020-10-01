@@ -33,15 +33,15 @@ extension URLSessionWebSocketTask {
 	func send(message: GameClientMessage, completionHandler: @escaping (Error?) -> Void) {
 		switch message {
 		case .movement(let movement):
-			self.send(.string("MOV \(movement.notation)"), completionHandler: completionHandler)
+			send(.string("MOV \(movement.notation)"), completionHandler: completionHandler)
 		case .setOption(let option, let value):
-			self.send(.string("SET \(option.optionName) \(value)"), completionHandler: completionHandler)
+			send(.string("SET \(option.optionName) \(value)"), completionHandler: completionHandler)
 		case .message(let string):
-			self.send(.string("MSG \(string)"), completionHandler: completionHandler)
+			send(.string("MSG \(string)"), completionHandler: completionHandler)
 		case .readyToPlay:
-			self.send(.string("GLHF"), completionHandler: completionHandler)
+			send(.string("GLHF"), completionHandler: completionHandler)
 		case .forfeit:
-			self.send(.string("FF"), completionHandler: completionHandler)
+			send(.string("FF"), completionHandler: completionHandler)
 		}
 	}
 }

@@ -25,7 +25,7 @@ struct WelcomeView: View {
 				.foregroundColor(Color(.highlightPrimary))
 
 			Button("Play") {
-				self.showWelcome = false
+				showWelcome = false
 			}
 			.font(.headline)
 			.foregroundColor(Color(.textRegular))
@@ -33,8 +33,8 @@ struct WelcomeView: View {
 
 			if container.has(feature: .offlineMode) {
 				Button("Play offline") {
-					self.playingOffline = true
-					self.showWelcome = false
+					playingOffline = true
+					showWelcome = false
 				}
 				.font(.headline)
 				.foregroundColor(Color(.textRegular))
@@ -42,7 +42,7 @@ struct WelcomeView: View {
 			}
 
 			Button("Settings") {
-				self.showSettings = true
+				showSettings = true
 			}
 			.font(.headline)
 			.foregroundColor(Color(.textRegular))

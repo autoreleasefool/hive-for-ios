@@ -23,7 +23,7 @@ struct LoginSignupForm: View {
 	var body: some View {
 		content
 			.padding(.all, length: .m)
-			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
+			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 	}
 
 	private var content: AnyView {
@@ -93,7 +93,7 @@ struct LoginSignupForm: View {
 
 	private var submitButton: some View {
 		BasicButton<Never>(viewModel.submitButtonText) {
-			self.viewModel.postViewAction(.submitForm)
+			viewModel.postViewAction(.submitForm)
 		}
 	}
 
@@ -103,7 +103,7 @@ struct LoginSignupForm: View {
 				.font(.caption)
 				.foregroundColor(Color(.textRegular))
 			Button(action: {
-				self.viewModel.postViewAction(.toggleForm)
+				viewModel.postViewAction(.toggleForm)
 			}, label: {
 				Text(viewModel.toggleButtonText)
 					.font(.caption)
@@ -120,7 +120,7 @@ struct LoginSignupForm: View {
 				.font(.caption)
 				.foregroundColor(Color(.textRegular))
 			Button(action: {
-				self.viewModel.postViewAction(.exitForm)
+				viewModel.postViewAction(.exitForm)
 			}, label: {
 				Text(" exit ")
 					.font(.caption)

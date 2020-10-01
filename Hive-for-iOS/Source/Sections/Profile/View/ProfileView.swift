@@ -29,11 +29,11 @@ struct ProfileView: View {
 				.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle(viewModel.title(forUser: user.value))
 				.navigationBarItems(leading: settingsButton)
-				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
-				.onReceive(userUpdates) { self.user = $0 }
+				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+				.onReceive(userUpdates) { user = $0 }
 				.sheet(isPresented: $viewModel.settingsOpened) {
-					SettingsList(isOpen: self.$viewModel.settingsOpened)
-						.inject(self.container)
+					SettingsList(isOpen: $viewModel.settingsOpened)
+						.inject(container)
 				}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
@@ -52,7 +52,7 @@ struct ProfileView: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.viewModel.postViewAction(.onAppear) }
+			.onAppear { viewModel.postViewAction(.onAppear) }
 	}
 
 	private var loadingView: some View {
@@ -81,7 +81,7 @@ struct ProfileView: View {
 
 	private var settingsButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.openSettings)
+			viewModel.postViewAction(.openSettings)
 		}, label: {
 			Image(systemName: "gear")
 				.imageScale(.large)
@@ -97,7 +97,7 @@ extension ProfileView {
 		EmptyState(
 			header: "An error occurred",
 			message: "We can't fetch your profile right now.\n\(viewModel.errorMessage(from: error))",
-			action: .init(text: "Refresh") { self.loadProfile() }
+			action: .init(text: "Refresh") { loadProfile() }
 		)
 	}
 }

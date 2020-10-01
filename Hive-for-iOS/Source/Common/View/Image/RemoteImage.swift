@@ -55,18 +55,18 @@ struct RemoteImage: View {
 
 	var body: some View {
 		GeometryReader { geometry in
-			if self.imageFetcher.image != nil {
-				Image(uiImage: self.imageFetcher.image!)
+			if imageFetcher.image != nil {
+				Image(uiImage: imageFetcher.image!)
 					.resizable()
 					.scaledToFit()
 					.frame(width: geometry.size.width, height: geometry.size.height)
 
 			} else {
-				Image(uiImage: self.placeholder)
-					.renderingMode(self.placeholderTint != nil ? .template : .original)
+				Image(uiImage: placeholder)
+					.renderingMode(placeholderTint != nil ? .template : .original)
 					.resizable()
 					.scaledToFit()
-					.foregroundColor(self.placeholderTint != nil ? Color(self.placeholderTint!) : nil)
+					.foregroundColor(placeholderTint != nil ? Color(placeholderTint!) : nil)
 					.frame(width: geometry.size.width, height: geometry.size.height)
 			}
 		}

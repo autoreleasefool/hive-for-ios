@@ -15,7 +15,7 @@ struct RuleList: View {
 		VStack(spacing: .s) {
 			ForEach(GameRule.allCases, id: \.rawValue) { rule in
 				Button(action: {
-					self.viewModel.postViewAction(.presentInformation(.rule(rule)))
+					viewModel.postViewAction(.presentInformation(.rule(rule)))
 				}, label: {
 					Text(rule.title)
 						.font(.body)

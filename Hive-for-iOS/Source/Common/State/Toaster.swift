@@ -34,9 +34,9 @@ struct LoafModifier: ViewModifier {
 		content
 			.loaf($loaf)
 			.onReceive(loafUpdate) {
-				guard !self.presentedLoafs.contains($0) else { return }
-				self.presentedLoafs.insert($0)
-				self.loaf = $0.build()
+				guard !presentedLoafs.contains($0) else { return }
+				presentedLoafs.insert($0)
+				loaf = $0.build()
 			}
 	}
 

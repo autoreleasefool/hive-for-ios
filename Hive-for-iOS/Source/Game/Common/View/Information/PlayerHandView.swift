@@ -21,7 +21,7 @@ struct PlayerHandView: View {
 
 		return VStack(alignment: .leading, spacing: .m) {
 			ForEach(rows.indices) {
-				self.pieceRow(pieces: rows[$0])
+				pieceRow(pieces: rows[$0])
 			}
 		}
 	}
@@ -29,7 +29,7 @@ struct PlayerHandView: View {
 	private func pieceRow(pieces: [Piece.Class]) -> some View {
 		HStack(spacing: .m) {
 			ForEach(pieces.indices) { index in
-				self.piece(pieceClass: pieces[index])
+				piece(pieceClass: pieces[index])
 			}
 			Spacer()
 		}
@@ -37,12 +37,12 @@ struct PlayerHandView: View {
 
 	private func piece(pieceClass: Piece.Class) -> some View {
 		Button(action: {
-			self.viewModel.postViewAction(.closeInformation(withFeedback: false))
-			if self.didLongPress {
-				self.didLongPress = false
-				self.viewModel.postViewAction(.enquiredFromHand(pieceClass))
+			viewModel.postViewAction(.closeInformation(withFeedback: false))
+			if didLongPress {
+				didLongPress = false
+				viewModel.postViewAction(.enquiredFromHand(pieceClass))
 			} else {
-				self.viewModel.postViewAction(.selectedFromHand(self.hand.player, pieceClass))
+				viewModel.postViewAction(.selectedFromHand(hand.player, pieceClass))
 			}
 		}, label: {
 			Image(uiImage: pieceClass.image)

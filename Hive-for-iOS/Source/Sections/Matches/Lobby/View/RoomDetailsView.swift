@@ -63,7 +63,7 @@ struct RoomDetailsView: View {
 			HStack(spacing: .l) {
 				Spacer()
 				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-					self.expansionOption(for: option, enabled: self.gameOptionBinding(option).wrappedValue)
+					expansionOption(for: option, enabled: gameOptionBinding(option).wrappedValue)
 				}
 				Spacer()
 			}
@@ -72,7 +72,7 @@ struct RoomDetailsView: View {
 
 	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
 		Button(action: {
-			self.gameOptionBinding(option).wrappedValue.toggle()
+			gameOptionBinding(option).wrappedValue.toggle()
 		}, label: {
 			ZStack {
 				Text(name(forOption: option))
@@ -99,8 +99,8 @@ struct RoomDetailsView: View {
 		VStack(alignment: .leading) {
 			optionSectionHeader(title: "Match options")
 			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
-				Toggle(self.name(forOption: option), isOn: self.matchOptionBinding(option))
-					.disabled(self.optionsDisabled)
+				Toggle(name(forOption: option), isOn: matchOptionBinding(option))
+					.disabled(optionsDisabled)
 					.foregroundColor(Color(.textRegular))
 			}
 		}
@@ -110,8 +110,8 @@ struct RoomDetailsView: View {
 		VStack(alignment: .leading) {
 			optionSectionHeader(title: "Other options")
 			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
-				Toggle(self.name(forOption: option), isOn: self.gameOptionBinding(option))
-					.disabled(self.optionsDisabled)
+				Toggle(name(forOption: option), isOn: gameOptionBinding(option))
+					.disabled(optionsDisabled)
 					.foregroundColor(Color(.textRegular))
 			}
 		}

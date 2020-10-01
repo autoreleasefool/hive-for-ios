@@ -36,20 +36,20 @@ struct Game: View {
 			GameHUD()
 				.environmentObject(viewModel)
 		}
-		.onAppear { self.viewModel.userId = self.container.account?.userId }
-		.onReceive(viewModel.$state) { self.handleTransition(to: $0) }
+		.onAppear { viewModel.userId = container.account?.userId }
+		.onReceive(viewModel.$state) { handleTransition(to: $0) }
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
 		.navigationBarBackButtonHidden(true)
 		.onAppear {
 			UIApplication.shared.isIdleTimerDisabled = true
-			self.viewModel.userId = self.container.account?.userId
-			self.viewModel.clientInteractor = self.container.interactors.clientInteractor
-			self.viewModel.postViewAction(.onAppear)
+			viewModel.userId = container.account?.userId
+			viewModel.clientInteractor = container.interactors.clientInteractor
+			viewModel.postViewAction(.onAppear)
 		}
 		.onDisappear {
 			UIApplication.shared.isIdleTimerDisabled = true
-			self.viewModel.postViewAction(.onDisappear)
+			viewModel.postViewAction(.onDisappear)
 		}
 	}
 

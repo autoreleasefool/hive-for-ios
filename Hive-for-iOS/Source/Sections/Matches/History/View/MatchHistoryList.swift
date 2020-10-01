@@ -29,11 +29,11 @@ struct MatchHistoryList: View {
 				.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)
-				.onReceive(userUpdates) { self.user = $0 }
-				.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
+				.onReceive(userUpdates) { user = $0 }
+				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 				.sheet(isPresented: $viewModel.settingsOpened) {
-					SettingsList(isOpen: self.$viewModel.settingsOpened)
-						.inject(self.container)
+					SettingsList(isOpen: $viewModel.settingsOpened)
+						.inject(container)
 				}
 
 			noRoomSelectedState
@@ -53,7 +53,7 @@ struct MatchHistoryList: View {
 
 	private var notLoadedView: some View {
 		Text("")
-			.onAppear { self.viewModel.postViewAction(.onAppear) }
+			.onAppear { viewModel.postViewAction(.onAppear) }
 	}
 
 	private func loadedView(_ user: User?) -> some View {
@@ -64,11 +64,11 @@ struct MatchHistoryList: View {
 				List {
 					ForEach(ListSection.allCases, id: \.rawValue) { section in
 						Section(header: section.header) {
-							if self.viewModel.matches(for: section, fromUser: user).count == 0 {
+							if viewModel.matches(for: section, fromUser: user).count == 0 {
 								section.emptyState
 							} else {
-								ForEach(self.viewModel.matches(for: section, fromUser: user)) { match in
-									NavigationLink(destination: self.details(for: match)) {
+								ForEach(viewModel.matches(for: section, fromUser: user)) { match in
+									NavigationLink(destination: details(for: match)) {
 										HistoryRow(match: match)
 									}
 								}
@@ -86,7 +86,7 @@ struct MatchHistoryList: View {
 
 	private var settingsButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.openSettings)
+			viewModel.postViewAction(.openSettings)
 		}, label: {
 			Image(systemName: "gear")
 				.imageScale(.large)
@@ -160,7 +160,7 @@ extension MatchHistoryList {
 			header: "No matches found",
 			message: "Try playing a match and when you're finished, you'll find it here. You'll also be able to see " +
 				"your incomplete matches",
-			action: .init(text: "Refresh") { self.loadMatchHistory() }
+			action: .init(text: "Refresh") { loadMatchHistory() }
 		)
 	}
 
@@ -168,7 +168,7 @@ extension MatchHistoryList {
 		EmptyState(
 			header: "An error occurred",
 			message: "We can't fetch your history right now.\n\(viewModel.errorMessage(from: error))",
-			action: .init(text: "Refresh") { self.loadMatchHistory() }
+			action: .init(text: "Refresh") { loadMatchHistory() }
 		)
 	}
 

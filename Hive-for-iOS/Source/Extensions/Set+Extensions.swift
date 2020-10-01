@@ -9,9 +9,9 @@
 extension Set {
 	mutating func set(_ value: Element, to included: Bool) {
 		if included {
-			self.insert(value)
+			insert(value)
 		} else {
-			self.remove(value)
+			remove(value)
 		}
 	}
 

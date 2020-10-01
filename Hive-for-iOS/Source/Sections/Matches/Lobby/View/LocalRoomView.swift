@@ -26,17 +26,17 @@ struct LocalRoomView: View {
 			.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
 			.navigationBarBackButtonHidden(true)
 			.navigationBarItems(leading: exitButton, trailing: startButton)
-			.onReceive(viewModel.actionsPublisher) { self.handleAction($0) }
+			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.popoverSheet(isPresented: $viewModel.exiting) {
 				PopoverSheetConfig(
 					title: "Leave match?",
 					message: "Are you sure you want to leave this match?",
 					buttons: [
 						PopoverSheetConfig.ButtonConfig(title: "Leave", type: .destructive) {
-							self.viewModel.postViewAction(.exitMatch)
+							viewModel.postViewAction(.exitMatch)
 						},
 						PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {
-							self.viewModel.postViewAction(.dismissExit)
+							viewModel.postViewAction(.dismissExit)
 						},
 					]
 				)
@@ -54,7 +54,7 @@ struct LocalRoomView: View {
 	}
 
 	private var notLoadedView: some View {
-		Text("").onAppear { self.viewModel.postViewAction(.createMatch) }
+		Text("").onAppear { viewModel.postViewAction(.createMatch) }
 	}
 
 	private func loadedView(_ match: Match) -> some View {
@@ -75,7 +75,7 @@ struct LocalRoomView: View {
 		EmptyState(
 			header: "An error occurred",
 			message: "We can't create this match right now.",
-			action: .init(text: "Refresh") { self.viewModel.postViewAction(.createMatch) }
+			action: .init(text: "Refresh") { viewModel.postViewAction(.createMatch) }
 		)
 	}
 
@@ -83,7 +83,7 @@ struct LocalRoomView: View {
 
 	private var exitButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.requestExit)
+			viewModel.postViewAction(.requestExit)
 		}, label: {
 			Text("Leave")
 		})
@@ -91,7 +91,7 @@ struct LocalRoomView: View {
 
 	private var startButton: some View {
 		Button(action: {
-			self.viewModel.postViewAction(.startGame)
+			viewModel.postViewAction(.startGame)
 		}, label: {
 			Text("Start")
 		})

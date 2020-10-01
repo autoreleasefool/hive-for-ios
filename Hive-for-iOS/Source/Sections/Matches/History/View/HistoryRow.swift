@@ -17,12 +17,12 @@ struct HistoryRow: View {
 			HStack(spacing: .m) {
 				UserPreview(
 					match.host?.summary,
-					highlight: self.isWinner(user: match.host?.id)
+					highlight: isWinner(user: match.host?.id)
 				)
 				Spacer()
 				UserPreview(
 					match.opponent?.summary,
-					highlight: self.isWinner(user: match.opponent?.id),
+					highlight: isWinner(user: match.opponent?.id),
 					alignment: .trailing
 				)
 			}

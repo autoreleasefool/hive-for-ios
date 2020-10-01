@@ -14,8 +14,8 @@ struct PieceStack: View {
 
 	func row(piece: Piece) -> some View {
 		Button(action: {
-			self.viewModel.postViewAction(.closeInformation(withFeedback: false))
-			self.viewModel.postViewAction(.tappedPiece(piece))
+			viewModel.postViewAction(.closeInformation(withFeedback: false))
+			viewModel.postViewAction(.tappedPiece(piece))
 		}, label: {
 			HStack(spacing: .m) {
 				Image(uiImage: piece.class.image)
