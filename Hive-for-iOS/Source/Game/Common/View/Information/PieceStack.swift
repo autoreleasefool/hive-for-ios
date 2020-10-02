@@ -13,10 +13,10 @@ struct PieceStack: View {
 	let stack: [Piece]
 
 	func row(piece: Piece) -> some View {
-		Button(action: {
+		Button {
 			viewModel.postViewAction(.closeInformation(withFeedback: false))
 			viewModel.postViewAction(.tappedPiece(piece))
-		}, label: {
+		} label: {
 			HStack(spacing: .m) {
 				Image(uiImage: piece.class.image)
 					.renderingMode(.template)
@@ -35,7 +35,7 @@ struct PieceStack: View {
 						.foregroundColor(Color(.textSecondary))
 				}
 			}
-		})
+		}
 		.frame(minWidth: 0, maxWidth: .infinity)
 	}
 

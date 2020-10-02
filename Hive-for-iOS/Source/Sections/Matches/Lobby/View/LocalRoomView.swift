@@ -83,19 +83,19 @@ struct LocalRoomView: View {
 	// MARK: Buttons
 
 	private var exitButton: some View {
-		Button(action: {
+		Button {
 			viewModel.postViewAction(.requestExit)
-		}, label: {
+		} label: {
 			Text("Leave")
-		})
+		}
 	}
 
 	private var startButton: some View {
-		Button(action: {
+		Button {
 			viewModel.postViewAction(.startGame)
-		}, label: {
+		} label: {
 			Text("Start")
-		})
+		}
 	}
 }
 

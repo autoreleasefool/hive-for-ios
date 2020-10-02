@@ -29,14 +29,14 @@ struct PopoverSheetConfig {
 		}
 
 		func popoverButton(isPresented: Binding<Bool>) -> some View {
-			Button(action: {
+			Button {
 				isPresented.wrappedValue = false
 				DispatchQueue.main.async {
 					action()
 				}
-			}, label: {
+			} label: {
 				Text(title)
-			})
+			}
 		}
 
 		func alertAction() -> UIAlertAction {

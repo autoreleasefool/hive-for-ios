@@ -87,38 +87,34 @@ struct LobbyList: View {
 		Group {
 			NavigationLink(
 				destination: OnlineRoomView(id: viewModel.currentMatchId, creatingNewMatch: false),
-				isActive: viewModel.joiningMatch,
-				label: { EmptyView() }
-			)
+				isActive: viewModel.joiningMatch
+			) { EmptyView() }
 
 			NavigationLink(
 				destination: OnlineRoomView(id: nil, creatingNewMatch: true),
-				isActive: $viewModel.creatingOnlineRoom,
-				label: { EmptyView() }
-			)
+				isActive: $viewModel.creatingOnlineRoom
+			) { EmptyView() }
 
 			NavigationLink(
 				destination: AgentPicker(isActive: $viewModel.creatingLocalRoom),
-				isActive: $viewModel.creatingLocalRoom,
-				label: { EmptyView() }
-			)
+				isActive: $viewModel.creatingLocalRoom
+			) { EmptyView() }
 
 			NavigationLink(
 				destination: SpectatorRoomView(id: viewModel.currentSpectatingMatchId),
-				isActive: viewModel.spectatingMatch,
-				label: { EmptyView() }
-			)
+				isActive: viewModel.spectatingMatch
+			) { EmptyView() }
 
 			if !loading && matches.count == 0 {
 				emptyState
 			} else {
 				List {
 					ForEach(matches) { match in
-						Button(action: {
+						Button {
 							viewModel.postViewAction(.joinMatch(match.id))
-						}, label: {
+						} label: {
 							LobbyRow(match: match)
-						})
+						}
 					}
 				}
 				.listStyle(PlainListStyle())
@@ -143,13 +139,13 @@ struct LobbyList: View {
 		if viewModel.spectating {
 			EmptyView()
 		} else {
-			Button(action: {
+			Button {
 				viewModel.postViewAction(.createNewMatch)
-			}, label: {
+			} label: {
 				Image(systemName: "plus")
 					.imageScale(.large)
 					.accessibility(label: Text("Create Match"))
-			})
+			}
 		}
 	}
 
@@ -158,13 +154,13 @@ struct LobbyList: View {
 		if viewModel.spectating {
 			EmptyView()
 		} else {
-			Button(action: {
+			Button {
 				viewModel.postViewAction(.openSettings)
-			}, label: {
+			} label: {
 				Image(systemName: "gear")
 					.imageScale(.large)
 					.accessibility(label: Text("Settings"))
-			})
+			}
 		}
 	}
 }

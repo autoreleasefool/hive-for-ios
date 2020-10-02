@@ -36,7 +36,7 @@ struct PlayerHandView: View {
 	}
 
 	private func piece(pieceClass: Piece.Class) -> some View {
-		Button(action: {
+		Button {
 			viewModel.postViewAction(.closeInformation(withFeedback: false))
 			if didLongPress {
 				didLongPress = false
@@ -44,13 +44,13 @@ struct PlayerHandView: View {
 			} else {
 				viewModel.postViewAction(.selectedFromHand(hand.player, pieceClass))
 			}
-		}, label: {
+		} label: {
 			Image(uiImage: pieceClass.image)
 				.renderingMode(.template)
 				.resizable()
 				.scaledToFit()
 				.squareImage(.l)
 				.foregroundColor(Color(hand.player.color))
-		})
+		}
 	}
 }

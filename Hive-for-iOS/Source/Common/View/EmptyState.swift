@@ -43,7 +43,6 @@ struct EmptyState: View {
 				Spacer()
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
-//			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 		}
 	}
 
@@ -73,7 +72,7 @@ struct EmptyState: View {
 	}
 
 	private func actionButton(action: Action) -> some View {
-		BasicButton<Never>(action.text) { action.callback() }
+		PrimaryButton(action.text) { action.callback() }
 	}
 }
 

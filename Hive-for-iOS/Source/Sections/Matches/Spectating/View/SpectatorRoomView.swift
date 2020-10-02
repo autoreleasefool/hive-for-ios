@@ -73,11 +73,11 @@ struct SpectatorRoomView: View {
 	// MARK: Buttons
 
 	private var cancelButton: some View {
-		Button(action: {
+		Button {
 			viewModel.postViewAction(.cancel)
-		}, label: {
+		} label: {
 			Text("Cancel")
-		})
+		}
 	}
 }
 

@@ -93,7 +93,7 @@ struct LoginSignupForm: View {
 	}
 
 	private var submitButton: some View {
-		BasicButton<Never>(viewModel.submitButtonText) {
+		PrimaryButton(viewModel.submitButtonText) {
 			viewModel.postViewAction(.submitForm)
 		}
 	}
@@ -103,13 +103,13 @@ struct LoginSignupForm: View {
 			Text("you can also ")
 				.font(.caption)
 				.foregroundColor(Color(.textRegular))
-			Button(action: {
+			Button {
 				viewModel.postViewAction(.toggleForm)
-			}, label: {
+			} label: {
 				Text(viewModel.toggleButtonText)
 					.font(.caption)
 					.foregroundColor(Color(.highlightPrimary))
-			})
+			}
 		}
 		.padding(.top, length: .s)
 		.padding(.bottom, length: .xs)
@@ -120,13 +120,13 @@ struct LoginSignupForm: View {
 			Text("or")
 				.font(.caption)
 				.foregroundColor(Color(.textRegular))
-			Button(action: {
+			Button {
 				viewModel.postViewAction(.exitForm)
-			}, label: {
+			} label: {
 				Text(" exit ")
 					.font(.caption)
 					.foregroundColor(Color(.highlightPrimary))
-			})
+			}
 			Text("to main menu")
 				.font(.caption)
 				.foregroundColor(Color(.textRegular))

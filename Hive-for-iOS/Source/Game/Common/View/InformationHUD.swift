@@ -98,22 +98,22 @@ struct InformationHUD: View {
 			PlayerHandView(hand: hand)
 		case .rule(let rule):
 			if rule != nil {
-				Button(action: {
+				Button {
 					viewModel.postViewAction(.presentInformation(.rule(nil)))
-				}, label: {
+				} label: {
 					Text("See all rules")
 						.foregroundColor(Color(.highlightPrimary))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-				})
+				}
 			} else {
 				RuleList()
 			}
 		case .gameEnd:
-			BasicButton<Never>("Return to lobby") {
+			PrimaryButton("Return to lobby") {
 				viewModel.postViewAction(.returnToLobby)
 			}
 		case .playerMustPass:
-			BasicButton<Never>("Pass turn") {
+			PrimaryButton("Pass turn") {
 				viewModel.postViewAction(.closeInformation(withFeedback: false))
 			}
 		case .settings:
@@ -124,7 +124,7 @@ struct InformationHUD: View {
 	}
 
 	private var closeButton: some View {
-		BasicButton<Never>("Close") {
+		PrimaryButton("Close") {
 			viewModel.postViewAction(.closeInformation(withFeedback: true))
 		}
 		.buttonBackground(.backgroundLight)

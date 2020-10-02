@@ -70,19 +70,14 @@ struct SettingsList: View {
 						 }
 					 },
 					content: {
-						Link(
-							destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!,
-							label: {
-								Text("View Source")
-						})
+						Link(destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!) {
+							Text("View Source")
+						}
 						.buttonStyle(PlainButtonStyle())
 
-						NavigationLink(
-							destination: AttributionsList(),
-							label: {
-								Text("Attributions")
-							}
-						)
+						NavigationLink(destination: AttributionsList()) {
+							Text("Attributions")
+						}
 					}
 				)
 			}
@@ -103,15 +98,15 @@ struct SettingsList: View {
 		selected: I,
 		onTap: @escaping (I) -> Void
 	) -> some View where I: Identifiable, I: CustomStringConvertible {
-		Button(action: {
+		Button {
 			onTap(selected)
-		}, label: {
+		} label: {
 			HStack {
 				Text(title)
 				Spacer()
 				Text(selected.description)
 			}
-		})
+		}
 		.buttonStyle(PlainButtonStyle())
 	}
 
@@ -121,24 +116,24 @@ struct SettingsList: View {
 	private var logoutButton: some View {
 		switch viewModel.logoutResult {
 		case .notLoaded, .failed, .loaded:
-			BasicButton<Never>("Logout") {
+			PrimaryButton("Logout") {
 				viewModel.postViewAction(.logout)
 			}
 		case .loading:
-			BasicButton(action: {
+			BasicButton {
 				viewModel.postViewAction(.logout)
-			}, label: {
+			} label: {
 				ActivityIndicator(isAnimating: true, style: .medium)
-			})
+			}
 		}
 	}
 
 	private var doneButton: some View {
-		Button(action: {
+		Button {
 			viewModel.postViewAction(.exit)
-		}, label: {
+		} label: {
 			Text("Done")
-		})
+		}
 	}
 
 	// MARK: Features

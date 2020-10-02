@@ -63,15 +63,15 @@ struct EmojiHUD: View {
 			Group {
 				VStack(alignment: .center, spacing: .m) {
 					ForEach(Emoji.allCases.indices) { index in
-						Button(action: {
+						Button {
 							viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
-						}, label: {
+						} label: {
 							Image(uiImage: Emoji.allCases[index].image ?? UIImage())
 								.resizable()
 								.aspectRatio(contentMode: .fit)
 								.squareImage(.l)
 								.clipShape(Circle())
-						})
+						}
 					}
 				}
 				.padding(.vertical, length: .m)

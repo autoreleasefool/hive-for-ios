@@ -81,13 +81,13 @@ struct ProfileView: View {
 	}
 
 	private var settingsButton: some View {
-		Button(action: {
+		Button {
 			viewModel.postViewAction(.openSettings)
-		}, label: {
+		} label: {
 			Image(systemName: "gear")
 				.imageScale(.large)
 				.accessibility(label: Text("Settings"))
-		})
+		}
 	}
 }
 

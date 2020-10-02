@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+typealias PrimaryButton = BasicButton<Never>
+
 struct BasicButton<Label>: View where Label: View {
 	private let label: Label?
 	private let title: String?
@@ -49,7 +51,7 @@ struct BasicButton<Label>: View where Label: View {
 // MARK: - Modifiers
 
 extension BasicButton where Label == Never {
-	func buttonBackground(_ color: ColorAsset) -> BasicButton<Never> {
+	func buttonBackground(_ color: ColorAsset) -> PrimaryButton {
 		var button = self
 		button.background = color
 		return button
@@ -62,10 +64,12 @@ extension BasicButton where Label == Never {
 struct BasicButtonPreview: PreviewProvider {
 	static var previews: some View {
 		VStack {
-			BasicButton<Never>("Logout") { }
-			BasicButton(action: { }, label: {
+			PrimaryButton("Logout") { }
+			BasicButton {
+				// Does nothing
+			} label: {
 				Image(uiImage: UIImage(systemName: "clock")!)
-			})
+			}
 		}
 	}
 }

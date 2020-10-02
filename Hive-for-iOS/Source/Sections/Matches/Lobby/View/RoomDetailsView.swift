@@ -71,9 +71,9 @@ struct RoomDetailsView: View {
 	}
 
 	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
-		Button(action: {
+		Button {
 			gameOptionBinding(option).wrappedValue.toggle()
-		}, label: {
+		} label: {
 			ZStack {
 				Text(name(forOption: option))
 					.font(.headline)
@@ -91,7 +91,7 @@ struct RoomDetailsView: View {
 					)
 					.squareImage(.l)
 			}
-		})
+		}
 		.disabled(optionsDisabled)
 	}
 

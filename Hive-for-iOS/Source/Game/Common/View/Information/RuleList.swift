@@ -14,15 +14,15 @@ struct RuleList: View {
 	var body: some View {
 		VStack(spacing: .s) {
 			ForEach(GameRule.allCases, id: \.rawValue) { rule in
-				Button(action: {
+				Button {
 					viewModel.postViewAction(.presentInformation(.rule(rule)))
-				}, label: {
+				} label: {
 					Text(rule.title)
 						.font(.body)
 						.foregroundColor(Color(.highlightPrimary))
 						.padding(.vertical, length: .xs)
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-				})
+				}
 			}
 		}
 	}
