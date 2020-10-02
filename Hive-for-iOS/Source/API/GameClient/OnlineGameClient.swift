@@ -16,6 +16,7 @@ class OnlineGameClient: GameClient {
 	private var url: URL?
 	private var account: Account?
 	private var webSocket: URLSessionWebSocketTask?
+	private var pingTimer: Timer?
 	private lazy var session = URLSession(configuration: .default)
 
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
@@ -88,6 +89,7 @@ class OnlineGameClient: GameClient {
 		account?.applyAuth(to: &request)
 		webSocket = session.webSocketTask(with: request)
 		setupWebSocketReceiver()
+		setupPingTimer()
 
 		webSocket?.resume()
 		return publisher.eraseToAnyPublisher()
@@ -110,7 +112,20 @@ class OnlineGameClient: GameClient {
 		}
 	}
 
+	private func cancelPingTimer() {
+		pingTimer?.invalidate()
+		pingTimer = nil
+	}
+
+	private func setupPingTimer() {
+		cancelPingTimer()
+		pingTimer = Timer(timeInterval: 30, repeats: true) { [weak self] _ in
+			self?.webSocket?.sendPing { _ in }
+		}
+	}
+
 	func close() {
+		cancelPingTimer()
 		webSocket?.cancel(with: .normalClosure, reason: nil)
 		subject?.send(completion: .finished)
 		subject = nil
