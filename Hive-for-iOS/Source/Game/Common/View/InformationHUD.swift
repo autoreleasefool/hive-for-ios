@@ -63,7 +63,7 @@ struct InformationHUD: View {
 		return VStack(alignment: .leading, spacing: .s) {
 			Text(information.title)
 				.font(.headline)
-				.foregroundColor(Color(.textRegular))
+				.foregroundColor(Color(.gameTextRegular))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 
 			if subtitle != nil {
@@ -77,7 +77,7 @@ struct InformationHUD: View {
 				} else {
 					Text(subtitle!)
 						.font(.body)
-						.foregroundColor(Color(.textRegular))
+						.foregroundColor(Color(.gameTextRegular))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 				}
 			}

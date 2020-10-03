@@ -20,7 +20,7 @@ struct GameHUD: View {
 	private func stateIndicator(_ geometry: GeometryProxy) -> some View {
 		Text(viewModel.displayState)
 			.font(.body)
-			.foregroundColor(Color(.textRegular))
+			.foregroundColor(Color(.gameTextRegular))
 			.position(
 				x: geometry.size.width / 2,
 				y: geometry.size.height - (buttonSize + Metrics.Spacing.xl + Metrics.Spacing.m.rawValue)
@@ -35,7 +35,7 @@ struct GameHUD: View {
 			Image(uiImage: ImageAsset.Icon.info)
 				.resizable()
 				.renderingMode(.template)
-				.foregroundColor(Color(.textSecondary))
+				.foregroundColor(Color(.gameTextSecondary))
 				.squareImage(.l)
 		}
 		.position(
@@ -68,7 +68,7 @@ struct GameHUD: View {
 			Image(uiImage: ImageAsset.Icon.smiley)
 				.resizable()
 				.renderingMode(.template)
-				.foregroundColor(Color(.textSecondary))
+				.foregroundColor(Color(.gameTextSecondary))
 				.squareImage(.l)
 		}
 		.position(

@@ -115,7 +115,6 @@ struct LoginSignupForm: View {
 		HStack(spacing: 0) {
 			Text("or")
 				.font(.caption)
-				.foregroundColor(Color(.textRegular))
 			Button {
 				viewModel.postViewAction(.exitForm)
 			} label: {
@@ -125,7 +124,6 @@ struct LoginSignupForm: View {
 			}
 			Text("to main menu")
 				.font(.caption)
-				.foregroundColor(Color(.textRegular))
 		}
 		.padding(.top)
 	}

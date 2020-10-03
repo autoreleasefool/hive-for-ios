@@ -32,15 +32,15 @@ enum Theme {
 	}
 
 	static func applyMarkdownTheme(to markdown: SwiftyMarkdown) {
-		markdown.body.color = UIColor(.textRegular)
-		markdown.h1.color = UIColor(.textRegular)
-		markdown.h2.color = UIColor(.textRegular)
-		markdown.h3.color = UIColor(.textRegular)
-		markdown.h4.color = UIColor(.textRegular)
-		markdown.h5.color = UIColor(.textRegular)
-		markdown.h6.color = UIColor(.textRegular)
-		markdown.blockquotes.color = UIColor(.textRegular)
-		markdown.code.color = UIColor(.textRegular)
+		markdown.body.color = UIColor(.gameTextRegular)
+		markdown.h1.color = UIColor(.gameTextRegular)
+		markdown.h2.color = UIColor(.gameTextRegular)
+		markdown.h3.color = UIColor(.gameTextRegular)
+		markdown.h4.color = UIColor(.gameTextRegular)
+		markdown.h5.color = UIColor(.gameTextRegular)
+		markdown.h6.color = UIColor(.gameTextRegular)
+		markdown.blockquotes.color = UIColor(.gameTextRegular)
+		markdown.code.color = UIColor(.gameTextRegular)
 		markdown.link.color = UIColor(.highlightPrimary)
 	}
 }

@@ -52,17 +52,21 @@ enum ColorAsset: String {
 	case backgroundRegular = "Colors/Background"
 	case backgroundLight = "Colors/BackgroundLight"
 	case backgroundDark = "Colors/BackgroundDark"
-	case backgroundSectionHeader = "Colors/BackgroundSectionHeader"
 
 	case highlightPrimary = "Colors/Primary"
 	case highlightRegular = "Colors/Highlight"
 	case highlightDestructive = "Colors/Destructive"
 	case highlightSuccess = "Colors/Success"
 
-	case textRegular = "Colors/Text"
-	case textSecondary = "Colors/TextSecondary"
-	case textContrasting = "Colors/TextContrasting"
-	case textContrastingSecondary = "Colors/TextContrastingSecondary"
+	case textRegular = "Colors/Text/Text"
+	case textSecondary = "Colors/Text/TextSecondary"
+	case textContrasting = "Colors/Text/TextContrasting"
+	case textContrastingSecondary = "Colors/Text/TextContrastingSecondary"
+
+	case gameTextRegular = "Colors/GameText/Text"
+	case gameTextSecondary = "Colors/GameText/TextSecondary"
+	case gameTextContrasting = "Colors/GameText/TextContrasting"
+	case gameTextContrastingSecondary = "Colors/GameText/TextContrastingSecondary"
 
 	case dividerRegular = "Colors/Divider"
 
