@@ -54,7 +54,7 @@ struct InformationHUD: View {
 				closeButton
 			}
 		}
-		.padding(.horizontal, length: .m)
+		.padding(.horizontal)
 	}
 
 	private func header(information: GameInformation) -> some View {

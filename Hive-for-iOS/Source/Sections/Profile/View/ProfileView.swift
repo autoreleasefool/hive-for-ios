@@ -63,7 +63,7 @@ struct ProfileView: View {
 				ActivityIndicator(isAnimating: true, style: .large)
 				Spacer()
 			}
-			.padding(.top, length: .m)
+			.padding()
 			.frame(width: geometry.size.width)
 		}
 	}

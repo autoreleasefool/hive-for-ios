@@ -23,22 +23,23 @@ struct EmptyState: View {
 
 	var body: some View {
 		GeometryReader { geometry in
-			VStack(spacing: .m) {
+			VStack(spacing: 0) {
 				Spacer()
 
 				if image != nil {
 					emptyStateImage(image!, geometry)
+						.padding(.horizontal)
 				}
 
-				VStack(spacing: .s) {
+				VStack {
 					header
 					message
 				}
-				.padding(.horizontal, length: .m)
+				.padding()
 
 				if action != nil {
 					actionButton(action: action!)
-						.padding(.horizontal, length: .m)
+						.padding(.horizontal)
 				}
 				Spacer()
 			}
@@ -53,13 +54,13 @@ struct EmptyState: View {
 			.resizable()
 			.scaledToFit()
 			.frame(maxWidth: geometry.size.width, alignment: .center)
+			.padding(.horizontal)
 	}
 
 	private var header: some View {
 		Text(headerText)
 			.font(.headline)
 			.multilineTextAlignment(.center)
-			.foregroundColor(Color(.textRegular))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}
 
@@ -67,7 +68,6 @@ struct EmptyState: View {
 		Text(messageText)
 			.font(.body)
 			.multilineTextAlignment(.center)
-			.foregroundColor(Color(.textSecondary))
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}
 
@@ -95,7 +95,6 @@ struct EmptyStatePreview: PreviewProvider {
 			image: ImageAsset.joseph,
 			action: EmptyState.Action(text: "Refresh", callback: { })
 		)
-			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

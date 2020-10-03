@@ -42,10 +42,10 @@ struct LobbyRow: View {
 	var body: some View {
 		HStack(spacing: .m) {
 			UserPreview(match.host?.summary)
+				.foregroundColor(Color(.textRegular))
 			Spacer()
 			optionsPreview(for: match.gameOptionSet)
 		}
-		.padding(.vertical, length: .m)
 	}
 }
 
@@ -66,7 +66,6 @@ private extension GameState.Option {
 struct LobbyRowPreview: PreviewProvider {
 	static var previews: some View {
 		LobbyRow(match: Match.matches[0])
-			.background(Color(.backgroundRegular))
 	}
 }
 #endif

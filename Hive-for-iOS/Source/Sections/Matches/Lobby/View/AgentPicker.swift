@@ -16,16 +16,13 @@ struct AgentPicker: View {
 		List {
 			ForEach(AgentConfiguration.allCases.filter { $0.isEnabled(in: container.features) }) { computer in
 				NavigationLink(destination: LocalRoomView(opponent: computer)) {
-					HStack(spacing: .m) {
-						Text(computer.name)
-							.font(.body)
-							.foregroundColor(Color(.textRegular))
-					}
+					Text(computer.name)
+						.font(.body)
+						.padding(.vertical)
 				}
 			}
 		}
-		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
-		.listRowInsets(EdgeInsets(equalTo: .m))
+		.listStyle(InsetGroupedListStyle())
 		.navigationBarTitle("Pick an opponent")
 	}
 }

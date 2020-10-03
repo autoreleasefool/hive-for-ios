@@ -25,7 +25,6 @@ struct OnlineRoomView: View {
 		GeometryReader { geometry in
 			content(geometry)
 		}
-		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 		.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
 		.navigationBarBackButtonHidden(true)
 		.navigationBarItems(leading: exitButton, trailing: startButton)
@@ -71,7 +70,7 @@ struct OnlineRoomView: View {
 					ActivityIndicator(isAnimating: true, style: .large)
 					Spacer()
 				}
-				.padding(.top, length: .m)
+				.padding(.top)
 				.frame(width: geometry.size.width)
 			} else {
 				if viewModel.reconnecting {
@@ -92,20 +91,17 @@ struct OnlineRoomView: View {
 	}
 
 	private func reconnectingView(_ geometry: GeometryProxy) -> some View {
-		VStack(spacing: .m) {
+		VStack {
 			Text("The connection to the server was lost.\nPlease wait while we try to reconnect you.")
-				.multilineTextAlignment(.center)
 				.font(.body)
-				.foregroundColor(Color(.textRegular))
+				.multilineTextAlignment(.center)
 			ActivityIndicator(isAnimating: true, style: .large)
 			Text(viewModel.reconnectingMessage)
-				.multilineTextAlignment(.center)
 				.font(.body)
-				.foregroundColor(Color(.textRegular))
+				.multilineTextAlignment(.center)
 			Spacer()
 		}
-		.padding(.all, length: .m)
-		.padding(.top, length: .xl)
+		.padding(.all)
 		.frame(width: geometry.size.width)
 	}
 

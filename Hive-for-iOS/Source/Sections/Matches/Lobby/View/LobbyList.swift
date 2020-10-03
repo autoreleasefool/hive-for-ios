@@ -109,15 +109,18 @@ struct LobbyList: View {
 				emptyState
 			} else {
 				List {
-					ForEach(matches) { match in
-						Button {
-							viewModel.postViewAction(.joinMatch(match.id))
-						} label: {
-							LobbyRow(match: match)
+					Section(header: Text("Open")) {
+						ForEach(matches) { match in
+							Button {
+								viewModel.postViewAction(.joinMatch(match.id))
+							} label: {
+								LobbyRow(match: match)
+							}
+							.padding(.vertical)
 						}
 					}
 				}
-				.listStyle(PlainListStyle())
+				.listStyle(InsetGroupedListStyle())
 				.onAppear {
 					viewModel.postViewAction(.onListAppear)
 				}
@@ -245,6 +248,7 @@ extension LobbyList {
 struct LobbyPreview: PreviewProvider {
 	static var previews: some View {
 		return LobbyList(spectating: false, matches: .loaded(Match.matches))
+			.preferredColorScheme(.light)
 	}
 }
 #endif

@@ -46,7 +46,6 @@ struct UserPreview: View {
 				userImage
 			}
 		}
-		.opacity(user == nil ? 0.7 : 1)
 	}
 
 	var primaryText: String {
@@ -59,7 +58,7 @@ struct UserPreview: View {
 	}
 
 	var userImage: some View {
-		let stroke: ColorAsset = user != nil && highlight ? .highlightSuccess : .highlightPrimary
+		let stroke: ColorAsset = user != nil && highlight ? .highlightPrimary : .backgroundRegular
 		return HexImage(url: user?.avatarURL, placeholder: ImageAsset.borderlessGlyph, stroke: stroke)
 			.placeholderTint(.highlightPrimary)
 			.squareImage(iconSize)
@@ -69,13 +68,11 @@ struct UserPreview: View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
 				.font(.body)
-				.foregroundColor(Color(.textRegular))
 				.multilineTextAlignment(textAlignment == .leading ? .leading : .trailing)
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if user != nil {
 				Text(secondaryText)
 					.font(.caption)
-					.foregroundColor(Color(.textSecondary))
 					.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			}
 		}
@@ -126,7 +123,6 @@ struct UserPreviewPreview: PreviewProvider {
 			}
 		}
 		.frame(width: UIScreen.main.bounds.width)
-		.background(Color(.backgroundRegular))
 	}
 }
 #endif

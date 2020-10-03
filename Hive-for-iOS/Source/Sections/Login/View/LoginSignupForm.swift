@@ -22,7 +22,6 @@ struct LoginSignupForm: View {
 
 	var body: some View {
 		content
-			.padding(.all, length: .m)
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 	}
 
@@ -37,21 +36,21 @@ struct LoginSignupForm: View {
 	// MARK: Content
 
 	private var formView: some View {
-		ScrollView {
-			VStack(spacing: .m) {
-				if viewModel.shouldShowNotice {
-					notice(message: viewModel.noticeMessage)
-				}
+		Form {
+			if viewModel.shouldShowNotice {
+				notice(message: viewModel.noticeMessage)
+			}
 
-				field(for: .email)
-				if viewModel.form == .signup {
-					field(for: .displayName)
-				}
-				secureField(for: .password)
-				if viewModel.form == .signup {
-					secureField(for: .confirmPassword)
-				}
+			field(for: .email)
+			if viewModel.form == .signup {
+				field(for: .displayName)
+			}
+			secureField(for: .password)
+			if viewModel.form == .signup {
+				secureField(for: .confirmPassword)
+			}
 
+			VStack(alignment: .center) {
 				submitButton
 				toggleButton
 				cancelButton
@@ -66,7 +65,6 @@ struct LoginSignupForm: View {
 				ActivityIndicator(isAnimating: true, style: .large)
 				Spacer()
 			}
-			.padding(.top, length: .m)
 			.frame(width: geometry.size.width)
 		}
 	}
@@ -102,7 +100,6 @@ struct LoginSignupForm: View {
 		HStack(spacing: 0) {
 			Text("you can also ")
 				.font(.caption)
-				.foregroundColor(Color(.textRegular))
 			Button {
 				viewModel.postViewAction(.toggleForm)
 			} label: {
@@ -111,8 +108,7 @@ struct LoginSignupForm: View {
 					.foregroundColor(Color(.highlightPrimary))
 			}
 		}
-		.padding(.top, length: .s)
-		.padding(.bottom, length: .xs)
+		.padding(.top)
 	}
 
 	private var cancelButton: some View {
@@ -131,8 +127,7 @@ struct LoginSignupForm: View {
 				.font(.caption)
 				.foregroundColor(Color(.textRegular))
 		}
-		.padding(.top, length: .xs)
-		.padding(.bottom, length: .s)
+		.padding(.top)
 	}
 
 	private func notice(message: String) -> some View {
@@ -177,12 +172,7 @@ private extension LoginSignupForm {
 				.textContentType(id.textContentType)
 				.keyboardType(id.keyboardType)
 				.foregroundColor(Color(.textRegular))
-				.padding(.all, length: .m)
-				.frame(minWidth: 0, maxWidth: .infinity, minHeight: 48, maxHeight: 48)
-				.overlay(
-					RoundedRectangle(cornerRadius: .s)
-						.stroke(Color(.textRegular), lineWidth: 1)
-				)
+				.padding()
 		}
 	}
 }
@@ -196,7 +186,7 @@ struct LoginSignupPreview: PreviewProvider {
 			LoginSignupForm(defaultForm: .login)
 			LoginSignupForm(defaultForm: .signup)
 		}
-		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
+//		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

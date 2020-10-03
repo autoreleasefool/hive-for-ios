@@ -15,6 +15,7 @@ struct BasicButton<Label>: View where Label: View {
 	private let title: String?
 	private let action: () -> Void
 	private var background: ColorAsset = .highlightPrimary
+	private var foreground: ColorAsset = .white
 
 	init(_ title: String, action: @escaping () -> Void) {
 		self.title = title
@@ -35,8 +36,8 @@ struct BasicButton<Label>: View where Label: View {
 			} else {
 				Text(title ?? "")
 					.font(.body)
-					.foregroundColor(Color(.textRegular))
-					.padding(.vertical, length: .m)
+					.foregroundColor(Color(foreground))
+					.padding(.vertical)
 					.frame(minWidth: 0, maxWidth: .infinity)
 					.frame(height: 48)
 					.background(
@@ -54,6 +55,12 @@ extension BasicButton where Label == Never {
 	func buttonBackground(_ color: ColorAsset) -> PrimaryButton {
 		var button = self
 		button.background = color
+		return button
+	}
+
+	func buttonForeground(_ color: ColorAsset) -> PrimaryButton {
+		var button = self
+		button.foreground = color
 		return button
 	}
 }

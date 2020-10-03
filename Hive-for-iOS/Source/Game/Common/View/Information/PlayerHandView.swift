@@ -15,23 +15,10 @@ struct PlayerHandView: View {
 	@State private var didLongPress = false
 
 	var body: some View {
-		let totalSpaceForRow = UIScreen.main.bounds.width - Metrics.Spacing.m.rawValue
-		let tilesPerRow = Int(totalSpaceForRow / (Metrics.Image.l.rawValue + Metrics.Spacing.m.rawValue))
-		let rows = hand.piecesInHand.chunked(into: tilesPerRow)
-
-		return VStack(alignment: .leading, spacing: .m) {
-			ForEach(rows.indices) {
-				pieceRow(pieces: rows[$0])
+		LazyVGrid(columns: [GridItem(.adaptive(minimum: Metrics.Image.l.rawValue))]) {
+			ForEach(hand.piecesInHand.indices) {
+				piece(pieceClass: hand.piecesInHand[$0])
 			}
-		}
-	}
-
-	private func pieceRow(pieces: [Piece.Class]) -> some View {
-		HStack(spacing: .m) {
-			ForEach(pieces.indices) { index in
-				piece(pieceClass: pieces[index])
-			}
-			Spacer()
 		}
 	}
 
@@ -54,3 +41,14 @@ struct PlayerHandView: View {
 		}
 	}
 }
+
+// MARK: - Preview
+
+#if DEBUG
+struct PlayerHandViewPreview: PreviewProvider {
+	static var previews: some View {
+		PlayerHandView(hand: .init(player: .white, playingAs: .black, state: .init()))
+			.background(Color(.backgroundRegular))
+	}
+}
+#endif

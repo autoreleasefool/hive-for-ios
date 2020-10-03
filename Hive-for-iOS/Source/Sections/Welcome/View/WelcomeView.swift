@@ -16,37 +16,33 @@ struct WelcomeView: View {
 
 	var body: some View {
 		VStack {
-			HStack {
-				Spacer()
-			}
 			Spacer()
 
 			Image(uiImage: ImageAsset.glyph)
 				.foregroundColor(Color(.highlightPrimary))
 
-			Button("Play") {
+			PrimaryButton("Play") {
 				showWelcome = false
 			}
-			.font(.headline)
-			.foregroundColor(Color(.textRegular))
-			.padding(.m)
+			.buttonBackground(.backgroundLight)
+			.padding(.horizontal)
+			.padding(.bottom)
 
 			if container.has(feature: .offlineMode) {
-				Button("Play offline") {
+				PrimaryButton("Play offline") {
 					playingOffline = true
 					showWelcome = false
 				}
-				.font(.headline)
-				.foregroundColor(Color(.textRegular))
-				.padding(.m)
+				.buttonBackground(.backgroundLight)
+				.padding(.horizontal)
+				.padding(.bottom)
 			}
 
-			Button("Settings") {
+			PrimaryButton("Settings") {
 				showSettings = true
 			}
-			.font(.headline)
-			.foregroundColor(Color(.textRegular))
-			.padding(.m)
+			.buttonBackground(.backgroundLight)
+			.padding(.horizontal)
 
 			Spacer()
 		}
@@ -63,6 +59,7 @@ struct WelcomeViewPreview: PreviewProvider {
 			playingOffline: .constant(false),
 			showSettings: .constant(true)
 		)
+		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

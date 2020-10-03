@@ -28,7 +28,7 @@ struct SettingsList: View {
 
 	var body: some View {
 		NavigationView {
-			List {
+			Form {
 				if container.hasAny(of: [.arGameMode, .emojiReactions]) {
 					Section(header: Text("Game")) {
 						if !container.has(feature: .arGameMode) {
@@ -53,7 +53,7 @@ struct SettingsList: View {
 
 				if viewModel.showAccount {
 					Section(header: Text("Account")) {
-						VStack(spacing: .m) {
+						VStack {
 							UserPreview(userProfile.value?.summary)
 							logoutButton
 						}
@@ -64,7 +64,7 @@ struct SettingsList: View {
 					header: Text("About"),
 					footer: HStack {
 						Spacer()
-						 VStack(alignment: .trailing, spacing: .xs) {
+						 VStack(alignment: .trailing) {
 							 Text(viewModel.appName)
 							 Text(viewModel.appVersion)
 						 }
@@ -83,7 +83,6 @@ struct SettingsList: View {
 			}
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
-			.listStyle(InsetGroupedListStyle())
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onReceive(userUpdate) { userProfile = $0 }
 			.onAppear { viewModel.postViewAction(.onAppear) }

@@ -74,7 +74,7 @@ struct EmojiHUD: View {
 						}
 					}
 				}
-				.padding(.vertical, length: .m)
+				.padding(.vertical)
 				.frame(width: EmojiHUD.width, alignment: .top)
 				.background(Color(.actionSheetBackground))
 				.cornerRadius(EmojiHUD.width / 2)
@@ -85,3 +85,11 @@ struct EmojiHUD: View {
 		}
 	}
 }
+
+#if DEBUG
+struct EmojiHUDPreview: PreviewProvider {
+	static var previews: some View {
+		EmojiHUD()
+	}
+}
+#endif

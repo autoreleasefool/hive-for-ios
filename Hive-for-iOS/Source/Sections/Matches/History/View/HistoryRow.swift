@@ -13,13 +13,13 @@ struct HistoryRow: View {
 	let match: Match
 
 	var body: some View {
-		VStack(spacing: .s) {
-			HStack(spacing: .m) {
+		VStack {
+			HStack {
 				UserPreview(
 					match.host?.summary,
 					highlight: isWinner(user: match.host?.id)
 				)
-				Spacer()
+				Spacer(minLength: Metrics.Spacing.s.rawValue)
 				UserPreview(
 					match.opponent?.summary,
 					highlight: isWinner(user: match.opponent?.id),
@@ -31,7 +31,6 @@ struct HistoryRow: View {
 				lastMove
 			}
 		}
-		.padding(.vertical, length: .m)
 	}
 
 	private var lastMove: some View {
@@ -48,7 +47,6 @@ struct HistoryRow: View {
 	private func lastMoveText(_ text: String) -> some View {
 		Text(text)
 			.font(.caption)
-			.foregroundColor(Color(.textSecondary))
 			.multilineTextAlignment(.leading)
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 	}
@@ -108,7 +106,6 @@ private extension GameState.Option {
 struct HistoryRowPreview: PreviewProvider {
 	static var previews: some View {
 		HistoryRow(match: Match.matches[0])
-			.background(Color(.backgroundRegular))
 	}
 }
 #endif

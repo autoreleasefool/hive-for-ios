@@ -32,7 +32,6 @@ struct PieceStack: View {
 					Spacer()
 					Text(piece == stack.first ? "BOTTOM" : "TOP")
 						.font(.caption)
-						.foregroundColor(Color(.textSecondary))
 				}
 			}
 		}
@@ -56,7 +55,6 @@ struct PieceStackPreview: PreviewProvider {
 			Piece(class: .beetle, owner: .black, index: 1),
 			Piece(class: .beetle, owner: .white, index: 1),
 		])
-			.background(Color(.backgroundRegular))
 	}
 }
 #endif

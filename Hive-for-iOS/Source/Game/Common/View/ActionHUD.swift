@@ -39,7 +39,7 @@ struct ActionHUD: View {
 				}
 			}
 			.frame(minWidth: 0, maxWidth: .infinity)
-			.padding(length: .m)
+			.padding()
 			.background(Color(.actionSheetBackground))
 		}
 	}
@@ -57,9 +57,8 @@ struct ActionHUD: View {
 				Text(config.message)
 					.font(.body)
 					.foregroundColor(Color(.textContrasting))
-					.padding(.top, length: .s)
 			}
-			.padding(length: .m)
+			.padding()
 
 			Divider()
 
@@ -82,7 +81,7 @@ struct ActionHUD: View {
 				RoundedRectangle(cornerRadius: .s)
 			)
 			.frame(maxWidth: .infinity)
-			.padding(.all, length: .m)
+			.padding()
 	}
 
 	private func cancel(config: PopoverSheetConfig) -> some View {
@@ -94,8 +93,8 @@ struct ActionHUD: View {
 					.mask(
 						RoundedRectangle(cornerRadius: .s)
 					)
-					.padding(.horizontal, length: .m)
-					.padding(.bottom, length: .xl)
+					.padding(.horizontal)
+					.padding(.bottom)
 			} else {
 				EmptyView()
 			}
@@ -126,6 +125,7 @@ struct ActionHUD: View {
 					EmptyView()
 				}
 			}
+			.edgesIgnoringSafeArea(.top)
 		}
 	}
 }
@@ -156,7 +156,7 @@ struct ActionHUDPreview: PreviewProvider {
 					]
 				), onClose: nil))
 			}
-		}.edgesIgnoringSafeArea(.bottom)
+		}
 	}
 }
 #endif

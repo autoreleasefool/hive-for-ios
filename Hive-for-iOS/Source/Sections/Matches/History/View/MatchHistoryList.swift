@@ -26,7 +26,6 @@ struct MatchHistoryList: View {
 	var body: some View {
 		NavigationView {
 			content
-				.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(userUpdates) { user = $0 }
@@ -64,19 +63,21 @@ struct MatchHistoryList: View {
 			} else {
 				List {
 					ForEach(ListSection.allCases, id: \.rawValue) { section in
-						Section(header: section.header) {
+						Section(header: Text(section.headerText)) {
 							if viewModel.matches(for: section, fromUser: user).count == 0 {
 								section.emptyState
 							} else {
 								ForEach(viewModel.matches(for: section, fromUser: user)) { match in
 									NavigationLink(destination: details(for: match)) {
 										HistoryRow(match: match)
+											.padding(.vertical)
 									}
 								}
 							}
 						}
 					}
 				}
+				.listStyle(InsetGroupedListStyle())
 			}
 		}
 	}
@@ -136,19 +137,10 @@ extension MatchHistoryList {
 		case inProgress
 		case completed
 
-		var header: some View {
-			Text(headerText)
-				.font(.caption)
-				.foregroundColor(Color(.textContrasting))
-				.padding(.vertical, length: .s)
-				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-		}
-
 		var emptyState: some View {
 			Text("No matches found")
 				.font(.body)
-				.foregroundColor(Color(.textSecondary))
-				.padding(.all, length: .m)
+				.padding()
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 		}
 	}

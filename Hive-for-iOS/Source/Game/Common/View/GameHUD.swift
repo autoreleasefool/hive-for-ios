@@ -117,7 +117,7 @@ struct GameHUD: View {
 					.edgesIgnoringSafeArea(.bottom)
 			}
 		}
-		.padding(.top, length: .l)
+		.padding(.top)
 	}
 }
 

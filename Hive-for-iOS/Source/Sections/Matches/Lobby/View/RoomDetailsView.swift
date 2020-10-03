@@ -22,19 +22,21 @@ struct RoomDetailsView: View {
 	let matchOptionBinding: (Match.Option) -> Binding<Bool>
 
 	var body: some View {
-		ScrollView {
-			VStack(spacing: .m) {
+		Form {
+			Section(header: Text("Players")) {
 				playerSection
-				Divider().background(Color(.dividerRegular))
+			}
+			Section(header: Text("Expansions")) {
 				expansionsSection
-				Divider().background(Color(.dividerRegular))
+			}
+			Section(header: Text("Match options")) {
 				matchOptionsSection
-				Divider().background(Color(.dividerRegular))
+			}
+			Section(header: Text("Other options")) {
 				otherOptionsSection
-				Spacer()
 			}
 		}
-		.padding(.all, length: .m)
+		.listStyle(InsetGroupedListStyle())
 	}
 
 	private var playerSection: some View {
@@ -51,15 +53,11 @@ struct RoomDetailsView: View {
 				iconSize: .l
 			)
 		}
+		.padding()
 	}
 
 	private var expansionsSection: some View {
 		VStack(alignment: .leading) {
-			Text("Expansions")
-				.bold()
-				.font(.body)
-				.foregroundColor(Color(.textRegular))
-				.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 			HStack(spacing: .l) {
 				Spacer()
 				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
@@ -68,6 +66,7 @@ struct RoomDetailsView: View {
 				Spacer()
 			}
 		}
+		.padding()
 	}
 
 	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
@@ -96,33 +95,17 @@ struct RoomDetailsView: View {
 	}
 
 	private var matchOptionsSection: some View {
-		VStack(alignment: .leading) {
-			optionSectionHeader(title: "Match options")
-			ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
-				Toggle(name(forOption: option), isOn: matchOptionBinding(option))
-					.disabled(optionsDisabled)
-					.foregroundColor(Color(.textRegular))
-			}
+		ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
+			Toggle(name(forOption: option), isOn: matchOptionBinding(option))
+				.disabled(optionsDisabled)
 		}
 	}
 
 	private var otherOptionsSection: some View {
-		VStack(alignment: .leading) {
-			optionSectionHeader(title: "Other options")
-			ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
-				Toggle(name(forOption: option), isOn: gameOptionBinding(option))
-					.disabled(optionsDisabled)
-					.foregroundColor(Color(.textRegular))
-			}
+		ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
+			Toggle(name(forOption: option), isOn: gameOptionBinding(option))
+				.disabled(optionsDisabled)
 		}
-	}
-
-	private func optionSectionHeader(title: String) -> some View {
-		Text(title)
-			.bold()
-			.font(.body)
-			.foregroundColor(Color(.textRegular))
-			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}
 }
 
@@ -171,7 +154,6 @@ struct RoomDetailsViewPreview: PreviewProvider {
 			gameOptionBinding: { .constant(Self.gameOptions.contains($0)) },
 			matchOptionBinding: { .constant(Self.matchOptions.contains($0)) }
 		)
-		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif

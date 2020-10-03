@@ -43,7 +43,7 @@ struct PieceClassDetails: View {
 						.foregroundColor(Color(player.color))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 					Text(playerPieceStatus(for: player))
-						.font(.body)
+						.font(.caption)
 						.foregroundColor(Color(.textSecondary))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 				}
@@ -58,6 +58,8 @@ struct PieceClassDetails: View {
 struct PieceClassDetailsPreviews: PreviewProvider {
 	static var previews: some View {
 		PieceClassDetails(pieceClass: .ant, state: GameState())
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
+			.colorScheme(.dark)
 	}
 }
 #endif

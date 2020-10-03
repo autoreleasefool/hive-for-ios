@@ -30,7 +30,7 @@ struct DelayedLoadingIndicator: View {
 			}
 			Spacer()
 		}
-		.padding(.all, length: .m)
+		.padding()
 		.onAppear {
 			DispatchQueue.main.asyncAfter(deadline: .now() + timeout) {
 				showTimeoutMessage = true

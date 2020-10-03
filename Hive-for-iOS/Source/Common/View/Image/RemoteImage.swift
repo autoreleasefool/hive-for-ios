@@ -60,7 +60,6 @@ struct RemoteImage: View {
 					.resizable()
 					.scaledToFit()
 					.frame(width: geometry.size.width, height: geometry.size.height)
-
 			} else {
 				Image(uiImage: placeholder)
 					.renderingMode(placeholderTint != nil ? .template : .original)

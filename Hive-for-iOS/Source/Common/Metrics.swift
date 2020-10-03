@@ -54,20 +54,6 @@ extension View {
 	func frame(width: Metrics.Spacing, height: Metrics.Spacing) -> some View {
 		frame(width: width.rawValue, height: height.rawValue)
 	}
-
-	func padding(_ length: Metrics.Spacing) -> some View {
-		padding(length.rawValue)
-	}
-
-	func padding(_ edges: Edge.Set = .all, length: Metrics.Spacing) -> some View {
-		padding(edges, length.rawValue)
-	}
-}
-
-extension RoundedRectangle {
-	init(cornerRadius: Metrics.Spacing) {
-		self.init(cornerRadius: cornerRadius.rawValue)
-	}
 }
 
 extension HStack {
@@ -79,6 +65,36 @@ extension HStack {
 extension VStack {
 	init(alignment: HorizontalAlignment = .center, spacing: Metrics.Spacing, @ViewBuilder content: () -> Content) {
 		self.init(alignment: alignment, spacing: spacing.rawValue, content: content)
+	}
+}
+
+// MARK: - Corner Radius
+
+extension Metrics {
+	enum CornerRadius {
+		/// 24pt
+		case l
+		/// 16pt
+		case m
+		/// 8pt
+		case s
+		/// 4pt
+		case xs
+
+		var rawValue: CGFloat {
+			switch self {
+			case .l: return 24
+			case .m: return 16
+			case .s: return 8
+			case .xs: return 4
+			}
+		}
+	}
+}
+
+extension RoundedRectangle {
+	init(cornerRadius: Metrics.CornerRadius) {
+		self.init(cornerRadius: cornerRadius.rawValue)
 	}
 }
 

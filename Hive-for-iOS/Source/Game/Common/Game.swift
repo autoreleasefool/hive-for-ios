@@ -35,6 +35,7 @@ struct Game: View {
 				.edgesIgnoringSafeArea(.all)
 			GameHUD()
 				.environmentObject(viewModel)
+				.colorScheme(.dark)
 		}
 		.onAppear { viewModel.userId = container.account?.userId }
 		.onReceive(viewModel.$state) { handleTransition(to: $0) }
