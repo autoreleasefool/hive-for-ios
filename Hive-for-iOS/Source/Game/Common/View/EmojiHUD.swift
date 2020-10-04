@@ -2,33 +2,25 @@
 //  EmojiHUD.swift
 //  Hive-for-iOS
 //
-//  Created by Joseph Roque on 2020-07-08.
+//  Created by Joseph Roque on 2020-10-03.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
 import SwiftUI
 
 struct EmojiHUD: View {
-	private static let width: CGFloat = 80
-
-	@EnvironmentObject private var viewModel: GameViewModel
-
-	private var pickerOffset: CGFloat {
-		viewModel.showingEmojiPicker
-			? Metrics.Spacing.m.rawValue
-			: -EmojiHUD.width
-	}
+	@EnvironmentObject var viewModel: GameViewModel
 
 	@State private var animatingEmoji: [AnimateableEmoji] = []
 
 	var body: some View {
 		ZStack {
-			self.animatedEmoji
-			self.picker
+			animatedEmoji
+			picker
 		}
 	}
 
-	// MARK: - Animations
+	// MARK: Animations
 
 	private var animatedEmoji: some View {
 		GeometryReader { geometry in
@@ -56,40 +48,52 @@ struct EmojiHUD: View {
 		)
 	}
 
-	// MARK: - Picker
+	// MARK: Picker
 
 	private var picker: some View {
 		GeometryReader { geometry in
-			Group {
-				VStack(alignment: .center, spacing: .m) {
-					ForEach(Emoji.allCases.indices) { index in
-						Button {
-							viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
-						} label: {
-							Image(uiImage: Emoji.allCases[index].image ?? UIImage())
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.squareImage(.l)
-								.clipShape(Circle())
-						}
-					}
+			BottomSheet(
+				isOpen: $viewModel.showingEmojiPicker,
+				minHeight: 0,
+				maxHeight: geometry.size.height * 0.5
+			) {
+				if viewModel.showingEmojiPicker {
+					HUD
 				}
-				.padding(.vertical)
-				.frame(width: EmojiHUD.width, alignment: .top)
-				.background(Color(.actionSheetBackground))
-				.cornerRadius(EmojiHUD.width / 2)
-				.animation(.interactiveSpring())
-				.offset(x: pickerOffset)
 			}
-			.offset(x: -geometry.size.width / 2 + EmojiHUD.width / 2)
 		}
+	}
+
+	fileprivate var HUD: some View {
+		LazyVGrid(columns: [GridItem(.adaptive(minimum: Metrics.Image.l.rawValue))]) {
+			ForEach(Emoji.allCases.indices) { index in
+				Button {
+					viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
+				} label: {
+					Image(uiImage: Emoji.allCases[index].image ?? UIImage())
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.squareImage(.l)
+						.clipShape(Circle())
+				}
+			}
+		}
+		.padding()
 	}
 }
 
 #if DEBUG
 struct EmojiHUDPreview: PreviewProvider {
 	static var previews: some View {
-		EmojiHUD()
+		GeometryReader { geometry in
+			BottomSheet(
+				isOpen: .constant(true),
+				minHeight: 0,
+				maxHeight: geometry.size.height * 0.5
+			) {
+				EmojiHUD().HUD
+			}
+		}.edgesIgnoringSafeArea(.bottom)
 	}
 }
 #endif

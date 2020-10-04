@@ -269,6 +269,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private func pickedEmoji(_ emoji: Emoji) {
 		guard Emoji.canSend(emoji: emoji) else { return }
+		showingEmojiPicker = false
 
 		promptFeedbackGenerator.impactOccurred()
 		animatedEmoji.send(emoji)

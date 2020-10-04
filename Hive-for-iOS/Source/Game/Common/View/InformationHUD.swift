@@ -37,8 +37,6 @@ struct InformationHUD: View {
 			) {
 				if isPresenting {
 					HUD(information: information!, state: viewModel.gameState)
-				} else {
-					EmptyView()
 				}
 			}
 		}
@@ -58,24 +56,22 @@ struct InformationHUD: View {
 	}
 
 	private func header(information: GameInformation) -> some View {
-		let subtitle = information.subtitle
-
-		return VStack(alignment: .leading, spacing: .s) {
+		VStack(alignment: .leading, spacing: .s) {
 			Text(information.title)
 				.font(.headline)
 				.foregroundColor(Color(.gameTextRegular))
 				.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
 
-			if subtitle != nil {
+			if let subtitle = information.subtitle {
 				if information.prefersMarkdown {
-					MarkdownView(subtitle!, height: $subtitleHeight) { url in
+					MarkdownView(subtitle, height: $subtitleHeight) { url in
 						if let information = GameInformation(fromLink: url.absoluteString) {
 							viewModel.postViewAction(.presentInformation(information))
 						}
 					}
 					.frame(minHeight: subtitleHeight, maxHeight: subtitleHeight)
 				} else {
-					Text(subtitle!)
+					Text(subtitle)
 						.font(.body)
 						.foregroundColor(Color(.gameTextRegular))
 						.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
