@@ -22,7 +22,7 @@ struct RoomDetailsView: View {
 	let matchOptionBinding: (Match.Option) -> Binding<Bool>
 
 	var body: some View {
-		Form {
+		List {
 			Section(header: Text("Players")) {
 				playerSection
 			}
@@ -57,41 +57,10 @@ struct RoomDetailsView: View {
 	}
 
 	private var expansionsSection: some View {
-		VStack(alignment: .leading) {
-			HStack(spacing: .l) {
-				Spacer()
-				ForEach(GameState.Option.expansions, id: \.rawValue) { option in
-					expansionOption(for: option, enabled: gameOptionBinding(option).wrappedValue)
-				}
-				Spacer()
-			}
+		ForEach(GameState.Option.expansions, id: \.rawValue) { option in
+			Toggle(name(forOption: option), isOn: gameOptionBinding(option))
+				.disabled(optionsDisabled)
 		}
-		.padding()
-	}
-
-	private func expansionOption(for option: GameState.Option, enabled: Bool) -> some View {
-		Button {
-			gameOptionBinding(option).wrappedValue.toggle()
-		} label: {
-			ZStack {
-				Text(name(forOption: option))
-					.font(.headline)
-					.foregroundColor(
-						enabled
-							? Color(.highlightPrimary)
-							: Color(.textSecondary)
-					)
-				Hex()
-					.stroke(
-						enabled
-							? Color(.highlightPrimary)
-							: Color(.textSecondary),
-						lineWidth: CGFloat(5)
-					)
-					.squareImage(.l)
-			}
-		}
-		.disabled(optionsDisabled)
 	}
 
 	private var matchOptionsSection: some View {
@@ -120,18 +89,7 @@ extension RoomDetailsView {
 	}
 
 	private func name(forOption option: GameState.Option) -> String {
-		return option.preview ?? option.displayName
-	}
-}
-
-private extension GameState.Option {
-	var preview: String? {
-		switch self {
-		case .mosquito: return "M"
-		case .ladyBug: return "L"
-		case .pillBug: return "P"
-		case .noFirstMoveQueen, .allowSpecialAbilityAfterYoink: return nil
-		}
+		return option.displayName
 	}
 }
 
@@ -148,7 +106,7 @@ struct RoomDetailsViewPreview: PreviewProvider {
 			hostIsReady: true,
 			opponent: User.users[0].summary,
 			opponentIsReady: false,
-			optionsDisabled: true,
+			optionsDisabled: false,
 			gameOptionsEnabled: Self.gameOptions,
 			matchOptionsEnabled: Self.matchOptions,
 			gameOptionBinding: { .constant(Self.gameOptions.contains($0)) },
