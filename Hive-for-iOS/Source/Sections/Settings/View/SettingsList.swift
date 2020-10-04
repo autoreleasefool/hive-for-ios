@@ -52,11 +52,8 @@ struct SettingsList: View {
 				#endif
 
 				if viewModel.showAccount {
-					Section(header: Text("Account")) {
-						VStack {
-							UserPreview(userProfile.value?.summary)
-							logoutButton
-						}
+					Section(header: Text("Account"), footer: logoutButton) {
+						UserPreview(userProfile.value?.summary)
 					}
 				}
 
@@ -73,7 +70,6 @@ struct SettingsList: View {
 						Link(destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!) {
 							Text("View Source")
 						}
-						.buttonStyle(PlainButtonStyle())
 
 						NavigationLink(destination: AttributionsList()) {
 							Text("Attributions")
@@ -104,9 +100,9 @@ struct SettingsList: View {
 				Text(title)
 				Spacer()
 				Text(selected.description)
+					.foregroundColor(Color(.textRegular))
 			}
 		}
-		.buttonStyle(PlainButtonStyle())
 	}
 
 	// MARK: Buttons
@@ -115,8 +111,10 @@ struct SettingsList: View {
 	private var logoutButton: some View {
 		switch viewModel.logoutResult {
 		case .notLoaded, .failed, .loaded:
-			PrimaryButton("Logout") {
+			BasicButton {
 				viewModel.postViewAction(.logout)
+			} label: {
+				Text("Logout")
 			}
 		case .loading:
 			BasicButton {

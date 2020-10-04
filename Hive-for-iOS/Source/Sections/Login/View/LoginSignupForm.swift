@@ -15,14 +15,16 @@ struct LoginSignupForm: View {
 
 	init(
 		defaultForm: LoginSignupFormViewModel.Form = .login,
-		account: Loadable<Account> = .notLoaded,
-		onCancel: (() -> Void)? = nil) {
-		viewModel = LoginSignupFormViewModel(defaultForm: defaultForm, account: account, onCancel: onCancel)
+		account: Loadable<Account> = .notLoaded
+	) {
+		viewModel = LoginSignupFormViewModel(defaultForm: defaultForm, account: account)
 	}
 
 	var body: some View {
 		content
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+			.navigationBarTitle("Play online", displayMode: .inline)
+			.navigationBarItems(trailing: submitButton)
 	}
 
 	@ViewBuilder
@@ -37,36 +39,26 @@ struct LoginSignupForm: View {
 
 	private var formView: some View {
 		Form {
-			if viewModel.shouldShowNotice {
-				notice(message: viewModel.noticeMessage)
+			Section(footer: noticeFooter) {
+				field(for: .email)
+				if viewModel.form == .signup {
+					field(for: .displayName)
+				}
+				secureField(for: .password)
+				if viewModel.form == .signup {
+					secureField(for: .confirmPassword)
+				}
 			}
-
-			field(for: .email)
-			if viewModel.form == .signup {
-				field(for: .displayName)
-			}
-			secureField(for: .password)
-			if viewModel.form == .signup {
-				secureField(for: .confirmPassword)
-			}
-
-			VStack(alignment: .center) {
-				submitButton
-				toggleButton
-				cancelButton
+			Section(header: Text(viewModel.toggleSectionHeaderText)) {
+				Button(viewModel.toggleButtonText) {
+					viewModel.postViewAction(.toggleForm)
+				}
 			}
 		}
 	}
 
 	private var loadingView: some View {
-		GeometryReader { geometry in
-			HStack {
-				Spacer()
-				ActivityIndicator(isAnimating: true, style: .large)
-				Spacer()
-			}
-			.frame(width: geometry.size.width)
-		}
+		DelayedLoadingIndicator(timeout: 0, message: "Loading...")
 	}
 
 	// MARK: Form
@@ -90,49 +82,25 @@ struct LoginSignupForm: View {
 		}
 	}
 
+	@ViewBuilder
+	private var noticeFooter: some View {
+		if viewModel.shouldShowNotice {
+			notice(message: "There was an error connecting to the server. Are you connected to the Internet?")
+		}
+	}
+
 	private var submitButton: some View {
-		PrimaryButton(viewModel.submitButtonText) {
+		Button {
 			viewModel.postViewAction(.submitForm)
+		} label: {
+			Text(viewModel.submitButtonText)
 		}
-	}
-
-	private var toggleButton: some View {
-		HStack(spacing: 0) {
-			Text("you can also ")
-				.font(.caption)
-			Button {
-				viewModel.postViewAction(.toggleForm)
-			} label: {
-				Text(viewModel.toggleButtonText)
-					.font(.caption)
-					.foregroundColor(Color(.highlightPrimary))
-			}
-		}
-		.padding(.top)
-	}
-
-	private var cancelButton: some View {
-		HStack(spacing: 0) {
-			Text("or")
-				.font(.caption)
-			Button {
-				viewModel.postViewAction(.exitForm)
-			} label: {
-				Text(" exit ")
-					.font(.caption)
-					.foregroundColor(Color(.highlightPrimary))
-			}
-			Text("to main menu")
-				.font(.caption)
-		}
-		.padding(.top)
 	}
 
 	private func notice(message: String) -> some View {
 		Text(message)
 			.font(.body)
-			.foregroundColor(Color(.highlightRegular))
-			.frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
+			.foregroundColor(Color(.highlightPrimary))
 	}
 }
 
@@ -169,8 +137,6 @@ private extension LoginSignupForm {
 			content
 				.textContentType(id.textContentType)
 				.keyboardType(id.keyboardType)
-				.foregroundColor(Color(.textRegular))
-				.padding()
 		}
 	}
 }

@@ -12,7 +12,6 @@ import UIKit
 enum LoginSignupViewAction: BaseViewAction {
 	case toggleForm
 	case submitForm
-	case exitForm
 }
 
 enum LoginSignupAction: BaseAction {
@@ -29,17 +28,14 @@ class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObje
 	@Published var displayName: String = ""
 	@Published var confirmPassword: String = ""
 
-	private let onCancel: (() -> Void)?
-
 	private let actions = PassthroughSubject<LoginSignupAction, Never>()
 	var actionsPublisher: AnyPublisher<LoginSignupAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(defaultForm: Form = .login, account: Loadable<Account> = .notLoaded, onCancel: (() -> Void)? = nil) {
+	init(defaultForm: Form = .login, account: Loadable<Account> = .notLoaded) {
 		self._account = .init(initialValue: account)
 		self._form = .init(initialValue: defaultForm)
-		self.onCancel = onCancel
 	}
 
 	override func postViewAction(_ viewAction: LoginSignupViewAction) {
@@ -48,8 +44,6 @@ class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObje
 			toggleForm()
 		case .submitForm:
 			submitForm()
-		case .exitForm:
-			onCancel?()
 		}
 	}
 
@@ -158,19 +152,22 @@ extension LoginSignupFormViewModel {
 extension LoginSignupFormViewModel {
 	var submitButtonText: String {
 		switch form {
-		case .login: return "Login"
-		case .signup: return "Signup"
+		case .login: return "Log in"
+		case .signup: return "Sign up"
 		}
 	}
 
-	var playOfflineButtonText: String {
-		return "Play offline"
+	var toggleSectionHeaderText: String {
+		switch form {
+		case .login: return "Don't have an account?"
+		case .signup: return "Already have an account?"
+		}
 	}
 
 	var toggleButtonText: String {
 		switch form {
-		case .login: return "create a new account"
-		case .signup: return "login to an existing account"
+		case .login: return "Sign up"
+		case .signup: return "Log in"
 		}
 	}
 
@@ -179,7 +176,7 @@ extension LoginSignupFormViewModel {
 		case .failed(let error):
 			if let accountError = error as? AccountRepositoryError {
 				switch accountError {
-				case .loggedOut: return "You've been logged out. Please login again."
+				case .loggedOut: return "You've been logged out. Please log in again."
 				case .apiError(let apiError): return noticeMessage(for: apiError)
 				case .notFound, .keychainError: return ""
 				}

@@ -25,29 +25,15 @@ struct ContentView: View {
 	}
 
 	var body: some View {
-		GeometryReader { geometry in
-			Group {
-				if viewModel.showWelcome {
-					WelcomeView(
-						showWelcome: $viewModel.showWelcome,
-						playingOffline: $viewModel.playingOffline,
-						showSettings: $viewModel.showSettings
-					)
-				} else {
-					content
-				}
-			}
-			.frame(width: geometry.size.width, height: geometry.size.height)
-			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
+		content
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onReceive(accountUpdate) { account = $0 }
-			.sheet(isPresented: $viewModel.showSettings) {
-				SettingsList(isOpen: $viewModel.showSettings, showAccount: false)
+			.sheet(isPresented: $viewModel.isShowingSettings) {
+				SettingsList(isOpen: $viewModel.isShowingSettings, showAccount: false)
 					.inject(container)
 			}
 			.inject(container)
 			.plugInToaster()
-		}
 	}
 
 	@ViewBuilder
@@ -76,8 +62,12 @@ struct ContentView: View {
 	}
 
 	private var noAccountView: some View {
-		LoginSignupForm {
-			viewModel.showWelcome = true
+		NavigationView {
+			WelcomeView(onShowSettings: {
+				viewModel.isShowingSettings = true
+			}, onPlayOffline: {
+				viewModel.isPlayingOffline = true
+			})
 		}
 	}
 }
@@ -120,7 +110,21 @@ extension ContentView {
 #if DEBUG
 struct ContentViewPreview: PreviewProvider {
 	static var previews: some View {
-		ContentView(container: .defaultValue, account: .loading(cached: nil, cancelBag: CancelBag()))
+		ContentView(
+			container: .init(
+				appState: .init(
+					.init(
+						account: .failed(AccountRepositoryError.loggedOut),
+						userProfile: .notLoaded,
+						gameSetup: nil,
+						preferences: .init(),
+						features: .init()
+					)
+				),
+				interactors: .stub
+			),
+			account: .failed(AccountRepositoryError.loggedOut)
+		)
 	}
 }
 #endif

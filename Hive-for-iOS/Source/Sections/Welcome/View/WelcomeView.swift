@@ -10,9 +10,10 @@ import SwiftUI
 
 struct WelcomeView: View {
 	@Environment(\.container) private var container
-	@Binding var showWelcome: Bool
-	@Binding var playingOffline: Bool
-	@Binding var showSettings: Bool
+
+	let onShowSettings: () -> Void
+	let onPlayOffline: () -> Void
+	@State private var isLoggingIn: Bool = false
 
 	var body: some View {
 		VStack {
@@ -21,17 +22,21 @@ struct WelcomeView: View {
 			Image(uiImage: ImageAsset.glyph)
 				.foregroundColor(Color(.highlightPrimary))
 
-			PrimaryButton("Play") {
-				showWelcome = false
+			NavigationLink(
+				destination: LoginSignupForm(),
+				isActive: $isLoggingIn
+			) {
+				PrimaryButton("Play") {
+					isLoggingIn = true
+				}
+				.buttonBackground(.backgroundLight)
+				.padding(.horizontal)
+				.padding(.bottom)
 			}
-			.buttonBackground(.backgroundLight)
-			.padding(.horizontal)
-			.padding(.bottom)
 
 			if container.has(feature: .offlineMode) {
 				PrimaryButton("Play offline") {
-					playingOffline = true
-					showWelcome = false
+					onPlayOffline()
 				}
 				.buttonBackground(.backgroundLight)
 				.padding(.horizontal)
@@ -39,27 +44,23 @@ struct WelcomeView: View {
 			}
 
 			PrimaryButton("Settings") {
-				showSettings = true
+				onShowSettings()
 			}
 			.buttonBackground(.backgroundLight)
 			.padding(.horizontal)
 
 			Spacer()
 		}
-		.navigationBarTitle("")
+		.navigationBarTitle(isLoggingIn ? "Home" : "")
 		.navigationBarHidden(true)
+		.background(Color(.backgroundDark).edgesIgnoringSafeArea(.all))
 	}
 }
 
 #if DEBUG
 struct WelcomeViewPreview: PreviewProvider {
 	static var previews: some View {
-		WelcomeView(
-			showWelcome: .constant(true),
-			playingOffline: .constant(false),
-			showSettings: .constant(true)
-		)
-		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
+		WelcomeView(onShowSettings: { }, onPlayOffline: { })
 	}
 }
 #endif

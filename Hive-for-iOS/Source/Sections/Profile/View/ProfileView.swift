@@ -26,7 +26,6 @@ struct ProfileView: View {
 	var body: some View {
 		NavigationView {
 			content
-				.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 				.navigationBarTitle(viewModel.title(forUser: user.value))
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }

@@ -14,16 +14,18 @@ struct AgentPicker: View {
 
 	var body: some View {
 		List {
-			ForEach(AgentConfiguration.allCases.filter { $0.isEnabled(in: container.features) }) { computer in
-				NavigationLink(destination: LocalRoomView(opponent: computer)) {
-					Text(computer.name)
-						.font(.body)
-						.padding(.vertical)
+			Section(header: Text("Opponent")) {
+				ForEach(AgentConfiguration.allCases.filter { $0.isEnabled(in: container.features) }) { computer in
+					NavigationLink(destination: LocalRoomView(opponent: computer)) {
+						Text(computer.name)
+							.font(.body)
+							.padding(.vertical)
+					}
 				}
 			}
 		}
 		.listStyle(InsetGroupedListStyle())
-		.navigationBarTitle("Pick an opponent")
+		.navigationBarTitle("Local match")
 	}
 }
 

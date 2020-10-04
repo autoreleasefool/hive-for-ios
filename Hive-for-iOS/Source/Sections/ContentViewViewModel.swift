@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import SwiftUI
 
 enum ContentViewViewAction: BaseViewAction {
 	case onAppear
@@ -20,9 +21,9 @@ enum ContentViewAction: BaseAction {
 }
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
-	@Published var showWelcome = true
-	@Published var showSettings = false
-	@Published var playingOffline = false {
+	@Published var isShowingSettings = false
+	@Published var isPlayingOnline = false
+	@Published var isPlayingOffline = false {
 		didSet {
 			actions.send(.loadOfflineAccount)
 		}
@@ -52,5 +53,15 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			.receive(on: RunLoop.main)
 			.sink { [weak self] in self?.actions.send(.loggedOut) }
 			.store(in: self)
+	}
+
+	var isPlaying: Binding<Bool> {
+		Binding { [weak self] in
+			(self?.isPlayingOnline ?? false) || (self?.isPlayingOffline ?? false)
+		} set: { [weak self] newValue in
+			guard !newValue else { return }
+			self?.isPlayingOffline = false
+			self?.isPlayingOnline = false
+		}
 	}
 }
