@@ -32,7 +32,11 @@ class GameViewARController: UIViewController {
 	}
 
 	override func loadView() {
+		#if AR_ENABLED
 		self.view = GameViewAR(viewModel: viewModel)
+		#else
+		super.loadView()
+		#endif
 	}
 
 	override func viewDidLoad() {

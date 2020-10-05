@@ -17,7 +17,7 @@ import Loaf
 
 class GameViewAR: UIView { }
 
-#else
+#elseif AR_ENABLED
 
 class GameViewAR: UIView {
 
@@ -320,5 +320,9 @@ extension GameViewAR {
 		}
 	}
 }
+
+#else
+
+class GameViewAR: UIView { }
 
 #endif
