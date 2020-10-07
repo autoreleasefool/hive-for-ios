@@ -152,18 +152,13 @@ struct LobbyList: View {
 		}
 	}
 
-	@ViewBuilder
 	private var settingsButton: some View {
-		if viewModel.spectating {
-			EmptyView()
-		} else {
-			Button {
-				viewModel.postViewAction(.openSettings)
-			} label: {
-				Image(systemName: "gear")
-					.imageScale(.large)
-					.accessibility(label: Text("Settings"))
-			}
+		Button {
+			viewModel.postViewAction(.openSettings)
+		} label: {
+			Image(systemName: "gear")
+				.imageScale(.large)
+				.accessibility(label: Text("Settings"))
 		}
 	}
 }
