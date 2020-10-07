@@ -46,7 +46,12 @@ class OnlineGameClient: GameClient {
 		}
 
 		if let subject = subject {
-			subject.send(.alreadyConnected)
+			defer {
+				// Send a `alreadyConnected` message after the publisher has been returned
+				DispatchQueue.main.async {
+					subject.send(.alreadyConnected)
+				}
+			}
 			return subject.eraseToAnyPublisher()
 		}
 

@@ -241,6 +241,7 @@ extension OnlineRoomViewModel {
 					if case let .failure(error) = $0 {
 						self.handleGameClientError(error)
 					}
+					self.clientConnected = false
 				}, receiveValue: {
 					self.handleGameClientEvent($0)
 				}
