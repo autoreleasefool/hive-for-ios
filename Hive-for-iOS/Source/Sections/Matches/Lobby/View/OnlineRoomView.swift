@@ -60,16 +60,15 @@ struct OnlineRoomView: View {
 			.onAppear { viewModel.postViewAction(.onAppear(container.account?.userId)) }
 	}
 
+	@ViewBuilder
 	private func loadedView(_ match: Match?) -> some View {
-		ScrollView {
-			if match == nil {
-				ProgressView()
+		if match == nil {
+			ProgressView()
+		} else {
+			if viewModel.reconnecting {
+				reconnectingView
 			} else {
-				if viewModel.reconnecting {
-					reconnectingView
-				} else {
-					matchDetail(match!)
-				}
+				matchDetail(match!)
 			}
 		}
 	}
