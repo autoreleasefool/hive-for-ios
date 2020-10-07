@@ -58,15 +58,7 @@ struct SpectatorRoomView: View {
 	}
 
 	private var loadingView: some View {
-		VStack {
-			Spacer()
-			HStack {
-				Spacer()
-				ActivityIndicator(isAnimating: true, style: .large)
-				Spacer()
-			}
-			Spacer()
-		}
+		ProgressView()
 	}
 
 	// MARK: Buttons

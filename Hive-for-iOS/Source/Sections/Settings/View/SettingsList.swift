@@ -117,11 +117,7 @@ struct SettingsList: View {
 				Text("Logout")
 			}
 		case .loading:
-			BasicButton {
-				viewModel.postViewAction(.logout)
-			} label: {
-				ActivityIndicator(isAnimating: true, style: .medium)
-			}
+			ProgressView()
 		}
 	}
 

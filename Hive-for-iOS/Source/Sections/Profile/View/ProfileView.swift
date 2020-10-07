@@ -56,15 +56,7 @@ struct ProfileView: View {
 	}
 
 	private var loadingView: some View {
-		GeometryReader { geometry in
-			HStack {
-				Spacer()
-				ActivityIndicator(isAnimating: true, style: .large)
-				Spacer()
-			}
-			.padding()
-			.frame(width: geometry.size.width)
-		}
+		ProgressView()
 	}
 
 	private func loadedView(_ user: User) -> some View {

@@ -115,7 +115,7 @@ struct InformationHUD: View {
 		case .settings:
 			GameSettings()
 		case .reconnecting:
-			ActivityIndicator(isAnimating: true, style: .large)
+			ProgressView()
 		}
 	}
 

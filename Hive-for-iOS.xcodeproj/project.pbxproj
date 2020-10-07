@@ -50,9 +50,7 @@
 		CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F64246930BB0011E7D1 /* UserRepository.swift */; };
 		CA797F67246930C80011E7D1 /* UserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F66246930C80011E7D1 /* UserInteractor.swift */; };
 		CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */; };
-		CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */; };
 		CA88B80C244D89B600C4A276 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
-		CA88BA6B244E39A800C4A276 /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */; };
 		CA8F46DD245DD27600B136D0 /* LoginSignupForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DC245DD27600B136D0 /* LoginSignupForm.swift */; };
 		CA8F46E1245EBD0D00B136D0 /* LobbyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E0245EBD0D00B136D0 /* LobbyList.swift */; };
 		CA8F46E5245EC35800B136D0 /* MatchInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */; };
@@ -174,9 +172,7 @@
 		CA797F62246892AC0011E7D1 /* EmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyState.swift; sourceTree = "<group>"; };
 		CA797F64246930BB0011E7D1 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		CA797F66246930C80011E7D1 /* UserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractor.swift; sourceTree = "<group>"; };
-		CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedLoadingIndicator.swift; sourceTree = "<group>"; };
 		CA88B80B244D89B600C4A276 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
 		CA8F46DC245DD27600B136D0 /* LoginSignupForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupForm.swift; sourceTree = "<group>"; };
 		CA8F46E0245EBD0D00B136D0 /* LobbyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyList.swift; sourceTree = "<group>"; };
 		CA8F46E4245EC35800B136D0 /* MatchInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchInteractor.swift; sourceTree = "<group>"; };
@@ -511,8 +507,6 @@
 		CAAB6FB624766A0600A698F9 /* Loading */ = {
 			isa = PBXGroup;
 			children = (
-				CA88BA6A244E39A800C4A276 /* ActivityIndicator.swift */,
-				CA870BDB2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift */,
 				CA22022B243F800D005367B6 /* LoadingHUD.swift */,
 			);
 			path = Loading;
@@ -1028,7 +1022,6 @@
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
 				CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */,
 				CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */,
-				CA870BDC2438EB2E00C9DF66 /* DelayedLoadingIndicator.swift in Sources */,
 				CA0F9396242602BA00F6E104 /* GameView2D.swift in Sources */,
 				CAC73101246DFA6C004DB450 /* ContentViewViewModel.swift in Sources */,
 				CA0939D024B6B0E700488713 /* Array+Extensions.swift in Sources */,
@@ -1061,7 +1054,6 @@
 				CAC6861823CE4E6800B882D2 /* LobbyRow.swift in Sources */,
 				CAC73109246E0505004DB450 /* OnlineRoomViewModel.swift in Sources */,
 				CA45F9C4242E758C007EC94D /* GameRule.swift in Sources */,
-				CA88BA6B244E39A800C4A276 /* ActivityIndicator.swift in Sources */,
 				CAC730FC246DCE5B004DB450 /* LoginSignupFormViewModel.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
 				CA286D0A2471E84B0044BAAE /* Preferences.swift in Sources */,

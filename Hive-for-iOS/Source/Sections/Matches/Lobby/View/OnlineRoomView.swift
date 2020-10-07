@@ -22,35 +22,33 @@ struct OnlineRoomView: View {
 	}
 
 	var body: some View {
-		GeometryReader { geometry in
-			content(geometry)
-		}
-		.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
-		.navigationBarBackButtonHidden(true)
-		.navigationBarItems(leading: exitButton, trailing: startButton)
-		.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-		.popoverSheet(isPresented: $viewModel.exiting) {
-			PopoverSheetConfig(
-				title: "Leave match?",
-				message: "Are you sure you want to leave this match?",
-				buttons: [
-					PopoverSheetConfig.ButtonConfig(title: "Leave", type: .destructive) {
-						viewModel.postViewAction(.exitMatch)
-					},
-					PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {
-						viewModel.postViewAction(.dismissExit)
-					},
-				]
-			)
-		}
+		content
+			.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
+			.navigationBarBackButtonHidden(true)
+			.navigationBarItems(leading: exitButton, trailing: startButton)
+			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+			.popoverSheet(isPresented: $viewModel.exiting) {
+				PopoverSheetConfig(
+					title: "Leave match?",
+					message: "Are you sure you want to leave this match?",
+					buttons: [
+						PopoverSheetConfig.ButtonConfig(title: "Leave", type: .destructive) {
+							viewModel.postViewAction(.exitMatch)
+						},
+						PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {
+							viewModel.postViewAction(.dismissExit)
+						},
+					]
+				)
+			}
 	}
 
 	@ViewBuilder
-	private func content(_ geometry: GeometryProxy) -> some View {
+	private var content: some View {
 		switch viewModel.match {
 		case .notLoaded: notLoadedView
-		case .loading(let match, _): loadedView(match, geometry)
-		case .loaded(let match): loadedView(match, geometry)
+		case .loading(let match, _): loadedView(match)
+		case .loaded(let match): loadedView(match)
 		case .failed(let error): failedView(error)
 		}
 	}
@@ -62,19 +60,13 @@ struct OnlineRoomView: View {
 			.onAppear { viewModel.postViewAction(.onAppear(container.account?.userId)) }
 	}
 
-	private func loadedView(_ match: Match?, _ geometry: GeometryProxy) -> some View {
+	private func loadedView(_ match: Match?) -> some View {
 		ScrollView {
 			if match == nil {
-				HStack {
-					Spacer()
-					ActivityIndicator(isAnimating: true, style: .large)
-					Spacer()
-				}
-				.padding(.top)
-				.frame(width: geometry.size.width)
+				ProgressView()
 			} else {
 				if viewModel.reconnecting {
-					reconnectingView(geometry)
+					reconnectingView
 				} else {
 					matchDetail(match!)
 				}
@@ -90,19 +82,18 @@ struct OnlineRoomView: View {
 		)
 	}
 
-	private func reconnectingView(_ geometry: GeometryProxy) -> some View {
+	private var reconnectingView: some View {
 		VStack {
 			Text("The connection to the server was lost.\nPlease wait while we try to reconnect you.")
 				.font(.body)
 				.multilineTextAlignment(.center)
-			ActivityIndicator(isAnimating: true, style: .large)
+			ProgressView()
 			Text(viewModel.reconnectingMessage)
 				.font(.body)
 				.multilineTextAlignment(.center)
 			Spacer()
 		}
-		.padding(.all)
-		.frame(width: geometry.size.width)
+		.padding()
 	}
 
 	// MARK: Buttons

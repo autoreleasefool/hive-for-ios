@@ -58,7 +58,7 @@ struct LoginSignupForm: View {
 	}
 
 	private var loadingView: some View {
-		DelayedLoadingIndicator(timeout: 0, message: "Loading...")
+		ProgressView()
 	}
 
 	// MARK: Form

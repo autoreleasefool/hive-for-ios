@@ -54,7 +54,7 @@ struct ContentView: View {
 	}
 
 	private var loadingView: some View {
-		DelayedLoadingIndicator(timeout: 3, message: "Logging in...")
+		ProgressView("Logging in...")
 	}
 
 	private var loadedView: some View {
