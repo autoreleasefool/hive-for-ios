@@ -221,6 +221,8 @@ extension LobbyList {
 			loadMatches()
 		case .openSettings:
 			container.appState.value.setNavigation(to: .settings)
+		case .openLoginForm:
+			container.appState.value.setNavigation(to: .login)
 		}
 	}
 

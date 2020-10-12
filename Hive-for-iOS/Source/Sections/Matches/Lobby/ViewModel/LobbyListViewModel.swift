@@ -28,6 +28,7 @@ enum LobbyListViewAction: BaseViewAction {
 enum LobbyListAction: BaseAction {
 	case loadMatches
 	case openSettings
+	case openLoginForm
 }
 
 class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
@@ -109,7 +110,7 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			showCreateMatchPrompt = false
 
 		case .logIn:
-			#warning("TODO: Log in")
+			actions.send(.openLoginForm)
 		}
 	}
 
