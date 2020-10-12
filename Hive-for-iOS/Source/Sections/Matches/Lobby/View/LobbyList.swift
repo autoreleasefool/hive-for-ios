@@ -14,7 +14,7 @@ struct LobbyList: View {
 
 	@ObservedObject private var viewModel: LobbyListViewModel
 
-	init(spectating: Bool, matches: Loadable<[Match]> = .notLoaded) {
+	init(spectating: Bool = false, matches: Loadable<[Match]> = .notLoaded) {
 		viewModel = LobbyListViewModel(spectating: spectating, matches: matches)
 	}
 

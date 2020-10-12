@@ -60,8 +60,8 @@ extension RootTabView {
 
 		var view: AnyView {
 			switch self {
-			case .lobby: return AnyView(LobbyList(spectating: false))
-			case .spectate: return AnyView(LobbyList(spectating: true))
+			case .lobby: return AnyView(LobbyList())
+			case .spectate: return AnyView(SpectatorLobbyList())
 			case .matchHistory: return AnyView(MatchHistoryList())
 			case .profile: return AnyView(ProfileView())
 			}
