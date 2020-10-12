@@ -58,12 +58,13 @@ extension RootTabView {
 			return "\(imageName).fill"
 		}
 
-		var view: AnyView {
+		@ViewBuilder
+		var view: some View {
 			switch self {
-			case .lobby: return AnyView(LobbyList())
-			case .spectate: return AnyView(SpectatorLobbyList())
-			case .matchHistory: return AnyView(MatchHistoryList())
-			case .profile: return AnyView(ProfileView())
+			case .lobby: LobbyList()
+			case .spectate: SpectatorLobbyList()
+			case .matchHistory: MatchHistoryList()
+			case .profile: ProfileView()
 			}
 		}
 

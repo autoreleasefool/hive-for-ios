@@ -15,6 +15,7 @@ enum LobbyListViewAction: BaseViewAction {
 	case onListDisappear
 	case refresh
 	case openSettings
+	case accountChanged(Loadable<Account>)
 
 	case joinMatch(Match.ID)
 	case createNewMatch
@@ -67,7 +68,12 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 	@Published var matches: Loadable<[Match]>
 	@Published var showMatchInProgressWarning = false
 	@Published var showCreateMatchPrompt = false
-	@Published var isOffline = false
+	@Published var isOffline = false {
+		didSet {
+			guard isOffline != oldValue else { return }
+			accountStatusDidChange()
+		}
+	}
 
 	let spectating: Bool
 
@@ -87,7 +93,7 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 		switch viewAction {
 		case .onAppear(let isOffline):
 			self.isOffline = isOffline
-			initialize()
+			accountStatusDidChange()
 		case .onListAppear:
 			startRefreshTimer()
 		case .onListDisappear:
@@ -108,17 +114,10 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			showCreateMatchPrompt = false
 		case .cancelCreateMatch:
 			showCreateMatchPrompt = false
-
+		case .accountChanged(let account):
+			isOffline = account.value?.isOffline ?? true
 		case .logIn:
 			actions.send(.openLoginForm)
-		}
-	}
-
-	private func initialize() {
-		if isOffline {
-			matches = .loaded([])
-		} else {
-			actions.send(.loadMatches)
 		}
 	}
 
@@ -150,6 +149,14 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 		refreshTimer?.invalidate()
 		refreshTimer = Timer.scheduledTimer(withTimeInterval: 8, repeats: true) { [weak self] _ in
 			self?.actions.send(.loadMatches)
+		}
+	}
+
+	private func accountStatusDidChange() {
+		if isOffline {
+			matches = .loaded([])
+		} else {
+			actions.send(.loadMatches)
 		}
 	}
 }
