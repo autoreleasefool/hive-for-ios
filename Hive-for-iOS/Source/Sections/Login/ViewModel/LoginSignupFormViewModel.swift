@@ -12,11 +12,13 @@ import UIKit
 enum LoginSignupViewAction: BaseViewAction {
 	case toggleForm
 	case submitForm
+	case dismissForm
 }
 
 enum LoginSignupAction: BaseAction {
 	case login(User.Login.Request)
 	case signup(User.Signup.Request)
+	case dismiss
 }
 
 class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
@@ -44,6 +46,8 @@ class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObje
 			toggleForm()
 		case .submitForm:
 			submitForm()
+		case .dismissForm:
+			actions.send(.dismiss)
 		}
 	}
 

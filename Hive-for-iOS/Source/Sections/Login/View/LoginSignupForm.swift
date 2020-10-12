@@ -11,6 +11,7 @@ import SwiftUI
 
 struct LoginSignupForm: View {
 	@Environment(\.container) private var container
+	@Environment(\.presentationMode) private var presentationMode
 	@ObservedObject private var viewModel: LoginSignupFormViewModel
 
 	init(
@@ -24,8 +25,9 @@ struct LoginSignupForm: View {
 		NavigationView {
 			content
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+				.onReceive(viewModel.$account) { handleAccountChange($0) }
 				.navigationBarTitle("Play online", displayMode: .inline)
-				.navigationBarItems(trailing: submitButton)
+				.navigationBarItems(leading: cancelButton, trailing: submitButton)
 		}
 	}
 
@@ -99,6 +101,14 @@ struct LoginSignupForm: View {
 		}
 	}
 
+	private var cancelButton: some View {
+		Button {
+			viewModel.postViewAction(.dismissForm)
+		} label: {
+			Text("Cancel")
+		}
+	}
+
 	private func notice(message: String) -> some View {
 		Text(message)
 			.font(.body)
@@ -115,6 +125,8 @@ extension LoginSignupForm {
 			login(data)
 		case .signup(let data):
 			signup(data)
+		case .dismiss:
+			presentationMode.wrappedValue.dismiss()
 		}
 	}
 
@@ -126,6 +138,15 @@ extension LoginSignupForm {
 	private func signup(_ data: User.Signup.Request) {
 		container.interactors.accountInteractor
 			.signup(data, account: $viewModel.account)
+	}
+
+	private func handleAccountChange(_ account: Loadable<Account>) {
+		switch account {
+		case .loaded:
+			viewModel.postViewAction(.dismissForm)
+		case .failed, .loading, .notLoaded:
+			break
+		}
 	}
 }
 
@@ -152,7 +173,6 @@ struct LoginSignupPreview: PreviewProvider {
 			LoginSignupForm(defaultForm: .login)
 			LoginSignupForm(defaultForm: .signup)
 		}
-//		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 }
 #endif
