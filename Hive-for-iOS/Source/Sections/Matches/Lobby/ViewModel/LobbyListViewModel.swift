@@ -27,6 +27,7 @@ enum LobbyListViewAction: BaseViewAction {
 
 enum LobbyListAction: BaseAction {
 	case loadMatches
+	case openSettings
 }
 
 class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
@@ -63,7 +64,6 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 	@Published var currentSpectatingMatchId: Match.ID?
 
 	@Published var matches: Loadable<[Match]>
-	@Published var settingsOpened = false
 	@Published var showMatchInProgressWarning = false
 	@Published var showCreateMatchPrompt = false
 	@Published var isOffline = false
@@ -94,7 +94,7 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 		case .refresh:
 			actions.send(.loadMatches)
 		case .openSettings:
-			settingsOpened = true
+			actions.send(.openSettings)
 		case .createNewMatch:
 			createNewMatch()
 		case .joinMatch(let id):

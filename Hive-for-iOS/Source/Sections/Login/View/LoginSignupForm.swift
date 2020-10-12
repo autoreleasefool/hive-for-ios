@@ -21,10 +21,12 @@ struct LoginSignupForm: View {
 	}
 
 	var body: some View {
-		content
-			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-			.navigationBarTitle("Play online", displayMode: .inline)
-			.navigationBarItems(trailing: submitButton)
+		NavigationView {
+			content
+				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+				.navigationBarTitle("Play online", displayMode: .inline)
+				.navigationBarItems(trailing: submitButton)
+		}
 	}
 
 	@ViewBuilder

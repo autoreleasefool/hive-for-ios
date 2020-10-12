@@ -10,27 +10,36 @@ import SwiftUI
 import Combine
 
 struct ContentView: View {
-	private let container: AppContainer
+	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: ContentViewViewModel
+	@ObservedObject private var viewModel = ContentViewViewModel()
 
 	// This value can't be moved to the ViewModel because it mirrors the AppState and
 	// was causing a re-render loop when in the @ObservedObject view model
 	@State private var account: Loadable<Account>
 
-	init(container: AppContainer, account: Loadable<Account> = .notLoaded) {
-		self.container = container
+	@State private var sheetNavigation: SheetNavigation?
+	private var isShowingSheet: Binding<Bool> {
+		Binding {
+			sheetNavigation != nil
+		} set: {
+			if !$0 {
+				container.appState.value.clearNavigation(of: sheetNavigation)
+			}
+		}
+	}
+
+	init(account: Loadable<Account> = .notLoaded) {
 		self._account = .init(initialValue: account)
-		self.viewModel = ContentViewViewModel()
 	}
 
 	var body: some View {
 		content
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onReceive(accountUpdate) { account = $0 }
-			.sheet(isPresented: $viewModel.isShowingSettings) {
-				SettingsList(isOpen: $viewModel.isShowingSettings, showAccount: false)
-					.inject(container)
+			.onReceive(navigationUpdate) { sheetNavigation = $0 }
+			.sheet(isPresented: isShowingSheet) {
+				sheetView
 			}
 			.inject(container)
 			.plugInToaster()
@@ -55,6 +64,7 @@ struct ContentView: View {
 
 	private var loadingView: some View {
 		ProgressView("Logging in...")
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 
 	private var loadedView: some View {
@@ -62,13 +72,13 @@ struct ContentView: View {
 	}
 
 	private var noAccountView: some View {
-		NavigationView {
-			WelcomeView(onShowSettings: {
-				viewModel.isShowingSettings = true
-			}, onPlayOffline: {
-				viewModel.isPlayingOffline = true
-			})
-		}
+		WelcomeView(onShowSettings: {
+			container.appState.value.setNavigation(to: .settings)
+		}, onLogin: {
+			container.appState.value.setNavigation(to: .login)
+		}, onPlayOffline: {
+			viewModel.postViewAction(.playOffline)
+		})
 	}
 }
 
@@ -103,6 +113,35 @@ extension ContentView {
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
+
+	private var navigationUpdate: AnyPublisher<SheetNavigation?, Never> {
+		container.appState.updates(for: \.contentSheetNavigation)
+			.receive(on: RunLoop.main)
+			.eraseToAnyPublisher()
+	}
+}
+
+// MARK: - Navigation
+
+extension ContentView {
+	enum SheetNavigation {
+		case settings
+		case login
+	}
+
+	@ViewBuilder
+	private var sheetView: some View {
+		switch sheetNavigation {
+		case .settings:
+			SettingsList()
+				.inject(container)
+		case .login:
+			LoginSignupForm()
+				.inject(container)
+		case .none:
+			EmptyView()
+		}
+	}
 }
 
 // MARK: - Preview
@@ -110,21 +149,22 @@ extension ContentView {
 #if DEBUG
 struct ContentViewPreview: PreviewProvider {
 	static var previews: some View {
-		ContentView(
-			container: .init(
-				appState: .init(
-					.init(
-						account: .failed(AccountRepositoryError.loggedOut),
-						userProfile: .notLoaded,
-						gameSetup: nil,
-						preferences: .init(),
-						features: .init()
-					)
-				),
-				interactors: .stub
-			),
-			account: .failed(AccountRepositoryError.loggedOut)
-		)
+		ContentView(account: .failed(AccountRepositoryError.loggedOut))
+			.inject(
+				.init(
+					appState: .init(
+						.init(
+							account: .failed(AccountRepositoryError.loggedOut),
+							userProfile: .notLoaded,
+							gameSetup: nil,
+							contentSheetNavigation: nil,
+							preferences: .init(),
+							features: .init()
+						)
+					),
+					interactors: .stub
+				)
+			)
 	}
 }
 #endif

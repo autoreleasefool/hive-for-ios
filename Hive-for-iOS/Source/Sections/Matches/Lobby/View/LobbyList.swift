@@ -24,10 +24,6 @@ struct LobbyList: View {
 				.navigationBarTitle(viewModel.spectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-				.sheet(isPresented: $viewModel.settingsOpened) {
-					SettingsList(isOpen: $viewModel.settingsOpened)
-						.inject(container)
-				}
 				.alert(isPresented: $viewModel.showMatchInProgressWarning) {
 					Alert(
 						title: Text("Already in match"),
@@ -223,6 +219,8 @@ extension LobbyList {
 		switch action {
 		case .loadMatches:
 			loadMatches()
+		case .openSettings:
+			container.appState.value.setNavigation(to: .settings)
 		}
 	}
 

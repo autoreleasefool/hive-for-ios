@@ -12,8 +12,8 @@ struct WelcomeView: View {
 	@Environment(\.container) private var container
 
 	let onShowSettings: () -> Void
+	let onLogin: () -> Void
 	let onPlayOffline: () -> Void
-	@State private var isLoggingIn: Bool = false
 
 	var body: some View {
 		VStack {
@@ -22,17 +22,12 @@ struct WelcomeView: View {
 			Image(uiImage: ImageAsset.glyph)
 				.foregroundColor(Color(.highlightPrimary))
 
-			NavigationLink(
-				destination: LoginSignupForm(),
-				isActive: $isLoggingIn
-			) {
-				PrimaryButton("Play") {
-					isLoggingIn = true
-				}
-				.buttonBackground(.backgroundLight)
-				.padding(.horizontal)
-				.padding(.bottom)
+			PrimaryButton("Play") {
+				onLogin()
 			}
+			.buttonBackground(.backgroundLight)
+			.padding(.horizontal)
+			.padding(.bottom)
 
 			if container.has(feature: .offlineMode) {
 				PrimaryButton("Play offline") {
@@ -51,8 +46,6 @@ struct WelcomeView: View {
 
 			Spacer()
 		}
-		.navigationBarTitle(isLoggingIn ? "Home" : "")
-		.navigationBarHidden(true)
 		.background(Color(.backgroundDark).edgesIgnoringSafeArea(.all))
 	}
 }
@@ -60,7 +53,7 @@ struct WelcomeView: View {
 #if DEBUG
 struct WelcomeViewPreview: PreviewProvider {
 	static var previews: some View {
-		WelcomeView(onShowSettings: { }, onPlayOffline: { })
+		WelcomeView(onShowSettings: { }, onLogin: { }, onPlayOffline: { })
 	}
 }
 #endif

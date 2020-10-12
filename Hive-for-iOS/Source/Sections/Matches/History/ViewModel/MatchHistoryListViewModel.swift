@@ -15,10 +15,10 @@ enum MatchHistoryListViewAction: BaseViewAction {
 
 enum MatchHistoryListAction: BaseAction {
 	case loadMatchHistory
+	case openSettings
 }
 
 class MatchHistoryListViewModel: ViewModel<MatchHistoryListViewAction>, ObservableObject {
-	@Published var settingsOpened = false
 
 	private let actions = PassthroughSubject<MatchHistoryListAction, Never>()
 	var actionsPublisher: AnyPublisher<MatchHistoryListAction, Never> {
@@ -30,7 +30,7 @@ class MatchHistoryListViewModel: ViewModel<MatchHistoryListViewAction>, Observab
 		case .onAppear:
 			actions.send(.loadMatchHistory)
 		case .openSettings:
-			settingsOpened = true
+			actions.send(.openSettings)
 		}
 	}
 

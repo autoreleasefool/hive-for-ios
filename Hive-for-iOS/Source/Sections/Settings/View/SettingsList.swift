@@ -17,13 +17,12 @@ struct SettingsList: View {
 	@State private var userProfile: Loadable<User>
 
 	init(
-		isOpen: Binding<Bool>,
 		showAccount: Bool = true,
 		user: Loadable<User> = .notLoaded,
 		logoutResult: Loadable<Bool> = .notLoaded
 	) {
 		self._userProfile = .init(initialValue: user)
-		viewModel = SettingsListViewModel(isOpen: isOpen, logoutResult: logoutResult, showAccount: showAccount)
+		viewModel = SettingsListViewModel(logoutResult: logoutResult, showAccount: showAccount)
 	}
 
 	var body: some View {
@@ -151,6 +150,8 @@ extension SettingsList {
 			preferencesBinding.wrappedValue.gameMode = mode
 		case .logout:
 			logout()
+		case .closeSettings:
+			container.appState.value.clearNavigation(of: .settings)
 		}
 	}
 
@@ -204,7 +205,6 @@ struct SettingsListPreviews: PreviewProvider {
 
 	static var previews: some View {
 		SettingsList(
-			isOpen: $isOpen,
 			user: .loaded(User.users[0]),
 			logoutResult: .loading(cached: nil, cancelBag: CancelBag())
 		)

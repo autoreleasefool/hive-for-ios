@@ -286,12 +286,9 @@ extension OnlineRoomViewModel {
 			readyPlayers.set(id, to: ready)
 		case .setOption(let option, let value):
 			setOption(option, to: value)
-		case .message(let id, let string):
-			#warning("TODO: display message")
-			print("Received message '\(string)' from \(id)")
 		case .error(let error):
 			actions.send(.showLoaf(error.loaf))
-		case .forfeit, .gameOver:
+		case .forfeit, .gameOver, .message:
 			print("Received invalid message in Match Details: \(message)")
 		}
 	}

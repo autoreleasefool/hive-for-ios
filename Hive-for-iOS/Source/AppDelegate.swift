@@ -24,7 +24,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		let environment = AppEnvironment.bootstrap()
 
 		// Create the SwiftUI view that provides the window contents.
-		let contentView = ContentView(container: environment.container)
+		let contentView = ContentView()
+			.inject(environment.container)
 
 		// Use a UIHostingController as window root view controller.
 		let window = UIWindow(frame: UIScreen.main.bounds)

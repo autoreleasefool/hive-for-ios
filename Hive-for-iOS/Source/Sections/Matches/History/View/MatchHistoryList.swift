@@ -30,11 +30,6 @@ struct MatchHistoryList: View {
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(userUpdates) { user = $0 }
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-				.sheet(isPresented: $viewModel.settingsOpened) {
-					SettingsList(isOpen: $viewModel.settingsOpened)
-						.inject(container)
-				}
-
 			noRoomSelectedState
 		}
 	}
@@ -181,6 +176,8 @@ extension MatchHistoryList {
 		switch action {
 		case .loadMatchHistory:
 			loadMatchHistory()
+		case .openSettings:
+			container.appState.value.setNavigation(to: .settings)
 		}
 	}
 

@@ -21,6 +21,7 @@ enum SettingsListAction: BaseAction {
 	case loadProfile
 	case setGameMode(Preferences.GameMode)
 	case logout
+	case closeSettings
 }
 
 class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject {
@@ -28,7 +29,7 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 		didSet {
 			switch logoutResult {
 			case .failed, .loaded:
-				isOpen.wrappedValue = false
+				actions.send(.closeSettings)
 				showAccount = false
 			case .loading, .notLoaded:
 				break
@@ -40,15 +41,12 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 	@Published var showAccount: Bool
 	@Published var preferences = Preferences()
 
-	private var isOpen: Binding<Bool>
-
 	private let actions = PassthroughSubject<SettingsListAction, Never>()
 	var actionsPublisher: AnyPublisher<SettingsListAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(isOpen: Binding<Bool>, logoutResult: Loadable<Bool>, showAccount: Bool) {
-		self.isOpen = isOpen
+	init(logoutResult: Loadable<Bool>, showAccount: Bool) {
 		self._logoutResult = .init(initialValue: logoutResult)
 		self.showAccount = showAccount
 	}
@@ -61,7 +59,7 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 			switchGameMode(from: current)
 
 		case .exit:
-			isOpen.wrappedValue = false
+			actions.send(.closeSettings)
 		case .logout:
 			actions.send(.logout)
 		}

@@ -12,6 +12,7 @@ import SwiftUI
 
 enum ContentViewViewAction: BaseViewAction {
 	case onAppear
+	case playOffline
 }
 
 enum ContentViewAction: BaseAction {
@@ -21,14 +22,6 @@ enum ContentViewAction: BaseAction {
 }
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
-	@Published var isShowingSettings = false
-	@Published var isPlayingOnline = false
-	@Published var isPlayingOffline = false {
-		didSet {
-			actions.send(.loadOfflineAccount)
-		}
-	}
-
 	override init() {
 		super.init()
 		subscribeToAccountUpdates()
@@ -43,6 +36,8 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 		switch viewAction {
 		case .onAppear:
 			actions.send(.loadAccount)
+		case .playOffline:
+			actions.send(.loadOfflineAccount)
 		}
 	}
 
@@ -53,15 +48,5 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			.receive(on: RunLoop.main)
 			.sink { [weak self] in self?.actions.send(.loggedOut) }
 			.store(in: self)
-	}
-
-	var isPlaying: Binding<Bool> {
-		Binding { [weak self] in
-			(self?.isPlayingOnline ?? false) || (self?.isPlayingOffline ?? false)
-		} set: { [weak self] newValue in
-			guard !newValue else { return }
-			self?.isPlayingOffline = false
-			self?.isPlayingOnline = false
-		}
 	}
 }

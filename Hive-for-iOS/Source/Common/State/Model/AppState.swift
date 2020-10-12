@@ -11,6 +11,17 @@ struct AppState: Equatable {
 	var userProfile: Loadable<User> = .notLoaded
 	var gameSetup: Game.Setup?
 
+	private(set) var contentSheetNavigation: ContentView.SheetNavigation?
 	var preferences = Preferences()
 	var features = Features()
+
+	mutating func setNavigation(to navigation: ContentView.SheetNavigation?) {
+		guard contentSheetNavigation == nil else { return }
+		contentSheetNavigation = navigation
+	}
+
+	mutating func clearNavigation(of navigation: ContentView.SheetNavigation?) {
+		guard contentSheetNavigation == navigation else { return }
+		contentSheetNavigation = nil
+	}
 }

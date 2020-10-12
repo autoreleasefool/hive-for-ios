@@ -30,10 +30,6 @@ struct ProfileView: View {
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 				.onReceive(userUpdates) { user = $0 }
-				.sheet(isPresented: $viewModel.settingsOpened) {
-					SettingsList(isOpen: $viewModel.settingsOpened)
-						.inject(container)
-				}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
 	}
@@ -101,6 +97,8 @@ extension ProfileView {
 		switch action {
 		case .loadProfile:
 			loadProfile()
+		case .openSettings:
+			container.appState.value.setNavigation(to: .settings)
 		}
 	}
 
