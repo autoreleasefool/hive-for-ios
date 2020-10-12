@@ -578,9 +578,11 @@ extension GameViewModel {
 			))
 		case .message(let id, let message):
 			handleMessage(message, from: id)
-		case .error, .forfeit, .playerJoined, .playerLeft, .playerReady, .setOption:
-			#warning("TODO: handle remaining messages in game")
-			debugLog("Received message: \(message)")
+		case .error(let error):
+			#warning("Handle error")
+			debugLog("Recieved error: \(error)")
+		case .forfeit, .playerJoined, .playerLeft, .playerReady, .setOption:
+			debugLog("Received invalid message: \(message)")
 		}
 	}
 }
