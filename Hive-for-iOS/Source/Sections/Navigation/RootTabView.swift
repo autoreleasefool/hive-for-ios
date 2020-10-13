@@ -61,10 +61,10 @@ extension RootTabView {
 		@ViewBuilder
 		var view: some View {
 			switch self {
-			case .lobby: LobbyList()
-			case .spectate: SpectatorLobbyList()
-			case .matchHistory: MatchHistoryList()
-			case .profile: ProfileView()
+			case .lobby: TabHostingView { LobbyList() }
+			case .spectate: TabHostingView { LobbyList(spectating: true) }
+			case .matchHistory: TabHostingView { MatchHistoryList() }
+			case .profile: TabHostingView { ProfileView() }
 			}
 		}
 

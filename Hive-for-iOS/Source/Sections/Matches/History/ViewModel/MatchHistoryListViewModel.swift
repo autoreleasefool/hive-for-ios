@@ -11,6 +11,7 @@ import Combine
 enum MatchHistoryListViewAction: BaseViewAction {
 	case onAppear
 	case openSettings
+	case loadMatchHistory
 }
 
 enum MatchHistoryListAction: BaseAction {
@@ -31,6 +32,8 @@ class MatchHistoryListViewModel: ViewModel<MatchHistoryListViewAction>, Observab
 			actions.send(.loadMatchHistory)
 		case .openSettings:
 			actions.send(.openSettings)
+		case .loadMatchHistory:
+			actions.send(.loadMatchHistory)
 		}
 	}
 
@@ -38,6 +41,17 @@ class MatchHistoryListViewModel: ViewModel<MatchHistoryListViewAction>, Observab
 		switch section {
 		case .inProgress: return user?.activeMatches ?? []
 		case .completed: return user?.pastMatches ?? []
+		}
+	}
+}
+
+// MARK: - TabItem
+
+extension MatchHistoryListViewModel: TabItemViewModel {
+	func tabShouldRefresh(dueToReason reason: TabRefreshReason) {
+		switch reason {
+		case .accountChanged:
+			postViewAction(.loadMatchHistory)
 		}
 	}
 }

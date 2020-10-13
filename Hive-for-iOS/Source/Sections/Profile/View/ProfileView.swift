@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-struct ProfileView: View {
+struct ProfileView: TabItemView {
 	@Environment(\.container) private var container
 
 	@ObservedObject private var viewModel: ProfileViewModel
@@ -76,6 +76,11 @@ struct ProfileView: View {
 				.accessibility(label: Text("Settings"))
 		}
 	}
+
+	func onTabItemAppeared(completion: @escaping (TabItemViewModel) -> Void) -> ProfileView {
+		completion(viewModel)
+		return self
+	}
 }
 
 // MARK: - EmptyState
@@ -85,7 +90,9 @@ extension ProfileView {
 		EmptyState(
 			header: "An error occurred",
 			message: "We can't fetch your profile right now.\n\(viewModel.errorMessage(from: error))",
-			action: .init(text: "Refresh") { loadProfile() }
+			action: .init(text: "Refresh") {
+				viewModel.postViewAction(.loadProfile)
+			}
 		)
 	}
 }

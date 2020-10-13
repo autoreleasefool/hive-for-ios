@@ -11,6 +11,7 @@ import Combine
 enum ProfileViewAction: BaseViewAction {
 	case onAppear
 	case openSettings
+	case loadProfile
 }
 
 enum ProfileAction: BaseAction {
@@ -30,6 +31,19 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 			actions.send(.loadProfile)
 		case .openSettings:
 			actions.send(.openSettings)
+		case .loadProfile:
+			actions.send(.loadProfile)
+		}
+	}
+}
+
+// MARK: - TabItem
+
+extension ProfileViewModel: TabItemViewModel {
+	func tabShouldRefresh(dueToReason reason: TabRefreshReason) {
+		switch reason {
+		case .accountChanged:
+			postViewAction(.loadProfile)
 		}
 	}
 }

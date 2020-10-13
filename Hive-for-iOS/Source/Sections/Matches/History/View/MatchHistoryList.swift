@@ -9,7 +9,7 @@
 import Combine
 import SwiftUI
 
-struct MatchHistoryList: View {
+struct MatchHistoryList: TabItemView {
 	@Environment(\.container) private var container
 
 	@ObservedObject private var viewModel: MatchHistoryListViewModel
@@ -123,6 +123,13 @@ struct MatchHistoryList: View {
 	private func lobbyDetails(for match: Match) -> some View {
 		EmptyView()
 	}
+
+	// TabItemView
+
+	func onTabItemAppeared(completion: @escaping (TabItemViewModel) -> Void) -> MatchHistoryList {
+		completion(viewModel)
+		return self
+	}
 }
 
 // MARK: - Sections
@@ -149,7 +156,9 @@ extension MatchHistoryList {
 			header: "No matches found",
 			message: "Try playing a match and when you're finished, you'll find it here. You'll also be able to see " +
 				"your incomplete matches",
-			action: .init(text: "Refresh") { loadMatchHistory() }
+			action: .init(text: "Refresh") {
+				viewModel.postViewAction(.loadMatchHistory)
+			}
 		)
 	}
 
@@ -157,7 +166,9 @@ extension MatchHistoryList {
 		EmptyState(
 			header: "An error occurred",
 			message: "We can't fetch your history right now.\n\(viewModel.errorMessage(from: error))",
-			action: .init(text: "Refresh") { loadMatchHistory() }
+			action: .init(text: "Refresh") {
+				viewModel.postViewAction(.loadMatchHistory)
+			}
 		)
 	}
 

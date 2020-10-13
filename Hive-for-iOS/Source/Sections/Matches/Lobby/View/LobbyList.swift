@@ -9,14 +9,11 @@
 import Combine
 import SwiftUI
 
-struct LobbyList: View {
+struct LobbyList: TabItemView {
+
 	@Environment(\.container) private var container
 
 	@ObservedObject private var viewModel: LobbyListViewModel
-
-	// This value can't be moved to the ViewModel because it mirrors the AppState and
-	// was causing a re-render loop when in the @ObservedObject view model
-	@State private var account: Loadable<Account> = .notLoaded
 
 	init(spectating: Bool = false, matches: Loadable<[Match]> = .notLoaded) {
 		viewModel = LobbyListViewModel(spectating: spectating, matches: matches)
@@ -28,11 +25,6 @@ struct LobbyList: View {
 				.navigationBarTitle(viewModel.spectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-				.onReceive(accountUpdate) {
-					guard account != $0 else { return }
-					account = $0
-					viewModel.postViewAction(.accountChanged($0))
-				}
 				.alert(isPresented: $viewModel.showMatchInProgressWarning) {
 					Alert(
 						title: Text("Already in match"),
@@ -165,6 +157,13 @@ struct LobbyList: View {
 				.imageScale(.large)
 				.accessibility(label: Text("Settings"))
 		}
+	}
+
+	// TabItemView
+
+	func onTabItemAppeared(completion: @escaping (TabItemViewModel) -> Void) -> LobbyList {
+		completion(viewModel)
+		return self
 	}
 }
 

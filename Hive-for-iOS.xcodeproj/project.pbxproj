@@ -63,7 +63,6 @@
 		CA92525124B6A83D003DB4F2 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA92525024B6A83D003DB4F2 /* Emoji.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */; };
-		CAAC15FD2534ABA400649EBC /* SpectatorLobbyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAC15FC2534ABA400649EBC /* SpectatorLobbyList.swift */; };
 		CABDFCCD23DB73E400C697AD /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCCC23DB73E400C697AD /* GameClient.swift */; };
 		CABDFCD223DB7FBC00C697AD /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD123DB7FBC00C697AD /* Theme.swift */; };
 		CABDFCD923DB89AA00C697AD /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCD823DB89AA00C697AD /* WelcomeView.swift */; };
@@ -105,6 +104,7 @@
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
 		CAEBA7CD24B9403D0051100D /* AnimatedEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */; };
 		CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CE24BA01200051100D /* PlayerHandView.swift */; };
+		CAF155C025350BB400305CBE /* TabHostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF155BF25350BB400305CBE /* TabHostingView.swift */; };
 		CAF82556245C6B030064359E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82555245C6B030064359E /* AppState.swift */; };
 		CAF82558245C6B2B0064359E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82557245C6B2B0064359E /* Account.swift */; };
 		CAF8255C245C6C640064359E /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF8255B245C6C640064359E /* Loadable.swift */; };
@@ -186,7 +186,6 @@
 		CA92525024B6A83D003DB4F2 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterTabBar.swift; sourceTree = "<group>"; };
-		CAAC15FC2534ABA400649EBC /* SpectatorLobbyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorLobbyList.swift; sourceTree = "<group>"; };
 		CABDFCCC23DB73E400C697AD /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
 		CABDFCD123DB7FBC00C697AD /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		CABDFCD823DB89AA00C697AD /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
@@ -231,6 +230,7 @@
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedEmoji.swift; sourceTree = "<group>"; };
 		CAEBA7CE24BA01200051100D /* PlayerHandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandView.swift; sourceTree = "<group>"; };
+		CAF155BF25350BB400305CBE /* TabHostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHostingView.swift; sourceTree = "<group>"; };
 		CAF82555245C6B030064359E /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		CAF82557245C6B2B0064359E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		CAF8255B245C6C640064359E /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
@@ -335,7 +335,6 @@
 			isa = PBXGroup;
 			children = (
 				CA6C952724EF486300F58289 /* SpectatorRoomView.swift */,
-				CAAC15FC2534ABA400649EBC /* SpectatorLobbyList.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -606,7 +605,7 @@
 				CAF8256D245CD14D0064359E /* ContentView.swift */,
 				CAC73100246DFA6C004DB450 /* ContentViewViewModel.swift */,
 				CAC730F8246C98BB004DB450 /* GameContentCoordinatorView.swift */,
-				CAFC7A61245C527400747E82 /* RootTabView.swift */,
+				CAF155BE253507EA00305CBE /* Navigation */,
 				CAC68CC324327517003CC2E6 /* Login */,
 				CAC6860123CD1C9B00B882D2 /* Matches */,
 				CAFC7A63245C54DE00747E82 /* Profile */,
@@ -772,6 +771,15 @@
 				CA6CC92E24AE952400E8CB27 /* HiveMindAgent.swift */,
 			);
 			path = AIAgent;
+			sourceTree = "<group>";
+		};
+		CAF155BE253507EA00305CBE /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				CAFC7A61245C527400747E82 /* RootTabView.swift */,
+				CAF155BF25350BB400305CBE /* TabHostingView.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 		CAF82561245C77B20064359E /* State */ = {
@@ -996,7 +1004,6 @@
 				CAC730EB246979C5004DB450 /* Date+Extensions.swift in Sources */,
 				CA41ACB2245616F500B6F88E /* Set+Extensions.swift in Sources */,
 				CAFA467623D8BCEF003C38AB /* GameViewARController.swift in Sources */,
-				CAAC15FD2534ABA400649EBC /* SpectatorLobbyList.swift in Sources */,
 				CAF82570245D59730064359E /* AppEnvironment.swift in Sources */,
 				CAC730F7246BDF26004DB450 /* SettingsList.swift in Sources */,
 				CAF8255C245C6C640064359E /* Loadable.swift in Sources */,
@@ -1054,6 +1061,7 @@
 				CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */,
 				CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */,
 				CAD32BFE2495110900984610 /* AIAgent.swift in Sources */,
+				CAF155C025350BB400305CBE /* TabHostingView.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* WelcomeView.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* LobbyRow.swift in Sources */,
 				CAC73109246E0505004DB450 /* OnlineRoomViewModel.swift in Sources */,
