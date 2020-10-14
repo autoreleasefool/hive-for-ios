@@ -33,14 +33,14 @@ struct LoafModifier: ViewModifier {
 	func body(content: Content) -> some View {
 		content
 			.loaf($loaf)
-			.onReceive(loafUpdate) {
+			.onReceive(loafUpdates) {
 				guard !presentedLoafs.contains($0) else { return }
 				presentedLoafs.insert($0)
 				loaf = $0.build()
 			}
 	}
 
-	private var loafUpdate: AnyPublisher<LoafState, Never> {
+	private var loafUpdates: AnyPublisher<LoafState, Never> {
 		toaster.loaf
 			.filter { $0 != nil }
 			.map { $0! }

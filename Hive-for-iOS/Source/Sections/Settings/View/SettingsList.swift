@@ -81,7 +81,7 @@ struct SettingsList: View {
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-			.onReceive(userUpdate) { userProfile = $0 }
+			.onReceive(userUpdates) { userProfile = $0 }
 			.onAppear { viewModel.postViewAction(.onAppear) }
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
@@ -174,7 +174,7 @@ extension SettingsList {
 // MARK: - Updates
 
 extension SettingsList {
-	private var userUpdate: AnyPublisher<Loadable<User>, Never> {
+	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
 		container.appState.updates(for: \.userProfile)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()

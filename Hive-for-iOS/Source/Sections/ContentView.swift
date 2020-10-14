@@ -36,8 +36,8 @@ struct ContentView: View {
 	var body: some View {
 		content
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-			.onReceive(accountUpdate) { account = $0 }
-			.onReceive(navigationUpdate) { sheetNavigation = $0 }
+			.onReceive(accountUpdates) { account = $0 }
+			.onReceive(navigationUpdates) { sheetNavigation = $0 }
 			.sheet(isPresented: isShowingSheet) {
 				sheetView
 			}
@@ -108,13 +108,13 @@ extension ContentView {
 // MARK: - Updates
 
 extension ContentView {
-	private var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
+	private var accountUpdates: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
 
-	private var navigationUpdate: AnyPublisher<SheetNavigation?, Never> {
+	private var navigationUpdates: AnyPublisher<SheetNavigation?, Never> {
 		container.appState.updates(for: \.contentSheetNavigation)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
