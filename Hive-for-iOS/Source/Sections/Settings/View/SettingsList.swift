@@ -81,7 +81,7 @@ struct SettingsList: View {
 			.navigationBarItems(leading: doneButton)
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onAppear { viewModel.postViewAction(.onAppear) }
-			.listensToAppStateChanges([.toggledFeature(.arGameMode), .toggledFeature(.emojiReactions)]) { _ in
+			.listensToAllAppStateChanges { _ in
 				viewModel.needsRefresh = true
 			}
 		}
@@ -137,6 +137,7 @@ struct SettingsList: View {
 	private var featureToggles: some View {
 		ForEach(Feature.allCases, id: \.rawValue) { feature in
 			Toggle(feature.rawValue, isOn: binding(for: feature))
+				.disabled(!container.hasAll(of: feature.dependencies))
 		}
 	}
 	#endif

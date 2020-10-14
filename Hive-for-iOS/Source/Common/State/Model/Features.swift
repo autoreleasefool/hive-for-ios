@@ -99,4 +99,8 @@ extension AppContainer {
 	func hasAny(of features: Set<Feature>) -> Bool {
 		self.features.hasAny(of: features)
 	}
+
+	func hasAll(of features: Set<Feature>) -> Bool {
+		self.features.hasAll(of: features)
+	}
 }

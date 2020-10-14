@@ -32,6 +32,10 @@ enum AppStateChange: Hashable, Equatable {
 		case (.toggledFeature, _), (_, .toggledFeature): return false
 		}
 	}
+
+	fileprivate static var allCases: [AppStateChange] {
+		[.accountChanged] + Feature.allCases.map { .toggledFeature($0) }
+	}
 }
 
 struct AppStateChangeListener: ViewModifier {
@@ -101,5 +105,9 @@ extension View {
 		onChange: @escaping (AppStateChange) -> Void
 	) -> some View {
 		modifier(AppStateChangeListener(forChanges: changes, onChange: onChange))
+	}
+
+	func listensToAllAppStateChanges(onChange: @escaping (AppStateChange) -> Void) -> some View {
+		modifier(AppStateChangeListener(forChanges: Set(AppStateChange.allCases), onChange: onChange))
 	}
 }
