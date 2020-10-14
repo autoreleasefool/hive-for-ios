@@ -10,11 +10,11 @@ import SwiftUI
 
 struct RootTabView: View {
 	@Environment(\.container) private var container
+	@State private var activeTabs: [Tab] = []
 
 	var body: some View {
 		BetterTabView(
-			Tab.allCases
-				.filter { $0.isEnabled(features: container.features) }
+			activeTabs
 				.map {
 					BetterTabView.Tab(
 						view: $0.view,
@@ -24,6 +24,28 @@ struct RootTabView: View {
 					)
 				}
 		)
+		.onAppear { updateActiveTabs() }
+		.listensToAppStateChanges(
+			[
+				.toggledFeature(.matchHistory),
+				.toggledFeature(.spectating),
+				.toggledFeature(.userProfile),
+			]
+		) { reason in
+			switch reason {
+			case
+				.toggledFeature(.matchHistory),
+				.toggledFeature(.spectating),
+				.toggledFeature(.userProfile):
+				updateActiveTabs()
+			case .toggledFeature, .accountChanged:
+				break
+			}
+		}
+	}
+
+	private func updateActiveTabs() {
+		activeTabs = Tab.allCases.filter { $0.isEnabled(features: container.features) }
 	}
 }
 

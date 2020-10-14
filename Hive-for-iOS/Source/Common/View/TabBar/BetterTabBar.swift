@@ -55,6 +55,7 @@ struct TabBarController: UIViewControllerRepresentable {
 	}
 
 	func updateUIViewController(_ tabBarController: UITabBarController, context: Context) {
+		tabBarController.viewControllers = controllers
 		tabBarController.selectedIndex = selectedIndex
 	}
 
