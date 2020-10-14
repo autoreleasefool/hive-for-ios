@@ -65,9 +65,11 @@ enum Feature: String, CaseIterable {
 
 	var dependencies: Set<Feature> {
 		switch self {
-		case .offlineMode: return [.aiOpponents]
-		case .arGameMode, .emojiReactions, .hiveMindAgent, .aiOpponents, .matchHistory, .userProfile,
-				 .spectating:
+		case .offlineMode:
+			return [.aiOpponents]
+		case .hiveMindAgent:
+			return [.aiOpponents]
+		case .arGameMode, .emojiReactions, .aiOpponents, .matchHistory, .userProfile, .spectating:
 			return []
 		}
 	}
