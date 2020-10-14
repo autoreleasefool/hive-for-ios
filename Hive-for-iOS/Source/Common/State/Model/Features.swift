@@ -48,25 +48,25 @@ enum Feature: String, CaseIterable {
 	case spectating = "Spectating"
 	case hiveMindAgent = "Hive Mind Agent"
 	case offlineMode = "Offline Mode"
-	case aiGamePlay = "AI Game Play"
+	case aiOpponents = "AI Opponents"
 
 	var rollout: Rollout {
 		switch self {
 		case .arGameMode: return .disabled
 		case .emojiReactions: return .released
 		case .hiveMindAgent: return .inDevelopment
-		case .offlineMode: return .released
+		case .offlineMode: return .inDevelopment
 		case .matchHistory: return .inDevelopment
 		case .userProfile: return .inDevelopment
 		case .spectating: return .inDevelopment
-		case .aiGamePlay: return .inDevelopment
+		case .aiOpponents: return .inDevelopment
 		}
 	}
 
 	var dependencies: Set<Feature> {
 		switch self {
-		case .aiGamePlay: return [.offlineMode]
-		case .arGameMode, .emojiReactions, .hiveMindAgent, .offlineMode, .matchHistory, .userProfile,
+		case .offlineMode: return [.aiOpponents]
+		case .arGameMode, .emojiReactions, .hiveMindAgent, .aiOpponents, .matchHistory, .userProfile,
 				 .spectating:
 			return []
 		}

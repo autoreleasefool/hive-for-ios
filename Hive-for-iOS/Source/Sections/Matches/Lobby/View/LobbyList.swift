@@ -16,22 +16,24 @@ struct LobbyList: View {
 
 	init(spectating: Bool = false, matches: Loadable<[Match]> = .notLoaded) {
 		_viewModel = StateObject(
-			wrappedValue: LobbyListViewModel(spectating: spectating, matches: matches)
+			wrappedValue: LobbyListViewModel(isSpectating: spectating, matches: matches)
 		)
 	}
 
 	var body: some View {
 		NavigationView {
 			content
-				.navigationBarTitle(viewModel.spectating ? "Spectate" : "Lobby")
+				.navigationBarTitle(viewModel.isSpectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-				.listensToAppStateChanges([.accountChanged]) { reason in
+				.listensToAppStateChanges([.accountChanged, .toggledFeature(.aiOpponents)]) { reason in
 					switch reason {
 					case .accountChanged:
 						viewModel.postViewAction(
 							.networkStatusChanged(isOffline: container.appState.value.account.value?.isOffline ?? true)
 						)
+					case .toggledFeature(.aiOpponents):
+						viewModel.postViewAction(.aiModeToggled(container.has(feature: .aiOpponents)))
 					case .toggledFeature:
 						break
 					}
@@ -82,7 +84,10 @@ struct LobbyList: View {
 		Text("")
 			.onAppear {
 				viewModel.postViewAction(
-					.onAppear(isOffline: container.account?.isOffline ?? false )
+					.onAppear(
+						isOffline: container.account?.isOffline ?? false,
+						aiEnabled: container.has(feature: .aiOpponents)
+					)
 				)
 			}
 	}
@@ -113,8 +118,12 @@ struct LobbyList: View {
 			isActive: viewModel.spectatingMatch
 		) { EmptyView() }
 
-		if !loading && matches.count == 0 {
-			emptyState
+		if matches.count == 0 {
+			if loading {
+				ProgressView("Loading matches")
+			} else {
+				emptyState
+			}
 		} else {
 			List {
 				Section(header: Text("Open")) {
@@ -146,7 +155,7 @@ struct LobbyList: View {
 
 	@ViewBuilder
 	private var newMatchButton: some View {
-		if viewModel.spectating {
+		if viewModel.isSpectating {
 			EmptyView()
 		} else {
 			Button {
@@ -181,7 +190,7 @@ extension LobbyList {
 		} else {
 			EmptyState(
 				header: "No matches found",
-				message: viewModel.spectating
+				message: viewModel.isSpectating
 					? "There don't seem to be any active games right now. Go to the lobby to start your own"
 					: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
 						"with the '+' button in the top right",
@@ -206,10 +215,10 @@ extension LobbyList {
 	private var offlineState: some View {
 		EmptyState(
 			header: "You're offline",
-			message: viewModel.spectating
+			message: viewModel.isSpectating
 				? "You can't spectate offline. Log in to spectate"
 				: "You can play a game against the computer by tapping below",
-			action: viewModel.spectating
+			action: viewModel.isSpectating
 				? .init(text: "Log in") { viewModel.postViewAction(.logIn) }
 				: .init(text: "Play local match") { viewModel.postViewAction(.createLocalMatchVsComputer) }
 		)
@@ -238,7 +247,7 @@ extension LobbyList {
 	}
 
 	private func loadMatches() {
-		if viewModel.spectating {
+		if viewModel.isSpectating {
 			container.interactors.matchInteractor
 				.loadActiveMatches(matches: $viewModel.matches)
 		} else {

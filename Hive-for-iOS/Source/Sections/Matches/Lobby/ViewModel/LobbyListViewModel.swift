@@ -10,12 +10,13 @@ import Combine
 import SwiftUI
 
 enum LobbyListViewAction: BaseViewAction {
-	case onAppear(isOffline: Bool)
+	case onAppear(isOffline: Bool, aiEnabled: Bool)
 	case onListAppear
 	case onListDisappear
 	case refresh
 	case openSettings
 	case networkStatusChanged(isOffline: Bool)
+	case aiModeToggled(Bool)
 
 	case joinMatch(Match.ID)
 	case createNewMatch
@@ -75,7 +76,8 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 		}
 	}
 
-	let spectating: Bool
+	let isSpectating: Bool
+	private var isAIGameModeEnabled: Bool = false
 
 	private var refreshTimer: Timer?
 
@@ -84,15 +86,16 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(spectating: Bool, matches: Loadable<[Match]>) {
-		self.spectating = spectating
+	init(isSpectating: Bool, matches: Loadable<[Match]>) {
+		self.isSpectating = isSpectating
 		self._matches = .init(initialValue: matches)
 	}
 
 	override func postViewAction(_ viewAction: LobbyListViewAction) {
 		switch viewAction {
-		case .onAppear(let isOffline):
+		case .onAppear(let isOffline, let aiEnabled):
 			self.isOffline = isOffline
+			self.isAIGameModeEnabled = aiEnabled
 			accountStatusDidChange()
 		case .onListAppear:
 			startRefreshTimer()
@@ -116,6 +119,8 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			showCreateMatchPrompt = false
 		case .networkStatusChanged(let isOffline):
 			self.isOffline = isOffline
+		case .aiModeToggled(let enabled):
+			self.isAIGameModeEnabled = enabled
 		case .logIn:
 			actions.send(.openLoginForm)
 		}
@@ -125,7 +130,7 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 		if inMatch {
 			showMatchInProgressWarning = true
 		} else {
-			if spectating {
+			if isSpectating {
 				currentSpectatingMatchId = id
 			} else {
 				currentMatchId = id
@@ -139,8 +144,10 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 		} else {
 			if isOffline {
 				creatingLocalRoom = true
-			} else {
+			} else if isAIGameModeEnabled {
 				showCreateMatchPrompt = true
+			} else {
+				postViewAction(.createOnlineMatchVsPlayer)
 			}
 		}
 	}
