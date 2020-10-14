@@ -33,7 +33,7 @@ struct SettingsList: View {
 			Form {
 				if container.hasAny(of: [.arGameMode, .emojiReactions]) {
 					Section(header: Text("Game")) {
-						if !container.has(feature: .arGameMode) {
+						if container.has(feature: .arGameMode) {
 							itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
 								viewModel.postViewAction(.switchGameMode(current: $0))
 							}
