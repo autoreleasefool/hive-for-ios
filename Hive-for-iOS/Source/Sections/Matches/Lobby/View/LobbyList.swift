@@ -91,50 +91,49 @@ struct LobbyList: View {
 		loadedView(matches ?? [], loading: true)
 	}
 
+	@ViewBuilder
 	private func loadedView(_ matches: [Match], loading: Bool) -> some View {
-		Group {
-			NavigationLink(
-				destination: OnlineRoomView(id: viewModel.currentMatchId, creatingNewMatch: false),
-				isActive: viewModel.joiningMatch
-			) { EmptyView() }
+		NavigationLink(
+			destination: OnlineRoomView(id: viewModel.currentMatchId, creatingNewMatch: false),
+			isActive: viewModel.joiningMatch
+		) { EmptyView() }
 
-			NavigationLink(
-				destination: OnlineRoomView(id: nil, creatingNewMatch: true),
-				isActive: $viewModel.creatingOnlineRoom
-			) { EmptyView() }
+		NavigationLink(
+			destination: OnlineRoomView(id: nil, creatingNewMatch: true),
+			isActive: $viewModel.creatingOnlineRoom
+		) { EmptyView() }
 
-			NavigationLink(
-				destination: AgentPicker(isActive: $viewModel.creatingLocalRoom),
-				isActive: $viewModel.creatingLocalRoom
-			) { EmptyView() }
+		NavigationLink(
+			destination: AgentPicker(isActive: $viewModel.creatingLocalRoom),
+			isActive: $viewModel.creatingLocalRoom
+		) { EmptyView() }
 
-			NavigationLink(
-				destination: SpectatorRoomView(id: viewModel.currentSpectatingMatchId),
-				isActive: viewModel.spectatingMatch
-			) { EmptyView() }
+		NavigationLink(
+			destination: SpectatorRoomView(id: viewModel.currentSpectatingMatchId),
+			isActive: viewModel.spectatingMatch
+		) { EmptyView() }
 
-			if !loading && matches.count == 0 {
-				emptyState
-			} else {
-				List {
-					Section(header: Text("Open")) {
-						ForEach(matches) { match in
-							Button {
-								viewModel.postViewAction(.joinMatch(match.id))
-							} label: {
-								LobbyRow(match: match)
-							}
-							.padding(.vertical)
+		if !loading && matches.count == 0 {
+			emptyState
+		} else {
+			List {
+				Section(header: Text("Open")) {
+					ForEach(matches) { match in
+						Button {
+							viewModel.postViewAction(.joinMatch(match.id))
+						} label: {
+							LobbyRow(match: match)
 						}
+						.padding(.vertical)
 					}
 				}
-				.listStyle(InsetGroupedListStyle())
-				.onAppear {
-					viewModel.postViewAction(.onListAppear)
-				}
-				.onDisappear {
-					viewModel.postViewAction(.onListDisappear)
-				}
+			}
+			.listStyle(InsetGroupedListStyle())
+			.onAppear {
+				viewModel.postViewAction(.onListAppear)
+			}
+			.onDisappear {
+				viewModel.postViewAction(.onListDisappear)
 			}
 		}
 	}
