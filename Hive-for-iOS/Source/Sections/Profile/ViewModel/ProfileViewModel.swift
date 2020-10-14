@@ -37,17 +37,6 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 	}
 }
 
-// MARK: - TabItem
-
-extension ProfileViewModel: TabItemViewModel {
-	func tabShouldRefresh(dueToReason reason: TabRefreshReason) {
-		switch reason {
-		case .accountChanged:
-			postViewAction(.loadProfile)
-		}
-	}
-}
-
 // MARK: - Strings
 
 extension ProfileViewModel {

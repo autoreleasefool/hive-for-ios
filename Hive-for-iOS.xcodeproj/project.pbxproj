@@ -104,7 +104,7 @@
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
 		CAEBA7CD24B9403D0051100D /* AnimatedEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */; };
 		CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CE24BA01200051100D /* PlayerHandView.swift */; };
-		CAF155C025350BB400305CBE /* TabHostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF155BF25350BB400305CBE /* TabHostingView.swift */; };
+		CAF155C62536952C00305CBE /* AppStateChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF155C52536952C00305CBE /* AppStateChangeListener.swift */; };
 		CAF82556245C6B030064359E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82555245C6B030064359E /* AppState.swift */; };
 		CAF82558245C6B2B0064359E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82557245C6B2B0064359E /* Account.swift */; };
 		CAF8255C245C6C640064359E /* Loadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF8255B245C6C640064359E /* Loadable.swift */; };
@@ -230,7 +230,7 @@
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedEmoji.swift; sourceTree = "<group>"; };
 		CAEBA7CE24BA01200051100D /* PlayerHandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandView.swift; sourceTree = "<group>"; };
-		CAF155BF25350BB400305CBE /* TabHostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabHostingView.swift; sourceTree = "<group>"; };
+		CAF155C52536952C00305CBE /* AppStateChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateChangeListener.swift; sourceTree = "<group>"; };
 		CAF82555245C6B030064359E /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		CAF82557245C6B2B0064359E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
 		CAF8255B245C6C640064359E /* Loadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loadable.swift; sourceTree = "<group>"; };
@@ -777,7 +777,7 @@
 			isa = PBXGroup;
 			children = (
 				CAFC7A61245C527400747E82 /* RootTabView.swift */,
-				CAF155BF25350BB400305CBE /* TabHostingView.swift */,
+				CAF155C52536952C00305CBE /* AppStateChangeListener.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -1030,6 +1030,7 @@
 				CAFA91F223E77B290087F1F0 /* GameState+AR.swift in Sources */,
 				CAA87BC124328F53006E418B /* User.swift in Sources */,
 				CA0C77E425295BAF00C9AA89 /* EmojiHUD.swift in Sources */,
+				CAF155C62536952C00305CBE /* AppStateChangeListener.swift in Sources */,
 				CAC6861323CE440A00B882D2 /* HiveAPI.swift in Sources */,
 				CABDFCDE23DBA17200C697AD /* BottomSheet.swift in Sources */,
 				CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */,
@@ -1061,7 +1062,6 @@
 				CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */,
 				CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */,
 				CAD32BFE2495110900984610 /* AIAgent.swift in Sources */,
-				CAF155C025350BB400305CBE /* TabHostingView.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* WelcomeView.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* LobbyRow.swift in Sources */,
 				CAC73109246E0505004DB450 /* OnlineRoomViewModel.swift in Sources */,

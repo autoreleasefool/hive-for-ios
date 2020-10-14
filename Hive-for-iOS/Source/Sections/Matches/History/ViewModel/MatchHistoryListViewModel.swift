@@ -45,17 +45,6 @@ class MatchHistoryListViewModel: ViewModel<MatchHistoryListViewAction>, Observab
 	}
 }
 
-// MARK: - TabItem
-
-extension MatchHistoryListViewModel: TabItemViewModel {
-	func tabShouldRefresh(dueToReason reason: TabRefreshReason) {
-		switch reason {
-		case .accountChanged:
-			postViewAction(.loadMatchHistory)
-		}
-	}
-}
-
 // MARK: - Strings
 
 extension MatchHistoryListViewModel {

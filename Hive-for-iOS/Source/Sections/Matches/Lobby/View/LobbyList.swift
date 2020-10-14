@@ -9,8 +9,7 @@
 import Combine
 import SwiftUI
 
-struct LobbyList: TabItemView {
-
+struct LobbyList: View {
 	@Environment(\.container) private var container
 
 	@StateObject private var viewModel: LobbyListViewModel
@@ -27,6 +26,16 @@ struct LobbyList: TabItemView {
 				.navigationBarTitle(viewModel.spectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+				.listensToAppStateChanges([.accountChanged]) { reason in
+					switch reason {
+					case .accountChanged:
+						viewModel.postViewAction(
+							.networkStatusChanged(isOffline: container.appState.value.account.value?.isOffline ?? true)
+						)
+					case .userChanged:
+						break
+					}
+				}
 				.alert(isPresented: $viewModel.showMatchInProgressWarning) {
 					Alert(
 						title: Text("Already in match"),
@@ -160,13 +169,6 @@ struct LobbyList: TabItemView {
 				.accessibility(label: Text("Settings"))
 		}
 	}
-
-	// TabItemView
-
-	func onTabItemAppeared(completion: @escaping (TabItemViewModel) -> Void) -> LobbyList {
-		completion(viewModel)
-		return self
-	}
 }
 
 // MARK: - Empty State
@@ -244,16 +246,6 @@ extension LobbyList {
 			container.interactors.matchInteractor
 				.loadOpenMatches(matches: $viewModel.matches)
 		}
-	}
-}
-
-// MARK: - Updates
-
-extension LobbyList {
-	private var accountUpdate: AnyPublisher<Loadable<Account>, Never> {
-		container.appState.updates(for: \.account)
-			.receive(on: RunLoop.main)
-			.eraseToAnyPublisher()
 	}
 }
 

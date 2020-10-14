@@ -15,6 +15,7 @@ enum LobbyListViewAction: BaseViewAction {
 	case onListDisappear
 	case refresh
 	case openSettings
+	case networkStatusChanged(isOffline: Bool)
 
 	case joinMatch(Match.ID)
 	case createNewMatch
@@ -113,6 +114,8 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			showCreateMatchPrompt = false
 		case .cancelCreateMatch:
 			showCreateMatchPrompt = false
+		case .networkStatusChanged(let isOffline):
+			self.isOffline = isOffline
 		case .logIn:
 			actions.send(.openLoginForm)
 		}
@@ -186,17 +189,6 @@ extension LobbyListViewModel {
 				}
 			}
 		)
-	}
-}
-
-// MARK: - TabItem
-
-extension LobbyListViewModel: TabItemViewModel {
-	func tabShouldRefresh(dueToReason reason: TabRefreshReason) {
-		switch reason {
-		case .accountChanged(let account):
-			isOffline = account.value?.isOffline ?? true
-		}
 	}
 }
 

@@ -9,33 +9,37 @@
 import Combine
 import SwiftUI
 
-struct MatchHistoryList: TabItemView {
+struct MatchHistoryList: View {
 	@Environment(\.container) private var container
 
 	@StateObject private var viewModel = MatchHistoryListViewModel()
 
-	// This value can't be moved to the ViewModel because it mirrors the AppState and
-	// was causing a re-render loop when in the @ObservedObject view model
-	@State private var user: Loadable<User>
-
 	init(user: Loadable<User> = .notLoaded) {
-		self._user = .init(initialValue: user)
 	}
 
 	var body: some View {
 		NavigationView {
 			content
+				.listensToAppStateChanges([.accountChanged]) { reason in
+					switch reason {
+					case .accountChanged:
+						guard container.account?.isOffline == false else { return }
+						viewModel.postViewAction(.loadMatchHistory)
+					case .userChanged:
+						break
+					}
+				}
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)
-				.onReceive(userUpdates) { user = $0 }
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+
 			noRoomSelectedState
 		}
 	}
 
 	@ViewBuilder
 	private var content: some View {
-		switch user {
+		switch container.appState.value.userProfile {
 		case .notLoaded: notLoadedView
 		case .loading(let user, _): loadedView(user)
 		case .loaded(let user): loadedView(user)
@@ -122,13 +126,6 @@ struct MatchHistoryList: TabItemView {
 	private func lobbyDetails(for match: Match) -> some View {
 		EmptyView()
 	}
-
-	// TabItemView
-
-	func onTabItemAppeared(completion: @escaping (TabItemViewModel) -> Void) -> MatchHistoryList {
-		completion(viewModel)
-		return self
-	}
 }
 
 // MARK: - Sections
@@ -194,14 +191,6 @@ extension MatchHistoryList {
 	private func loadMatchHistory() {
 		container.interactors.userInteractor
 			.loadProfile()
-	}
-}
-
-// MARK: - Updates
-
-extension MatchHistoryList {
-	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
-		container.appState.updates(for: \.userProfile)
 	}
 }
 

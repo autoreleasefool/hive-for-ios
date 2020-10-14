@@ -9,33 +9,35 @@
 import Combine
 import SwiftUI
 
-struct ProfileView: TabItemView {
+struct ProfileView: View {
 	@Environment(\.container) private var container
 
 	@StateObject private var viewModel = ProfileViewModel()
 
-	// This value can't be moved to the ViewModel because it mirrors the AppState and
-	// was causing a re-render loop when in the @ObservedObject view model
-	@State private var user: Loadable<User>
-
 	init(user: Loadable<User> = .notLoaded) {
-		self._user = .init(initialValue: user)
 	}
 
 	var body: some View {
 		NavigationView {
 			content
-				.navigationBarTitle(viewModel.title(forUser: user.value))
+				.navigationBarTitle(viewModel.title(forUser: container.appState.value.userProfile.value))
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-				.onReceive(userUpdates) { user = $0 }
+				.listensToAppStateChanges([.accountChanged]) { reason in
+					switch reason {
+					case .accountChanged:
+						viewModel.postViewAction(.loadProfile)
+					case .userChanged:
+						break
+					}
+				}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
 	}
 
 	@ViewBuilder
 	private var content: some View {
-		switch user {
+		switch container.appState.value.userProfile {
 		case .notLoaded: notLoadedView
 		case .loading: loadingView
 		case .loaded(let user): loadedView(user)
@@ -74,11 +76,6 @@ struct ProfileView: TabItemView {
 				.imageScale(.large)
 				.accessibility(label: Text("Settings"))
 		}
-	}
-
-	func onTabItemAppeared(completion: @escaping (TabItemViewModel) -> Void) -> ProfileView {
-		completion(viewModel)
-		return self
 	}
 }
 
