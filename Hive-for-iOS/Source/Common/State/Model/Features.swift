@@ -16,11 +16,15 @@ struct Features: Equatable {
 	})
 
 	func has(_ feature: Feature) -> Bool {
-		enabled.contains(feature)
+		enabled.contains(feature) && hasAll(of: feature.dependencies)
 	}
 
 	func hasAny(of features: Set<Feature>) -> Bool {
-		return !enabled.isDisjoint(with: features)
+		features.contains { has($0) }
+	}
+
+	func hasAll(of features: Set<Feature>) -> Bool {
+		features.allSatisfy { has($0) }
 	}
 
 	mutating func toggle(_ feature: Feature) {
@@ -39,12 +43,12 @@ struct Features: Equatable {
 enum Feature: String, CaseIterable {
 	case arGameMode = "AR Game Mode"
 	case emojiReactions = "Emoji Reactions"
-	case featureFlags = "Feature flags"
 	case matchHistory = "Match History"
 	case userProfile = "User Profile"
 	case spectating = "Spectating"
 	case hiveMindAgent = "Hive Mind Agent"
 	case offlineMode = "Offline Mode"
+	case aiGamePlay = "AI Game Play"
 
 	var rollout: Rollout {
 		switch self {
@@ -52,10 +56,19 @@ enum Feature: String, CaseIterable {
 		case .emojiReactions: return .released
 		case .hiveMindAgent: return .inDevelopment
 		case .offlineMode: return .released
-		case .featureFlags: return .inDevelopment
 		case .matchHistory: return .inDevelopment
 		case .userProfile: return .inDevelopment
 		case .spectating: return .inDevelopment
+		case .aiGamePlay: return .inDevelopment
+		}
+	}
+
+	var dependencies: Set<Feature> {
+		switch self {
+		case .aiGamePlay: return [.offlineMode]
+		case .arGameMode, .emojiReactions, .hiveMindAgent, .offlineMode, .matchHistory, .userProfile,
+				 .spectating:
+			return []
 		}
 	}
 }
