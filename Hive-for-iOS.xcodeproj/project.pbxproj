@@ -322,6 +322,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		CA3B0B6A2536B04C0010109F /* ViewModifier */ = {
+			isa = PBXGroup;
+			children = (
+				CAF155C52536952C00305CBE /* AppStateChangeListener.swift */,
+			);
+			path = ViewModifier;
+			sourceTree = "<group>";
+		};
 		CA6C952624EF484D00F58289 /* Spectating */ = {
 			isa = PBXGroup;
 			children = (
@@ -605,7 +613,7 @@
 				CAF8256D245CD14D0064359E /* ContentView.swift */,
 				CAC73100246DFA6C004DB450 /* ContentViewViewModel.swift */,
 				CAC730F8246C98BB004DB450 /* GameContentCoordinatorView.swift */,
-				CAF155BE253507EA00305CBE /* Navigation */,
+				CAFC7A61245C527400747E82 /* RootTabView.swift */,
 				CAC68CC324327517003CC2E6 /* Login */,
 				CAC6860123CD1C9B00B882D2 /* Matches */,
 				CAFC7A63245C54DE00747E82 /* Profile */,
@@ -773,15 +781,6 @@
 			path = AIAgent;
 			sourceTree = "<group>";
 		};
-		CAF155BE253507EA00305CBE /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				CAFC7A61245C527400747E82 /* RootTabView.swift */,
-				CAF155C52536952C00305CBE /* AppStateChangeListener.swift */,
-			);
-			path = Navigation;
-			sourceTree = "<group>";
-		};
 		CAF82561245C77B20064359E /* State */ = {
 			isa = PBXGroup;
 			children = (
@@ -790,6 +789,7 @@
 				CA41ACAB2454A30B00B6F88E /* Toaster.swift */,
 				CAF82563245C77DD0064359E /* Model */,
 				CAF82562245C77D50064359E /* Interactor */,
+				CA3B0B6A2536B04C0010109F /* ViewModifier */,
 				CAF82566245C7A030064359E /* Repository */,
 			);
 			path = State;
