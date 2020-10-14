@@ -14,6 +14,7 @@ private class RemoteImageFetcher: ObservableObject {
 
 	private let url: URL?
 	private var cancellable: AnyCancellable?
+	private var networkRequestInProgress = false
 
 	init(url: URL?) {
 		self.url = url
@@ -24,12 +25,14 @@ private class RemoteImageFetcher: ObservableObject {
 	}
 
 	func fetch() {
+		guard !networkRequestInProgress else { return }
+		networkRequestInProgress = true
 		cancellable = ImageLoader
 			.shared
 			.fetch(url: url)
 			.receive(on: RunLoop.main)
 			.sink(
-				receiveCompletion: { _ in },
+				receiveCompletion: { [weak self] _ in self?.networkRequestInProgress = false },
 				receiveValue: { [weak self] result in
 					guard self?.url == result.0 else { return }
 					self?.image = result.1
@@ -43,14 +46,13 @@ private class RemoteImageFetcher: ObservableObject {
 }
 
 struct RemoteImage: View {
-	@ObservedObject private var imageFetcher: RemoteImageFetcher
+	@StateObject private var imageFetcher: RemoteImageFetcher
 	private let placeholder: UIImage
 	private var placeholderTint: ColorAsset?
 
 	init(url: URL?, placeholder: UIImage = UIImage()) {
 		self.placeholder = placeholder
-		self.imageFetcher = RemoteImageFetcher(url: url)
-		self.imageFetcher.fetch()
+		self._imageFetcher = StateObject(wrappedValue: RemoteImageFetcher(url: url))
 	}
 
 	var body: some View {
@@ -69,7 +71,8 @@ struct RemoteImage: View {
 					.frame(width: geometry.size.width, height: geometry.size.height)
 			}
 		}
-		.onDisappear(perform: imageFetcher.cancel)
+		.onAppear { imageFetcher.fetch() }
+		.onDisappear { imageFetcher.cancel() }
 	}
 
 	func placeholderTint(_ asset: ColorAsset?) -> Self {

@@ -12,7 +12,7 @@ import Combine
 struct ContentView: View {
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel = ContentViewViewModel()
+	@StateObject private var viewModel = ContentViewViewModel()
 
 	// This value can't be moved to the ViewModel because it mirrors the AppState and
 	// was causing a re-render loop when in the @ObservedObject view model

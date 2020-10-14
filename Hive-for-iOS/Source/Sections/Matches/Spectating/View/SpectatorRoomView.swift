@@ -14,10 +14,10 @@ struct SpectatorRoomView: View {
 	@Environment(\.toaster) private var toaster
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: SpectatorRoomViewModel
+	@StateObject private var viewModel: SpectatorRoomViewModel
 
 	init(id: Match.ID?, match: Loadable<Match> = .notLoaded) {
-		self.viewModel = SpectatorRoomViewModel(matchId: id, match: match)
+		_viewModel = StateObject(wrappedValue: SpectatorRoomViewModel(matchId: id, match: match))
 	}
 
 	var body: some View {

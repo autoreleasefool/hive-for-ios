@@ -12,13 +12,15 @@ import SwiftUI
 struct LoginSignupForm: View {
 	@Environment(\.container) private var container
 	@Environment(\.presentationMode) private var presentationMode
-	@ObservedObject private var viewModel: LoginSignupFormViewModel
+	@StateObject private var viewModel: LoginSignupFormViewModel
 
 	init(
 		defaultForm: LoginSignupFormViewModel.Form = .login,
 		account: Loadable<Account> = .notLoaded
 	) {
-		viewModel = LoginSignupFormViewModel(defaultForm: defaultForm, account: account)
+		_viewModel = StateObject(
+			wrappedValue: LoginSignupFormViewModel(defaultForm: defaultForm, account: account)
+		)
 	}
 
 	var body: some View {

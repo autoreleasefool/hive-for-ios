@@ -12,7 +12,7 @@ import SwiftUI
 struct ProfileView: TabItemView {
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: ProfileViewModel
+	@StateObject private var viewModel = ProfileViewModel()
 
 	// This value can't be moved to the ViewModel because it mirrors the AppState and
 	// was causing a re-render loop when in the @ObservedObject view model
@@ -20,7 +20,6 @@ struct ProfileView: TabItemView {
 
 	init(user: Loadable<User> = .notLoaded) {
 		self._user = .init(initialValue: user)
-		self.viewModel = ProfileViewModel()
 	}
 
 	var body: some View {

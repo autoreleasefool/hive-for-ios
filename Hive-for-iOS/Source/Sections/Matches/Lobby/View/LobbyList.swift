@@ -13,10 +13,12 @@ struct LobbyList: TabItemView {
 
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: LobbyListViewModel
+	@StateObject private var viewModel: LobbyListViewModel
 
 	init(spectating: Bool = false, matches: Loadable<[Match]> = .notLoaded) {
-		viewModel = LobbyListViewModel(spectating: spectating, matches: matches)
+		_viewModel = StateObject(
+			wrappedValue: LobbyListViewModel(spectating: spectating, matches: matches)
+		)
 	}
 
 	var body: some View {

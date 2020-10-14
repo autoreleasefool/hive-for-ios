@@ -14,10 +14,12 @@ struct LocalRoomView: View {
 	@Environment(\.toaster) private var toaster
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel = LocalRoomViewModel()
+	@StateObject private var viewModel: LocalRoomViewModel
 
 	init(opponent: AgentConfiguration) {
-		viewModel.opponent = opponent
+		_viewModel = StateObject(
+			wrappedValue: LocalRoomViewModel(opponent: opponent)
+		)
 	}
 
 	var body: some View {

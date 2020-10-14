@@ -15,10 +15,16 @@ struct OnlineRoomView: View {
 	@Environment(\.toaster) private var toaster
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: OnlineRoomViewModel
+	@StateObject private var viewModel: OnlineRoomViewModel
 
 	init(id: Match.ID?, creatingNewMatch: Bool, match: Loadable<Match> = .notLoaded) {
-		self.viewModel = OnlineRoomViewModel(matchId: id, creatingNewMatch: creatingNewMatch, match: match)
+		_viewModel = StateObject(
+			wrappedValue: OnlineRoomViewModel(
+				matchId: id,
+				creatingNewMatch: creatingNewMatch,
+				match: match
+			)
+		)
 	}
 
 	var body: some View {

@@ -12,7 +12,7 @@ import SwiftUI
 struct SettingsList: View {
 	@Environment(\.container) private var container
 
-	@ObservedObject private var viewModel: SettingsListViewModel
+	@StateObject private var viewModel: SettingsListViewModel
 
 	@State private var userProfile: Loadable<User>
 
@@ -21,8 +21,10 @@ struct SettingsList: View {
 		user: Loadable<User> = .notLoaded,
 		logoutResult: Loadable<Bool> = .notLoaded
 	) {
-		self._userProfile = .init(initialValue: user)
-		viewModel = SettingsListViewModel(logoutResult: logoutResult, showAccount: showAccount)
+		_userProfile = .init(initialValue: user)
+		_viewModel = StateObject(
+			wrappedValue: SettingsListViewModel(logoutResult: logoutResult, showAccount: showAccount)
+		)
 	}
 
 	var body: some View {

@@ -42,10 +42,14 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 		actions.eraseToAnyPublisher()
 	}
 
-	var opponent: AgentConfiguration!
+	private(set) var opponent: AgentConfiguration
 
 	var player: Player {
 		matchOptions.contains(.hostIsWhite) ? .white : .black
+	}
+
+	init(opponent: AgentConfiguration) {
+		self.opponent = opponent
 	}
 
 	override func postViewAction(_ viewAction: LocalRoomViewAction) {
