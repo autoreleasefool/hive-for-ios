@@ -14,16 +14,17 @@ struct SettingsList: View {
 
 	@StateObject private var viewModel: SettingsListViewModel
 
-	@State private var userProfile: Loadable<User>
-
 	init(
 		showAccount: Bool = true,
 		user: Loadable<User> = .notLoaded,
 		logoutResult: Loadable<Bool> = .notLoaded
 	) {
-		_userProfile = .init(initialValue: user)
 		_viewModel = StateObject(
-			wrappedValue: SettingsListViewModel(logoutResult: logoutResult, showAccount: showAccount)
+			wrappedValue: SettingsListViewModel(
+				user: user,
+				logoutResult: logoutResult,
+				showAccount: showAccount
+			)
 		)
 	}
 
@@ -54,7 +55,7 @@ struct SettingsList: View {
 
 				if viewModel.showAccount {
 					Section(header: Text("Account"), footer: logoutButton) {
-						UserPreview(userProfile.value?.summary)
+						UserPreview(viewModel.user.value?.summary)
 					}
 				}
 
@@ -81,7 +82,6 @@ struct SettingsList: View {
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-			.onReceive(userUpdates) { userProfile = $0 }
 			.onAppear { viewModel.postViewAction(.onAppear) }
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
@@ -159,7 +159,7 @@ extension SettingsList {
 
 	private func loadProfile() {
 		container.interactors.userInteractor
-			.loadProfile()
+			.loadProfile(user: $viewModel.user)
 	}
 
 	private func logout() {
@@ -174,12 +174,6 @@ extension SettingsList {
 // MARK: - Updates
 
 extension SettingsList {
-	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
-		container.appState.updates(for: \.userProfile)
-			.receive(on: RunLoop.main)
-			.eraseToAnyPublisher()
-	}
-
 	private var preferencesBinding: Binding<Preferences> {
 		$viewModel.preferences.dispatched(to: container.appState, \.preferences)
 	}

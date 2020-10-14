@@ -20,10 +20,15 @@ enum MatchHistoryListAction: BaseAction {
 }
 
 class MatchHistoryListViewModel: ViewModel<MatchHistoryListViewAction>, ObservableObject {
+	@Published var user: Loadable<User>
 
 	private let actions = PassthroughSubject<MatchHistoryListAction, Never>()
 	var actionsPublisher: AnyPublisher<MatchHistoryListAction, Never> {
 		actions.eraseToAnyPublisher()
+	}
+
+	init(user: Loadable<User>) {
+		_user = .init(initialValue: user)
 	}
 
 	override func postViewAction(_ viewAction: MatchHistoryListViewAction) {

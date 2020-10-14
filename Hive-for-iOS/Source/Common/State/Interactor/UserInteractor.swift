@@ -10,7 +10,7 @@ import Combine
 import Foundation
 
 protocol UserInteractor {
-	func loadProfile()
+	func loadProfile(user: LoadableSubject<User>)
 	func loadDetails(id: User.ID, user: LoadableSubject<User>)
 }
 
@@ -18,20 +18,13 @@ struct LiveUserInteractor: UserInteractor {
 	let repository: UserRepository
 	let appState: Store<AppState>
 
-	func loadProfile() {
+	func loadProfile(user: LoadableSubject<User>) {
 		guard let id = appState.value.account.value?.userId else {
-			appState[\.userProfile] = .failed(UserRepositoryError.missingID)
+			user.wrappedValue = .failed(UserRepositoryError.missingID)
 			return
 		}
 
-		let cancelBag = CancelBag()
-		appState[\.userProfile].setLoading(cancelBag: cancelBag)
-
-		weak var weakState = appState
-		repository.loadDetails(id: id, withAccount: appState.value.account.value)
-			.receive(on: RunLoop.main)
-			.sinkToLoadable { weakState?[\.userProfile] = $0 }
-			.store(in: cancelBag)
+		return loadDetails(id: id, user: user)
 	}
 
 	func loadDetails(id: User.ID, user: LoadableSubject<User>) {
@@ -46,6 +39,6 @@ struct LiveUserInteractor: UserInteractor {
 }
 
 struct StubUserInteractor: UserInteractor {
-	func loadProfile() { }
+	func loadProfile(user: LoadableSubject<User>) { }
 	func loadDetails(id: User.ID, user: LoadableSubject<User>) { }
 }

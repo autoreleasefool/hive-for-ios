@@ -11,14 +11,12 @@ import SwiftUI
 
 enum AppStateChange {
 	case accountChanged
-	case userChanged
 }
 
 struct AppStateChangeListener: ViewModifier {
 	@Environment(\.container) private var container
 
 	@State private var account: Loadable<Account> = .notLoaded
-	@State private var user: Loadable<User> = .notLoaded
 
 	private let observedChanges: Set<AppStateChange>
 	private let onChange: (AppStateChange) -> Void
@@ -36,11 +34,6 @@ struct AppStateChangeListener: ViewModifier {
 				account = newAccount
 				onChange(.accountChanged)
 			}
-			.onReceive(userUpdates) { newUser in
-				guard observedChanges.contains(.userChanged) && user != newUser else { return }
-				user = newUser
-				onChange(.userChanged)
-			}
 	}
 }
 
@@ -49,12 +42,6 @@ struct AppStateChangeListener: ViewModifier {
 extension AppStateChangeListener {
 	private var accountUpdates: AnyPublisher<Loadable<Account>, Never> {
 		container.appState.updates(for: \.account)
-			.receive(on: RunLoop.main)
-			.eraseToAnyPublisher()
-	}
-
-	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
-		container.appState.updates(for: \.userProfile)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}

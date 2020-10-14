@@ -155,7 +155,6 @@ struct ContentViewPreview: PreviewProvider {
 					appState: .init(
 						.init(
 							account: .failed(AccountRepositoryError.loggedOut),
-							userProfile: .notLoaded,
 							gameSetup: nil,
 							contentSheetNavigation: nil,
 							preferences: .init(),

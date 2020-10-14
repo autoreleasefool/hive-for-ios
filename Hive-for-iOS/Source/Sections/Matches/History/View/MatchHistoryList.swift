@@ -12,9 +12,10 @@ import SwiftUI
 struct MatchHistoryList: View {
 	@Environment(\.container) private var container
 
-	@StateObject private var viewModel = MatchHistoryListViewModel()
+	@StateObject private var viewModel: MatchHistoryListViewModel
 
 	init(user: Loadable<User> = .notLoaded) {
+		_viewModel = StateObject(wrappedValue: MatchHistoryListViewModel(user: user))
 	}
 
 	var body: some View {
@@ -23,10 +24,7 @@ struct MatchHistoryList: View {
 				.listensToAppStateChanges([.accountChanged]) { reason in
 					switch reason {
 					case .accountChanged:
-						guard container.account?.isOffline == false else { return }
 						viewModel.postViewAction(.loadMatchHistory)
-					case .userChanged:
-						break
 					}
 				}
 				.navigationBarTitle("History")
@@ -39,7 +37,7 @@ struct MatchHistoryList: View {
 
 	@ViewBuilder
 	private var content: some View {
-		switch container.appState.value.userProfile {
+		switch viewModel.user {
 		case .notLoaded: notLoadedView
 		case .loading(let user, _): loadedView(user)
 		case .loaded(let user): loadedView(user)
@@ -190,7 +188,7 @@ extension MatchHistoryList {
 
 	private func loadMatchHistory() {
 		container.interactors.userInteractor
-			.loadProfile()
+			.loadProfile(user: $viewModel.user)
 	}
 }
 

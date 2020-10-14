@@ -12,23 +12,22 @@ import SwiftUI
 struct ProfileView: View {
 	@Environment(\.container) private var container
 
-	@StateObject private var viewModel = ProfileViewModel()
+	@StateObject private var viewModel: ProfileViewModel
 
 	init(user: Loadable<User> = .notLoaded) {
+		_viewModel = StateObject(wrappedValue: ProfileViewModel(user: user))
 	}
 
 	var body: some View {
 		NavigationView {
 			content
-				.navigationBarTitle(viewModel.title(forUser: container.appState.value.userProfile.value))
+				.navigationBarTitle(viewModel.title)
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 				.listensToAppStateChanges([.accountChanged]) { reason in
 					switch reason {
 					case .accountChanged:
 						viewModel.postViewAction(.loadProfile)
-					case .userChanged:
-						break
 					}
 				}
 		}
@@ -37,7 +36,7 @@ struct ProfileView: View {
 
 	@ViewBuilder
 	private var content: some View {
-		switch container.appState.value.userProfile {
+		switch viewModel.user {
 		case .notLoaded: notLoadedView
 		case .loading: loadingView
 		case .loaded(let user): loadedView(user)
@@ -107,15 +106,7 @@ extension ProfileView {
 
 	private func loadProfile() {
 		container.interactors.userInteractor
-			.loadProfile()
-	}
-}
-
-// MARK: - Updates
-
-extension ProfileView {
-	private var userUpdates: AnyPublisher<Loadable<User>, Never> {
-		container.appState.updates(for: \.userProfile)
+			.loadProfile(user: $viewModel.user)
 	}
 }
 

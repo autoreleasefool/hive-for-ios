@@ -37,6 +37,7 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 		}
 	}
 
+	@Published var user: Loadable<User>
 	@Published var showAttributions: Bool = false
 	@Published var showAccount: Bool
 	@Published var preferences = Preferences()
@@ -46,8 +47,9 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 		actions.eraseToAnyPublisher()
 	}
 
-	init(logoutResult: Loadable<Bool>, showAccount: Bool) {
-		self._logoutResult = .init(initialValue: logoutResult)
+	init(user: Loadable<User>, logoutResult: Loadable<Bool>, showAccount: Bool) {
+		_user = .init(initialValue: user)
+		_logoutResult = .init(initialValue: logoutResult)
 		self.showAccount = showAccount
 	}
 
