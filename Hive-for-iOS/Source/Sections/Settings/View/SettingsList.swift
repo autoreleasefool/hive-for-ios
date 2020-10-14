@@ -83,6 +83,16 @@ struct SettingsList: View {
 			.navigationBarItems(leading: doneButton)
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onAppear { viewModel.postViewAction(.onAppear) }
+			.listensToAppStateChanges(
+				[.toggledFeature(.featureFlags), .toggledFeature(.arGameMode)]
+			) { reason in
+				switch reason {
+				case .toggledFeature(.featureFlags), .toggledFeature(.arGameMode):
+					viewModel.needsRefresh = true
+				case .toggledFeature, .accountChanged:
+					break
+				}
+			}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
 	}

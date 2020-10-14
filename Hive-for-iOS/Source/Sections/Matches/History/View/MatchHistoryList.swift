@@ -25,6 +25,8 @@ struct MatchHistoryList: View {
 					switch reason {
 					case .accountChanged:
 						viewModel.postViewAction(.loadMatchHistory)
+					case .toggledFeature:
+						break
 					}
 				}
 				.navigationBarTitle("History")

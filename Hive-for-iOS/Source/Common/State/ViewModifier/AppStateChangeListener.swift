@@ -9,14 +9,36 @@
 import Combine
 import SwiftUI
 
-enum AppStateChange {
+enum AppStateChange: Hashable, Equatable {
 	case accountChanged
+	case toggledFeature(Feature)
+
+	public func hash(into hasher: inout Hasher) {
+		switch self {
+		case .accountChanged:
+			hasher.combine(0)
+		case.toggledFeature(let feature):
+			hasher.combine(1)
+			hasher.combine(feature)
+		}
+	}
+
+	public static func == (lhs: AppStateChange, rhs: AppStateChange) -> Bool {
+		switch (lhs, rhs) {
+		case (.accountChanged, .accountChanged): return true
+		case (.accountChanged, _), (_, .accountChanged): return false
+
+		case (.toggledFeature(let lf), .toggledFeature(let rf)): return lf == rf
+		case (.toggledFeature, _), (_, .toggledFeature): return false
+		}
+	}
 }
 
 struct AppStateChangeListener: ViewModifier {
 	@Environment(\.container) private var container
 
 	@State private var account: Loadable<Account> = .notLoaded
+	@State private var features: Features?
 
 	private let observedChanges: Set<AppStateChange>
 	private let onChange: (AppStateChange) -> Void
@@ -34,6 +56,16 @@ struct AppStateChangeListener: ViewModifier {
 				account = newAccount
 				onChange(.accountChanged)
 			}
+			.onReceive(featureUpdates) { newFeatures in
+				guard let oldFeatures = features else {
+					features = newFeatures
+					return
+				}
+				features = newFeatures
+				newFeatures.changedFrom(oldFeatures)
+					.filter { observedChanges.contains(.toggledFeature($0)) }
+					.forEach { onChange(.toggledFeature($0)) }
+			}
 	}
 }
 
@@ -45,7 +77,23 @@ extension AppStateChangeListener {
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
 	}
+
+	private var featureUpdates: AnyPublisher<Features, Never> {
+		container.appState.updates(for: \.features)
+			.receive(on: RunLoop.main)
+			.eraseToAnyPublisher()
+	}
 }
+
+// MARK: - Feature Diff
+
+extension Features {
+	func changedFrom(_ other: Features) -> [Feature] {
+		Feature.allCases.filter { other.has($0) != self.has($0) }
+	}
+}
+
+// MARK: - View extension
 
 extension View {
 	func listensToAppStateChanges(

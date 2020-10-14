@@ -41,6 +41,12 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 	@Published var showAttributions: Bool = false
 	@Published var showAccount: Bool
 	@Published var preferences = Preferences()
+	@Published var needsRefresh: Bool = false {
+		didSet {
+			guard needsRefresh else { return }
+			needsRefresh = false
+		}
+	}
 
 	private let actions = PassthroughSubject<SettingsListAction, Never>()
 	var actionsPublisher: AnyPublisher<SettingsListAction, Never> {

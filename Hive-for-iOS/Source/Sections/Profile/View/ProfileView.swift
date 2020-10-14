@@ -28,6 +28,8 @@ struct ProfileView: View {
 					switch reason {
 					case .accountChanged:
 						viewModel.postViewAction(.loadProfile)
+					case .toggledFeature:
+						break
 					}
 				}
 		}

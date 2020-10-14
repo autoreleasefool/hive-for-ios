@@ -32,6 +32,8 @@ struct LobbyList: View {
 						viewModel.postViewAction(
 							.networkStatusChanged(isOffline: container.appState.value.account.value?.isOffline ?? true)
 						)
+					case .toggledFeature:
+						break
 					}
 				}
 				.alert(isPresented: $viewModel.showMatchInProgressWarning) {
