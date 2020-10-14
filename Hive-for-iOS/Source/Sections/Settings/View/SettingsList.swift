@@ -45,14 +45,6 @@ struct SettingsList: View {
 					}
 				}
 
-				#if DEBUG
-				if container.has(feature: .featureFlags) {
-					Section(header: Text("Features")) {
-						featureToggles
-					}
-				}
-				#endif
-
 				if viewModel.showAccount {
 					Section(header: Text("Account"), footer: logoutButton) {
 						UserPreview(viewModel.user.value?.summary)
@@ -78,24 +70,19 @@ struct SettingsList: View {
 						}
 					}
 				)
+
+				#if DEBUG
+				Section(header: Text("Features")) {
+					featureToggles
+				}
+				#endif
 			}
 			.navigationBarTitle("Settings")
 			.navigationBarItems(leading: doneButton)
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onAppear { viewModel.postViewAction(.onAppear) }
-			.listensToAppStateChanges(
-				[
-					.toggledFeature(.featureFlags),
-					.toggledFeature(.arGameMode),
-					.toggledFeature(.emojiReactions),
-				]
-			) { reason in
-				switch reason {
-				case .toggledFeature(.featureFlags), .toggledFeature(.arGameMode), .toggledFeature(.emojiReactions):
-					viewModel.needsRefresh = true
-				case .toggledFeature, .accountChanged:
-					break
-				}
+			.listensToAppStateChanges([.toggledFeature(.arGameMode), .toggledFeature(.emojiReactions)]) { _ in
+				viewModel.needsRefresh = true
 			}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
