@@ -124,9 +124,9 @@ struct OnlineRoomView: View {
 	private func matchDetail(_ match: Match) -> some View {
 		RoomDetailsView(
 			host: match.host?.summary,
-			hostIsReady: viewModel.isPlayerReady(id: match.host?.id),
+			isHostReady: viewModel.isPlayerReady(id: match.host?.id),
 			opponent: match.opponent?.summary,
-			opponentIsReady: viewModel.isPlayerReady(id: match.opponent?.id),
+			isOpponentReady: viewModel.isPlayerReady(id: match.opponent?.id),
 			optionsDisabled: !viewModel.userIsHost,
 			gameOptionsEnabled: viewModel.gameOptions,
 			matchOptionsEnabled: viewModel.matchOptions,

@@ -67,7 +67,7 @@ struct UserPreview: View {
 	var userDescription: some View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
-				.font(.body)
+				.font(.subheadline)
 				.multilineTextAlignment(textAlignment == .leading ? .leading : .trailing)
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if user != nil {
@@ -97,32 +97,41 @@ extension User {
 struct UserPreviewPreview: PreviewProvider {
 	static var previews: some View {
 		VStack(spacing: .m) {
-			UserPreview(Match.User.users[0].summary)
-				.border(Color(.highlightRegular), width: 1)
-			UserPreview(Match.User.users[0].summary, highlight: true)
-				.border(Color(.highlightRegular), width: 1)
-			UserPreview(Match.User.users[0].summary, iconSize: .l)
-				.border(Color(.highlightRegular), width: 1)
-			UserPreview(Match.User.users[0].summary, alignment: .trailing)
-				.border(Color(.highlightRegular), width: 1)
-			UserPreview(nil)
-				.border(Color(.highlightRegular), width: 1)
-			UserPreview(nil, highlight: true)
-				.border(Color(.highlightRegular), width: 1)
-			UserPreview(nil, iconSize: .l)
-				.border(Color(.highlightRegular), width: 1)
-			UserPreview(nil, alignment: .trailing)
-				.border(Color(.highlightRegular), width: 1)
-
-			HStack(spacing: .xs) {
-				UserPreview(Match.User.users[0].summary, iconSize: .l)
-					.border(Color(.highlightRegular), width: 1)
-				Spacer()
-				UserPreview(Match.User.users[1].summary, alignment: .trailing, iconSize: .l)
-					.border(Color(.highlightRegular), width: 1)
+			allPreviews
+			List {
+				allPreviews
 			}
+			.listStyle(InsetGroupedListStyle())
 		}
 		.frame(width: UIScreen.main.bounds.width)
+	}
+
+	@ViewBuilder
+	static var allPreviews: some View {
+		UserPreview(Match.User.users[0].summary)
+			.border(Color(.highlightRegular), width: 1)
+		UserPreview(Match.User.users[0].summary, highlight: true)
+			.border(Color(.highlightRegular), width: 1)
+		UserPreview(Match.User.users[0].summary, iconSize: .l)
+			.border(Color(.highlightRegular), width: 1)
+		UserPreview(Match.User.users[0].summary, alignment: .trailing)
+			.border(Color(.highlightRegular), width: 1)
+		UserPreview(nil)
+			.border(Color(.highlightRegular), width: 1)
+		UserPreview(nil, highlight: true)
+			.border(Color(.highlightRegular), width: 1)
+		UserPreview(nil, iconSize: .l)
+			.border(Color(.highlightRegular), width: 1)
+		UserPreview(nil, alignment: .trailing)
+			.border(Color(.highlightRegular), width: 1)
+
+		HStack(spacing: .xs) {
+			UserPreview(Match.User.users[0].summary, iconSize: .l)
+				.border(Color(.highlightRegular), width: 1)
+			Spacer()
+			UserPreview(Match.User.users[1].summary, alignment: .trailing, iconSize: .l)
+				.border(Color(.highlightRegular), width: 1)
+		}
 	}
 }
 #endif
