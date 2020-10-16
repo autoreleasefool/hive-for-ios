@@ -14,18 +14,20 @@ import Loaf
 struct Game: View {
 	@Environment(\.container) private var container
 
-	private let viewModel: GameViewModel
+	@StateObject private var viewModel: GameViewModel
 
-	init(setup: Setup) {
-		viewModel = GameViewModel(setup: setup)
+	private var playerViewModel: PlayerGameViewModel? {
+		viewModel as? PlayerGameViewModel
 	}
 
-	private func handleTransition(to newState: GameViewModel.State) {
-		switch newState {
-		case .shutDown, .forfeit:
-			container.appState[\.gameSetup] = nil
-		case .begin, .gameStart, .opponentTurn, .playerTurn, .sendingMovement, .gameEnd:
-			break
+	private var spectatorViewModel: SpectatorGameViewModel? {
+		viewModel as? SpectatorGameViewModel
+	}
+
+	init(setup: Setup) {
+		switch setup.mode {
+		case .play: _viewModel = StateObject(wrappedValue: PlayerGameViewModel(setup: setup))
+		case .spectate: _viewModel = StateObject(wrappedValue: SpectatorGameViewModel(setup: setup))
 		}
 	}
 
@@ -36,19 +38,21 @@ struct Game: View {
 			GameHUD()
 				.environmentObject(viewModel)
 		}
-		.onAppear { viewModel.userId = container.account?.userId }
-		.onReceive(viewModel.$state) { handleTransition(to: $0) }
+		.onReceive(viewModel.gameEndPublisher) { container.appState[\.gameSetup] = nil }
 		.navigationBarTitle("")
 		.navigationBarHidden(true)
 		.navigationBarBackButtonHidden(true)
 		.onAppear {
 			UIApplication.shared.isIdleTimerDisabled = true
-			viewModel.userId = container.account?.userId
-			viewModel.clientInteractor = container.interactors.clientInteractor
-			viewModel.postViewAction(.onAppear)
+			viewModel.postViewAction(
+				.onAppear(
+					container.account?.userId,
+					container.interactors.clientInteractor
+				)
+			)
 		}
 		.onDisappear {
-			UIApplication.shared.isIdleTimerDisabled = true
+			UIApplication.shared.isIdleTimerDisabled = false
 			viewModel.postViewAction(.onDisappear)
 		}
 	}

@@ -14,6 +14,10 @@ class GameView2D: SKScene {
 	private let BASE_HEX_SIZE: CGSize = CGSize(width: 109, height: 95)
 
 	private let viewModel: GameViewModel
+	private var playerViewModel: PlayerGameViewModel? {
+		viewModel as? PlayerGameViewModel
+	}
+
 	private var debugSprite = DebugSprite()
 	private var spriteManager = SpriteManager()
 
@@ -108,7 +112,7 @@ class GameView2D: SKScene {
 	}
 
 	private func subscribeToPublishers() {
-		viewModel.$state
+		playerViewModel?.$state
 			.sink { [weak self] in
 				self?.handleTransition(to: $0)
 			}
@@ -177,9 +181,11 @@ class GameView2D: SKScene {
 		deselectedPiece: GameViewModel.SelectedPiece?,
 		selectedPiece: GameViewModel.SelectedPiece?
 	) {
-		viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
-			guard $0 != selectedPiece?.piece else { return }
-			resetPiece($0)
+		if let viewModel = playerViewModel {
+			viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
+				guard $0 != selectedPiece?.piece else { return }
+				resetPiece($0)
+			}
 		}
 
 		if let deselected = deselectedPiece, positionsInPlay.contains(deselected.position) {
@@ -334,7 +340,7 @@ extension GameView2D: UIGestureRecognizerDelegate {
 		let intermediateTouch = gesture.location(in: self.view)
 		let touchPoint = convertPoint(fromView: intermediateTouch)
 
-		if gesture.state == .began, viewModel.state == .playerTurn {
+		if gesture.state == .began, playerViewModel?.state == .playerTurn {
 			nodeBeingMoved = nodes(at: touchPoint).first(where: {
 				guard let piece = spriteManager.piece(from: $0) else { return false }
 				return viewModel.gameState.pieceHasMoves(piece)
@@ -421,7 +427,7 @@ extension GameView2D: UIGestureRecognizerDelegate {
 // MARK: - GameViewModel.State
 
 extension GameView2D {
-	private func handleTransition(to newState: GameViewModel.State) {
+	private func handleTransition(to newState: PlayerGameViewModel.State) {
 		switch newState {
 		case .gameStart:
 			prepareGame()

@@ -9,7 +9,30 @@
 import SwiftUI
 
 struct EmojiHUD: View {
-	@EnvironmentObject var viewModel: GameViewModel
+	private static let width: CGFloat = 80
+
+	@EnvironmentObject private var viewModel: GameViewModel
+	private var playerViewModel: PlayerGameViewModel? {
+		viewModel as? PlayerGameViewModel
+	}
+
+	private var isShowing: Binding<Bool> {
+		guard let playerViewModel = playerViewModel else {
+			return .constant(false)
+		}
+
+		return Binding {
+			playerViewModel.showingEmojiPicker
+		} set: {
+			playerViewModel.showingEmojiPicker = $0
+		}
+	}
+
+	private var pickerOffset: CGFloat {
+		playerViewModel?.showingEmojiPicker ?? false
+			? Metrics.Spacing.m.rawValue
+			: -EmojiHUD.width
+	}
 
 	@State private var animatingEmoji: [AnimateableEmoji] = []
 
@@ -53,11 +76,11 @@ struct EmojiHUD: View {
 	private var picker: some View {
 		GeometryReader { geometry in
 			BottomSheet(
-				isOpen: $viewModel.showingEmojiPicker,
+				isOpen: isShowing,
 				minHeight: 0,
 				maxHeight: geometry.size.height * 0.5
 			) {
-				if viewModel.showingEmojiPicker {
+				if isShowing.wrappedValue {
 					HUD
 				}
 			}
