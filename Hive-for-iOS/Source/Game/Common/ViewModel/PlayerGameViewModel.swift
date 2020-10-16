@@ -340,7 +340,7 @@ class PlayerGameViewModel: GameViewModel {
 
 	// MARK: Game Client
 
-	override func handleGameClientMessage(_ message: GameServerMessage) {
+	override func handleGameServerMessage(_ message: GameServerMessage) {
 		switch message {
 		case .message(let id, let message):
 			handleMessage(message, from: id)

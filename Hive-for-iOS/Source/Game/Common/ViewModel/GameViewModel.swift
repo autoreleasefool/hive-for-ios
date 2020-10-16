@@ -367,11 +367,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			onClientConnected()
 			self.connectionOpened = false
 		case .message(let message):
-			handleGameClientMessage(message)
+			handleGameServerMessage(message)
 		}
 	}
 
-	func handleGameClientMessage(_ message: GameServerMessage) {
+	func handleGameServerMessage(_ message: GameServerMessage) {
 		switch message {
 		case .gameState(let state):
 			updateGameState(to: state)
@@ -381,15 +381,31 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			showEndGame(withWinner: winner)
 
 		case .error(let error):
-			#warning("Handle error")
 			debugLog("Recieved error: \(error)")
+			handleGameServerError(error)
 		case .forfeit, .playerJoined, .playerLeft, .playerReady, .setOption:
 			debugLog("Received invalid message: \(message)")
 
 		// Handled in children
 		case .message:
 			break
+		}
+	}
 
+	func handleGameServerError(_ error: GameServerError) {
+		switch error.code {
+		case .failedToEndMatch,
+				 .failedToStartMatch,
+				 .optionNonModifiable,
+				 .optionValueNotUpdated,
+				 .unknownError:
+			loafState.send(LoafState("Unknown server error", state: .error))
+		case .invalidCommand:
+			loafState.send(LoafState("Invalid command", state: .error))
+		case .invalidMovement:
+			loafState.send(LoafState("Invalid movement. Try again", state: .warning))
+		case .notPlayerTurn:
+			loafState.send(LoafState("It's not your turn", state: .info))
 		}
 	}
 }
