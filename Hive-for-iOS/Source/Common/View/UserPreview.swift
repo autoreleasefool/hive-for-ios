@@ -68,11 +68,12 @@ struct UserPreview: View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
 				.font(.subheadline)
-				.multilineTextAlignment(textAlignment == .leading ? .leading : .trailing)
+				.lineLimit(1)
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if user != nil {
 				Text(secondaryText)
 					.font(.caption)
+					.lineLimit(1)
 					.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			}
 		}
