@@ -101,8 +101,8 @@ enum GameInformation {
 
 	var hasCloseButton: Bool {
 		switch self {
-		case .reconnecting, .gameEnd, .playerMustPass: return false
-		case .piece, .pieceClass, .playerHand, .rule, .stack, .settings: return true
+		case .gameEnd, .playerMustPass: return false
+		case .piece, .pieceClass, .playerHand, .rule, .stack, .settings, .reconnecting: return true
 		}
 	}
 }

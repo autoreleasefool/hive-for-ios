@@ -32,7 +32,7 @@ struct InformationHUD: View {
 					maxHeight: geometry.size.height,
 					information: viewModel.presentedGameInformation
 				),
-				showsDragIndicator: information?.dismissable ?? true,
+				showsDragIndicator: true,
 				dragGestureEnabled: information?.dismissable ?? true
 			) {
 				if isPresenting {
