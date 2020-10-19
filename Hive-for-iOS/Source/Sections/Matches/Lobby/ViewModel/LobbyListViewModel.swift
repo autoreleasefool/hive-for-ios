@@ -11,8 +11,6 @@ import SwiftUI
 
 enum LobbyListViewAction: BaseViewAction {
 	case onAppear(isOffline: Bool, aiEnabled: Bool)
-	case onListAppear
-	case onListDisappear
 	case refresh
 	case openSettings
 	case networkStatusChanged(isOffline: Bool)
@@ -79,8 +77,6 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 	let isSpectating: Bool
 	private var isAIGameModeEnabled: Bool = false
 
-	private var refreshTimer: Timer?
-
 	private let actions = PassthroughSubject<LobbyListAction, Never>()
 	var actionsPublisher: AnyPublisher<LobbyListAction, Never> {
 		actions.eraseToAnyPublisher()
@@ -97,10 +93,6 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			self.isOffline = isOffline
 			self.isAIGameModeEnabled = aiEnabled
 			accountStatusDidChange()
-		case .onListAppear:
-			startRefreshTimer()
-		case .onListDisappear:
-			refreshTimer?.invalidate()
 		case .refresh:
 			actions.send(.loadMatches)
 		case .openSettings:
@@ -149,13 +141,6 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			} else {
 				postViewAction(.createOnlineMatchVsPlayer)
 			}
-		}
-	}
-
-	private func startRefreshTimer() {
-		refreshTimer?.invalidate()
-		refreshTimer = Timer.scheduledTimer(withTimeInterval: 8, repeats: true) { [weak self] _ in
-			self?.actions.send(.loadMatches)
 		}
 	}
 

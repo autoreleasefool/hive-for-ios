@@ -24,7 +24,7 @@ struct LobbyList: View {
 		NavigationView {
 			content
 				.navigationBarTitle(viewModel.isSpectating ? "Spectate" : "Lobby")
-				.navigationBarItems(leading: settingsButton, trailing: newMatchButton)
+				.navigationBarItems(leading: settingsButton, trailing: trailingButtons)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 				.listensToAppStateChanges([.accountChanged, .toggledFeature(.aiOpponents)]) { reason in
 					switch reason {
@@ -138,12 +138,6 @@ struct LobbyList: View {
 				}
 			}
 			.listStyle(InsetGroupedListStyle())
-			.onAppear {
-				viewModel.postViewAction(.onListAppear)
-			}
-			.onDisappear {
-				viewModel.postViewAction(.onListDisappear)
-			}
 		}
 	}
 
@@ -152,6 +146,13 @@ struct LobbyList: View {
 	}
 
 	// MARK: Lobby
+
+	private var trailingButtons: some View {
+		HStack(spacing: Metrics.Spacing.l.rawValue) {
+			refreshButton
+			newMatchButton
+		}
+	}
 
 	@ViewBuilder
 	private var newMatchButton: some View {
@@ -165,6 +166,16 @@ struct LobbyList: View {
 					.imageScale(.large)
 					.accessibility(label: Text("Create Match"))
 			}
+		}
+	}
+
+	private var refreshButton: some View {
+		Button {
+			viewModel.postViewAction(.refresh)
+		} label: {
+			Image(systemName: "arrow.clockwise")
+				.imageScale(.large)
+				.accessibility(label: Text("Refresh"))
 		}
 	}
 
