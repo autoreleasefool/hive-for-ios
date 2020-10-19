@@ -341,6 +341,7 @@ class PlayerGameViewModel: GameViewModel {
 	// MARK: Game Client
 
 	override func handleGameServerMessage(_ message: GameServerMessage) {
+		super.handleGameServerMessage(message)
 		switch message {
 		case .message(let id, let message):
 			handleMessage(message, from: id)
