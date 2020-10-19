@@ -40,11 +40,18 @@ struct LobbyRow: View {
 	}
 
 	var body: some View {
-		HStack(spacing: .m) {
-			UserPreview(match.host?.summary)
-				.foregroundColor(Color(.textRegular))
-			Spacer()
-			optionsPreview(for: match.gameOptionSet)
+		VStack(alignment: .leading, spacing: Metrics.Spacing.s.rawValue) {
+			HStack(spacing: .m) {
+				UserPreview(match.host?.summary)
+					.foregroundColor(Color(.textRegular))
+				Spacer()
+				optionsPreview(for: match.gameOptionSet)
+			}
+			if let formattedDate = match.createdAt?.formatted {
+				Text("Created \(formattedDate)")
+					.font(.caption2)
+					.foregroundColor(Color(.textSecondary))
+			}
 		}
 	}
 }
@@ -60,12 +67,21 @@ private extension GameState.Option {
 	}
 }
 
+private extension Date {
+	var formatted: String {
+		RelativeDateTimeFormatter().localizedString(for: self, relativeTo: Date())
+	}
+}
+
 // MARK: - Preview
 
 #if DEBUG
 struct LobbyRowPreview: PreviewProvider {
 	static var previews: some View {
-		LobbyRow(match: Match.matches[0])
+		List {
+			LobbyRow(match: Match.matches[0])
+			LobbyRow(match: Match.matches[1])
+		}
 	}
 }
 #endif

@@ -159,7 +159,7 @@ extension Match {
 				moves: [Move(id: UUID(), notation: "wQ", ordinal: 0, date: Date())],
 				options: "HostIsWhite:true",
 				gameOptions: "Mosquito:true;LadyBug:true;PillBug:true",
-				createdAt: Date(),
+				createdAt: Calendar.current.date(byAdding: .minute, value: -15, to: Date()),
 				duration: nil,
 				status: .active,
 				isComplete: false
@@ -172,7 +172,7 @@ extension Match {
 				moves: [],
 				options: "HostIsWhite:true",
 				gameOptions: "Mosquito:true",
-				createdAt: Date(),
+				createdAt: nil,
 				duration: nil,
 				status: .notStarted,
 				isComplete: false
