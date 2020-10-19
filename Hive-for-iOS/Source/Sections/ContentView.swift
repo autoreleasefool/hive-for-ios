@@ -58,13 +58,22 @@ struct ContentView: View {
 	// MARK: Content
 
 	private var notLoadedView: some View {
-		Text("")
-			.onAppear { viewModel.postViewAction(.onAppear) }
+		ZStack {
+			Color(.backgroundRegular)
+				.edgesIgnoringSafeArea(.all)
+
+			Text("")
+				.onAppear { viewModel.postViewAction(.onAppear) }
+		}
 	}
 
 	private var loadingView: some View {
-		ProgressView("Logging in...")
-			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
+		ZStack {
+			Color(.backgroundRegular)
+				.edgesIgnoringSafeArea(.all)
+
+			ProgressView("Logging in...")
+		}
 	}
 
 	private var loadedView: some View {
