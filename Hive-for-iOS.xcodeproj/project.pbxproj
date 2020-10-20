@@ -31,6 +31,7 @@
 		CA45F9C2242E6119007EC94D /* PieceClassDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */; };
 		CA45F9C4242E758C007EC94D /* GameRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* GameRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
+		CA5C82E6253E715E008D47B5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5C82E5253E715E008D47B5 /* SearchBar.swift */; };
 		CA6C952824EF486300F58289 /* SpectatorRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952724EF486300F58289 /* SpectatorRoomView.swift */; };
 		CA6C952C24EF5B0600F58289 /* SpectatorRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */; };
 		CA6CC92924A9579700E8CB27 /* AgentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* AgentPicker.swift */; };
@@ -155,6 +156,7 @@
 		CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceClassDetails.swift; sourceTree = "<group>"; };
 		CA45F9C3242E758C007EC94D /* GameRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRule.swift; sourceTree = "<group>"; };
 		CA45F9C5242E9F7A007EC94D /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
+		CA5C82E5253E715E008D47B5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		CA6C952724EF486300F58289 /* SpectatorRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorRoomView.swift; sourceTree = "<group>"; };
 		CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorRoomViewModel.swift; sourceTree = "<group>"; };
 		CA6CC92824A9579700E8CB27 /* AgentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentPicker.swift; sourceTree = "<group>"; };
@@ -702,6 +704,7 @@
 				CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */,
 				CA797F62246892AC0011E7D1 /* EmptyState.swift */,
 				CABDFD0723DD9FE300C697AD /* UserPreview.swift */,
+				CA5C82E5253E715E008D47B5 /* SearchBar.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1092,6 +1095,7 @@
 				CAF8256C245C87340064359E /* Publisher+Extensions.swift in Sources */,
 				CABDFD0623DCA73500C697AD /* HexImage.swift in Sources */,
 				CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */,
+				CA5C82E6253E715E008D47B5 /* SearchBar.swift in Sources */,
 				CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */,
 				CAFA467423D8B3B1003C38AB /* Game.swift in Sources */,
 				CABDFD0E23DF8B4000C697AD /* Experience+Extensions.swift in Sources */,
