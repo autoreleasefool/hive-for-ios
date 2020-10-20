@@ -12,6 +12,7 @@ import Foundation
 protocol UserInteractor {
 	func loadProfile(user: LoadableSubject<User>)
 	func loadDetails(id: User.ID, user: LoadableSubject<User>)
+	func loadUsers(filter: String?, users: LoadableSubject<[User]>)
 }
 
 struct LiveUserInteractor: UserInteractor {
@@ -36,9 +37,20 @@ struct LiveUserInteractor: UserInteractor {
 			.sinkToLoadable { user.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
+
+	func loadUsers(filter: String?, users: LoadableSubject<[User]>) {
+		let cancelBag = CancelBag()
+		users.wrappedValue.setLoading(cancelBag: cancelBag)
+
+		repository.loadUsers(filter: filter, withAccount: appState.value.account.value)
+			.receive(on: RunLoop.main)
+			.sinkToLoadable { users.wrappedValue = $0 }
+			.store(in: cancelBag)
+	}
 }
 
 struct StubUserInteractor: UserInteractor {
 	func loadProfile(user: LoadableSubject<User>) { }
 	func loadDetails(id: User.ID, user: LoadableSubject<User>) { }
+	func loadUsers(filter: String?, users: LoadableSubject<[User]>) { }
 }

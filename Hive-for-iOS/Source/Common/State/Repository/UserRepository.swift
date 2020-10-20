@@ -17,6 +17,7 @@ enum UserRepositoryError: Error {
 
 protocol UserRepository {
 	func loadDetails(id: User.ID, withAccount account: Account?) -> AnyPublisher<User, UserRepositoryError>
+	func loadUsers(filter: String?, withAccount account: Account?) -> AnyPublisher<[User], UserRepositoryError>
 }
 
 struct LiveUserRepository: UserRepository {
@@ -32,6 +33,16 @@ struct LiveUserRepository: UserRepository {
 		}
 
 		return api.fetch(.userDetails(id), withAccount: account)
+			.mapError { .apiError($0) }
+			.eraseToAnyPublisher()
+	}
+
+	func loadUsers(filter: String?, withAccount account: Account?) -> AnyPublisher<[User], UserRepositoryError> {
+		guard account?.isOffline != true else {
+			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
+		}
+
+		return api.fetch(.filterUsers(filter), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
