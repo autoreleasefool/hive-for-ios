@@ -21,6 +21,7 @@ enum ProfileAction: BaseAction {
 
 class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 	@Published var user: Loadable<User>
+	@Published var searchText: String = ""
 
 	private let actions = PassthroughSubject<ProfileAction, Never>()
 	var actionsPublisher: AnyPublisher<ProfileAction, Never> {

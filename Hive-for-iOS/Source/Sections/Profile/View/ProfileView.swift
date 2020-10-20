@@ -58,10 +58,46 @@ struct ProfileView: View {
 	}
 
 	private func loadedView(_ user: User) -> some View {
-		List {
-			HexImage(url: user.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .highlightPrimary)
-				.placeholderTint(.highlightPrimary)
-				.squareImage(.m)
+		VStack(spacing: 0) {
+			SearchBar("Search users...", icon: "person.fill", text: $viewModel.searchText)
+				.padding(.horizontal, Metrics.Spacing.m.rawValue)
+				.background(Color(.highlightPrimary).edgesIgnoringSafeArea(.all))
+
+			List {
+				Section(header: Text("")) {
+					VStack(alignment: .center, spacing: 0) {
+						HexImage(url: user.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .highlightPrimary)
+							.placeholderTint(.highlightPrimary)
+							.squareImage(.xl)
+							.padding(.vertical, Metrics.Spacing.m.rawValue)
+
+						Text(user.displayName)
+							.font(.headline)
+							.foregroundColor(Color(.textRegular))
+							.frame(maxWidth: .infinity)
+							.padding(.bottom, Metrics.Spacing.s.rawValue)
+
+						Text("\(user.elo) ELO")
+							.font(.subheadline)
+							.foregroundColor(Color(.textSecondary))
+							.frame(maxWidth: .infinity)
+					}
+				}
+
+				Section(header: Text("Most recent matches")) {
+					if !user.pastMatches.isEmpty {
+						ForEach(user.pastMatches.prefix(3)) { match in
+							HistoryRow(match: match, withLastMove: false)
+						}
+					} else {
+						Text("Not available")
+							.font(.subheadline)
+							.foregroundColor(Color(.textSecondary))
+							.frame(maxWidth: .infinity)
+					}
+				}
+			}
+			.listStyle(InsetGroupedListStyle())
 		}
 	}
 

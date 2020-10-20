@@ -11,6 +11,12 @@ import HiveEngine
 
 struct HistoryRow: View {
 	let match: Match
+	let withLastMove: Bool
+
+	init(match: Match, withLastMove: Bool = false) {
+		self.match = match
+		self.withLastMove = withLastMove
+	}
 
 	var body: some View {
 		VStack {
@@ -27,8 +33,15 @@ struct HistoryRow: View {
 				)
 			}
 
-			if !match.isComplete {
+			if !match.isComplete, withLastMove {
 				lastMove
+			} else if match.isComplete {
+				if let duration = match.duration,
+					 let formattedDate = match.createdAt?.addingTimeInterval(duration).formatted {
+					Text("Played \(formattedDate)")
+						.font(.caption2)
+						.foregroundColor(Color(.textSecondary))
+				}
 			}
 		}
 	}
@@ -97,6 +110,12 @@ private extension GameState.Option {
 		case .pillBug: return "P"
 		case .noFirstMoveQueen, .allowSpecialAbilityAfterYoink: return nil
 		}
+	}
+}
+
+private extension Date {
+	var formatted: String {
+		RelativeDateTimeFormatter().localizedString(for: self, relativeTo: Date())
 	}
 }
 
