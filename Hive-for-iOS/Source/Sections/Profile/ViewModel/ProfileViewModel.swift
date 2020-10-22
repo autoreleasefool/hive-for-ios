@@ -10,25 +10,24 @@ import Combine
 
 enum ProfileViewAction: BaseViewAction {
 	case onAppear
-	case openSettings
 	case loadProfile
 }
 
 enum ProfileAction: BaseAction {
 	case loadProfile
-	case openSettings
 }
 
 class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
+	let id: User.ID?
 	@Published var user: Loadable<User>
-	@Published var searchText: String = ""
 
 	private let actions = PassthroughSubject<ProfileAction, Never>()
 	var actionsPublisher: AnyPublisher<ProfileAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(user: Loadable<User>) {
+	init(id: User.ID?, user: Loadable<User>) {
+		self.id = id
 		_user = .init(initialValue: user)
 	}
 
@@ -36,8 +35,6 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 		switch viewAction {
 		case .onAppear:
 			actions.send(.loadProfile)
-		case .openSettings:
-			actions.send(.openSettings)
 		case .loadProfile:
 			actions.send(.loadProfile)
 		}
@@ -48,7 +45,11 @@ class ProfileViewModel: ViewModel<ProfileViewAction>, ObservableObject {
 
 extension ProfileViewModel {
 	var title: String {
-		user.value?.displayName ?? "Profile"
+		user.value?.displayName ?? ""
+	}
+
+	var isTitleEnabled: Bool {
+		id != nil
 	}
 
 	func errorMessage(from error: Error) -> String {
@@ -58,8 +59,8 @@ extension ProfileViewModel {
 
 		switch userError {
 		case .missingID: return "Account missing"
-		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
-		case .usingOfflineAccount: return "You're currently playing offline"
+		case .apiError(let apiError): return apiError.localizedDescription
+		case .usingOfflineAccount: return "You're offline"
 		}
 	}
 }

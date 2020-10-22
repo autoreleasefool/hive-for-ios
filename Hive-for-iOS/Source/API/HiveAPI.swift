@@ -11,6 +11,7 @@ import Combine
 import Loaf
 
 enum HiveAPIError: LocalizedError {
+	case invalidURL
 	case networkingError(Error)
 	case invalidResponse
 	case invalidHTTPResponse(Int)
@@ -34,6 +35,8 @@ enum HiveAPIError: LocalizedError {
 			} else {
 				return "Unexpected HTTP error (\(code))"
 			}
+		case .invalidURL:
+			return "Failed to form URL"
 		case .missingData:
 			return "Could not find data"
 		case .notImplemented:
@@ -81,9 +84,23 @@ class HiveAPI: ObservableObject {
 			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
 		}
 
-		let url = HiveAPI.baseURL
-			.appendingPathComponent("api")
-			.appendingPathComponent(endpoint.path)
+		var components = URLComponents(
+			url: HiveAPI.baseURL
+				.appendingPathComponent("api")
+				.appendingPathComponent(endpoint.path),
+			resolvingAgainstBaseURL: true
+		)
+
+		if let queryParams = endpoint.queryParams {
+			components?.queryItems = queryParams.map {
+				URLQueryItem(name: $0.key, value: $0.value)
+			}
+		}
+
+		guard let url = components?.url else {
+			return Fail(error: .invalidURL)
+				.eraseToAnyPublisher()
+		}
 
 		var request = buildBaseRequest(to: url, withAccount: account)
 		request.httpMethod = endpoint.httpMethod.rawValue
@@ -133,7 +150,16 @@ class HiveAPI: ObservableObject {
 			return try encoder.encode(data)
 		case .signup(let data):
 			return try encoder.encode(data)
-		case .openMatches, .activeMatches, .checkToken, .logout, .userDetails, .matchDetails, .joinMatch, .createMatch, .filterUsers:
+		case
+			.openMatches,
+			.activeMatches,
+			.checkToken,
+			.logout,
+			.userDetails,
+			.matchDetails,
+			.joinMatch,
+			.createMatch,
+			.filterUsers:
 			return nil
 		}
 	}
@@ -180,13 +206,36 @@ extension HiveAPI {
 			case .checkToken: return "users/validate"
 
 			case .userDetails(let id): return "users/\(id.uuidString)/details"
-			case .filterUsers(let filter): return "users/all?filter=\(filter ?? "")"
+			case .filterUsers: return "users/all"
 
 			case .matchDetails(let id): return "matches/\(id.uuidString)/details"
 			case .openMatches: return "matches/open"
 			case .activeMatches: return "matches/active"
 			case .joinMatch(let id): return "matches/\(id.uuidString)/join"
 			case .createMatch: return "matches/new"
+			}
+		}
+
+		var queryParams: [String: String]? {
+			switch self {
+			case
+				.activeMatches,
+				.checkToken,
+				.createMatch,
+				.joinMatch,
+				.login,
+				.logout,
+				.matchDetails,
+				.openMatches,
+				.signup,
+				.userDetails:
+				return nil
+			case .filterUsers(let filter):
+				if let filter = filter {
+					return ["filter": filter]
+				} else {
+					return nil
+				}
 			}
 		}
 

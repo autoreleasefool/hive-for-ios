@@ -14,26 +14,22 @@ struct ProfileView: View {
 
 	@StateObject private var viewModel: ProfileViewModel
 
-	init(user: Loadable<User> = .notLoaded) {
-		_viewModel = StateObject(wrappedValue: ProfileViewModel(user: user))
+	init(id: User.ID? = nil, user: Loadable<User> = .notLoaded) {
+		_viewModel = StateObject(wrappedValue: ProfileViewModel(id: id, user: user))
 	}
 
 	var body: some View {
-		NavigationView {
-			content
-				.navigationBarTitle(viewModel.title)
-				.navigationBarItems(leading: settingsButton)
-				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-				.listensToAppStateChanges([.accountChanged]) { reason in
-					switch reason {
-					case .accountChanged:
-						viewModel.postViewAction(.loadProfile)
-					case .toggledFeature:
-						break
-					}
+		content
+			.modifier(ProfileTitleModifier(title: viewModel.title, isEnabled: viewModel.isTitleEnabled))
+			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+			.listensToAppStateChanges([.accountChanged]) { reason in
+				switch reason {
+				case .accountChanged:
+					viewModel.postViewAction(.loadProfile)
+				case .toggledFeature:
+					break
 				}
-		}
-		.navigationViewStyle(StackNavigationViewStyle())
+			}
 	}
 
 	@ViewBuilder
@@ -58,61 +54,45 @@ struct ProfileView: View {
 	}
 
 	private func loadedView(_ user: User) -> some View {
-		VStack(spacing: 0) {
-			SearchBar("Search users...", icon: "person.fill", text: $viewModel.searchText)
-				.padding(.horizontal, Metrics.Spacing.m.rawValue)
-				.background(Color(.highlightPrimary).edgesIgnoringSafeArea(.all))
+		List {
+			Section(header: Text("")) {
+				VStack(alignment: .center, spacing: 0) {
+					HexImage(url: user.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .highlightPrimary)
+						.placeholderTint(.highlightPrimary)
+						.squareImage(.xl)
+						.padding(.vertical, Metrics.Spacing.m.rawValue)
 
-			List {
-				Section(header: Text("")) {
-					VStack(alignment: .center, spacing: 0) {
-						HexImage(url: user.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .highlightPrimary)
-							.placeholderTint(.highlightPrimary)
-							.squareImage(.xl)
-							.padding(.vertical, Metrics.Spacing.m.rawValue)
+					Text(user.displayName)
+						.font(.headline)
+						.foregroundColor(Color(.textRegular))
+						.frame(maxWidth: .infinity)
+						.padding(.bottom, Metrics.Spacing.s.rawValue)
 
-						Text(user.displayName)
-							.font(.headline)
-							.foregroundColor(Color(.textRegular))
-							.frame(maxWidth: .infinity)
-							.padding(.bottom, Metrics.Spacing.s.rawValue)
-
-						Text("\(user.elo) ELO")
-							.font(.subheadline)
-							.foregroundColor(Color(.textSecondary))
-							.frame(maxWidth: .infinity)
-					}
-				}
-
-				Section(header: Text("Most recent matches")) {
-					if !user.pastMatches.isEmpty {
-						ForEach(user.pastMatches.prefix(3)) { match in
-							HistoryRow(match: match, withLastMove: false)
-						}
-					} else {
-						Text("Not available")
-							.font(.subheadline)
-							.foregroundColor(Color(.textSecondary))
-							.frame(maxWidth: .infinity)
-					}
+					Text("\(user.elo) ELO")
+						.font(.subheadline)
+						.foregroundColor(Color(.textSecondary))
+						.frame(maxWidth: .infinity)
 				}
 			}
-			.listStyle(InsetGroupedListStyle())
+
+			Section(header: Text("Most recent matches")) {
+				if !user.pastMatches.isEmpty {
+					ForEach(user.pastMatches.prefix(3)) { match in
+						HistoryRow(match: match, withLastMove: false)
+					}
+				} else {
+					Text("Not available")
+						.font(.subheadline)
+						.foregroundColor(Color(.textSecondary))
+						.frame(maxWidth: .infinity)
+				}
+			}
 		}
+		.listStyle(InsetGroupedListStyle())
 	}
 
 	private func failedView(_ error: Error) -> some View {
 		failedState(error)
-	}
-
-	private var settingsButton: some View {
-		Button {
-			viewModel.postViewAction(.openSettings)
-		} label: {
-			Image(systemName: "gear")
-				.imageScale(.large)
-				.accessibility(label: Text("Settings"))
-		}
 	}
 }
 
@@ -122,7 +102,9 @@ extension ProfileView {
 	private func failedState(_ error: Error) -> some View {
 		EmptyState(
 			header: "An error occurred",
-			message: "We can't fetch your profile right now.\n\(viewModel.errorMessage(from: error))",
+			message: viewModel.id == nil
+				? "We can't fetch your profile right now.\n\(viewModel.errorMessage(from: error))"
+				: "We can't fetch this profile right now.\n\(viewModel.errorMessage(from: error))",
 			action: .init(text: "Refresh") {
 				viewModel.postViewAction(.loadProfile)
 			}
@@ -137,14 +119,34 @@ extension ProfileView {
 		switch action {
 		case .loadProfile:
 			loadProfile()
-		case .openSettings:
-			container.appState.value.setNavigation(to: .settings)
 		}
 	}
 
 	private func loadProfile() {
-		container.interactors.userInteractor
-			.loadProfile(user: $viewModel.user)
+		if let id = viewModel.id {
+			container.interactors.userInteractor
+				.loadDetails(id: id, user: $viewModel.user)
+		} else {
+			container.interactors.userInteractor
+				.loadProfile(user: $viewModel.user)
+		}
+	}
+}
+
+// MARK: Title modifier
+
+private struct ProfileTitleModifier: ViewModifier {
+	let title: String
+	let isEnabled: Bool
+
+	@ViewBuilder
+	func body(content: Content) -> some View {
+		if isEnabled {
+			content
+				.navigationBarTitle(title)
+		} else {
+			content
+		}
 	}
 }
 

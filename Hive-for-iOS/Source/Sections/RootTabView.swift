@@ -86,7 +86,7 @@ extension RootTabView {
 			case .lobby: LobbyList()
 			case .spectate: LobbyList(spectating: true)
 			case .matchHistory: MatchHistoryList()
-			case .profile: ProfileView()
+			case .profile: ProfileListView()
 			}
 		}
 

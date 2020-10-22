@@ -32,6 +32,8 @@
 		CA45F9C4242E758C007EC94D /* GameRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* GameRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
 		CA5C82E6253E715E008D47B5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5C82E5253E715E008D47B5 /* SearchBar.swift */; };
+		CA5C82E9254053D9008D47B5 /* ProfileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5C82E8254053D9008D47B5 /* ProfileListView.swift */; };
+		CA5C82ED254053FD008D47B5 /* ProfileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5C82EC254053FD008D47B5 /* ProfileListViewModel.swift */; };
 		CA6C952824EF486300F58289 /* SpectatorRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952724EF486300F58289 /* SpectatorRoomView.swift */; };
 		CA6C952C24EF5B0600F58289 /* SpectatorRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */; };
 		CA6CC92924A9579700E8CB27 /* AgentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* AgentPicker.swift */; };
@@ -157,6 +159,8 @@
 		CA45F9C3242E758C007EC94D /* GameRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRule.swift; sourceTree = "<group>"; };
 		CA45F9C5242E9F7A007EC94D /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
 		CA5C82E5253E715E008D47B5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
+		CA5C82E8254053D9008D47B5 /* ProfileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileListView.swift; sourceTree = "<group>"; };
+		CA5C82EC254053FD008D47B5 /* ProfileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileListViewModel.swift; sourceTree = "<group>"; };
 		CA6C952724EF486300F58289 /* SpectatorRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorRoomView.swift; sourceTree = "<group>"; };
 		CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorRoomViewModel.swift; sourceTree = "<group>"; };
 		CA6CC92824A9579700E8CB27 /* AgentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentPicker.swift; sourceTree = "<group>"; };
@@ -592,6 +596,7 @@
 		CAC650A92461533900835209 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				CA5C82E8254053D9008D47B5 /* ProfileListView.swift */,
 				CAFC7A64245C54EE00747E82 /* ProfileView.swift */,
 			);
 			path = View;
@@ -756,6 +761,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC730FE246DF74E004DB450 /* ProfileViewModel.swift */,
+				CA5C82EC254053FD008D47B5 /* ProfileListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1093,12 +1099,14 @@
 				CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */,
 				CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */,
 				CAF8256C245C87340064359E /* Publisher+Extensions.swift in Sources */,
+				CA5C82E9254053D9008D47B5 /* ProfileListView.swift in Sources */,
 				CABDFD0623DCA73500C697AD /* HexImage.swift in Sources */,
 				CA0523F023E57813008F8A94 /* GameViewContent.swift in Sources */,
 				CA5C82E6253E715E008D47B5 /* SearchBar.swift in Sources */,
 				CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */,
 				CAFA467423D8B3B1003C38AB /* Game.swift in Sources */,
 				CABDFD0E23DF8B4000C697AD /* Experience+Extensions.swift in Sources */,
+				CA5C82ED254053FD008D47B5 /* ProfileListViewModel.swift in Sources */,
 				CA0F93942426003800F6E104 /* GameView2DController.swift in Sources */,
 				CA0F93A32427E83500F6E104 /* SKView+Extensions.swift in Sources */,
 				CAF8255E245C75C50064359E /* AppContainer.swift in Sources */,
