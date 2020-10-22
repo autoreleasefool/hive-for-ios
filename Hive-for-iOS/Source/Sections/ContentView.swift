@@ -14,10 +14,6 @@ struct ContentView: View {
 
 	@StateObject private var viewModel = ContentViewViewModel()
 
-	// This value can't be moved to the ViewModel because it mirrors the AppState and
-	// was causing a re-render loop when in the @ObservedObject view model
-	@State private var account: Loadable<Account>
-
 	@State private var sheetNavigation: SheetNavigation?
 	private var isShowingSheet: Binding<Bool> {
 		Binding {
@@ -29,15 +25,13 @@ struct ContentView: View {
 		}
 	}
 
-	init(account: Loadable<Account> = .notLoaded) {
-		self._account = .init(initialValue: account)
-	}
-
 	var body: some View {
 		content
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-			.onReceive(accountUpdates) { account = $0 }
 			.onReceive(navigationUpdates) { sheetNavigation = $0 }
+			.listensToAppStateChanges([.accountChanged]) { reason in
+				viewModel.postViewAction(.accountChanged)
+			}
 			.sheet(isPresented: isShowingSheet) {
 				sheetView
 			}
@@ -47,7 +41,7 @@ struct ContentView: View {
 
 	@ViewBuilder
 	private var content: some View {
-		switch account {
+		switch container.appState.value.account {
 		case .notLoaded: notLoadedView
 		case .loading: loadingView
 		case .loaded: loadedView
@@ -166,7 +160,7 @@ extension ContentView {
 #if DEBUG
 struct ContentViewPreview: PreviewProvider {
 	static var previews: some View {
-		ContentView(account: .failed(AccountRepositoryError.loggedOut))
+		ContentView()
 			.inject(
 				.init(
 					appState: .init(

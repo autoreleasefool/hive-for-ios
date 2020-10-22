@@ -14,6 +14,7 @@ enum ContentViewViewAction: BaseViewAction {
 	case onAppear
 	case playOffline
 	case playAsGuest
+	case accountChanged
 }
 
 enum ContentViewAction: BaseAction {
@@ -42,6 +43,8 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			actions.send(.loadOfflineAccount)
 		case .playAsGuest:
 			actions.send(.createGuestAccount)
+		case .accountChanged:
+			objectWillChange.send()
 		}
 	}
 
