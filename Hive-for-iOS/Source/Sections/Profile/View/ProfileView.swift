@@ -22,13 +22,8 @@ struct ProfileView: View {
 		content
 			.modifier(ProfileTitleModifier(title: viewModel.title, isEnabled: viewModel.isTitleEnabled))
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-			.listensToAppStateChanges([.accountChanged]) { reason in
-				switch reason {
-				case .accountChanged:
-					viewModel.postViewAction(.loadProfile)
-				case .toggledFeature:
-					break
-				}
+			.listensToAppStateChanges([.accountChanged]) { _ in
+				viewModel.postViewAction(.loadProfile)
 			}
 	}
 

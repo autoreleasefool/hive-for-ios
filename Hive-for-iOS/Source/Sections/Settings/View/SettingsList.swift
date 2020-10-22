@@ -82,7 +82,7 @@ struct SettingsList: View {
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onAppear { viewModel.postViewAction(.onAppear) }
 			.listensToAllAppStateChanges { _ in
-				viewModel.needsRefresh = true
+				viewModel.postViewAction(.appStateChanged)
 			}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())

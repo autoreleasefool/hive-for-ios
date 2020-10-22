@@ -12,6 +12,7 @@ import SwiftUI
 enum SettingsListViewAction: BaseViewAction {
 	case onAppear
 	case switchGameMode(current: Preferences.GameMode)
+	case appStateChanged
 
 	case logout
 	case exit
@@ -41,12 +42,6 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 	@Published var showAttributions: Bool = false
 	@Published var showAccount: Bool
 	@Published var preferences = Preferences()
-	@Published var needsRefresh: Bool = false {
-		didSet {
-			guard needsRefresh else { return }
-			needsRefresh = false
-		}
-	}
 
 	private let actions = PassthroughSubject<SettingsListAction, Never>()
 	var actionsPublisher: AnyPublisher<SettingsListAction, Never> {
@@ -65,6 +60,8 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 			actions.send(.loadProfile)
 		case .switchGameMode(let current):
 			switchGameMode(from: current)
+		case .appStateChanged:
+			objectWillChange.send()
 
 		case .exit:
 			actions.send(.closeSettings)

@@ -31,16 +31,8 @@ struct RootTabView: View {
 				.toggledFeature(.spectating),
 				.toggledFeature(.profileList),
 			]
-		) { reason in
-			switch reason {
-			case
-				.toggledFeature(.matchHistory),
-				.toggledFeature(.spectating),
-				.toggledFeature(.profileList):
-				updateActiveTabs()
-			case .toggledFeature, .accountChanged:
-				break
-			}
+		) { _ in
+			updateActiveTabs()
 		}
 	}
 

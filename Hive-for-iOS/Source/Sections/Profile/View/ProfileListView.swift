@@ -23,13 +23,8 @@ struct ProfileListView: View {
 				.navigationBarTitle("Users")
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-				.listensToAppStateChanges([.accountChanged]) { reason in
-					switch reason {
-					case .accountChanged:
-						viewModel.postViewAction(.reload)
-					case .toggledFeature:
-						break
-					}
+				.listensToAppStateChanges([.accountChanged]) { _ in
+					viewModel.postViewAction(.reload)
 				}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())

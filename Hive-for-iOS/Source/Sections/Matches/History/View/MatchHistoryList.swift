@@ -21,13 +21,8 @@ struct MatchHistoryList: View {
 	var body: some View {
 		NavigationView {
 			content
-				.listensToAppStateChanges([.accountChanged]) { reason in
-					switch reason {
-					case .accountChanged:
-						viewModel.postViewAction(.loadMatchHistory)
-					case .toggledFeature:
-						break
-					}
+				.listensToAppStateChanges([.accountChanged]) { _ in
+					viewModel.postViewAction(.loadMatchHistory)
 				}
 				.navigationBarTitle("History")
 				.navigationBarItems(leading: settingsButton)

@@ -29,7 +29,7 @@ struct ContentView: View {
 		content
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onReceive(navigationUpdates) { sheetNavigation = $0 }
-			.listensToAppStateChanges([.accountChanged]) { reason in
+			.listensToAppStateChanges([.accountChanged]) { _ in
 				viewModel.postViewAction(.accountChanged)
 			}
 			.sheet(isPresented: isShowingSheet) {
