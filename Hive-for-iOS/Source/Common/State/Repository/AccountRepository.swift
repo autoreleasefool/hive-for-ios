@@ -24,6 +24,7 @@ protocol AccountRepository {
 	func saveAccount(_ account: Account)
 	func login(_ loginData: User.Login.Request) -> AnyPublisher<Account, AccountRepositoryError>
 	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<Account, AccountRepositoryError>
+	func createGuestAccount() -> AnyPublisher<Account, AccountRepositoryError>
 	func logout(fromAccount account: Account) -> AnyPublisher<Bool, AccountRepositoryError>
 }
 
@@ -93,6 +94,15 @@ struct LiveAccountRepository: AccountRepository {
 
 	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<Account, AccountRepositoryError> {
 		api.fetch(.signup(signupData))
+			.mapError { .apiError($0) }
+			.map { (result: User.Signup.Response) in
+				Account(userId: result.token.userId, token: result.token.token)
+			}
+			.eraseToAnyPublisher()
+	}
+
+	func createGuestAccount() -> AnyPublisher<Account, AccountRepositoryError> {
+		api.fetch(.createGuestAccount)
 			.mapError { .apiError($0) }
 			.map { (result: User.Signup.Response) in
 				Account(userId: result.token.userId, token: result.token.token)

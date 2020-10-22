@@ -151,6 +151,7 @@ class HiveAPI: ObservableObject {
 		case .signup(let data):
 			return try encoder.encode(data)
 		case
+			.createGuestAccount,
 			.openMatches,
 			.activeMatches,
 			.checkToken,
@@ -184,6 +185,7 @@ extension HiveAPI {
 		// Auth
 		case login(User.Login.Request)
 		case signup(User.Signup.Request)
+		case createGuestAccount
 		case logout(Account)
 		case checkToken(Account)
 
@@ -204,6 +206,7 @@ extension HiveAPI {
 			case .signup: return "users/signup"
 			case .logout: return "users/logout"
 			case .checkToken: return "users/validate"
+			case .createGuestAccount: return "users/guestSignup"
 
 			case .userDetails(let id): return "users/\(id.uuidString)/details"
 			case .filterUsers: return "users/all"
@@ -228,7 +231,8 @@ extension HiveAPI {
 				.matchDetails,
 				.openMatches,
 				.signup,
-				.userDetails:
+				.userDetails,
+				.createGuestAccount:
 				return nil
 			case .filterUsers(let filter):
 				if let filter = filter {
@@ -248,14 +252,23 @@ extension HiveAPI {
 				return ["Authorization": "Basic \(base64Auth)"]
 			case .logout(let account), .checkToken(let account):
 				return account.headers
-			case .signup, .openMatches, .activeMatches, .userDetails, .matchDetails, .joinMatch, .createMatch, .filterUsers:
+			case
+				.signup,
+				.createGuestAccount,
+				.openMatches,
+				.activeMatches,
+				.userDetails,
+				.matchDetails,
+				.joinMatch,
+				.createMatch,
+				.filterUsers:
 				return [:]
 			}
 		}
 
 		var httpMethod: HTTPMethod {
 			switch self {
-			case .login, .signup, .createMatch, .joinMatch: return .post
+			case .login, .signup, .createGuestAccount, .createMatch, .joinMatch: return .post
 			case .logout: return .delete
 			case .checkToken, .openMatches, .activeMatches, .userDetails, .matchDetails, .filterUsers: return .get
 			}

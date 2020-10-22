@@ -16,6 +16,7 @@ protocol AccountInteractor {
 	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>)
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>)
 	func playOffline(account: LoadableSubject<Account>?)
+	func createGuestAccount(account: LoadableSubject<Account>?)
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -110,6 +111,23 @@ struct LiveAccountInteractor: AccountInteractor {
 		account?.wrappedValue = .loaded(.offline)
 		appState[\.account] = .loaded(.offline)
 	}
+
+	func createGuestAccount(account: LoadableSubject<Account>?) {
+		let cancelBag = CancelBag()
+		account?.wrappedValue.setLoading(cancelBag: cancelBag)
+
+		weak var weakState = appState
+		repository.createGuestAccount()
+			.receive(on: RunLoop.main)
+			.sinkToLoadable {
+				if case .loaded = $0, let account = $0.value {
+					repository.saveAccount(account)
+					weakState?[\.account] = $0
+				}
+				account?.wrappedValue = $0
+			}
+			.store(in: cancelBag)
+	}
 }
 
 struct StubAccountInteractor: AccountInteractor {
@@ -119,4 +137,5 @@ struct StubAccountInteractor: AccountInteractor {
 	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>) { }
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) { }
 	func playOffline(account: LoadableSubject<Account>?) { }
+	func createGuestAccount(account: LoadableSubject<Account>?) { }
 }

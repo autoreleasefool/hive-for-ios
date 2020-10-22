@@ -47,6 +47,8 @@ enum Feature: String, CaseIterable {
 	case profileList = "Profile List"
 	case spectating = "Spectating"
 	case hiveMindAgent = "Hive Mind Agent"
+	case accounts = "Accounts"
+	case guestMode = "Guest Mode"
 	case offlineMode = "Offline Mode"
 	case aiOpponents = "AI Opponents"
 
@@ -56,6 +58,8 @@ enum Feature: String, CaseIterable {
 		case .emojiReactions: return .released
 		case .hiveMindAgent: return .inDevelopment
 		case .offlineMode: return .inDevelopment
+		case .accounts: return .inDevelopment
+		case .guestMode: return .inDevelopment
 		case .matchHistory: return .inDevelopment
 		case .profileList: return .inDevelopment
 		case .spectating: return .inDevelopment
@@ -69,7 +73,7 @@ enum Feature: String, CaseIterable {
 			return [.aiOpponents]
 		case .hiveMindAgent:
 			return [.aiOpponents]
-		case .arGameMode, .emojiReactions, .aiOpponents, .matchHistory, .profileList, .spectating:
+		case .arGameMode, .emojiReactions, .aiOpponents, .matchHistory, .profileList, .spectating, .guestMode, .accounts:
 			return []
 		}
 	}

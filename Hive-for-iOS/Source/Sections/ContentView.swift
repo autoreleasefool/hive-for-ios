@@ -85,6 +85,8 @@ struct ContentView: View {
 			container.appState.value.setNavigation(to: .settings)
 		}, onLogin: {
 			container.appState.value.setNavigation(to: .login)
+		}, onPlayAsGuest: {
+			viewModel.postViewAction(.playAsGuest)
 		}, onPlayOffline: {
 			viewModel.postViewAction(.playOffline)
 		})
@@ -100,6 +102,8 @@ extension ContentView {
 			loadOfflineAccount()
 		case .loadAccount:
 			loadAccount()
+		case .createGuestAccount:
+			createGuestAccount()
 		case .loggedOut:
 			container.interactors.accountInteractor.clearAccount()
 		}
@@ -111,6 +115,10 @@ extension ContentView {
 
 	private func loadOfflineAccount() {
 		container.interactors.accountInteractor.playOffline(account: nil)
+	}
+
+	private func createGuestAccount() {
+		container.interactors.accountInteractor.createGuestAccount(account: nil)
 	}
 }
 

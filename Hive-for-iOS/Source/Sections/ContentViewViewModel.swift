@@ -13,11 +13,13 @@ import SwiftUI
 enum ContentViewViewAction: BaseViewAction {
 	case onAppear
 	case playOffline
+	case playAsGuest
 }
 
 enum ContentViewAction: BaseAction {
 	case loadAccount
 	case loadOfflineAccount
+	case createGuestAccount
 	case loggedOut
 }
 
@@ -38,6 +40,8 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			actions.send(.loadAccount)
 		case .playOffline:
 			actions.send(.loadOfflineAccount)
+		case .playAsGuest:
+			actions.send(.createGuestAccount)
 		}
 	}
 

@@ -13,6 +13,7 @@ struct WelcomeView: View {
 
 	let onShowSettings: () -> Void
 	let onLogin: () -> Void
+	let onPlayAsGuest: () -> Void
 	let onPlayOffline: () -> Void
 
 	var body: some View {
@@ -22,12 +23,23 @@ struct WelcomeView: View {
 			Image(uiImage: ImageAsset.glyph)
 				.foregroundColor(Color(.highlightPrimary))
 
-			PrimaryButton("Play") {
-				onLogin()
+			if container.has(feature: .accounts) {
+				PrimaryButton("Login") {
+					onLogin()
+				}
+				.buttonBackground(.backgroundLight)
+				.padding(.horizontal)
+				.padding(.bottom)
 			}
-			.buttonBackground(.backgroundLight)
-			.padding(.horizontal)
-			.padding(.bottom)
+
+			if container.has(feature: .guestMode) {
+				PrimaryButton("Play as guest") {
+					onPlayAsGuest()
+				}
+				.buttonBackground(.backgroundLight)
+				.padding(.horizontal)
+				.padding(.bottom)
+			}
 
 			if container.has(feature: .offlineMode) {
 				PrimaryButton("Play offline") {
@@ -53,7 +65,7 @@ struct WelcomeView: View {
 #if DEBUG
 struct WelcomeViewPreview: PreviewProvider {
 	static var previews: some View {
-		WelcomeView(onShowSettings: { }, onLogin: { }, onPlayOffline: { })
+		WelcomeView(onShowSettings: { }, onLogin: { }, onPlayAsGuest: { }, onPlayOffline: { })
 	}
 }
 #endif
