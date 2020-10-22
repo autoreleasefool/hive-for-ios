@@ -29,14 +29,14 @@ struct RootTabView: View {
 			[
 				.toggledFeature(.matchHistory),
 				.toggledFeature(.spectating),
-				.toggledFeature(.userProfile),
+				.toggledFeature(.profileList),
 			]
 		) { reason in
 			switch reason {
 			case
 				.toggledFeature(.matchHistory),
 				.toggledFeature(.spectating),
-				.toggledFeature(.userProfile):
+				.toggledFeature(.profileList):
 				updateActiveTabs()
 			case .toggledFeature, .accountChanged:
 				break
@@ -95,7 +95,7 @@ extension RootTabView {
 			case .lobby: return true
 			case .spectate: return features.has(.spectating)
 			case .matchHistory: return features.has(.matchHistory)
-			case .profile: return features.has(.userProfile)
+			case .profile: return features.has(.profileList)
 			}
 		}
 	}
