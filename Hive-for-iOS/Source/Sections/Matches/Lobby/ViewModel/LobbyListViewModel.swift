@@ -15,20 +15,20 @@ enum LobbyListViewAction: BaseViewAction {
 	case openSettings
 	case networkStatusChanged(isOffline: Bool)
 	case aiModeToggled(Bool)
+	case featuresChanged
+	case offlineStateAction
 
 	case joinMatch(Match.ID)
 	case createNewMatch
 	case createOnlineMatchVsPlayer
 	case createLocalMatchVsComputer
 	case cancelCreateMatch
-
-	case logIn
 }
 
 enum LobbyListAction: BaseAction {
 	case loadMatches
 	case openSettings
-	case openLoginForm
+	case goOnline
 }
 
 class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
@@ -113,8 +113,10 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			self.isOffline = isOffline
 		case .aiModeToggled(let enabled):
 			self.isAIGameModeEnabled = enabled
-		case .logIn:
-			actions.send(.openLoginForm)
+		case .featuresChanged:
+			objectWillChange.send()
+		case .offlineStateAction:
+			performOfflineStateAction()
 		}
 	}
 
@@ -149,6 +151,14 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			matches = .loaded([])
 		} else {
 			actions.send(.loadMatches)
+		}
+	}
+
+	private func performOfflineStateAction() {
+		if isSpectating {
+			actions.send(.goOnline)
+		} else {
+			postViewAction(.createLocalMatchVsComputer)
 		}
 	}
 }
@@ -187,6 +197,32 @@ extension LobbyListViewModel {
 // MARK: - Strings
 
 extension LobbyListViewModel {
+	func offlineStateMessage(isAccountsEnabled: Bool, isGuestModeEnabled: Bool) -> String {
+		if isSpectating {
+			return isAccountsEnabled
+				? "You can't spectate offline. Log in to spectate"
+				: (isGuestModeEnabled
+						? "You can't spectate offline. Go online to spectate"
+						: "You can't spectate offline"
+				)
+		} else {
+			return "You can play a game against the computer by tapping below"
+		}
+	}
+
+	func offlineStateAction(isAccountsEnabled: Bool, isGuestModeEnabled: Bool) -> String? {
+		if isSpectating {
+			return isAccountsEnabled
+				? "Log in"
+				: (isGuestModeEnabled
+						? "Play online"
+						: nil
+				)
+		} else {
+			return "Play local match"
+		}
+	}
+
 	func errorMessage(from error: Error) -> String {
 		guard let matchError = error as? MatchRepositoryError else {
 			return error.localizedDescription

@@ -26,7 +26,14 @@ struct LobbyList: View {
 				.navigationBarTitle(viewModel.isSpectating ? "Spectate" : "Lobby")
 				.navigationBarItems(leading: settingsButton, trailing: trailingButtons)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-				.listensToAppStateChanges([.accountChanged, .toggledFeature(.aiOpponents)]) { reason in
+				.listensToAppStateChanges(
+					[
+						.accountChanged,
+						.toggledFeature(.aiOpponents),
+						.toggledFeature(.accounts),
+						.toggledFeature(.guestMode),
+					]
+				) { reason in
 					switch reason {
 					case .accountChanged:
 						viewModel.postViewAction(
@@ -34,6 +41,8 @@ struct LobbyList: View {
 						)
 					case .toggledFeature(.aiOpponents):
 						viewModel.postViewAction(.aiModeToggled(container.has(feature: .aiOpponents)))
+					case .toggledFeature(.accounts), .toggledFeature(.guestMode):
+						viewModel.postViewAction(.featuresChanged)
 					case .toggledFeature:
 						break
 					}
@@ -224,14 +233,20 @@ extension LobbyList {
 	}
 
 	private var offlineState: some View {
-		EmptyState(
+		let offlineStateAction = viewModel.offlineStateAction(
+			isAccountsEnabled: container.has(feature: .accounts),
+			isGuestModeEnabled: container.has(feature: .guestMode)
+		)
+
+		return EmptyState(
 			header: "You're offline",
-			message: viewModel.isSpectating
-				? "You can't spectate offline. Log in to spectate"
-				: "You can play a game against the computer by tapping below",
-			action: viewModel.isSpectating
-				? .init(text: "Log in") { viewModel.postViewAction(.logIn) }
-				: .init(text: "Play local match") { viewModel.postViewAction(.createLocalMatchVsComputer) }
+			message: viewModel.offlineStateMessage(
+				isAccountsEnabled: container.has(feature: .accounts),
+				isGuestModeEnabled: container.has(feature: .guestMode)
+			),
+			action: offlineStateAction != nil
+				? .init(text: offlineStateAction!) { viewModel.postViewAction(.offlineStateAction) }
+				: nil
 		)
 	}
 
@@ -252,8 +267,12 @@ extension LobbyList {
 			loadMatches()
 		case .openSettings:
 			container.appState.value.setNavigation(to: .settings)
-		case .openLoginForm:
-			container.appState.value.setNavigation(to: .login)
+		case .goOnline:
+			if container.has(feature: .accounts) {
+				container.appState.value.setNavigation(to: .login)
+			} else {
+				container.interactors.accountInteractor.createGuestAccount(account: nil)
+			}
 		}
 	}
 
