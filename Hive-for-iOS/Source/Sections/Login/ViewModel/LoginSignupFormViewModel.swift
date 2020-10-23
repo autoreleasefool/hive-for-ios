@@ -13,11 +13,13 @@ enum LoginSignupViewAction: BaseViewAction {
 	case toggleForm
 	case submitForm
 	case dismissForm
+	case playAsGuest
 }
 
 enum LoginSignupAction: BaseAction {
 	case login(User.Login.Request)
 	case signup(User.Signup.Request)
+	case createGuestAccount
 	case dismiss
 }
 
@@ -48,6 +50,8 @@ class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObje
 			submitForm()
 		case .dismissForm:
 			actions.send(.dismiss)
+		case .playAsGuest:
+			actions.send(.createGuestAccount)
 		}
 	}
 

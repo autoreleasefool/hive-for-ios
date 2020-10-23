@@ -59,6 +59,12 @@ struct LoginSignupForm: View {
 				Button(viewModel.toggleButtonText) {
 					viewModel.postViewAction(.toggleForm)
 				}
+
+				if container.has(feature: .guestMode) && viewModel.form == .login {
+					Button("Play as guest") {
+						viewModel.postViewAction(.playAsGuest)
+					}
+				}
 			}
 		}
 	}
@@ -127,6 +133,8 @@ extension LoginSignupForm {
 			login(data)
 		case .signup(let data):
 			signup(data)
+		case .createGuestAccount:
+			createGuestAccount()
 		case .dismiss:
 			presentationMode.wrappedValue.dismiss()
 		}
@@ -140,6 +148,11 @@ extension LoginSignupForm {
 	private func signup(_ data: User.Signup.Request) {
 		container.interactors.accountInteractor
 			.signup(data, account: $viewModel.account)
+	}
+
+	private func createGuestAccount() {
+		container.interactors.accountInteractor
+			.createGuestAccount(account: $viewModel.account)
 	}
 
 	private func handleAccountChange(_ account: Loadable<Account>) {
