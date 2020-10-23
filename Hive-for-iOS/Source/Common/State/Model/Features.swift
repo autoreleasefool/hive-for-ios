@@ -58,7 +58,7 @@ enum Feature: String, CaseIterable {
 		case .emojiReactions: return .released
 		case .hiveMindAgent: return .inDevelopment
 		case .offlineMode: return .inDevelopment
-		case .accounts: return .inDevelopment
+		case .accounts: return .disabled
 		case .guestMode: return .inDevelopment
 		case .matchHistory: return .inDevelopment
 		case .profileList: return .inDevelopment
