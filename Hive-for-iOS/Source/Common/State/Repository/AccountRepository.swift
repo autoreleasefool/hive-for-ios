@@ -30,12 +30,14 @@ protocol AccountRepository {
 
 struct LiveAccountRepository: AccountRepository {
 	private enum Key: String {
-		case userId
-		case token
+		case account
 	}
 
 	private let keychain: Keychain
 	private let api: HiveAPI
+
+	private let accountEncoder = JSONEncoder()
+	private let accountDecoder = JSONDecoder()
 
 	init(keychain: Keychain, api: HiveAPI) {
 		self.keychain = keychain
@@ -45,13 +47,11 @@ struct LiveAccountRepository: AccountRepository {
 	func loadAccount() -> AnyPublisher<Account, AccountRepositoryError> {
 		Future<Account, AccountRepositoryError> { promise in
 			do {
-				guard let id = try keychain.get(Key.userId.rawValue),
-					let userId = UUID(uuidString: id),
-					let token = try keychain.get(Key.token.rawValue) else {
-						return promise(.failure(AccountRepositoryError.notFound))
+				guard let accountData = try keychain.getData(Key.account.rawValue),
+					let account = try? accountDecoder.decode(Account.self, from: accountData) else {
+					return promise(.failure(AccountRepositoryError.notFound))
 				}
-
-				promise(.success(Account(userId: userId, token: token)))
+				promise(.success(account))
 			} catch {
 				print("Error retrieving login: \(error)")
 				promise(.failure(.keychainError(error)))
@@ -67,19 +67,18 @@ struct LiveAccountRepository: AccountRepository {
 
 	func clearAccount() {
 		do {
-			try keychain.remove(Key.userId.rawValue)
-			try keychain.remove(Key.token.rawValue)
+			try keychain.remove(Key.account.rawValue)
 		} catch {
 			print("Failed to clear account: \(error)")
 		}
 	}
 
 	func saveAccount(_ account: Account) {
-		guard !account.isOffline else { return }
+		guard !account.isOffline, !account.isGuest else { return }
 
 		do {
-			try keychain.set(account.userId.uuidString, key: Key.userId.rawValue)
-			try keychain.set(account.token, key: Key.token.rawValue)
+			let accountData = try accountEncoder.encode(account)
+			try keychain.set(accountData, key: Key.account.rawValue)
 		} catch {
 			print("Error saving login: \(error)")
 		}
@@ -88,7 +87,7 @@ struct LiveAccountRepository: AccountRepository {
 	func login(_ loginData: User.Login.Request) -> AnyPublisher<Account, AccountRepositoryError> {
 		api.fetch(.login(loginData))
 			.mapError { .apiError($0) }
-			.map { (token: SessionToken) in Account(userId: token.userId, token: token.token) }
+			.map { (token: SessionToken) in Account(userId: token.userId, token: token.token, isGuest: false) }
 			.eraseToAnyPublisher()
 	}
 
@@ -96,7 +95,7 @@ struct LiveAccountRepository: AccountRepository {
 		api.fetch(.signup(signupData))
 			.mapError { .apiError($0) }
 			.map { (result: User.Signup.Response) in
-				Account(userId: result.token.userId, token: result.token.token)
+				Account(userId: result.token.userId, token: result.token.token, isGuest: false)
 			}
 			.eraseToAnyPublisher()
 	}
@@ -105,7 +104,7 @@ struct LiveAccountRepository: AccountRepository {
 		api.fetch(.createGuestAccount)
 			.mapError { .apiError($0) }
 			.map { (result: User.Signup.Response) in
-				Account(userId: result.token.userId, token: result.token.token)
+				Account(userId: result.token.userId, token: result.token.token, isGuest: true)
 			}
 			.eraseToAnyPublisher()
 	}

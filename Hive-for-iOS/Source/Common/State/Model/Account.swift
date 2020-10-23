@@ -14,13 +14,14 @@ extension NSNotification.Name {
 	}
 }
 
-struct Account: Equatable {
+struct Account: Equatable, Codable {
 	private static let offlineId = UUID(uuidString: "602c977d-168a-4771-8599-9f35ed1abd41")!
 	private static let offlineToken = "offline"
-	static let offline: Account = Account(userId: offlineId, token: offlineToken)
+	static let offline: Account = Account(userId: offlineId, token: offlineToken, isGuest: false)
 
-	var userId: User.ID
-	var token: String
+	let userId: User.ID
+	let token: String
+	let isGuest: Bool
 
 	var headers: [String: String] {
 		return ["Authorization": "Bearer \(token)"]
