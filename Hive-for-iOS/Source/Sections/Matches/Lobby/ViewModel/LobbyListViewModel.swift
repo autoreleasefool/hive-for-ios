@@ -193,7 +193,7 @@ extension LobbyListViewModel {
 		}
 
 		switch matchError {
-		case .usingOfflineAccount: return "You're currently playing offline"
+		case .usingOfflineAccount: return "You're offline"
 		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
 		}
 	}
