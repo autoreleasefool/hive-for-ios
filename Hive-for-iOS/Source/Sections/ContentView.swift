@@ -11,6 +11,7 @@ import Combine
 
 struct ContentView: View {
 	@Environment(\.container) private var container
+	@Environment(\.toaster) private var toaster
 
 	@StateObject private var viewModel = ContentViewViewModel()
 
@@ -28,6 +29,7 @@ struct ContentView: View {
 	var body: some View {
 		content
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
+//			.onReceive(viewModel.guestAccount) { _ in }
 			.onReceive(navigationUpdates) { sheetNavigation = $0 }
 			.listensToAppStateChanges([.accountChanged]) { _ in
 				viewModel.postViewAction(.accountChanged)
@@ -99,8 +101,14 @@ extension ContentView {
 		case .createGuestAccount:
 			createGuestAccount()
 		case .loggedOut:
-			container.interactors.accountInteractor.clearAccount()
+			clearAccount()
+		case .showLoaf(let loaf):
+			toaster.loaf.send(loaf)
 		}
+	}
+
+	private func clearAccount() {
+		container.interactors.accountInteractor.clearAccount()
 	}
 
 	private func loadAccount() {
@@ -112,7 +120,7 @@ extension ContentView {
 	}
 
 	private func createGuestAccount() {
-		container.interactors.accountInteractor.createGuestAccount(account: nil)
+		container.interactors.accountInteractor.createGuestAccount(account: $viewModel.guestAccount)
 	}
 }
 

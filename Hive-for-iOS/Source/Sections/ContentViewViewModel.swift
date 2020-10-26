@@ -22,11 +22,33 @@ enum ContentViewAction: BaseAction {
 	case loadOfflineAccount
 	case createGuestAccount
 	case loggedOut
+	case showLoaf(LoafState)
 }
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
-	override init() {
+	@Published var guestAccount: Loadable<Account> = .notLoaded {
+		didSet {
+			guard guestAccount != oldValue,
+						let error = guestAccount.error else { return }
+			let errorMessage: String
+			if let accountError = error as? AccountRepositoryError {
+				switch accountError {
+				case .notFound, .keychainError, .loggedOut:
+					errorMessage = "Unknown error"
+				case .apiError(let error):
+					errorMessage = error.localizedDescription
+				}
+			} else {
+				errorMessage = error.localizedDescription
+			}
+			actions.send(.showLoaf(LoafState(errorMessage, state: .error)))
+		}
+	}
+
+	init(guestAccount: Loadable<Account> = .notLoaded) {
+		_guestAccount = .init(initialValue: guestAccount)
 		super.init()
+
 		subscribeToAccountUpdates()
 	}
 
