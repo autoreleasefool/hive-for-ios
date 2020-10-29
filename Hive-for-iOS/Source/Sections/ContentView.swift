@@ -68,7 +68,7 @@ struct ContentView: View {
 			Color(.backgroundRegular)
 				.edgesIgnoringSafeArea(.all)
 
-			ProgressView("Logging in...")
+			ProgressView("Logging in")
 		}
 	}
 

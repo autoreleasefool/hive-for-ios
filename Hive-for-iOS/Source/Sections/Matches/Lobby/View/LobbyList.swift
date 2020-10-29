@@ -129,7 +129,7 @@ struct LobbyList: View {
 
 		if matches.count == 0 {
 			if loading {
-				ProgressView("Loading matches")
+				ProgressView()
 			} else {
 				emptyState
 			}
