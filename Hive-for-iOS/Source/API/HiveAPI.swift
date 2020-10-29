@@ -121,10 +121,12 @@ class HiveAPI: ObservableObject {
 			.subscribe(on: apiQueue)
 			.tryMap { data, response in
 				guard let httpResponse = response as? HTTPURLResponse else {
+					print("Invalid response from \(endpoint)")
 					throw HiveAPIError.invalidResponse
 				}
 
 				guard (200..<400).contains(httpResponse.statusCode) else {
+					print("Invalid status (\(httpResponse.statusCode)) from \(endpoint)")
 					throw HiveAPIError.invalidHTTPResponse(httpResponse.statusCode)
 				}
 
@@ -132,6 +134,7 @@ class HiveAPI: ObservableObject {
 			}
 			.decode(type: Output.self, decoder: decoder)
 			.mapError {
+				print("Error from \(endpoint), error: \($0)")
 				if let apiError = $0 as? HiveAPIError {
 					if case .invalidHTTPResponse(401) = apiError {
 						self.reportUnauthorizedRequest()
