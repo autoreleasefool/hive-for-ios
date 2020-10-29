@@ -77,15 +77,18 @@ struct ContentView: View {
 	}
 
 	private var noAccountView: some View {
-		WelcomeView(onShowSettings: {
-			container.appState.value.setNavigation(to: .settings)
-		}, onLogin: {
-			container.appState.value.setNavigation(to: .login)
-		}, onPlayAsGuest: {
-			viewModel.postViewAction(.playAsGuest)
-		}, onPlayOffline: {
-			viewModel.postViewAction(.playOffline)
-		})
+		WelcomeView(
+			guestAccount: $viewModel.guestAccount,
+			onShowSettings: {
+				container.appState.value.setNavigation(to: .settings)
+			}, onLogin: {
+				container.appState.value.setNavigation(to: .login)
+			}, onPlayAsGuest: {
+				viewModel.postViewAction(.playAsGuest)
+			}, onPlayOffline: {
+				viewModel.postViewAction(.playOffline)
+			}
+		)
 	}
 }
 
