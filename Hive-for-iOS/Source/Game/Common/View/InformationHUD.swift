@@ -16,7 +16,7 @@ struct InformationHUD: View {
 
 	fileprivate func hudHeight(maxHeight: CGFloat, information: GameInformation?) -> CGFloat {
 		switch information {
-		case .piece, .pieceClass, .playerHand, .rule, .settings, .reconnecting: return maxHeight * 0.75
+		case .pieceClass, .playerHand, .rule, .settings, .reconnecting: return maxHeight * 0.75
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.85 : maxHeight / 2
 		case .gameEnd, .forfeit, .playerMustPass: return maxHeight * 0.5
 		case .none: return 0
@@ -88,8 +88,6 @@ struct InformationHUD: View {
 			PieceStack(stack: stack)
 		case .pieceClass(let pieceClass):
 			PieceClassDetails(pieceClass: pieceClass, state: state)
-		case .piece(let piece):
-			PieceClassDetails(pieceClass: piece.class, state: state)
 		case .playerHand(let hand):
 			PlayerHandView(hand: hand)
 		case .rule(let rule):

@@ -11,7 +11,6 @@ import HiveEngine
 
 enum GameInformation {
 	case playerHand(PlayerHand)
-	case piece(Piece)
 	case pieceClass(Piece.Class)
 	case stack([Piece])
 	case rule(GameRule?)
@@ -39,7 +38,6 @@ enum GameInformation {
 	var title: String {
 		switch self {
 		case .playerHand(let hand): return (hand.isPlayerHand ? "Your" : "Opponent's") + " hand"
-		case .piece(let piece): return piece.class.description
 		case .pieceClass(let pieceClass): return pieceClass.description
 		case .stack: return "Pieces in stack"
 		case .rule(let rule): return rule?.title ?? "All rules"
@@ -58,7 +56,6 @@ enum GameInformation {
 	var subtitle: String? {
 		switch self {
 		case .playerHand(let hand): return hand.player.description
-		case .piece(let piece): return piece.class.rules
 		case .pieceClass(let pieceClass): return pieceClass.rules
 		case .rule(let rule): return rule?.description
 		case .stack: return
@@ -93,7 +90,6 @@ enum GameInformation {
 		switch self {
 		case .playerHand, .settings: return false
 		case
-			.piece,
 			.pieceClass,
 			.rule,
 			.stack,
@@ -111,7 +107,6 @@ enum GameInformation {
 		case
 			.gameEnd,
 			.forfeit,
-			.piece,
 			.pieceClass,
 			.playerHand,
 			.rule,
@@ -125,7 +120,7 @@ enum GameInformation {
 	var hasCloseButton: Bool {
 		switch self {
 		case .gameEnd, .forfeit, .playerMustPass: return false
-		case .piece, .pieceClass, .playerHand, .rule, .stack, .settings, .reconnecting: return true
+		case .pieceClass, .playerHand, .rule, .stack, .settings, .reconnecting: return true
 		}
 	}
 }

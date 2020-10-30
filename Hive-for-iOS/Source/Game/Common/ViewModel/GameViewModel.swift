@@ -263,7 +263,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		if showStack {
 			let position = self.position(of: piece)
 			guard let stack = gameState.stacks[position] else {
-				presentedGameInformation = .piece(piece)
+				presentedGameInformation = .pieceClass(piece.class)
 				return
 			}
 
@@ -274,7 +274,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 				return
 			}
 		}
-		presentedGameInformation = .piece(piece)
+		presentedGameInformation = .pieceClass(piece.class)
 	}
 
 	private func openSettings() {
@@ -364,7 +364,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		switch presentedGameInformation {
 		case .reconnecting:
 			postViewAction(.closeInformation(withFeedback: true))
-		case .piece, .pieceClass, .playerHand, .stack, .rule, .gameEnd, .forfeit, .settings, .playerMustPass, .none:
+		case .pieceClass, .playerHand, .stack, .rule, .gameEnd, .forfeit, .settings, .playerMustPass, .none:
 			break
 		}
 	}
