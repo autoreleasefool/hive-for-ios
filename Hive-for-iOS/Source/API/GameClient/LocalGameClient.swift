@@ -24,7 +24,7 @@ class LocalGameClient: GameClient {
 
 	func prepare(configuration: GameClientConfiguration) {
 		guard case let .offline(gameState, player, computerConfiguration) = configuration else { return }
-		self.gameState = gameState
+		self.gameState = GameState(from: gameState)
 		self.localPlayer = player
 		self.computerConfiguration = computerConfiguration
 		self.computerPlayer = computerConfiguration.player
