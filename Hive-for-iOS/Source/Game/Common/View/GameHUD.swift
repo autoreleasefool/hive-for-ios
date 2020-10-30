@@ -102,7 +102,7 @@ struct GameHUD: View {
 	var body: some View {
 		GeometryReader { geometry in
 			if !viewModel.shouldHideHUDControls {
-				if hasEmojiEnabled {
+				if hasEmojiEnabled && !viewModel.isSpectating {
 					emojiButton(geometry)
 				}
 				settingsButton(geometry)
