@@ -172,7 +172,12 @@ extension OnlineRoomView {
 	}
 
 	private func startGame(state: GameState, player: Player) {
+		guard let match = viewModel.match.value else {
+			handleAction(.failedToJoinMatch)
+			return
+		}
 		container.appState[\.gameSetup] = Game.Setup(
+			match: match,
 			state: state,
 			mode: .play(player: player, configuration: .online)
 		)

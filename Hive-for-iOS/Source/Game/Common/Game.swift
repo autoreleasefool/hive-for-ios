@@ -74,6 +74,7 @@ struct Game: View {
 
 extension Game {
 	struct Setup: Equatable {
+		let match: Match
 		let state: GameState
 		let mode: Mode
 	}

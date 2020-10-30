@@ -51,6 +51,7 @@ enum GameViewAction: BaseViewAction {
 class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private(set) var clientInteractor: ClientInteractor!
 	private(set) var userId: User.ID?
+	private var match: Match
 
 	@Published var gameState: GameState
 	@Published var debugMode = false
@@ -134,6 +135,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private(set) var viewInteractionsReady = false
 
 	init(setup: Game.Setup) {
+		self.match = setup.match
 		self.gameState = setup.state
 	}
 
@@ -200,11 +202,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		fatalError("GameViewModel subclasses should override")
 	}
 
-	func showEndGame(withWinner winner: UUID?) {
+	func showEndGame(withWinner winner: Player?) {
 		fatalError("GameViewModel subclasses should override")
 	}
 
-	func showForfeit(byUser user: UUID) {
+	func showForfeit(byPlayer player: Player) {
 		fatalError("GameViewModel subclasses should override")
 	}
 
@@ -364,7 +366,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		switch presentedGameInformation {
 		case .reconnecting:
 			postViewAction(.closeInformation(withFeedback: true))
-		case .pieceClass, .playerHand, .stack, .rule, .gameEnd, .forfeit, .settings, .playerMustPass, .none:
+		case .pieceClass, .playerHand, .stack, .rule, .gameEnd, .settings, .playerMustPass, .none:
 			break
 		}
 	}
@@ -386,11 +388,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		case .gameOver(let winner):
 			endGame()
 			promptFeedbackGenerator.impactOccurred()
-			showEndGame(withWinner: winner)
+			showEndGame(withWinner: player(forUser: winner))
 		case .forfeit(let user):
 			endGame()
 			promptFeedbackGenerator.impactOccurred()
-			showForfeit(byUser: user)
+			showForfeit(byPlayer: player(forUser: user) ?? .white)
 
 		case .error(let error):
 			logger.error("Recieved error: \(error)")
@@ -419,6 +421,19 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			loafState.send(LoafState("Invalid movement. Try again", state: .warning))
 		case .notPlayerTurn:
 			loafState.send(LoafState("It's not your turn", state: .info))
+		}
+	}
+}
+
+// MARK: - Player
+
+extension GameViewModel {
+	private func player(forUser user: UUID?) -> Player? {
+		guard let user = user else { return nil }
+		if match.optionSet.contains(.hostIsWhite) == true {
+			return user == match.host?.id ? .white : .black
+		} else {
+			return user == match.host?.id ? .black : .white
 		}
 	}
 }

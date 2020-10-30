@@ -111,26 +111,20 @@ class PlayerGameViewModel: GameViewModel {
 		}
 	}
 
-	override func showEndGame(withWinner winner: UUID?) {
+	override func showEndGame(withWinner winner: Player?) {
 		presentedGameInformation = .gameEnd(.init(
-			winner: winner == nil
-				? nil
-				: (
-					winner == userId
-						? playingAs
-						: playingAs.next
-				),
-			playingAs: playingAs
+			winner: winner,
+			playingAs: playingAs,
+			wasForfeit: false
 		))
 	}
 
-	override func showForfeit(byUser user: UUID) {
-		presentedGameInformation = .forfeit(
-			.init(
-				winner: user == userId ? playingAs.next : playingAs,
-				playingAs: playingAs
-			)
-		)
+	override func showForfeit(byPlayer player: Player) {
+		presentedGameInformation = .gameEnd(.init(
+			winner: player.next,
+			playingAs: playingAs,
+			wasForfeit: true
+		))
 	}
 
 	override func endGame() {

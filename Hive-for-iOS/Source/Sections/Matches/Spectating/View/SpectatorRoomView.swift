@@ -82,8 +82,11 @@ extension SpectatorRoomView {
 		case .openClientConnection(let url):
 			openClientConnection(to: url)
 		case .startGame(let state):
-			container.appState[\.gameSetup] = .init(state: state, mode: .spectate)
-
+			guard let match = viewModel.match.value else {
+				handleAction(.failedToSpectateMatch)
+				return
+			}
+			container.appState[\.gameSetup] = .init(match: match, state: state, mode: .spectate)
 		case .exit:
 			presentationMode.wrappedValue.dismiss()
 		case .failedToSpectateMatch, .matchNotOpenForSpectating:

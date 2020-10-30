@@ -22,6 +22,7 @@ enum LocalRoomViewAction: BaseViewAction {
 enum LocalRoomAction: BaseAction {
 	case startGame
 	case exitMatch
+	case failedToJoinMatch
 }
 
 class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {

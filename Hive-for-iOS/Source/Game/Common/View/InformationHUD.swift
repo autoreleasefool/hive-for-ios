@@ -18,7 +18,7 @@ struct InformationHUD: View {
 		switch information {
 		case .pieceClass, .playerHand, .rule, .settings, .reconnecting: return maxHeight * 0.75
 		case .stack(let stack): return stack.count >= 4 ? maxHeight * 0.85 : maxHeight / 2
-		case .gameEnd, .forfeit, .playerMustPass: return maxHeight * 0.5
+		case .gameEnd, .playerMustPass: return maxHeight * 0.5
 		case .none: return 0
 		}
 	}
@@ -102,7 +102,7 @@ struct InformationHUD: View {
 			} else {
 				RuleList()
 			}
-		case .gameEnd, .forfeit:
+		case .gameEnd:
 			PrimaryButton("Return to lobby") {
 				viewModel.postViewAction(.returnToLobby)
 			}

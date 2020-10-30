@@ -17,7 +17,6 @@ enum GameInformation {
 	case gameEnd(EndState)
 	case settings
 	case playerMustPass
-	case forfeit(EndState)
 	case reconnecting(Int)
 
 	init?(fromLink link: String) {
@@ -41,7 +40,7 @@ enum GameInformation {
 		case .pieceClass(let pieceClass): return pieceClass.description
 		case .stack: return "Pieces in stack"
 		case .rule(let rule): return rule?.title ?? "All rules"
-		case .gameEnd(let state), .forfeit(let state):
+		case .gameEnd(let state):
 			if let player = state.winner {
 				return "\(player) wins!"
 			} else {
@@ -62,17 +61,33 @@ enum GameInformation {
 			"The following pieces have been [stacked](rule:stacks). A stack's color is identical to the piece " +
 				"on top. Only the top piece can be moved, and [mosquitoes](class:Mosquito) can only copy the top piece."
 		case .gameEnd(let state):
-			if state.isTied {
-				return "Both queens have been surrounded in the same turn, which means it's a tie! " +
-					"Return to the lobby to play another game."
+			var subtitle: String
+			if let winner = state.winner {
+				if state.wasForfeit {
+					if let playingAs = state.playingAs {
+						subtitle = "\(playingAs == winner ? "Your opponent has" : "You have") forfeit!"
+					} else {
+						subtitle = "\(winner.next) has forfeit!"
+					}
+				} else {
+					if let playingAs = state.playingAs {
+						subtitle = "\(playingAs == winner ? "You have" : "Your opponent has") surrounded " +
+							"\(playingAs == winner ? "your opponent's" : "your") queen and won the game!"
+					} else {
+						subtitle = "\(winner) has surrounded \(winner.next)'s queen and won the game!"
+					}
+				}
 			} else {
-				return "\(state.playerIsWinner ? "You have" : "Your opponent has") surrounded " +
-					"\(state.playerIsWinner ? "your opponent's" : "your") queen and won the game! " +
-					"Return to the lobby to play another game."
+				subtitle = "Both queens have been surrounded in the same turn, which means it's a tie!"
 			}
-		case .forfeit(let state):
-			return "\(state.playerIsWinner ? "Your opponent has" : "You have") forfeit! " +
-				"Return to the lobby to play another game."
+
+			if state.playingAs == nil {
+				subtitle += " Return to the lobby to watch another game."
+			} else {
+				subtitle += " Return to the lobby to play another game."
+			}
+
+			return subtitle
 		case .reconnecting(let attempts):
 			return "The connection to the server has been lost. The game will automatically attempt to reconnect, " +
 				"but if a connection cannot be made, you will forfeit the match. This dialog will dismiss " +
@@ -89,37 +104,20 @@ enum GameInformation {
 	var prefersMarkdown: Bool {
 		switch self {
 		case .playerHand, .settings: return false
-		case
-			.pieceClass,
-			.rule,
-			.stack,
-			.gameEnd,
-			.forfeit,
-			.reconnecting,
-			.playerMustPass:
-			return true
+		case .pieceClass, .rule, .stack, .gameEnd, .reconnecting, .playerMustPass: return true
 		}
 	}
 
 	var dismissable: Bool {
 		switch self {
 		case .reconnecting: return false
-		case
-			.gameEnd,
-			.forfeit,
-			.pieceClass,
-			.playerHand,
-			.rule,
-			.stack,
-			.settings,
-			.playerMustPass:
-			return true
+		case .gameEnd, .pieceClass, .playerHand, .rule, .stack, .settings, .playerMustPass: return true
 		}
 	}
 
 	var hasCloseButton: Bool {
 		switch self {
-		case .gameEnd, .forfeit, .playerMustPass: return false
+		case .gameEnd, .playerMustPass: return false
 		case .pieceClass, .playerHand, .rule, .stack, .settings, .reconnecting: return true
 		}
 	}
@@ -130,15 +128,8 @@ enum GameInformation {
 extension GameInformation {
 	struct EndState {
 		let winner: Player?
-		let playingAs: Player
-
-		var playerIsWinner: Bool {
-			playingAs == winner
-		}
-
-		var isTied: Bool {
-			winner == nil
-		}
+		let playingAs: Player?
+		let wasForfeit: Bool
 	}
 }
 

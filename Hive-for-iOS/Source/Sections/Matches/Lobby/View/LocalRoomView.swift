@@ -110,6 +110,9 @@ extension LocalRoomView {
 			startGame()
 		case .exitMatch:
 			exitMatch()
+		case .failedToJoinMatch:
+			toaster.loaf.send(LoafState("Failed to start match", state: .error))
+			exitMatch()
 		}
 	}
 
@@ -118,7 +121,13 @@ extension LocalRoomView {
 
 		container.interactors.clientInteractor
 			.prepare(.local, clientConfiguration: .offline(gameState, viewModel.player, viewModel.opponent))
+
+		guard let match = viewModel.match.value else {
+			handleAction(.failedToJoinMatch)
+			return
+		}
 		container.appState[\.gameSetup] = .init(
+			match: match,
 			state: gameState,
 			mode: .play(player: viewModel.player, configuration: .local)
 		)
