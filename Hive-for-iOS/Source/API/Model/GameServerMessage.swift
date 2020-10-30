@@ -63,7 +63,7 @@ enum GameServerMessage {
 			let error = GameServerMessage.extractError(from: message)
 			self = .error(error)
 		} else {
-			print("Failed to parse GameServerMessage: \(message)")
+			logger.error("Failed to parse GameServerMessage: \(message)")
 			return nil
 		}
 	}

@@ -54,10 +54,10 @@ class PlayerGameViewModel: GameViewModel {
 		case .gamePieceSnapped(let piece, let position):
 			updatePosition(of: piece, to: position, shouldMove: false)
 		case .gamePieceMoved(let piece, let position):
-			debugLog("Moving \(piece) to \(position)")
+			logger.debug("Moving \(piece) to \(position)")
 			updatePosition(of: piece, to: position, shouldMove: true)
 		case .movementConfirmed(let movement):
-			debugLog("Sending move \(movement)")
+			logger.debug("Sending move \(movement)")
 			apply(movement: movement)
 		case .cancelMovement:
 			clearSelectedPiece()
@@ -194,7 +194,7 @@ class PlayerGameViewModel: GameViewModel {
 		guard let movement = gameState.availableMoves.first(where: {
 			$0.movedUnit == piece && $0.targetPosition == targetPosition
 		}), let relativeMovement = movement.relative(in: gameState) else {
-			debugLog("Did not find \"\(piece) to \(targetPosition)\" in \(gameState.availableMoves)")
+			logger.debug("Did not find \"\(piece) to \(targetPosition)\" in \(gameState.availableMoves)")
 			notificationFeedbackGenerator.notificationOccurred(.warning)
 			return
 		}

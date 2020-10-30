@@ -237,7 +237,7 @@ class GameViewAR: UIView {
 	private var snappingPositions: [SIMD3<Float>]? {
 		didSet {
 			if let snappingPositions = snappingPositions {
-				viewModel.debugLog("Updated snapping positions: \(snappingPositions)")
+				logger.debug("Updated snapping positions: \(snappingPositions)")
 				viewModel.gameAnchor?.updateSnappingPositions(snappingPositions)
 			} else {
 				viewModel.gameAnchor?.removeSnappingPositions()

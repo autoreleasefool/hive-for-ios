@@ -53,6 +53,8 @@
 		CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F64246930BB0011E7D1 /* UserRepository.swift */; };
 		CA797F67246930C80011E7D1 /* UserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F66246930C80011E7D1 /* UserInteractor.swift */; };
 		CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */; };
+		CA804532254BA68100415DF8 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = CA804531254BA68100415DF8 /* Logging */; };
+		CA804536254BA6B900415DF8 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA804535254BA6B900415DF8 /* Logger.swift */; };
 		CA88B80C244D89B600C4A276 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
 		CA8F46DD245DD27600B136D0 /* LoginSignupForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46DC245DD27600B136D0 /* LoginSignupForm.swift */; };
 		CA8F46E1245EBD0D00B136D0 /* LobbyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8F46E0245EBD0D00B136D0 /* LobbyList.swift */; };
@@ -181,6 +183,7 @@
 		CA797F62246892AC0011E7D1 /* EmptyState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyState.swift; sourceTree = "<group>"; };
 		CA797F64246930BB0011E7D1 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		CA797F66246930C80011E7D1 /* UserInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInteractor.swift; sourceTree = "<group>"; };
+		CA804535254BA6B900415DF8 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		CA88B80B244D89B600C4A276 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 		CA8F46DC245DD27600B136D0 /* LoginSignupForm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginSignupForm.swift; sourceTree = "<group>"; };
 		CA8F46E0245EBD0D00B136D0 /* LobbyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyList.swift; sourceTree = "<group>"; };
@@ -273,6 +276,7 @@
 				CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */,
 				CA40344923932603006C6BE3 /* HiveEngine in Frameworks */,
 				CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */,
+				CA804532254BA68100415DF8 /* Logging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +486,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		CA804534254BA6A100415DF8 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				CA41ACAF2456144200B6F88E /* OptionSet.swift */,
+				CA88B80B244D89B600C4A276 /* Store.swift */,
+				CA804535254BA6B900415DF8 /* Logger.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		CA90799D24B2934C00B30CF6 /* Information */ = {
 			isa = PBXGroup;
 			children = (
@@ -637,6 +651,7 @@
 		CAC685FA23CCF65F00B882D2 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CA804534254BA6A100415DF8 /* Utils */,
 				CAF82561245C77B20064359E /* State */,
 				CAFA466E23D25B10003C38AB /* MVVM */,
 				CAC6861B23CE6AFD00B882D2 /* View */,
@@ -645,9 +660,7 @@
 				CAC6861923CE615800B882D2 /* ImageLoader.swift */,
 				CA75CE42242A98D200998719 /* LoafState.swift */,
 				CAC685FF23CD18C100B882D2 /* Metrics.swift */,
-				CA41ACAF2456144200B6F88E /* OptionSet.swift */,
 				CABDFCD123DB7FBC00C697AD /* Theme.swift */,
-				CA88B80B244D89B600C4A276 /* Store.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -914,6 +927,7 @@
 				CAFA466C23D24BE7003C38AB /* Loaf */,
 				CAD75154242F5ECA0054B164 /* SwiftyMarkdown */,
 				CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */,
+				CA804531254BA68100415DF8 /* Logging */,
 			);
 			productName = "Hive for iOS";
 			productReference = CA7299A02393156100AD1285 /* Hive for iOS.app */;
@@ -948,6 +962,7 @@
 				CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */,
 				CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
 				CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */,
+				CA804530254BA68100415DF8 /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			productRefGroup = CA7299A12393156100AD1285 /* Products */;
 			projectDirPath = "";
@@ -1021,6 +1036,7 @@
 				CAFA467623D8BCEF003C38AB /* GameViewARController.swift in Sources */,
 				CAF82570245D59730064359E /* AppEnvironment.swift in Sources */,
 				CAC730F7246BDF26004DB450 /* SettingsList.swift in Sources */,
+				CA804536254BA6B900415DF8 /* Logger.swift in Sources */,
 				CAF8255C245C6C640064359E /* Loadable.swift in Sources */,
 				CABDFCCD23DB73E400C697AD /* GameClient.swift in Sources */,
 				CABDFCE123DBAC5700C697AD /* GameInformation.swift in Sources */,
@@ -1199,6 +1215,14 @@
 				minimumVersion = 4.1.0;
 			};
 		};
+		CA804530254BA68100415DF8 /* XCRemoteSwiftPackageReference "swift-log" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-log";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.0;
+			};
+		};
 		CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimonFairbairn/SwiftyMarkdown.git";
@@ -1227,6 +1251,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
+		};
+		CA804531254BA68100415DF8 /* Logging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA804530254BA68100415DF8 /* XCRemoteSwiftPackageReference "swift-log" */;
+			productName = Logging;
 		};
 		CAD75154242F5ECA0054B164 /* SwiftyMarkdown */ = {
 			isa = XCSwiftPackageProductDependency;

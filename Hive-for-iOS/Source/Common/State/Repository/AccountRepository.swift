@@ -53,7 +53,7 @@ struct LiveAccountRepository: AccountRepository {
 				}
 				promise(.success(account))
 			} catch {
-				print("Error retrieving login: \(error)")
+				logger.error("Error retrieving login: \(error)")
 				promise(.failure(.keychainError(error)))
 			}
 		}
@@ -69,7 +69,7 @@ struct LiveAccountRepository: AccountRepository {
 		do {
 			try keychain.remove(Key.account.rawValue)
 		} catch {
-			print("Failed to clear account: \(error)")
+			logger.error("Failed to clear account: \(error)")
 		}
 	}
 
@@ -80,7 +80,7 @@ struct LiveAccountRepository: AccountRepository {
 			let accountData = try accountEncoder.encode(account)
 			try keychain.set(accountData, key: Key.account.rawValue)
 		} catch {
-			print("Error saving login: \(error)")
+			logger.error("Error saving login: \(error)")
 		}
 	}
 

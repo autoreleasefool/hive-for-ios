@@ -289,7 +289,7 @@ extension OnlineRoomViewModel {
 		case .error(let error):
 			actions.send(.showLoaf(error.loaf))
 		case .forfeit, .gameOver, .message:
-			print("Received invalid message in Match Details: \(message)")
+			logger.error("Received invalid message in Match Details: \(message)")
 		}
 	}
 }

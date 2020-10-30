@@ -333,7 +333,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	}
 
 	func attemptToReconnect(error: Error?) {
-		debugLog("Client did not connect: \(String(describing: error))")
+		logger.debug("Client did not connect: \(String(describing: error))")
 
 		guard reconnectAttempts < OnlineGameClient.maxReconnectAttempts else {
 			loafState.send(LoafState("Failed to reconnect", state: .error))
@@ -351,7 +351,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	func onClientConnected() {
 		reconnecting = false
 		reconnectAttempts = 0
-		debugLog("Connected to client.")
+		logger.debug("Connected to client.")
 
 		switch presentedGameInformation {
 		case .reconnecting:
@@ -381,10 +381,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			showEndGame(withWinner: winner)
 
 		case .error(let error):
-			debugLog("Recieved error: \(error)")
+			logger.error("Recieved error: \(error)")
 			handleGameServerError(error)
-		case .forfeit, .playerJoined, .playerLeft, .playerReady, .setOption:
-			debugLog("Received invalid message: \(message)")
+		case .playerJoined, .playerLeft, .playerReady, .setOption:
+			logger.error("Received invalid message: \(message)")
 
 		// Handled in children
 		case .message:
@@ -394,11 +394,12 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	func handleGameServerError(_ error: GameServerError) {
 		switch error.code {
-		case .failedToEndMatch,
-				 .failedToStartMatch,
-				 .optionNonModifiable,
-				 .optionValueNotUpdated,
-				 .unknownError:
+		case
+			.failedToEndMatch,
+			.failedToStartMatch,
+			.optionNonModifiable,
+			.optionValueNotUpdated,
+			.unknownError:
 			loafState.send(LoafState("Unknown server error", state: .error))
 		case .invalidCommand:
 			loafState.send(LoafState("Invalid command", state: .error))
@@ -462,14 +463,5 @@ extension GameViewModel {
 		} else {
 			return .origin
 		}
-	}
-}
-
-// MARK: - Logging
-
-extension GameViewModel {
-	func debugLog(_ message: String) {
-		guard debugMode else { return }
-		print("HIVE_DEBUG: \(message)")
 	}
 }
