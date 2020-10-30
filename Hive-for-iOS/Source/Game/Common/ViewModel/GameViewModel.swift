@@ -87,6 +87,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		fatalError("GameViewModel subclasses should override")
 	}
 
+	var hasGameEnded: Bool {
+		fatalError("GameViewModel subclasses should override")
+	}
+
 	var isSpectating: Bool {
 		fatalError("GameViewModel subclasses should override")
 	}
@@ -167,7 +171,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			openSettings()
 
 		case .returnToLobby:
-			shutDownGame()
+			exitToLobby()
 		case .arViewError(let error):
 			loafState.send(LoafState(error.localizedDescription, state: .error))
 
@@ -200,11 +204,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		fatalError("GameViewModel subclasses should override")
 	}
 
-	func endGame() {
+	func showForfeit(byUser user: UUID) {
 		fatalError("GameViewModel subclasses should override")
 	}
 
-	func shutDownGame() {
+	func endGame() {
 		fatalError("GameViewModel subclasses should override")
 	}
 
@@ -236,6 +240,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private func cleanUp() {
 		clientInteractor.close(clientMode)
+	}
+
+	func exitToLobby() {
+		gameEndPublisher.send()
 	}
 
 	// MARK: Interactions
@@ -337,7 +345,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		guard reconnectAttempts < OnlineGameClient.maxReconnectAttempts else {
 			loafState.send(LoafState("Failed to reconnect", state: .error))
-			shutDownGame()
+			exitToLobby()
 			return
 		}
 
@@ -356,7 +364,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		switch presentedGameInformation {
 		case .reconnecting:
 			postViewAction(.closeInformation(withFeedback: true))
-		case .piece, .pieceClass, .playerHand, .stack, .rule, .gameEnd, .settings, .playerMustPass, .none:
+		case .piece, .pieceClass, .playerHand, .stack, .rule, .gameEnd, .forfeit, .settings, .playerMustPass, .none:
 			break
 		}
 	}
@@ -379,6 +387,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			endGame()
 			promptFeedbackGenerator.impactOccurred()
 			showEndGame(withWinner: winner)
+		case .forfeit(let user):
+			endGame()
+			promptFeedbackGenerator.impactOccurred()
+			showForfeit(byUser: user)
 
 		case .error(let error):
 			logger.error("Recieved error: \(error)")

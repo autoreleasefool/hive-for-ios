@@ -18,6 +18,7 @@ enum GameInformation {
 	case gameEnd(EndState)
 	case settings
 	case playerMustPass
+	case forfeit(EndState)
 	case reconnecting(Int)
 
 	init?(fromLink link: String) {
@@ -42,7 +43,7 @@ enum GameInformation {
 		case .pieceClass(let pieceClass): return pieceClass.description
 		case .stack: return "Pieces in stack"
 		case .rule(let rule): return rule?.title ?? "All rules"
-		case .gameEnd(let state):
+		case .gameEnd(let state), .forfeit(let state):
 			if let player = state.winner {
 				return "\(player) wins!"
 			} else {
@@ -72,6 +73,9 @@ enum GameInformation {
 					"\(state.playerIsWinner ? "your opponent's" : "your") queen and won the game! " +
 					"Return to the lobby to play another game."
 			}
+		case .forfeit(let state):
+			return "\(state.playerIsWinner ? "Your opponent has" : "You have") forfeit! " +
+				"Return to the lobby to play another game."
 		case .reconnecting(let attempts):
 			return "The connection to the server has been lost. The game will automatically attempt to reconnect, " +
 				"but if a connection cannot be made, you will forfeit the match. This dialog will dismiss " +
@@ -88,20 +92,39 @@ enum GameInformation {
 	var prefersMarkdown: Bool {
 		switch self {
 		case .playerHand, .settings: return false
-		case .piece, .pieceClass, .rule, .stack, .gameEnd, .reconnecting, .playerMustPass: return true
+		case
+			.piece,
+			.pieceClass,
+			.rule,
+			.stack,
+			.gameEnd,
+			.forfeit,
+			.reconnecting,
+			.playerMustPass:
+			return true
 		}
 	}
 
 	var dismissable: Bool {
 		switch self {
 		case .reconnecting: return false
-		case .gameEnd, .piece, .pieceClass, .playerHand, .rule, .stack, .settings, .playerMustPass: return true
+		case
+			.gameEnd,
+			.forfeit,
+			.piece,
+			.pieceClass,
+			.playerHand,
+			.rule,
+			.stack,
+			.settings,
+			.playerMustPass:
+			return true
 		}
 	}
 
 	var hasCloseButton: Bool {
 		switch self {
-		case .gameEnd, .playerMustPass: return false
+		case .gameEnd, .forfeit, .playerMustPass: return false
 		case .piece, .pieceClass, .playerHand, .rule, .stack, .settings, .reconnecting: return true
 		}
 	}

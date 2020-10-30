@@ -433,7 +433,7 @@ extension GameView2D {
 			prepareGame()
 		case .playerTurn, .opponentTurn:
 			resetForPlayerTurn()
-		case .begin, .gameEnd, .forfeit, .sendingMovement, .shutDown:
+		case .begin, .gameEnd, .forfeit, .sendingMovement:
 			break
 		}
 	}

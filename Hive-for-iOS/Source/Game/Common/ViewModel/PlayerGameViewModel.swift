@@ -26,6 +26,10 @@ class PlayerGameViewModel: GameViewModel {
 		state.inGame
 	}
 
+	override var hasGameEnded: Bool {
+		gameState.hasGameEnded || state.hasGameEnded
+	}
+
 	override init(setup: Game.Setup) {
 		let clientMode: ClientInteractorConfiguration
 		switch setup.mode {
@@ -120,13 +124,18 @@ class PlayerGameViewModel: GameViewModel {
 		))
 	}
 
+	override func showForfeit(byUser user: UUID) {
+		presentedGameInformation = .forfeit(
+			.init(
+				winner: user == userId ? playingAs.next : playingAs,
+				playingAs: playingAs
+			)
+		)
+	}
+
 	override func endGame() {
 		guard inGame else { return }
 		transition(to: .gameEnd)
-	}
-
-	override func shutDownGame() {
-		transition(to: .shutDown)
 	}
 
 	override func updateGameState(to newState: GameState) {
@@ -315,7 +324,7 @@ class PlayerGameViewModel: GameViewModel {
 			return "Opponent's turn"
 		case .gameEnd:
 			return gameState.displayWinner ?? ""
-		case .begin, .forfeit, .gameStart, .shutDown:
+		case .begin, .forfeit, .gameStart:
 			return ""
 		}
 	}
@@ -417,12 +426,18 @@ extension PlayerGameViewModel {
 		case sendingMovement(Movement)
 		case gameEnd
 		case forfeit
-		case shutDown
 
 		var inGame: Bool {
 			switch self {
-			case .begin, .gameStart, .gameEnd, .forfeit, .shutDown: return false
+			case .begin, .gameStart, .gameEnd, .forfeit: return false
 			case .playerTurn, .opponentTurn, .sendingMovement: return true
+			}
+		}
+
+		var hasGameEnded: Bool {
+			switch self {
+			case .gameEnd, .forfeit: return true
+			case .begin, .gameStart, .playerTurn, .opponentTurn, .sendingMovement: return false
 			}
 		}
 	}
@@ -441,15 +456,12 @@ extension PlayerGameViewModel {
 	private func canTransition(from currentState: State, to nextState: State) -> Bool {
 		switch (currentState, nextState) {
 
-		// Forfeit and shutDown are final states
+		// Forfeit and gameEnd are final states
 		case (.forfeit, _): return false
-		case (.shutDown, _): return false
+		case (.gameEnd, _): return false
 
 		// Forfeiting possible at any time
 		case (_, .forfeit): return true
-
-		// View can be dismissed at any time
-		case (_, .shutDown): return true
 
 		// Game can be ended at any time
 		case (_, .gameEnd): return true

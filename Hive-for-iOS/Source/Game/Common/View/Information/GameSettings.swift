@@ -13,10 +13,11 @@ struct GameSettings: View {
 
 	var body: some View {
 		VStack(spacing: .m) {
-			if viewModel.gameState.hasGameEnded {
+			if viewModel.hasGameEnded || viewModel.isSpectating {
 				returnToLobbyButton
-			} else {
-				rulesButton
+			}
+			rulesButton
+			if !viewModel.hasGameEnded && !viewModel.isSpectating {
 				forfeitButton
 			}
 		}

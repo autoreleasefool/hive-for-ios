@@ -19,6 +19,11 @@ class SpectatorGameViewModel: GameViewModel {
 		false
 	}
 
+	private var _hasGameEnded: Bool = false
+	override var hasGameEnded: Bool {
+		_hasGameEnded
+	}
+
 	override init(setup: Game.Setup) {
 		switch setup.mode {
 		case .spectate: break
@@ -56,6 +61,8 @@ class SpectatorGameViewModel: GameViewModel {
 	}
 
 	override func showEndGame(withWinner winner: UUID?) {
+		_hasGameEnded = true
+		#warning("TODO: need to show actual winner here")
 		presentedGameInformation = .gameEnd(.init(
 			winner: winner == nil
 				? nil
@@ -64,11 +71,18 @@ class SpectatorGameViewModel: GameViewModel {
 		))
 	}
 
-	override func endGame() {
-		// Does nothing
+	override func showForfeit(byUser user: UUID) {
+		_hasGameEnded = true
+		#warning("TODO: need to show actual winner here")
+		presentedGameInformation = .forfeit(
+			.init(
+				winner: .white,
+				playingAs: .white
+			)
+		)
 	}
 
-	override func shutDownGame() {
+	override func endGame() {
 		// Does nothing
 	}
 
