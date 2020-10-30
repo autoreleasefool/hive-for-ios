@@ -445,6 +445,7 @@ extension PlayerGameViewModel {
 	func transition(to nextState: State) {
 		guard canTransition(from: state, to: nextState) else { return }
 		state = nextState
+		objectWillChange.send()
 
 		guard nextState == .playerTurn else { return }
 
