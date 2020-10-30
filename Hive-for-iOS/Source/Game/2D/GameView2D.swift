@@ -31,13 +31,13 @@ class GameView2D: SKScene {
 			} else if currentScaleMultiplier > 2 {
 				currentScaleMultiplier = 1.99
 			}
-			updateSpriteScaleAndOffset()
+			updateSpriteScaleAndOffset(gameState: viewModel.gameState)
 		}
 	}
 
 	private var currentOffset: CGPoint = .zero {
 		didSet {
-			updateSpriteScaleAndOffset()
+			updateSpriteScaleAndOffset(gameState: viewModel.gameState)
 		}
 	}
 
@@ -153,19 +153,19 @@ class GameView2D: SKScene {
 
 	private func present(gameState: GameState) {
 		// Hide pieces not in play
-		viewModel.gameState.allPiecesInHands.forEach { resetPiece($0) }
+		gameState.allPiecesInHands.forEach { resetPiece($0) }
 
 		// Set position for pieces in play
-		viewModel.gameState.unitsInPlay.forEach { (_, units) in
+		gameState.unitsInPlay.forEach { (_, units) in
 			units.forEach {
-				let sprite = self.sprite(for: $0.key)
+				let sprite = self.sprite(for: $0.key, in: gameState)
 				sprite.position = $0.value.point(scale: currentScale, offset: currentOffset)
 				addUnownedChild(sprite)
 			}
 		}
 
 		// Show border of the field
-		viewModel.gameState.hiveBorder.forEach {
+		gameState.hiveBorder.forEach {
 			let sprite = self.sprite(for: $0)
 			addUnownedChild(sprite)
 		}
@@ -173,8 +173,8 @@ class GameView2D: SKScene {
 		// Ensure the origin is always visible
 		addUnownedChild(self.sprite(for: .origin))
 
-		updateSpriteScaleAndOffset()
-		updateSpriteAlpha()
+		updateSpriteScaleAndOffset(gameState: gameState)
+		updateSpriteAlpha(gameState: gameState)
 	}
 
 	private func present(
@@ -197,8 +197,8 @@ class GameView2D: SKScene {
 		let sprite = self.sprite(for: piece)
 		sprite.position = position.point(scale: currentScale, offset: currentOffset)
 		addUnownedChild(sprite)
-		updateSpriteScaleAndOffset()
-		updateSpriteAlpha()
+		updateSpriteScaleAndOffset(gameState: viewModel.gameState)
+		updateSpriteAlpha(gameState: viewModel.gameState)
 
 		if positionsInPlay.contains(position) {
 			self.sprite(for: position).removeFromParent()
@@ -218,20 +218,20 @@ class GameView2D: SKScene {
 	private static let bottomStackOffset: CGFloat = -8.0
 	private static let topStackOffset: CGFloat = 16.0
 
-	private func updateSpriteScaleAndOffset() {
+	private func updateSpriteScaleAndOffset(gameState: GameState) {
 		piecesInPlay.forEach { piece in
-			let sprite = self.sprite(for: piece)
+			let sprite = self.sprite(for: piece, in: gameState)
 
 			// Get position to snap sprite to
 			guard sprite.parent != nil else { return }
-			let position = viewModel.position(of: piece)
+			let position = viewModel.position(of: piece, in: gameState)
 
 			// Set current position and size of sprite based on scale and global offset
 			sprite.position = position.point(scale: currentScale, offset: currentOffset)
 			sprite.size = currentHexSize
 
 			// Check if the piece is part of a stack and, if so, offset it based on its position in the stack
-			let (positionInStack, stackCount) = viewModel.positionInStack(of: piece)
+			let (positionInStack, stackCount) = viewModel.positionInStack(of: piece, in: gameState)
 			if stackCount > 1 {
 				let incrementor = GameView2D.topStackOffset / CGFloat(stackCount - 1)
 				sprite.position.x += (GameView2D.bottomStackOffset + incrementor * CGFloat(positionInStack - 1))
@@ -252,10 +252,10 @@ class GameView2D: SKScene {
 		)
 	}
 
-	private func updateSpriteAlpha() {
+	private func updateSpriteAlpha(gameState: GameState) {
 		piecesInPlay.forEach { piece in
-			let sprite = self.sprite(for: piece)
-			let (positionInStack, stackCount) = viewModel.positionInStack(of: piece)
+			let sprite = self.sprite(for: piece, in: gameState)
+			let (positionInStack, stackCount) = viewModel.positionInStack(of: piece, in: gameState)
 			sprite.alpha = positionInStack < stackCount ? CGFloat(positionInStack) / CGFloat(stackCount) : 1
 		}
 	}
@@ -277,7 +277,7 @@ class GameView2D: SKScene {
 			sprite.color = UIColor(.highlightRegular)
 			sprite.zPosition = maxPieceZPosition - 0.05
 			addUnownedChild(sprite)
-			updateSpriteScaleAndOffset()
+			updateSpriteScaleAndOffset(gameState: viewModel.gameState)
 		}
 
 		self.snappingPositions = snappingPositions
@@ -391,7 +391,7 @@ extension GameView2D: UIGestureRecognizerDelegate {
 			nodeBeingMoved = nil
 			snappingPositions = nil
 			nodeInitialPosition = nil
-			updateSpriteScaleAndOffset()
+			updateSpriteScaleAndOffset(gameState: viewModel.gameState)
 		}
 
 		if gesture.state == .changed {
@@ -451,8 +451,11 @@ extension GameView2D {
 // MARK: - Sprites
 
 extension GameView2D {
-	private func sprite(for piece: Piece) -> SKSpriteNode {
-		let (positionInStack, stackCount) = viewModel.positionInStack(of: piece)
+	private func sprite(for piece: Piece, in gameState: GameState? = nil) -> SKSpriteNode {
+		let (positionInStack, stackCount) = viewModel.positionInStack(
+			of: piece,
+			in: gameState ?? viewModel.gameState
+		)
 
 		return spriteManager.sprite(
 			for: piece,

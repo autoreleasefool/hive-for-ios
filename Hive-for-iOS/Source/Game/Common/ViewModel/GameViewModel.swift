@@ -261,13 +261,13 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private func tappedPiece(_ piece: Piece, showStack: Bool = false) {
 		promptFeedbackGenerator.impactOccurred()
 		if showStack {
-			let position = self.position(of: piece)
+			let position = self.position(of: piece, in: gameState)
 			guard let stack = gameState.stacks[position] else {
 				presentedGameInformation = .pieceClass(piece.class)
 				return
 			}
 
-			let (_, stackCount) = self.positionInStack(of: piece)
+			let (_, stackCount) = self.positionInStack(of: piece, in: gameState)
 			if stackCount > 1 {
 				let stackAddition = stackCount > stack.count ? [selectedPiece.selected?.piece].compactMap { $0 } : []
 				presentedGameInformation = .stack(stack + stackAddition)
@@ -436,8 +436,8 @@ extension GameViewModel {
 
 extension GameViewModel {
 	/// Returns the position in the stack and the total number of pieces in the stack
-	func positionInStack(of piece: Piece) -> (Int, Int) {
-		let position = self.position(of: piece)
+	func positionInStack(of piece: Piece, in gameState: GameState) -> (Int, Int) {
+		let position = self.position(of: piece, in: gameState)
 		if let stack = gameState.stacks[position] {
 			let selectedPieceInStack: Bool
 			let selectedPieceOnStack: Bool
@@ -466,7 +466,7 @@ extension GameViewModel {
 	}
 
 	/// Returns the current position of the piece, accounting for the selected piece, and it's in game position
-	func position(of piece: Piece) -> Position {
+	func position(of piece: Piece, in gameState: GameState) -> Position {
 		if selectedPiece.selected?.piece == piece,
 			let selectedPosition = selectedPiece.selected?.position {
 			return selectedPosition
