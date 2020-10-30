@@ -1165,6 +1165,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAC51C9725253700004C1866 /* App.xcconfig */;
 			buildSettings = {
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1172,6 +1173,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAC51C9725253700004C1866 /* App.xcconfig */;
 			buildSettings = {
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
