@@ -39,9 +39,6 @@ struct Game: View {
 				.environmentObject(viewModel)
 		}
 		.onReceive(viewModel.gameEndPublisher) { container.appState[\.gameSetup] = nil }
-		.navigationBarTitle("")
-		.navigationBarHidden(true)
-		.navigationBarBackButtonHidden(true)
 		.onAppear {
 			UIApplication.shared.isIdleTimerDisabled = true
 			viewModel.postViewAction(
