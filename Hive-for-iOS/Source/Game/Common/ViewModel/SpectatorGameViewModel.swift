@@ -62,7 +62,6 @@ class SpectatorGameViewModel: GameViewModel {
 
 	override func showEndGame(withWinner winner: Player?) {
 		_hasGameEnded = true
-		#warning("TODO: need to show actual winner here")
 		presentedGameInformation = .gameEnd(.init(
 			winner: winner,
 			playingAs: nil,
@@ -72,7 +71,6 @@ class SpectatorGameViewModel: GameViewModel {
 
 	override func showForfeit(byPlayer player: Player) {
 		_hasGameEnded = true
-		#warning("TODO: need to show actual winner here")
 		presentedGameInformation = .gameEnd(
 			.init(
 				winner: player.next,
