@@ -1,0 +1,5 @@
+name: hive-for-ios
+type: ios
+up:
+  - homebrew:
+    - swiftlint
