@@ -55,11 +55,11 @@ struct SettingsList: View {
 					header: Text("About"),
 					footer: HStack {
 						Spacer()
-						 VStack(alignment: .trailing) {
-							 Text(viewModel.appName)
-							 Text(viewModel.appVersion)
-						 }
-					 },
+						VStack(alignment: .trailing) {
+							Text(AppInfo.name)
+							Text(AppInfo.version)
+						}
+					},
 					content: {
 						Link(destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!) {
 							Text("View Source")

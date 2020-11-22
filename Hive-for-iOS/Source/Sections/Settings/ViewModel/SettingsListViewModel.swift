@@ -80,15 +80,3 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 		actions.send(.setGameMode(next))
 	}
 }
-
-// MARK: - Strings
-
-extension SettingsListViewModel {
-	var appName: String {
-		Bundle.main.infoDictionary?["CFBundleName"] as? String ?? ""
-	}
-
-	var appVersion: String {
-		Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
-	}
-}
