@@ -57,6 +57,7 @@ struct TabBarController: UIViewControllerRepresentable {
 	func updateUIViewController(_ tabBarController: UITabBarController, context: Context) {
 		tabBarController.viewControllers = controllers
 		tabBarController.selectedIndex = selectedIndex
+		tabBarController.tabBar.isHidden = controllers.count <= 1
 	}
 
 	func makeCoordinator() -> Coordinator {
