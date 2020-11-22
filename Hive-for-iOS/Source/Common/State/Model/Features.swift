@@ -56,14 +56,14 @@ enum Feature: String, CaseIterable {
 		switch self {
 		case .arGameMode: return .disabled
 		case .emojiReactions: return .released
-		case .hiveMindAgent: return .inDevelopment
-		case .offlineMode: return .inDevelopment
+		case .hiveMindAgent: return .disabled
+		case .offlineMode: return .disabled
 		case .accounts: return .disabled
-		case .guestMode: return .inDevelopment
-		case .matchHistory: return .inDevelopment
-		case .profileList: return .inDevelopment
-		case .spectating: return .inDevelopment
-		case .aiOpponents: return .inDevelopment
+		case .guestMode: return .released
+		case .matchHistory: return .disabled
+		case .profileList: return .disabled
+		case .spectating: return .disabled
+		case .aiOpponents: return .disabled
 		}
 	}
 
