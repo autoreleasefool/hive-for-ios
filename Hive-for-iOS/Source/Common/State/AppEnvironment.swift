@@ -17,8 +17,8 @@ struct AppEnvironment {
 extension AppEnvironment {
 	static func bootstrap() -> AppEnvironment {
 		let appState = Store(AppState())
-		let session = configuredNetworkSession()
-		let api = configuredAPI(session: session)
+		let configuration = networkSessionConfiguration()
+		let api = configuredAPI(configuration: configuration)
 		let onlineClient = configuredOnlineClient()
 		let localClient = configuredLocalClient()
 		let keychain = configuredKeychain()
@@ -35,13 +35,16 @@ extension AppEnvironment {
 		return AppEnvironment(container: container)
 	}
 
-	private static func configuredNetworkSession() -> URLSession {
+	private static func networkSessionConfiguration() -> URLSessionConfiguration {
 		let configuration = URLSessionConfiguration.default
-		return URLSession(configuration: configuration)
+		configuration.httpAdditionalHeaders = [
+			"User-Agent": "Hive for iOS/iOS/\(AppInfo.version)+\(AppInfo.build)",
+		]
+		return configuration
 	}
 
-	private static func configuredAPI(session: URLSession) -> HiveAPI {
-		HiveAPI(session: session)
+	private static func configuredAPI(configuration: URLSessionConfiguration) -> HiveAPI {
+		HiveAPI(configuration: configuration)
 	}
 
 	private static func configuredOnlineClient() -> GameClient {
