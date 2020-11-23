@@ -19,6 +19,7 @@ enum HiveAPIError: LocalizedError {
 	case missingData
 	case notImplemented
 	case unauthorized
+	case unsupported
 	case usingOfflineAccount
 
 	var errorDescription: String? {
@@ -29,6 +30,8 @@ enum HiveAPIError: LocalizedError {
 			return "Could not parse response"
 		case .unauthorized:
 			return "Unauthorized"
+		case .unsupported:
+			return "App version unsupported"
 		case .invalidHTTPResponse(let code):
 			if (500..<600).contains(code) {
 				return "Server error (\(code))"
@@ -139,9 +142,14 @@ class HiveAPI: ObservableObject {
 			.mapError {
 				logger.error("Error from \(endpoint), error: \($0)")
 				if let apiError = $0 as? HiveAPIError {
-					if case .invalidHTTPResponse(401) = apiError {
-						self.reportUnauthorizedRequest()
-						return .unauthorized
+					if case .invalidHTTPResponse(let statusCode) = apiError {
+						if statusCode == 401 {
+							self.reportUnauthorizedRequest()
+							return .unauthorized
+						} else if statusCode == 418 {
+							self.reportUnsupportedVersion()
+							return .unsupported
+						}
 					}
 					return apiError
 				}
@@ -181,6 +189,10 @@ class HiveAPI: ObservableObject {
 
 	private func reportUnauthorizedRequest() {
 		NotificationCenter.default.post(name: NSNotification.Name.Account.Unauthorized, object: nil)
+	}
+
+	private func reportUnsupportedVersion() {
+		NotificationCenter.default.post(name: NSNotification.Name.AppInfo.Unsupported, object: nil)
 	}
 }
 

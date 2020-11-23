@@ -57,7 +57,7 @@ struct SettingsList: View {
 						Spacer()
 						VStack(alignment: .trailing) {
 							Text(AppInfo.name)
-							Text(AppInfo.version)
+							Text(AppInfo.fullSemanticVersion)
 						}
 					},
 					content: {

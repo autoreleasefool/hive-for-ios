@@ -202,7 +202,14 @@ extension LoginSignupFormViewModel {
 			return "You entered an incorrect email or password."
 		case .networkingError:
 			return "There was an error connecting to the server. Are you connected to the Internet?"
-		case .invalidData, .invalidHTTPResponse, .invalidResponse, .missingData, .notImplemented, .invalidURL:
+		case
+			.invalidData,
+			.invalidHTTPResponse,
+			.invalidResponse,
+			.missingData,
+			.notImplemented,
+			.invalidURL,
+			.unsupported:
 			return error.errorDescription ?? error.localizedDescription
 		}
 	}

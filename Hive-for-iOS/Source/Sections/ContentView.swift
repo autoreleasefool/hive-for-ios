@@ -29,7 +29,6 @@ struct ContentView: View {
 	var body: some View {
 		content
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-//			.onReceive(viewModel.guestAccount) { _ in }
 			.onReceive(navigationUpdates) { sheetNavigation = $0 }
 			.listensToAppStateChanges([.accountChanged]) { _ in
 				viewModel.postViewAction(.accountChanged)
@@ -105,6 +104,8 @@ extension ContentView {
 			createGuestAccount()
 		case .loggedOut:
 			clearAccount()
+		case .appVersionUnsupported:
+			container.appState.value.setNavigation(to: .appVersionUnsupported)
 		case .showLoaf(let loaf):
 			toaster.loaf.send(loaf)
 		}
@@ -147,6 +148,7 @@ extension ContentView {
 
 extension ContentView {
 	enum SheetNavigation {
+		case appVersionUnsupported
 		case settings
 		case login
 	}
@@ -154,6 +156,8 @@ extension ContentView {
 	@ViewBuilder
 	private var sheetView: some View {
 		switch sheetNavigation {
+		case .appVersionUnsupported:
+			AppVersionUnsupportedView()
 		case .settings:
 			SettingsList()
 				.inject(container)

@@ -15,11 +15,21 @@ struct AppState: Equatable {
 	var features = Features()
 
 	mutating func setNavigation(to navigation: ContentView.SheetNavigation?) {
+		// Cannot override appVersionUnsupported
+		if contentSheetNavigation == .appVersionUnsupported {
+			return
+		}
+
 		guard contentSheetNavigation == nil else { return }
 		contentSheetNavigation = navigation
 	}
 
 	mutating func clearNavigation(of navigation: ContentView.SheetNavigation?) {
+		// Cannot override appVersionUnsupported
+		if contentSheetNavigation == .appVersionUnsupported {
+			return
+		}
+
 		guard contentSheetNavigation == navigation else { return }
 		contentSheetNavigation = nil
 	}

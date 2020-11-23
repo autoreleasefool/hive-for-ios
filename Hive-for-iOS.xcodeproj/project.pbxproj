@@ -46,6 +46,7 @@
 		CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299A92393156400AD1285 /* Assets.xcassets */; };
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
+		CA75CA72256B852900F02928 /* AppVersionUnsupportedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CA71256B852900F02928 /* AppVersionUnsupportedView.swift */; };
 		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
 		CA75CE45242AB65300998719 /* GameViewAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* GameViewAR.swift */; };
 		CA797F61246868000011E7D1 /* MatchHistoryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F60246868000011E7D1 /* MatchHistoryList.swift */; };
@@ -178,6 +179,7 @@
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA75CA71256B852900F02928 /* AppVersionUnsupportedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionUnsupportedView.swift; sourceTree = "<group>"; };
 		CA75CE42242A98D200998719 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
 		CA75CE44242AB65300998719 /* GameViewAR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewAR.swift; sourceTree = "<group>"; };
 		CA797F60246868000011E7D1 /* MatchHistoryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchHistoryList.swift; sourceTree = "<group>"; };
@@ -440,6 +442,14 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		CA75CA70256B850500F02928 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				CA75CA71256B852900F02928 /* AppVersionUnsupportedView.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
 		CA797F592468669B0011E7D1 /* Lobby */ = {
 			isa = PBXGroup;
 			children = (
@@ -647,6 +657,7 @@
 				CAFC7A63245C54DE00747E82 /* Profile */,
 				CAC730F4246BDF0C004DB450 /* Settings */,
 				CAC685F623CCE9F400B882D2 /* Welcome */,
+				CA75CA70256B850500F02928 /* Errors */,
 			);
 			path = Sections;
 			sourceTree = "<group>";
@@ -1099,6 +1110,7 @@
 				CA0F938F2422C80800F6E104 /* DebugOverlay.swift in Sources */,
 				CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */,
 				CAD32BFE2495110900984610 /* AIAgent.swift in Sources */,
+				CA75CA72256B852900F02928 /* AppVersionUnsupportedView.swift in Sources */,
 				CABDFCD923DB89AA00C697AD /* WelcomeView.swift in Sources */,
 				CAC6861823CE4E6800B882D2 /* LobbyRow.swift in Sources */,
 				CAC73109246E0505004DB450 /* OnlineRoomViewModel.swift in Sources */,

@@ -22,6 +22,7 @@ enum ContentViewAction: BaseAction {
 	case loadOfflineAccount
 	case createGuestAccount
 	case loggedOut
+	case appVersionUnsupported
 	case showLoaf(LoafState)
 }
 
@@ -30,26 +31,36 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 		didSet {
 			guard guestAccount != oldValue,
 						let error = guestAccount.error else { return }
-			let errorMessage: String
+			let errorMessage: String?
 			if let accountError = error as? AccountRepositoryError {
 				switch accountError {
 				case .notFound, .keychainError, .loggedOut:
 					errorMessage = "Unknown error"
 				case .apiError(let error):
-					errorMessage = error.localizedDescription
+					if case .unsupported = error {
+						// Avoid toast when unsupported, since we'll show an overlay
+						errorMessage = nil
+					} else {
+						errorMessage = error.localizedDescription
+					}
 				}
 			} else {
 				errorMessage = error.localizedDescription
 			}
-			actions.send(.showLoaf(LoafState(errorMessage, state: .error)))
+
+			if let errorMessage = errorMessage {
+				actions.send(.showLoaf(LoafState(errorMessage, state: .error)))
+			}
 		}
 	}
+
+	@Published var isPresentingUnsupportedVersionSheet: Bool = false
 
 	init(guestAccount: Loadable<Account> = .notLoaded) {
 		_guestAccount = .init(initialValue: guestAccount)
 		super.init()
 
-		subscribeToAccountUpdates()
+		subscribeToUpdates()
 	}
 
 	private let actions = PassthroughSubject<ContentViewAction, Never>()
@@ -70,12 +81,19 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 		}
 	}
 
-	private func subscribeToAccountUpdates() {
+	private func subscribeToUpdates() {
 		NotificationCenter.default
 			.publisher(for: NSNotification.Name.Account.Unauthorized)
 			.map { _ in }
 			.receive(on: RunLoop.main)
 			.sink { [weak self] in self?.actions.send(.loggedOut) }
+			.store(in: self)
+
+		NotificationCenter.default
+			.publisher(for: NSNotification.Name.AppInfo.Unsupported)
+			.map { _ in }
+			.receive(on: RunLoop.main)
+			.sink { [weak self] in self?.actions.send(.appVersionUnsupported) }
 			.store(in: self)
 	}
 }

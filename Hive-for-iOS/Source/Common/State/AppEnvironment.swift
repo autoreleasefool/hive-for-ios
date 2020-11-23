@@ -38,7 +38,7 @@ extension AppEnvironment {
 	private static func networkSessionConfiguration() -> URLSessionConfiguration {
 		let configuration = URLSessionConfiguration.default
 		configuration.httpAdditionalHeaders = [
-			"User-Agent": "Hive for iOS/iOS/\(AppInfo.version)+\(AppInfo.build)",
+			"User-Agent": "Hive for iOS/iOS/\(AppInfo.fullSemanticVersion)",
 		]
 		return configuration
 	}
