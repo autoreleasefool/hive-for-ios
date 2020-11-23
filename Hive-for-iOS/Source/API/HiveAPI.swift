@@ -71,7 +71,10 @@ class HiveAPI: ObservableObject {
 		return decoder
 	}()
 
-	init(configuration: URLSessionConfiguration = URLSessionConfiguration.default, queue: DispatchQueue = .global(qos: .userInitiated)) {
+	init(
+		configuration: URLSessionConfiguration = URLSessionConfiguration.default,
+		queue: DispatchQueue = .global(qos: .userInitiated)
+	) {
 		self.session = URLSession(configuration: configuration)
 		self.apiQueue = queue
 	}
