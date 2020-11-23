@@ -47,6 +47,7 @@
 		CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AC2393156400AD1285 /* Preview Assets.xcassets */; };
 		CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */; };
 		CA75CA72256B852900F02928 /* AppVersionUnsupportedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CA71256B852900F02928 /* AppVersionUnsupportedView.swift */; };
+		CA75CA76256BFD4700F02928 /* Dependencies.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA75CA75256BFD4700F02928 /* Dependencies.plist */; };
 		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
 		CA75CE45242AB65300998719 /* GameViewAR.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE44242AB65300998719 /* GameViewAR.swift */; };
 		CA797F61246868000011E7D1 /* MatchHistoryList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F60246868000011E7D1 /* MatchHistoryList.swift */; };
@@ -180,6 +181,7 @@
 		CA7299AF2393156400AD1285 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CA7299B12393156400AD1285 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CA75CA71256B852900F02928 /* AppVersionUnsupportedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionUnsupportedView.swift; sourceTree = "<group>"; };
+		CA75CA75256BFD4700F02928 /* Dependencies.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Dependencies.plist; sourceTree = "<group>"; };
 		CA75CE42242A98D200998719 /* LoafState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoafState.swift; sourceTree = "<group>"; };
 		CA75CE44242AB65300998719 /* GameViewAR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewAR.swift; sourceTree = "<group>"; };
 		CA797F60246868000011E7D1 /* MatchHistoryList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchHistoryList.swift; sourceTree = "<group>"; };
@@ -437,6 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */,
+				CA75CA75256BFD4700F02928 /* Dependencies.plist */,
 				CA7299A92393156400AD1285 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -927,6 +930,7 @@
 			buildConfigurationList = CA7299B42393156400AD1285 /* Build configuration list for PBXNativeTarget "Hive-for-iOS" */;
 			buildPhases = (
 				CABDFCDC23DB935700C697AD /* ShellScript */,
+				CA75CA78256BFD6100F02928 /* ShellScript */,
 				CA72999C2393156100AD1285 /* Sources */,
 				CA72999D2393156100AD1285 /* Frameworks */,
 				CA72999E2393156100AD1285 /* Resources */,
@@ -995,12 +999,30 @@
 				CA7299B02393156400AD1285 /* LaunchScreen.storyboard in Resources */,
 				CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */,
 				CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */,
+				CA75CA76256BFD4700F02928 /* Dependencies.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		CA75CA78256BFD6100F02928 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./script/cache-dependencies\n";
+		};
 		CABDFCDC23DB935700C697AD /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

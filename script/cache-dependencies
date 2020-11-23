@@ -1,0 +1,52 @@
+#!/usr/bin/python3
+
+from collections import namedtuple
+import json
+from os import path
+
+resolved_packages_file = path.join('.', 'Hive-for-iOS.xcodeproj', 'project.xcworkspace', 'xcshareddata', 'swiftpm', 'Package.resolved')
+cached_dependencies_file = path.join('.', 'Hive-for-iOS', 'Resources', 'Dependencies.plist')
+
+Package = namedtuple('Package', ['name', 'branch', 'revision', 'version'])
+packages = []
+
+# load json
+resolved_packages = {}
+with open(resolved_packages_file) as resolved_packages_json:
+  resolved_packages = json.loads(resolved_packages_json.read())
+
+# parse json
+def parse_packages(resolved):
+  return [Package(package['package'], package['state']['branch'], package['state']['revision'], package['state']['version']) for package in resolved]
+if resolved_packages['object'] and resolved_packages['object']['pins']:
+  packages = parse_packages(resolved_packages['object']['pins'])
+
+# print plist
+with open(cached_dependencies_file, 'w') as cached_dependencies_plist:
+  cached_dependencies_plist.write(
+"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+"""
+  )
+
+  for package in packages:
+    cached_dependencies_plist.write(
+"""<key>{package_name}</key>
+<dict>
+  <key>branch</key>
+  <string>{branch}</string>
+  <key>revision</key>
+  <string>{revision}</string>
+  <key>version</key>
+  <string>{version}</string>
+</dict>
+""".format(package_name=package.name, branch=package.branch, revision=package.revision, version=package.version)
+    )
+
+  cached_dependencies_plist.write(
+"""</dict>
+</plist>
+"""
+  )

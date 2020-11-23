@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+<key>HiveEngine</key>
+<dict>
+  <key>branch</key>
+  <string>None</string>
+  <key>revision</key>
+  <string>d6b850c3aaacf8820816523de267c5d01de31363</string>
+  <key>version</key>
+  <string>3.1.2</string>
+</dict>
+<key>KeychainAccess</key>
+<dict>
+  <key>branch</key>
+  <string>None</string>
+  <key>revision</key>
+  <string>b920ad7df3c73189dcdd4aa05c540849b2010dbf</string>
+  <key>version</key>
+  <string>4.1.0</string>
+</dict>
+<key>Loaf</key>
+<dict>
+  <key>branch</key>
+  <string>swiftui</string>
+  <key>revision</key>
+  <string>4c5029a298487faacd58e15f2c26bec7fda4a8d4</string>
+  <key>version</key>
+  <string>None</string>
+</dict>
+<key>Regex</key>
+<dict>
+  <key>branch</key>
+  <string>None</string>
+  <key>revision</key>
+  <string>a819aed0e9555268c29a62500fe6fb781ae7f57d</string>
+  <key>version</key>
+  <string>2.1.0</string>
+</dict>
+<key>swift-log</key>
+<dict>
+  <key>branch</key>
+  <string>None</string>
+  <key>revision</key>
+  <string>173f567a2dfec11d74588eea82cecea555bdc0bc</string>
+  <key>version</key>
+  <string>1.4.0</string>
+</dict>
+<key>SwiftyMarkdown</key>
+<dict>
+  <key>branch</key>
+  <string>None</string>
+  <key>revision</key>
+  <string>a06d690000d0877e61cc7632b4b230300acaa5a5</string>
+  <key>version</key>
+  <string>1.1.0</string>
+</dict>
+</dict>
+</plist>
