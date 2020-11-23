@@ -18,6 +18,6 @@ enum AppInfo {
 	}
 
 	static var build: Int {
-		Int(Bundle.main.infoDictionary?[""] as? String ?? "-1") ?? -1
+		Int(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "-1") ?? -1
 	}
 }
