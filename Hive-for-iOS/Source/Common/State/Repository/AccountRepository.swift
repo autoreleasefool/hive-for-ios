@@ -95,7 +95,9 @@ struct LiveAccountRepository: AccountRepository {
 		api.fetch(.signup(signupData))
 			.mapError { .apiError($0) }
 			.map { (result: User.Signup.Response) in
-				Account(userId: result.token.userId, token: result.token.token, isGuest: false)
+				let notificationObject = User.Signup.Success(response: result, isGuest: true)
+				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
+				return Account(userId: result.token.userId, token: result.token.token, isGuest: false)
 			}
 			.eraseToAnyPublisher()
 	}
@@ -104,7 +106,9 @@ struct LiveAccountRepository: AccountRepository {
 		api.fetch(.createGuestAccount)
 			.mapError { .apiError($0) }
 			.map { (result: User.Signup.Response) in
-				Account(userId: result.token.userId, token: result.token.token, isGuest: true)
+				let notificationObject = User.Signup.Success(response: result, isGuest: true)
+				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
+				return Account(userId: result.token.userId, token: result.token.token, isGuest: true)
 			}
 			.eraseToAnyPublisher()
 	}

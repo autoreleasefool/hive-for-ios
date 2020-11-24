@@ -36,6 +36,13 @@ struct ContentView: View {
 			.sheet(isPresented: isShowingSheet) {
 				sheetView
 			}
+			.alert(item: $viewModel.guestName) { alert in
+				Alert(
+					title: Text("Welcome!"),
+					message: Text("Your name is \(alert.guestName)"),
+					dismissButton: .default(Text("OK"))
+				)
+			}
 			.inject(container)
 			.plugInToaster()
 	}

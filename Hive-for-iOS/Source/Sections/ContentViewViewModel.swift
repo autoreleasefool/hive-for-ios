@@ -55,6 +55,7 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 	}
 
 	@Published var isPresentingUnsupportedVersionSheet: Bool = false
+	@Published var guestName: GuestNameAlert?
 
 	init(guestAccount: Loadable<Account> = .notLoaded) {
 		_guestAccount = .init(initialValue: guestAccount)
@@ -84,16 +85,33 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 	private func subscribeToUpdates() {
 		NotificationCenter.default
 			.publisher(for: NSNotification.Name.Account.Unauthorized)
-			.map { _ in }
 			.receive(on: RunLoop.main)
-			.sink { [weak self] in self?.actions.send(.loggedOut) }
+			.sink { [weak self] _ in self?.actions.send(.loggedOut) }
 			.store(in: self)
 
 		NotificationCenter.default
 			.publisher(for: NSNotification.Name.AppInfo.Unsupported)
-			.map { _ in }
 			.receive(on: RunLoop.main)
-			.sink { [weak self] in self?.actions.send(.appVersionUnsupported) }
+			.sink { [weak self] _ in self?.actions.send(.appVersionUnsupported) }
 			.store(in: self)
+
+		NotificationCenter.default
+			.publisher(for: NSNotification.Name.Account.SignupSuccess)
+			.receive(on: RunLoop.main)
+			.sink { [weak self] notification in
+				guard let successResponse = notification.object as? User.Signup.Success,
+					successResponse.isGuest else {
+					return
+				}
+				self?.guestName = GuestNameAlert(guestName: successResponse.response.displayName)
+			}
+			.store(in: self)
+	}
+}
+
+extension ContentViewViewModel {
+	struct GuestNameAlert: Identifiable {
+		var id: String { guestName }
+		let guestName: String
 	}
 }

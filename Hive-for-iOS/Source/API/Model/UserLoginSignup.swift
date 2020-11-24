@@ -28,6 +28,12 @@ extension User.Signup {
 		let displayName: String
 		let avatarUrl: String?
 		let token: SessionToken
+		let isGuest: Bool?
+	}
+
+	struct Success {
+		let response: Response
+		let isGuest: Bool
 	}
 }
 
