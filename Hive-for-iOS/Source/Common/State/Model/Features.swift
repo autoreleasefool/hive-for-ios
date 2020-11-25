@@ -57,13 +57,13 @@ enum Feature: String, CaseIterable {
 		case .arGameMode: return .disabled
 		case .emojiReactions: return .released
 		case .hiveMindAgent: return .disabled
-		case .offlineMode: return .disabled
+		case .offlineMode: return .released
 		case .accounts: return .disabled
 		case .guestMode: return .released
 		case .matchHistory: return .disabled
 		case .profileList: return .disabled
 		case .spectating: return .disabled
-		case .aiOpponents: return .disabled
+		case .aiOpponents: return .released
 		}
 	}
 
