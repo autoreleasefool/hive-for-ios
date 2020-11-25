@@ -19,7 +19,7 @@ extension AppEnvironment {
 		let appState = Store(AppState())
 		let configuration = networkSessionConfiguration()
 		let api = configuredAPI(configuration: configuration)
-		let onlineClient = configuredOnlineClient()
+		let onlineClient = configuredOnlineClient(configuration: configuration)
 		let localClient = configuredLocalClient()
 		let keychain = configuredKeychain()
 
@@ -45,11 +45,13 @@ extension AppEnvironment {
 	}
 
 	private static func configuredAPI(configuration: URLSessionConfiguration) -> HiveAPI {
-		HiveAPI(configuration: configuration)
+		let session = URLSession(configuration: configuration)
+		return HiveAPI(session: session)
 	}
 
-	private static func configuredOnlineClient() -> GameClient {
-		OnlineGameClient()
+	private static func configuredOnlineClient(configuration: URLSessionConfiguration) -> GameClient {
+		let session = URLSession(configuration: configuration)
+		return OnlineGameClient(session: session)
 	}
 
 	private static func configuredLocalClient() -> GameClient {

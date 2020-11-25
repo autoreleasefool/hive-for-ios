@@ -75,10 +75,10 @@ class HiveAPI: ObservableObject {
 	}()
 
 	init(
-		configuration: URLSessionConfiguration = URLSessionConfiguration.default,
+		session: URLSession = URLSession(configuration: .default),
 		queue: DispatchQueue = .global(qos: .userInitiated)
 	) {
-		self.session = URLSession(configuration: configuration)
+		self.session = session
 		self.apiQueue = queue
 	}
 

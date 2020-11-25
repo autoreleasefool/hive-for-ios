@@ -17,12 +17,16 @@ class OnlineGameClient: GameClient {
 	private var account: Account?
 	private var webSocket: URLSessionWebSocketTask?
 	private var pingTimer: Timer?
-	private lazy var session = URLSession(configuration: .default)
+	private var session: URLSession
 
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
 	var isPrepared: Bool {
 		url != nil
+	}
+
+	init(session: URLSession = URLSession(configuration: .default)) {
+		self.session = session
 	}
 
 	func prepare(configuration: GameClientConfiguration) {
