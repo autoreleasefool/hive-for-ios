@@ -318,7 +318,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			message,
 			state: .custom(Loaf.Style(
 				backgroundColor: UIColor(.backgroundRegular),
-				textColor: UIColor(.gameTextRegular),
+				textColor: UIColor(.textRegular),
 				icon: image)
 			)) { [weak self] dismissalReason in
 				guard let self = self,

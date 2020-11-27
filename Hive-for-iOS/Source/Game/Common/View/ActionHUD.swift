@@ -29,11 +29,11 @@ struct ActionHUD: View {
 						.font(.body)
 				} else if button.type == .cancel {
 					Text(button.title)
-						.foregroundColor(Color(.gameTextContrastingSecondary))
+						.foregroundColor(Color(.textContrastingSecondary))
 						.font(.body)
 				} else {
 					Text(button.title)
-						.foregroundColor(Color(.gameTextContrasting))
+						.foregroundColor(Color(.textContrasting))
 						.bold()
 						.font(.body)
 				}
@@ -53,10 +53,10 @@ struct ActionHUD: View {
 				Text(config.title)
 					.bold()
 					.font(.headline)
-					.foregroundColor(Color(.gameTextContrasting))
+					.foregroundColor(Color(.textContrasting))
 				Text(config.message)
 					.font(.body)
-					.foregroundColor(Color(.gameTextContrasting))
+					.foregroundColor(Color(.textContrasting))
 			}
 			.padding()
 
