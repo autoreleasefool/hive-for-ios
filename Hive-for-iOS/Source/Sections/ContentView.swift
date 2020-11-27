@@ -28,6 +28,7 @@ struct ContentView: View {
 
 	var body: some View {
 		content
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 			.onReceive(navigationUpdates) { sheetNavigation = $0 }
 			.listensToAppStateChanges([.accountChanged]) { _ in
@@ -70,12 +71,7 @@ struct ContentView: View {
 	}
 
 	private var loadingView: some View {
-		ZStack {
-			Color(.backgroundRegular)
-				.edgesIgnoringSafeArea(.all)
-
-			ProgressView("Logging in")
-		}
+		LoadingView("Logging in")
 	}
 
 	private var loadedView: some View {

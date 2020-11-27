@@ -20,6 +20,7 @@ struct ProfileListView: View {
 	var body: some View {
 		NavigationView {
 			content
+				.background(Color(.backgroundRegular))
 				.navigationBarTitle("Users")
 				.navigationBarItems(leading: settingsButton)
 				.onReceive(viewModel.actionsPublisher) { handleAction($0) }
@@ -39,6 +40,7 @@ struct ProfileListView: View {
 
 			if viewModel.searchText.isEmpty {
 				ProfileView()
+				Spacer()
 			} else {
 				switch viewModel.users {
 				case .notLoaded: notLoadedView
@@ -47,26 +49,34 @@ struct ProfileListView: View {
 				case .failed(let error): failedView(error)
 				}
 			}
-
-			Spacer()
 		}
 	}
 
+	@ViewBuilder
 	private var notLoadedView: some View {
 		EmptyView()
+		Spacer()
 	}
 
+	@ViewBuilder
 	private var loadingView: some View {
-		ProgressView()
+		LoadingView()
+		Spacer()
 	}
 
 	private func loadedView(_ users: [User]) -> some View {
-		List(users) { user in
-			NavigationLink(destination: ProfileView(id: user.id, user: .loaded(user))) {
-				UserPreview(user.summary)
-					.padding(.vertical)
+		List {
+			Section(header: SectionHeader("")) {
+				ForEach(users) { user in
+					NavigationLink(destination: ProfileView(id: user.id, user: .loaded(user))) {
+						UserPreview(user.summary)
+							.padding(.vertical)
+					}
+				}
 			}
+			.listRowBackground(Color(.backgroundLight))
 		}
+		.listStyle(InsetGroupedListStyle())
 	}
 
 	private func failedView(_ error: Error) -> some View {

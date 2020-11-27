@@ -45,6 +45,7 @@ struct EmptyState: View {
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
 		}
+		.background(Color(.backgroundRegular))
 	}
 
 	// MARK: EmptyState
@@ -60,6 +61,7 @@ struct EmptyState: View {
 	private var header: some View {
 		Text(headerText)
 			.font(.headline)
+			.foregroundColor(Color(.textRegular))
 			.multilineTextAlignment(.center)
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}
@@ -67,6 +69,7 @@ struct EmptyState: View {
 	private var message: some View {
 		Text(messageText)
 			.font(.body)
+			.foregroundColor(Color(.textRegular))
 			.multilineTextAlignment(.center)
 			.frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
 	}

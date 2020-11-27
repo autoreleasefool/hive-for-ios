@@ -22,9 +22,24 @@ struct PopoverSheetConfig {
 
 		func actionSheetButton() -> ActionSheet.Button {
 			switch type {
-			case .default: return .default(Text(title), action: action)
-			case .cancel: return .cancel(Text(title), action: action)
-			case .destructive: return .destructive(Text(title), action: action)
+			case .default:
+				return .default(
+					Text(title)
+						.foregroundColor(Color(.textRegular)),
+					action: action
+				)
+			case .cancel:
+				return .cancel(
+					Text(title)
+						.foregroundColor(Color(.textRegular)),
+					action: action
+				)
+			case .destructive:
+				return .destructive(
+					Text(title)
+						.foregroundColor(Color(.highlightDestructive)),
+					action: action
+				)
 			}
 		}
 
@@ -36,6 +51,7 @@ struct PopoverSheetConfig {
 				}
 			} label: {
 				Text(title)
+					.foregroundColor(Color(.textRegular))
 			}
 		}
 
@@ -58,8 +74,10 @@ struct PopoverSheetConfig {
 
 	func actionSheet() -> ActionSheet {
 		ActionSheet(
-			title: Text(title),
-			message: Text(message),
+			title: Text(title)
+				.foregroundColor(Color(.textRegular)),
+			message: Text(message)
+				.foregroundColor(Color(.textRegular)),
 			buttons: buttons.map { $0.actionSheetButton() }
 		)
 	}
@@ -67,12 +85,14 @@ struct PopoverSheetConfig {
 	func popover(isPresented: Binding<Bool>) -> some View {
 		VStack {
 			Text(title)
+				.foregroundColor(Color(.textRegular))
 				.padding(.top)
 			Divider()
 			List {
 				ForEach(Array(buttons.enumerated()), id: \.offset) { (_, button) in
 					button.popoverButton(isPresented: isPresented)
 				}
+				.listRowBackground(Color(.backgroundLight))
 			}
 		}
 	}

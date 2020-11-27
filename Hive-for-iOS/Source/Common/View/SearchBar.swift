@@ -9,16 +9,10 @@
 import SwiftUI
 
 struct SearchBar: View {
-	@Environment(\.colorScheme) var colorScheme
-
 	private let icon: UIImage?
 	private let placeholder: String
 
 	@Binding private var text: String
-
-	private var backgroundColor: Color {
-		colorScheme == .dark ? Color(.systemGray5) : Color(.systemGray6)
-	}
 
 	init(_ placeholder: String = "Search...", icon: String? = nil, text: Binding<String>) {
 		self.placeholder = placeholder
@@ -37,15 +31,20 @@ struct SearchBar: View {
 				Image(uiImage: icon)
 					.resizable()
 					.renderingMode(.template)
-					.foregroundColor(Color(.textRegular))
+					.foregroundColor(Color(.textContrasting))
 					.squareImage(.s)
 			}
 
-			TextField(placeholder, text: $text)
+			ZStack(alignment: .leading) {
+				if text.isEmpty { Text(placeholder).foregroundColor(Color(.textContrastingSecondary)) }
+				TextField("", text: $text)
+					.foregroundColor(Color(.textContrasting))
+			}
 
 			if !text.isEmpty {
 				Image(systemName: "xmark.circle.fill")
 					.resizable()
+					.foregroundColor(Color(.textContrasting))
 					.squareImage(.s)
 					.padding(2)
 					.onTapGesture {
@@ -56,7 +55,7 @@ struct SearchBar: View {
 			}
 		}
 		.padding(Metrics.Spacing.s.rawValue)
-		.background(backgroundColor)
+		.background(Color(.textField))
 		.cornerRadius(Metrics.CornerRadius.s.rawValue)
 		.padding(.vertical, Metrics.Spacing.s.rawValue)
 	}

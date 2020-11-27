@@ -58,7 +58,7 @@ struct UserPreview: View {
 	}
 
 	var userImage: some View {
-		let stroke: ColorAsset = user != nil && highlight ? .highlightPrimary : .backgroundRegular
+		let stroke: ColorAsset = user != nil && highlight ? .highlightSuccess : .highlightPrimary
 		return HexImage(url: user?.avatarURL, placeholder: ImageAsset.borderlessGlyph, stroke: stroke)
 			.placeholderTint(.highlightPrimary)
 			.squareImage(iconSize)
@@ -68,11 +68,13 @@ struct UserPreview: View {
 		VStack(alignment: textAlignment == .leading ? .leading : .trailing) {
 			Text(primaryText)
 				.font(.subheadline)
+				.foregroundColor(Color(.textRegular))
 				.lineLimit(1)
 				.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			if user != nil {
 				Text(secondaryText)
 					.font(.caption)
+					.foregroundColor(Color(.textSecondary))
 					.lineLimit(1)
 					.frame(minWidth: 64, alignment: textAlignment == .leading ? .leading : .trailing)
 			}

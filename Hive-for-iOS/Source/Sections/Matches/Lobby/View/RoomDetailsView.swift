@@ -23,18 +23,25 @@ struct RoomDetailsView: View {
 
 	var body: some View {
 		List {
-			Section(header: Text("Players")) {
+			Section(header: SectionHeader("Players")) {
 				playerSection
 			}
-			Section(header: Text("Expansions")) {
+			.listRowBackground(Color(.backgroundLight))
+
+			Section(header: SectionHeader("Expansions")) {
 				expansionsSection
 			}
-			Section(header: Text("Match options")) {
+			.listRowBackground(Color(.backgroundLight))
+
+			Section(header: SectionHeader("Match options")) {
 				matchOptionsSection
 			}
-			Section(header: Text("Other options")) {
+			.listRowBackground(Color(.backgroundLight))
+
+			Section(header: SectionHeader("Other options")) {
 				otherOptionsSection
 			}
+			.listRowBackground(Color(.backgroundLight))
 		}
 		.listStyle(InsetGroupedListStyle())
 	}
@@ -71,6 +78,7 @@ struct RoomDetailsView: View {
 	private var expansionsSection: some View {
 		ForEach(GameState.Option.expansions, id: \.rawValue) { option in
 			Toggle(name(forOption: option), isOn: gameOptionBinding(option))
+				.foregroundColor(Color(.textRegular))
 				.disabled(optionsDisabled)
 		}
 	}
@@ -78,6 +86,7 @@ struct RoomDetailsView: View {
 	private var matchOptionsSection: some View {
 		ForEach(Match.Option.enabledOptions, id: \.rawValue) { option in
 			Toggle(name(forOption: option), isOn: matchOptionBinding(option))
+				.foregroundColor(Color(.textRegular))
 				.disabled(optionsDisabled)
 		}
 	}
@@ -85,6 +94,7 @@ struct RoomDetailsView: View {
 	private var otherOptionsSection: some View {
 		ForEach(GameState.Option.nonExpansions, id: \.rawValue) { option in
 			Toggle(name(forOption: option), isOn: gameOptionBinding(option))
+				.foregroundColor(Color(.textRegular))
 				.disabled(optionsDisabled)
 		}
 	}

@@ -14,15 +14,17 @@ struct AgentPicker: View {
 
 	var body: some View {
 		List {
-			Section(header: Text("Opponent")) {
+			Section(header: SectionHeader("Opponent")) {
 				ForEach(AgentConfiguration.allCases.filter { $0.isEnabled(in: container.features) }) { computer in
 					NavigationLink(destination: LocalRoomView(opponent: computer)) {
 						Text(computer.name)
 							.font(.body)
+							.foregroundColor(Color(.textRegular))
 							.padding(.vertical)
 					}
 				}
 			}
+			.listRowBackground(Color(.backgroundLight))
 		}
 		.listStyle(InsetGroupedListStyle())
 		.navigationBarTitle("Local match")

@@ -55,22 +55,33 @@ struct LoginSignupForm: View {
 					secureField(for: .confirmPassword)
 				}
 			}
-			Section(header: Text(viewModel.toggleSectionHeaderText)) {
-				Button(viewModel.toggleButtonText) {
+			.listRowBackground(Color(.backgroundLight))
+
+			Section(header: SectionHeader(viewModel.toggleSectionHeaderText)) {
+				Button {
 					viewModel.postViewAction(.toggleForm)
+				} label: {
+					Text(viewModel.toggleButtonText)
+						.font(.body)
+						.foregroundColor(Color(.highlightRegular))
 				}
 
 				if container.has(feature: .guestMode) && viewModel.form == .login {
-					Button("Play as guest") {
+					Button {
 						viewModel.postViewAction(.playAsGuest)
+					} label: {
+						Text("Play as guest")
+							.font(.body)
+							.foregroundColor(Color(.highlightRegular))
 					}
 				}
 			}
+			.listRowBackground(Color(.backgroundLight))
 		}
 	}
 
 	private var loadingView: some View {
-		ProgressView()
+		LoadingView()
 	}
 
 	// MARK: Form
@@ -114,6 +125,7 @@ struct LoginSignupForm: View {
 			viewModel.postViewAction(.dismissForm)
 		} label: {
 			Text("Cancel")
+
 		}
 	}
 
@@ -173,6 +185,7 @@ private extension LoginSignupForm {
 
 		func body(content: Content) -> some View {
 			content
+				.foregroundColor(Color(.textRegular))
 				.textContentType(id.textContentType)
 				.keyboardType(id.keyboardType)
 		}

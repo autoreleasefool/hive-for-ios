@@ -63,13 +63,14 @@ struct OnlineRoomView: View {
 
 	private var notLoadedView: some View {
 		Text("")
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.onAppear { viewModel.postViewAction(.onAppear(container.account?.userId)) }
 	}
 
 	@ViewBuilder
 	private func loadedView(_ match: Match?) -> some View {
 		if match == nil {
-			ProgressView()
+			LoadingView()
 		} else {
 			if viewModel.reconnecting {
 				reconnectingView

@@ -32,7 +32,7 @@ struct SettingsList: View {
 		NavigationView {
 			Form {
 				if container.hasAny(of: [.arGameMode, .emojiReactions]) {
-					Section(header: Text("Game")) {
+					Section(header: SectionHeader("Game")) {
 						if container.has(feature: .arGameMode) {
 							itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
 								viewModel.postViewAction(.switchGameMode(current: $0))
@@ -41,40 +41,46 @@ struct SettingsList: View {
 
 						if container.has(feature: .emojiReactions) {
 							Toggle("Disable emoji reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
+								.foregroundColor(Color(.textRegular))
 						}
 					}
+					.listRowBackground(Color(.backgroundLight))
 				}
 
 				if viewModel.showAccount {
-					Section(header: Text("Account"), footer: logoutButton) {
+					Section(header: SectionHeader("Account"), footer: logoutButton) {
 						UserPreview(viewModel.user.value?.summary)
 					}
+					.listRowBackground(Color(.backgroundLight))
 				}
 
 				Section(
-					header: Text("About"),
+					header: SectionHeader("About"),
 					footer: HStack {
 						Spacer()
 						VStack(alignment: .trailing) {
 							Text(AppInfo.name)
+								.foregroundColor(Color(.textSecondary))
 							Text(AppInfo.fullSemanticVersion)
+								.foregroundColor(Color(.textSecondary))
 						}
 					},
 					content: {
 						Link(destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!) {
 							Text("View Source")
+								.foregroundColor(Color(.highlightRegular))
 						}
 
-						NavigationLink(destination: AttributionsList()) {
-							Text("Attributions")
-						}
+						ThemeNavigationLink("Attributions", destination: { AttributionsList() })
 					}
 				)
+				.listRowBackground(Color(.backgroundLight))
 
 				#if DEBUG
-				Section(header: Text("Features")) {
+				Section(header: SectionHeader("Features")) {
 					featureToggles
 				}
+				.listRowBackground(Color(.backgroundLight))
 				#endif
 			}
 			.navigationBarTitle("Settings")
@@ -100,6 +106,7 @@ struct SettingsList: View {
 		} label: {
 			HStack {
 				Text(title)
+					.foregroundColor(Color(.textRegular))
 				Spacer()
 				Text(selected.description)
 					.foregroundColor(Color(.textRegular))
@@ -117,9 +124,10 @@ struct SettingsList: View {
 				viewModel.postViewAction(.logout)
 			} label: {
 				Text("Logout")
+					.foregroundColor(Color(.textSecondary))
 			}
 		case .loading:
-			ProgressView()
+			LoadingView()
 		}
 	}
 
@@ -137,6 +145,7 @@ struct SettingsList: View {
 	private var featureToggles: some View {
 		ForEach(Feature.allCases, id: \.rawValue) { feature in
 			Toggle(feature.rawValue, isOn: binding(for: feature))
+				.foregroundColor(Color(.textRegular))
 				.disabled(!container.hasAll(of: feature.dependencies))
 		}
 	}

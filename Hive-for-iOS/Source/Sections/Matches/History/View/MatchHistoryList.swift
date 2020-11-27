@@ -46,6 +46,7 @@ struct MatchHistoryList: View {
 
 	private var notLoadedView: some View {
 		Text("")
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.onAppear { viewModel.postViewAction(.onAppear) }
 	}
 
@@ -56,7 +57,7 @@ struct MatchHistoryList: View {
 			} else {
 				List {
 					ForEach(ListSection.allCases, id: \.rawValue) { section in
-						Section(header: Text(section.headerText)) {
+						Section(header: SectionHeader(section.headerText)) {
 							if viewModel.matches(for: section, fromUser: user).count == 0 {
 								section.emptyState
 							} else {
@@ -68,6 +69,7 @@ struct MatchHistoryList: View {
 								}
 							}
 						}
+						.listRowBackground(Color(.backgroundLight))
 					}
 				}
 				.listStyle(InsetGroupedListStyle())

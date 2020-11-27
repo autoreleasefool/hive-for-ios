@@ -12,11 +12,13 @@ struct AttributionsList: View {
 	var body: some View {
 		List {
 			ForEach(AttributionsList.attributions, id: \.name) { attribution in
-				Section(header: Text(attribution.name)) {
+				Section(header: SectionHeader(attribution.name)) {
 					Text(attribution.license)
 						.multilineTextAlignment(.leading)
 						.font(.caption)
+						.foregroundColor(Color(.textRegular))
 				}
+				.listRowBackground(Color(.backgroundLight))
 			}
 		}
 		.listStyle(InsetGroupedListStyle())

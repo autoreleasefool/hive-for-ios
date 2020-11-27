@@ -41,16 +41,17 @@ struct ProfileView: View {
 
 	private var notLoadedView: some View {
 		Text("")
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.onAppear { viewModel.postViewAction(.onAppear) }
 	}
 
 	private var loadingView: some View {
-		ProgressView()
+		LoadingView()
 	}
 
 	private func loadedView(_ user: User) -> some View {
 		List {
-			Section(header: Text("")) {
+			Section(header: SectionHeader("")) {
 				VStack(alignment: .center, spacing: 0) {
 					HexImage(url: user.avatarUrl, placeholder: ImageAsset.borderlessGlyph, stroke: .highlightPrimary)
 						.placeholderTint(.highlightPrimary)
@@ -69,8 +70,9 @@ struct ProfileView: View {
 						.frame(maxWidth: .infinity)
 				}
 			}
+			.listRowBackground(Color(.backgroundLight))
 
-			Section(header: Text("Most recent matches")) {
+			Section(header: SectionHeader("Most recent matches")) {
 				if !user.pastMatches.isEmpty {
 					ForEach(user.pastMatches.prefix(3)) { match in
 						HistoryRow(match: match, withLastMove: false)
@@ -82,6 +84,7 @@ struct ProfileView: View {
 						.frame(maxWidth: .infinity)
 				}
 			}
+			.listRowBackground(Color(.backgroundLight))
 		}
 		.listStyle(InsetGroupedListStyle())
 	}

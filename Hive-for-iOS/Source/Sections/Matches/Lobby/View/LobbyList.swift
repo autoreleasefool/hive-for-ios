@@ -91,6 +91,7 @@ struct LobbyList: View {
 
 	private var notLoadedView: some View {
 		Text("")
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.onAppear {
 				viewModel.postViewAction(
 					.onAppear(
@@ -129,13 +130,13 @@ struct LobbyList: View {
 
 		if matches.count == 0 {
 			if loading {
-				ProgressView()
+				LoadingView()
 			} else {
 				emptyState
 			}
 		} else {
 			List {
-				Section(header: Text("Open")) {
+				Section(header: SectionHeader("Open")) {
 					ForEach(matches) { match in
 						Button {
 							viewModel.postViewAction(.joinMatch(match.id))
@@ -145,6 +146,7 @@ struct LobbyList: View {
 						.padding(.vertical)
 					}
 				}
+				.listRowBackground(Color(.backgroundLight))
 			}
 			.listStyle(InsetGroupedListStyle())
 		}

@@ -54,11 +54,12 @@ struct SpectatorRoomView: View {
 
 	private var notLoadedView: some View {
 		Text("")
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.onAppear { viewModel.postViewAction(.onAppear) }
 	}
 
 	private var loadingView: some View {
-		ProgressView()
+		LoadingView()
 	}
 
 	// MARK: Buttons

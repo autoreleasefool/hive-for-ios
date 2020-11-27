@@ -57,7 +57,9 @@ struct LocalRoomView: View {
 	}
 
 	private var notLoadedView: some View {
-		Text("").onAppear { viewModel.postViewAction(.createMatch) }
+		Text("")
+			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
+			.onAppear { viewModel.postViewAction(.createMatch) }
 	}
 
 	private func loadedView(_ match: Match) -> some View {
