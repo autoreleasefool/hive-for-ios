@@ -45,7 +45,7 @@ struct EmptyState: View {
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
 		}
-		.background(Color(.backgroundRegular))
+		.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 	}
 
 	// MARK: EmptyState
