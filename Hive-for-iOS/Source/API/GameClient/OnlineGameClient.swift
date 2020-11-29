@@ -10,14 +10,17 @@ import Combine
 import Foundation
 import HiveEngine
 
-class OnlineGameClient: GameClient {
+class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 	static let maxReconnectAttempts = 5
 
 	private var url: URL?
 	private var account: Account?
-	private var webSocket: URLSessionWebSocketTask?
 	private var pingTimer: Timer?
-	private var session: URLSession
+	fileprivate var webSocket: URLSessionWebSocketTask?
+
+	private var session: URLSession!
+	private let requestQueue: DispatchQueue
+	private let operationQueue = OperationQueue()
 
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
@@ -25,8 +28,19 @@ class OnlineGameClient: GameClient {
 		url != nil
 	}
 
-	init(session: URLSession = URLSession(configuration: .default)) {
-		self.session = session
+	init(
+		configuration: URLSessionConfiguration = .default,
+		queue: DispatchQueue = DispatchQueue(label: "ca.josephroque.hiveapp.gameClient.requestQueue")
+	) {
+		self.requestQueue = queue
+		self.operationQueue.underlyingQueue = requestQueue
+		super.init()
+
+		self.session = URLSession(
+			configuration: configuration,
+			delegate: self,
+			delegateQueue: operationQueue
+		)
 	}
 
 	func prepare(configuration: GameClientConfiguration) {
@@ -83,13 +97,6 @@ class OnlineGameClient: GameClient {
 		to url: URL,
 		withAccount account: Account?
 	) -> AnyPublisher<GameClientEvent, GameClientError> {
-		defer {
-			// Send a `connected` message after the publisher has been returned
-			DispatchQueue.main.async { [weak self] in
-				self?.subject?.send(.connected)
-			}
-		}
-
 		let publisher = PassthroughSubject<GameClientEvent, GameClientError>()
 		self.subject = publisher
 
@@ -106,7 +113,6 @@ class OnlineGameClient: GameClient {
 
 	private func setupWebSocketReceiver() {
 		webSocket?.receive { [weak self] result in
-			defer { self?.setupWebSocketReceiver() }
 			switch result {
 			case .success(let message):
 				switch message {
@@ -115,6 +121,9 @@ class OnlineGameClient: GameClient {
 				case .data: break
 				@unknown default: break
 				}
+
+				// Queue up to received next response, only after successful responses
+				self?.setupWebSocketReceiver()
 			case .failure(let error):
 				self?.didReceive(error: error)
 			}
@@ -134,10 +143,11 @@ class OnlineGameClient: GameClient {
 	}
 
 	func close() {
+		guard let subject = self.subject else { return }
+		self.subject = nil
 		cancelPingTimer()
 		webSocket?.cancel(with: .normalClosure, reason: nil)
-		subject?.send(completion: .finished)
-		subject = nil
+		subject.send(completion: .finished)
 	}
 
 	func send(_ message: GameClientMessage, completionHandler: ((Error?) -> Void)?) {
@@ -152,5 +162,28 @@ class OnlineGameClient: GameClient {
 	private func didReceive(error: Error) {
 		subject?.send(completion: .failure(.webSocketError(error)))
 		close()
+	}
+}
+
+// MARK: URLSessionDelegate
+
+extension OnlineGameClient {
+	func urlSession(
+		_ session: URLSession,
+		webSocketTask: URLSessionWebSocketTask,
+		didOpenWithProtocol protocol: String?
+	) {
+		self.subject?.send(.connected)
+	}
+
+	func urlSession(
+		_ session: URLSession,
+		webSocketTask: URLSessionWebSocketTask,
+		didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,
+		reason: Data?
+	) {
+		if subject != nil {
+			close()
+		}
 	}
 }

@@ -227,7 +227,6 @@ extension OnlineRoomViewModel {
 	}
 
 	private func openClientConnection(to url: URL?) {
-		LoadingHUD.shared.show()
 		actions.send(.openClientConnection(url))
 	}
 
@@ -251,15 +250,15 @@ extension OnlineRoomViewModel {
 
 	private func handleGameClientError(_ error: GameClientError) {
 		guard reconnectAttempts < OnlineGameClient.maxReconnectAttempts else {
-			LoadingHUD.shared.hide()
 			actions.send(.failedToReconnect)
-
 			return
 		}
 
-		reconnecting = true
-		reconnectAttempts += 1
-		reopenClientConnection()
+		self.reconnectAttempts += 1
+		self.reconnecting = true
+		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+			self.reopenClientConnection()
+		}
 	}
 
 	private func handleGameClientEvent(_ event: GameClientEvent) {
@@ -268,7 +267,6 @@ extension OnlineRoomViewModel {
 			clientConnected = true
 			reconnecting = false
 			reconnectAttempts = 0
-			LoadingHUD.shared.hide()
 		case .message(let message):
 			handleGameClientMessage(message)
 		}

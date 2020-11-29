@@ -45,13 +45,11 @@ extension AppEnvironment {
 	}
 
 	private static func configuredAPI(configuration: URLSessionConfiguration) -> HiveAPI {
-		let session = URLSession(configuration: configuration)
-		return HiveAPI(session: session)
+		HiveAPI(configuration: configuration)
 	}
 
 	private static func configuredOnlineClient(configuration: URLSessionConfiguration) -> GameClient {
-		let session = URLSession(configuration: configuration)
-		return OnlineGameClient(session: session)
+		OnlineGameClient(configuration: configuration)
 	}
 
 	private static func configuredLocalClient() -> GameClient {

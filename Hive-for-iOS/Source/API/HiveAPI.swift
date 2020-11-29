@@ -56,11 +56,12 @@ enum HiveAPIError: LocalizedError {
 
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
-class HiveAPI: ObservableObject {
+class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
 	static let baseURL = URL(string: "https://hive.josephroque.dev")!
 
-	private let session: URLSession
-	private let apiQueue: DispatchQueue
+	private var session: URLSession!
+	private let requestQueue: DispatchQueue
+	private let operationQueue = OperationQueue()
 
 	private let encoder: JSONEncoder = {
 		var encoder = JSONEncoder()
@@ -75,11 +76,17 @@ class HiveAPI: ObservableObject {
 	}()
 
 	init(
-		session: URLSession = URLSession(configuration: .default),
-		queue: DispatchQueue = .global(qos: .userInitiated)
+		configuration: URLSessionConfiguration = .default,
+		queue: DispatchQueue = DispatchQueue(label: "ca.josephroque.hiveapp.api.requestQueue")
 	) {
-		self.session = session
-		self.apiQueue = queue
+		self.requestQueue = queue
+		self.operationQueue.underlyingQueue = requestQueue
+		super.init()
+		self.session = URLSession(
+			configuration: configuration,
+			delegate: self,
+			delegateQueue: operationQueue
+		)
 	}
 
 	func fetch<Output: Decodable>(
@@ -124,7 +131,6 @@ class HiveAPI: ObservableObject {
 		}
 
 		return session.dataTaskPublisher(for: request)
-			.subscribe(on: apiQueue)
 			.tryMap { data, response in
 				guard let httpResponse = response as? HTTPURLResponse else {
 					logger.error("Invalid response from \(endpoint)")

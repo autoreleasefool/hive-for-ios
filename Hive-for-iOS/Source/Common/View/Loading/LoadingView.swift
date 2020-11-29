@@ -22,7 +22,13 @@ struct LoadingView: View {
 				.edgesIgnoringSafeArea(.all)
 
 			if let text = text {
-				ProgressView(text)
+				VStack(spacing: .m) {
+					ProgressView()
+					Text(text)
+						.font(.body)
+						.multilineTextAlignment(.center)
+						.foregroundColor(Color(.textRegular))
+				}
 			} else {
 				ProgressView()
 			}

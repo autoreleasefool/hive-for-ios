@@ -89,17 +89,7 @@ struct OnlineRoomView: View {
 	}
 
 	private var reconnectingView: some View {
-		VStack {
-			Text("The connection to the server was lost.\nPlease wait while we try to reconnect you.")
-				.font(.body)
-				.multilineTextAlignment(.center)
-			ProgressView()
-			Text(viewModel.reconnectingMessage)
-				.font(.body)
-				.multilineTextAlignment(.center)
-			Spacer()
-		}
-		.padding()
+		LoadingView("The connection to the server was lost.\nPlease wait while we try to reconnect you")
 	}
 
 	// MARK: Buttons
