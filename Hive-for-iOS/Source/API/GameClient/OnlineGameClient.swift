@@ -160,6 +160,7 @@ class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 	}
 
 	private func didReceive(error: Error) {
+		print("Recieved WebSocket error: \(error)")
 		subject?.send(completion: .failure(.webSocketError(error)))
 		close()
 	}
