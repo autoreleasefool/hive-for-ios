@@ -376,7 +376,7 @@ extension GameView2D: UIGestureRecognizerDelegate {
 		} else if gesture.state == .changed {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			snap(touchedPiece, location: translatedPosition, move: false)
-		} else if gesture.state == .ended {
+		} else if gesture.state == .ended || gesture.state == .cancelled {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			snap(touchedPiece, location: translatedPosition, move: true)
 			spriteManager.resetColor(for: touchedPiece)
