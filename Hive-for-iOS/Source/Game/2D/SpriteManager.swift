@@ -87,6 +87,11 @@ class SpriteManager {
 		sprite.color = UIColor(.backgroundLight)
 	}
 
+	func highlight(_ piece: Piece) {
+		let sprite = self.sprite(for: piece, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
+		sprite.color = UIColor(piece.owner.secondaryColor)
+	}
+
 	func resetColor(for piece: Piece) {
 		let sprite = self.sprite(for: piece, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
 		sprite.color = UIColor(piece.owner.color)

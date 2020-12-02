@@ -372,12 +372,14 @@ extension GameView2D: UIGestureRecognizerDelegate {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			self.enableSnappingPositions(for: touchedPiece)
 			snap(touchedPiece, location: translatedPosition, move: false)
+			spriteManager.highlight(touchedPiece)
 		} else if gesture.state == .changed {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			snap(touchedPiece, location: translatedPosition, move: false)
 		} else if gesture.state == .ended {
 			let translatedPosition = (nodeInitialPosition ?? touchedNode.position) + translation
 			snap(touchedPiece, location: translatedPosition, move: true)
+			spriteManager.resetColor(for: touchedPiece)
 			removeSnappingPositions()
 			self.nodeBeingMoved = nil
 			self.snappingPositions = nil

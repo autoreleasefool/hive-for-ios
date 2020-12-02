@@ -133,4 +133,11 @@ extension Player {
 		case .black: return .highlightPrimary
 		}
 	}
+
+	var secondaryColor: ColorAsset {
+		switch self {
+		case .white: return .whiteTransparent
+		case .black: return .highlightPrimaryTransparent
+		}
+	}
 }

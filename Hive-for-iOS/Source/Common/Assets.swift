@@ -53,6 +53,7 @@ enum ColorAsset: String {
 	case backgroundLight = "Colors/BackgroundLight"
 	case backgroundDark = "Colors/BackgroundDark"
 
+	case highlightPrimaryTransparent = "Colors/PrimaryTransparent"
 	case highlightPrimary = "Colors/Primary"
 	case highlightRegular = "Colors/Highlight"
 	case highlightDestructive = "Colors/Destructive"
@@ -71,6 +72,7 @@ enum ColorAsset: String {
 
 	case clear = "Colors/Clear"
 	case white = "Colors/White"
+	case whiteTransparent = "Colors/WhiteTransparent"
 }
 
 extension UIColor {
