@@ -67,7 +67,7 @@ class PlayerGameViewModel: GameViewModel {
 
 		case .toggleEmojiPicker:
 			promptFeedbackGenerator.impactOccurred()
-			showingEmojiPicker.toggle()
+			isShowingEmojiPicker.toggle()
 		case .pickedEmoji(let emoji):
 			pickedEmoji(emoji)
 
@@ -281,14 +281,15 @@ class PlayerGameViewModel: GameViewModel {
 	// MARK: Emoji
 
 	private func hideEmojiPicker() {
-		if showingEmojiPicker {
-			showingEmojiPicker = false
+		if isShowingEmojiPicker {
+			isShowingEmojiPicker = false
 		}
 	}
 
 	private func pickedEmoji(_ emoji: Emoji) {
 		guard Emoji.canSend(emoji: emoji) else { return }
 
+		hideEmojiPicker()
 		promptFeedbackGenerator.impactOccurred()
 		animatedEmoji.send(emoji)
 		clientInteractor.send(clientMode, .message("EMOJI {\(emoji.rawValue)}")) { _ in }
