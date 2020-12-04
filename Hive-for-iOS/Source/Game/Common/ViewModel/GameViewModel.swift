@@ -59,6 +59,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	@Published var selectedPiece: (deselected: SelectedPiece?, selected: SelectedPiece?) = (nil, nil)
 
+	@Published var showingEmojiPicker = false
+
 	@Published var presentedGameAction: GameAction?
 	@Published var presentedGameInformation: GameInformation? {
 		didSet {

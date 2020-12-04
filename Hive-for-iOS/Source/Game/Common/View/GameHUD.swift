@@ -18,10 +18,11 @@ struct GameHUD: View {
 	private let buttonDistanceFromEdge: Metrics.Spacing = .xl
 
 	private var hasEmojiEnabled: Bool {
-		container.has(feature: .emojiReactions) &&
-			!container.appState.value.preferences.hasDisabledEmojiReactions &&
-			!viewModel.isSpectating &&
-			!(container.account?.isOffline == true)
+		true
+//		container.has(feature: .emojiReactions) &&
+//			!container.appState.value.preferences.hasDisabledEmojiReactions &&
+//			!viewModel.isSpectating &&
+//			!(container.account?.isOffline == true)
 	}
 
 	private func stateIndicator(_ geometry: GeometryProxy) -> some View {

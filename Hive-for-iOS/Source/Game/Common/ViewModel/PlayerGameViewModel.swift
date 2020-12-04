@@ -14,8 +14,6 @@ import SwiftUI
 class PlayerGameViewModel: GameViewModel {
 	@Published var state: State = .begin
 
-	@Published var showingEmojiPicker = false
-
 	var playingAs: Player
 
 	override var isSpectating: Bool {
