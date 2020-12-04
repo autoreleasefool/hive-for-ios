@@ -155,11 +155,7 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 	}
 
 	private func performOfflineStateAction() {
-		if isSpectating {
-			actions.send(.goOnline)
-		} else {
-			postViewAction(.createLocalMatchVsComputer)
-		}
+		actions.send(.goOnline)
 	}
 }
 
@@ -206,21 +202,17 @@ extension LobbyListViewModel {
 						: "You can't spectate offline"
 				)
 		} else {
-			return "You can play a game against the computer by tapping below"
+			return "Tap the '+' button to play against the computer, or press below to log in"
 		}
 	}
 
 	func offlineStateAction(isAccountsEnabled: Bool, isGuestModeEnabled: Bool) -> String? {
-		if isSpectating {
-			return isAccountsEnabled
-				? "Log in"
-				: (isGuestModeEnabled
-						? "Play online"
-						: nil
-				)
-		} else {
-			return "Play local match"
-		}
+		return isAccountsEnabled
+			? "Log in"
+			: (isGuestModeEnabled
+					? "Play online"
+					: nil
+			)
 	}
 
 	func errorMessage(from error: Error) -> String {
