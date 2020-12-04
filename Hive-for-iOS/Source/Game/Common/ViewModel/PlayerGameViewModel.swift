@@ -209,7 +209,7 @@ class PlayerGameViewModel: GameViewModel {
 			message: description(of: relativeMovement, inHand: inHand),
 			buttons: [
 				PopoverSheetConfig.ButtonConfig(
-					title: "Move",
+					title: inHand ? "Place" : "Move",
 					type: .default
 				) { [weak self] in
 					self?.postViewAction(.movementConfirmed(movement))
