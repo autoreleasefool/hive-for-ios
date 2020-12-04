@@ -62,7 +62,7 @@ enum Feature: String, CaseIterable {
 		case .guestMode: return .released
 		case .matchHistory: return .disabled
 		case .profileList: return .disabled
-		case .spectating: return .disabled
+		case .spectating: return .released
 		case .aiOpponents: return .released
 		}
 	}
