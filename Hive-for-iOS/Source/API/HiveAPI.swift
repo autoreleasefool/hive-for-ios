@@ -131,6 +131,7 @@ class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
 		}
 
 		return session.dataTaskPublisher(for: request)
+			.subscribe(on: requestQueue)
 			.tryMap { data, response in
 				guard let httpResponse = response as? HTTPURLResponse else {
 					logger.error("Invalid response from \(endpoint)")
