@@ -104,9 +104,9 @@ struct MatchHistoryList: View {
 		ScrollView {
 			RoomDetailsView(
 				host: match.host?.summary,
-				isHostReady: match.winner?.id == match.host?.id,
+				isHostReady: .init(match.winner?.id == match.host?.id),
 				opponent: match.opponent?.summary,
-				isOpponentReady: match.winner?.id == match.opponent?.id,
+				isOpponentReady: .init(match.winner?.id == match.opponent?.id),
 				optionsDisabled: true,
 				gameOptionsEnabled: match.gameOptionSet,
 				matchOptionsEnabled: match.optionSet,

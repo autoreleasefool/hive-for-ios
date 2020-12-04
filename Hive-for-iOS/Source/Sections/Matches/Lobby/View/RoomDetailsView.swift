@@ -11,9 +11,9 @@ import HiveEngine
 
 struct RoomDetailsView: View {
 	let host: UserPreview.UserSummary?
-	let isHostReady: Bool
+	let isHostReady: ReadyStatus
 	let opponent: UserPreview.UserSummary?
-	let isOpponentReady: Bool
+	let isOpponentReady: ReadyStatus
 	let optionsDisabled: Bool
 
 	let gameOptionsEnabled: Set<GameState.Option>
@@ -54,23 +54,26 @@ struct RoomDetailsView: View {
 		}
 	}
 
-	private func summary(forPlayer player: UserPreview.UserSummary?, isReady: Bool) -> some View {
+	private func summary(forPlayer player: UserPreview.UserSummary?, isReady: ReadyStatus) -> some View {
 		HStack(spacing: 0) {
 			UserPreview(
 				player,
-				highlight: isReady,
+				highlight: isReady.shouldHighlight,
 				iconSize: .l
 			)
 			Spacer(minLength: Metrics.Spacing.s.rawValue)
 
-			if isReady {
+			switch isReady {
+			case .ready:
 				Text("READY")
 					.font(.caption)
 					.foregroundColor(Color(.highlightSuccess))
-			} else {
+			case .notReady:
 				Text("WAITING")
 					.font(.caption)
 					.foregroundColor(Color(.highlightDestructive))
+			case .notApplicable:
+				EmptyView()
 			}
 		}
 	}
@@ -115,6 +118,29 @@ extension RoomDetailsView {
 	}
 }
 
+extension RoomDetailsView {
+	enum ReadyStatus {
+		case ready
+		case notReady
+		case notApplicable
+
+		var shouldHighlight: Bool {
+			switch self {
+			case .ready: return true
+			case .notReady, .notApplicable: return false
+			}
+		}
+
+		init(_ isReady: Bool) {
+			if isReady {
+				self = .ready
+			} else {
+				self = .notReady
+			}
+		}
+	}
+}
+
 // MARK: - Preview
 
 #if DEBUG
@@ -125,9 +151,9 @@ struct RoomDetailsViewPreview: PreviewProvider {
 	static var previews: some View {
 		RoomDetailsView(
 			host: User.users[0].summary,
-			isHostReady: true,
+			isHostReady: .ready,
 			opponent: User.users[0].summary,
-			isOpponentReady: false,
+			isOpponentReady: .notReady,
 			optionsDisabled: false,
 			gameOptionsEnabled: Self.gameOptions,
 			matchOptionsEnabled: Self.matchOptions,

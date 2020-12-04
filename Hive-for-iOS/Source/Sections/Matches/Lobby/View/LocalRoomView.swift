@@ -65,9 +65,9 @@ struct LocalRoomView: View {
 	private func loadedView(_ match: Match) -> some View {
 		RoomDetailsView(
 			host: match.host?.summary,
-			isHostReady: false,
+			isHostReady: .notApplicable,
 			opponent: match.opponent?.summary,
-			isOpponentReady: false,
+			isOpponentReady: .notApplicable,
 			optionsDisabled: false,
 			gameOptionsEnabled: viewModel.gameOptions,
 			matchOptionsEnabled: viewModel.matchOptions,
