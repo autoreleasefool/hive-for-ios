@@ -115,14 +115,14 @@ struct GameHUD: View {
 				returnToGameButton(geometry)
 			}
 
-			InformationHUD()
-				.edgesIgnoringSafeArea(.bottom)
-			ActionHUD()
-				.edgesIgnoringSafeArea(.bottom)
 			if hasEmojiEnabled {
 				EmojiHUD()
 					.edgesIgnoringSafeArea(.bottom)
 			}
+			InformationHUD()
+				.edgesIgnoringSafeArea(.bottom)
+			ActionHUD()
+				.edgesIgnoringSafeArea(.bottom)
 		}
 		.padding(.top)
 	}
