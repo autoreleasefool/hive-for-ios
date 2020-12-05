@@ -43,8 +43,29 @@ struct SettingsList: View {
 							.foregroundColor(Color(.textRegular))
 					}
 
-					itemToggle(title: "Piece color scheme", selected: viewModel.preferences.pieceColorScheme) {
-						viewModel.postViewAction(.switchPieceColorScheme(current: $0))
+					VStack {
+						itemToggle(title: "Piece color scheme", selected: viewModel.preferences.pieceColorScheme) {
+							viewModel.postViewAction(.switchPieceColorScheme(current: $0))
+						}
+						HStack {
+							Image(uiImage: whiteAnt)
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.squareImage(.l)
+							Image(uiImage: whiteBeetle)
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.squareImage(.l)
+							Image(uiImage: blackAnt)
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.squareImage(.l)
+							Image(uiImage: blackBeetle)
+								.resizable()
+								.aspectRatio(contentMode: .fit)
+								.squareImage(.l)
+						}
+						.padding()
 					}
 				}
 				.listRowBackground(Color(.backgroundLight))
@@ -152,6 +173,44 @@ struct SettingsList: View {
 		}
 	}
 	#endif
+
+	// MARK: Pieces
+
+	private var whiteAnt: UIImage {
+		switch container.preferences.pieceColorScheme {
+		case .filled:
+			return ImageAsset.Pieces.White.Filled.ant
+		default:
+			return ImageAsset.Pieces.White.ant
+		}
+	}
+
+	private var whiteBeetle: UIImage {
+		switch container.preferences.pieceColorScheme {
+		case .filled:
+			return ImageAsset.Pieces.White.Filled.beetle
+		default:
+			return ImageAsset.Pieces.White.beetle
+		}
+	}
+
+	private var blackAnt: UIImage {
+		switch container.preferences.pieceColorScheme {
+		case .filled:
+			return ImageAsset.Pieces.Black.Filled.ant
+		default:
+			return ImageAsset.Pieces.Black.ant
+		}
+	}
+
+	private var blackBeetle: UIImage {
+		switch container.preferences.pieceColorScheme {
+		case .filled:
+			return ImageAsset.Pieces.Black.Filled.beetle
+		default:
+			return ImageAsset.Pieces.Black.beetle
+		}
+	}
 }
 
 // MARK: - Actions
