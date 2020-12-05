@@ -44,7 +44,8 @@ struct Game: View {
 			viewModel.postViewAction(
 				.onAppear(
 					container.account?.userId,
-					container.interactors.clientInteractor
+					container.interactors.clientInteractor,
+					container.preferences
 				)
 			)
 		}
@@ -59,7 +60,7 @@ struct Game: View {
 		#if targetEnvironment(simulator)
 		GameView2DContainer(viewModel: viewModel)
 		#else
-		switch container.appState.value.preferences.gameMode {
+		switch container.preferences.gameMode {
 		case .ar: GameViewARContainer(viewModel: viewModel)
 		case .sprite: GameView2DContainer(viewModel: viewModel)
 		}

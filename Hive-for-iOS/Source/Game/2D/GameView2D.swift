@@ -82,6 +82,7 @@ class GameView2D: SKScene {
 	private var hasChangedSize = false
 
 	override func sceneDidLoad() {
+		spriteManager.pieceColorScheme = viewModel.preferences.pieceColorScheme
 		subscribeToPublishers()
 		viewModel.postViewAction(.viewContentDidLoad(.skScene(self)))
 	}

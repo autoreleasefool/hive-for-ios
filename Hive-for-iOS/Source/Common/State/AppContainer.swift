@@ -33,6 +33,10 @@ extension AppContainer {
 	var account: Account? {
 		appState.value.account.value
 	}
+
+	var preferences: Preferences {
+		appState.value.preferences
+	}
 }
 
 // MARK: - Injection

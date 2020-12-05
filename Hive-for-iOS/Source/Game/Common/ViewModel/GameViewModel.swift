@@ -12,7 +12,7 @@ import HiveEngine
 import Loaf
 
 enum GameViewAction: BaseViewAction {
-	case onAppear(User.ID?, ClientInteractor)
+	case onAppear(User.ID?, ClientInteractor, Preferences)
 	case viewContentDidLoad(GameViewContent)
 	case viewContentReady
 	case viewInteractionsReady
@@ -49,6 +49,7 @@ enum GameViewAction: BaseViewAction {
 }
 
 class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
+	private(set) var preferences = Preferences() // TODO: use passed in value
 	private(set) var clientInteractor: ClientInteractor!
 	private(set) var userId: User.ID?
 	private var match: Match
@@ -143,9 +144,10 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	override func postViewAction(_ viewAction: GameViewAction) {
 		switch viewAction {
-		case .onAppear(let userId, let clientInteractor):
+		case .onAppear(let userId, let clientInteractor, let preferences):
 			self.userId = userId
 			self.clientInteractor = clientInteractor
+			self.preferences = preferences
 			openConnection()
 		case .viewContentDidLoad(let content):
 			setupView(content: content)

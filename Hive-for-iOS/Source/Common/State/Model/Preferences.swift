@@ -18,6 +18,15 @@ struct Preferences: Equatable {
 		get { UserDefaults.standard.bool(forKey: Key.disabledEmojiReactions.rawValue) }
 		set { UserDefaults.standard.set(newValue, forKey: Key.disabledEmojiReactions.rawValue) }
 	}
+
+	var pieceColorScheme: PieceColorScheme {
+		get {
+			PieceColorScheme(
+				rawValue: UserDefaults.standard.string(forKey: Key.pieceColorScheme.rawValue) ?? ""
+			) ?? .outlined
+		}
+		set { UserDefaults.standard.set(newValue.rawValue, forKey: Key.pieceColorScheme.rawValue) }
+	}
 }
 
 // MARK: - Game Mode
@@ -37,11 +46,29 @@ extension Preferences {
 	}
 }
 
+// MARK: - Color scheme
+
+extension Preferences {
+	enum PieceColorScheme: String, CaseIterable, CustomStringConvertible, Identifiable {
+		case filled = "Filled"
+		case outlined = "Outlined"
+
+		var id: String {
+			rawValue
+		}
+
+		var description: String {
+			rawValue
+		}
+	}
+}
+
 // MARK: - Keys
 
 private extension Preferences {
 	enum Key: String {
 		case gameMode
 		case disabledEmojiReactions
+		case pieceColorScheme
 	}
 }

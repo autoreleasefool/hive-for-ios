@@ -17,6 +17,8 @@ class SpriteManager {
 	var piecesWithSprites: [Piece] { Array(pieceSprites.keys) }
 	var positionsWithSprites: [Position] { Array(positionSprites.keys) }
 
+	var pieceColorScheme: Preferences.PieceColorScheme!
+
 	func sprite(
 		for piece: Piece,
 		initialSize: CGSize,
@@ -29,14 +31,14 @@ class SpriteManager {
 				sprite.texture = SKTexture(imageNamed: "Pieces/Blank")
 				pieceSpriteVisibility[piece] = false
 			} else if !blank && pieceSpriteVisibility[piece] == false {
-				sprite.texture = SKTexture(imageNamed: "Pieces/\(piece.class.description)")
+				sprite.texture = SKTexture(from: piece, colorScheme: pieceColorScheme)
 				pieceSpriteVisibility[piece] = true
 			}
 
 			return sprite
 		}
 
-		let sprite = SKSpriteNode(from: piece)
+		let sprite = SKSpriteNode(from: piece, colorScheme: pieceColorScheme)
 		sprite.name = "Piece-\(piece.notation)"
 		sprite.zPosition = 1
 		sprite.anchorPoint = CGPoint(x: 0.5, y: 0.5)
@@ -89,12 +91,12 @@ class SpriteManager {
 
 	func highlight(_ piece: Piece) {
 		let sprite = self.sprite(for: piece, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
-		sprite.color = UIColor(piece.owner.secondaryColor)
+		sprite.alpha = 0.7
 	}
 
 	func resetColor(for piece: Piece) {
 		let sprite = self.sprite(for: piece, initialSize: .zero, initialScale: .zero, initialOffset: .zero)
-		sprite.color = UIColor(piece.owner.color)
+		sprite.alpha = 1
 	}
 
 	var debugEnabled: Bool = false {

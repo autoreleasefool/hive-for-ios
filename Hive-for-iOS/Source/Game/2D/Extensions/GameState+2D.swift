@@ -10,10 +10,24 @@ import SpriteKit
 import HiveEngine
 
 extension SKSpriteNode {
-	convenience init(from piece: Piece) {
-		self.init(imageNamed: "Pieces/\(piece.class.description)")
-		color = UIColor(piece.owner.color)
-		colorBlendFactor = 1
+	convenience init(from piece: Piece, colorScheme: Preferences.PieceColorScheme) {
+		let path: String
+		switch colorScheme {
+		case .outlined: path = ""
+		case .filled: path = "Filled/"
+		}
+		self.init(imageNamed: "Pieces/\(piece.owner)/\(path)\(piece.class.description)")
+	}
+}
+
+extension SKTexture {
+	convenience init(from piece: Piece, colorScheme: Preferences.PieceColorScheme) {
+		let path: String
+		switch colorScheme {
+		case .outlined: path = ""
+		case .filled: path = "Filled/"
+		}
+		self.init(imageNamed: "Pieces/\(piece.owner)/\(path)\(piece.class.description)")
 	}
 }
 

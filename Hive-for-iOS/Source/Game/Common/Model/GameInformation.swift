@@ -139,7 +139,7 @@ extension GameInformation {
 	struct PlayerHand {
 		let player: Player
 		let playingAs: Player
-		let piecesInHand: [Piece.Class]
+		let piecesInHand: [Piece]
 
 		var isPlayerHand: Bool {
 			playingAs == player
@@ -148,7 +148,7 @@ extension GameInformation {
 		init(player: Player, playingAs: Player, state: GameState) {
 			self.player = player
 			self.playingAs = playingAs
-			self.piecesInHand = Array(state.unitsInHand[player] ?? []).map { $0.class }.sorted()
+			self.piecesInHand = Array(state.unitsInHand[player] ?? []).sorted()
 		}
 	}
 }

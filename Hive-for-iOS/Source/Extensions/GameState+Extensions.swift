@@ -13,22 +13,53 @@ import HiveEngine
 
 typealias Piece = HiveEngine.Unit
 
+extension Piece {
+	var image: UIImage {
+		switch self.class {
+		case .ant: return owner == .white ? ImageAsset.Pieces.White.ant : ImageAsset.Pieces.Black.ant
+		case .beetle: return owner == .white ? ImageAsset.Pieces.White.beetle : ImageAsset.Pieces.Black.beetle
+		case .hopper: return owner == .white ? ImageAsset.Pieces.White.hopper : ImageAsset.Pieces.Black.hopper
+		case .ladyBug: return owner == .white ? ImageAsset.Pieces.White.ladyBug : ImageAsset.Pieces.Black.ladyBug
+		case .mosquito: return owner == .white ? ImageAsset.Pieces.White.mosquito : ImageAsset.Pieces.Black.mosquito
+		case .pillBug: return owner == .white ? ImageAsset.Pieces.White.pillBug : ImageAsset.Pieces.Black.pillBug
+		case .queen: return owner == .white ? ImageAsset.Pieces.White.queen : ImageAsset.Pieces.Black.queen
+		case .spider: return owner == .white ? ImageAsset.Pieces.White.spider : ImageAsset.Pieces.Black.spider
+		}
+	}
+
+	var filledImage: UIImage {
+		switch self.class {
+		case .ant: return owner == .white
+			? ImageAsset.Pieces.White.Filled.ant
+			: ImageAsset.Pieces.Black.Filled.ant
+		case .beetle: return owner == .white
+			? ImageAsset.Pieces.White.Filled.beetle
+			: ImageAsset.Pieces.Black.Filled.beetle
+		case .hopper: return owner == .white
+			? ImageAsset.Pieces.White.Filled.hopper
+			: ImageAsset.Pieces.Black.Filled.hopper
+		case .ladyBug: return owner == .white
+			? ImageAsset.Pieces.White.Filled.ladyBug
+			: ImageAsset.Pieces.Black.Filled.ladyBug
+		case .mosquito: return owner == .white
+			? ImageAsset.Pieces.White.Filled.mosquito
+			: ImageAsset.Pieces.Black.Filled.mosquito
+		case .pillBug: return owner == .white
+			? ImageAsset.Pieces.White.Filled.pillBug
+			: ImageAsset.Pieces.Black.Filled.pillBug
+		case .queen: return owner == .white
+			? ImageAsset.Pieces.White.Filled.queen
+			: ImageAsset.Pieces.Black.Filled.queen
+		case .spider: return owner == .white
+			? ImageAsset.Pieces.White.Filled.spider
+			: ImageAsset.Pieces.Black.Filled.spider
+		}
+	}
+}
+
 extension Piece.Class: Identifiable {
 	public var id: String {
 		description
-	}
-
-	var image: UIImage {
-		switch self {
-		case .ant: return ImageAsset.Pieces.ant
-		case .beetle: return ImageAsset.Pieces.beetle
-		case .hopper: return ImageAsset.Pieces.hopper
-		case .ladyBug: return ImageAsset.Pieces.ladyBug
-		case .mosquito: return ImageAsset.Pieces.mosquito
-		case .pillBug: return ImageAsset.Pieces.pillBug
-		case .queen: return ImageAsset.Pieces.queen
-		case .spider: return ImageAsset.Pieces.spider
-		}
 	}
 
 	init?(fromName name: String) {

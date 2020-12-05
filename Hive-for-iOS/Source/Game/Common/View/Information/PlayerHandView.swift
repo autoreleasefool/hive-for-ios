@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct PlayerHandView: View {
+	@Environment(\.container) private var container
 	@EnvironmentObject private var viewModel: GameViewModel
 
 	let hand: GameInformation.PlayerHand
@@ -17,27 +18,32 @@ struct PlayerHandView: View {
 	var body: some View {
 		LazyVGrid(columns: [GridItem(.adaptive(minimum: Metrics.Image.l.rawValue))]) {
 			ForEach(hand.piecesInHand.indices) {
-				piece(pieceClass: hand.piecesInHand[$0])
+				piece(hand.piecesInHand[$0])
 			}
 		}
 	}
 
-	private func piece(pieceClass: Piece.Class) -> some View {
+	private func piece(_ piece: Piece) -> some View {
 		Button {
 			viewModel.postViewAction(.closeInformation(withFeedback: false))
 			if didLongPress {
 				didLongPress = false
-				viewModel.postViewAction(.enquiredFromHand(pieceClass))
+				viewModel.postViewAction(.enquiredFromHand(piece.class))
 			} else {
-				viewModel.postViewAction(.selectedFromHand(hand.player, pieceClass))
+				viewModel.postViewAction(.selectedFromHand(piece.owner, piece.class))
 			}
 		} label: {
-			Image(uiImage: pieceClass.image)
-				.renderingMode(.template)
+			Image(uiImage: image(for: piece))
 				.resizable()
 				.scaledToFit()
 				.squareImage(.l)
-				.foregroundColor(Color(hand.player.color))
+		}
+	}
+
+	private func image(for piece: Piece) -> UIImage {
+		switch container.preferences.pieceColorScheme {
+		case .outlined: return piece.image
+		case .filled: return piece.filledImage
 		}
 	}
 }

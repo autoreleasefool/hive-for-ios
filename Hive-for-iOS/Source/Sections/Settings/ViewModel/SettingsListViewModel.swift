@@ -12,6 +12,7 @@ import SwiftUI
 enum SettingsListViewAction: BaseViewAction {
 	case onAppear
 	case switchGameMode(current: Preferences.GameMode)
+	case switchPieceColorScheme(current: Preferences.PieceColorScheme)
 	case appStateChanged
 
 	case logout
@@ -21,6 +22,7 @@ enum SettingsListViewAction: BaseViewAction {
 enum SettingsListAction: BaseAction {
 	case loadProfile
 	case setGameMode(Preferences.GameMode)
+	case setPieceColorScheme(Preferences.PieceColorScheme)
 	case logout
 	case closeSettings
 }
@@ -60,6 +62,8 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 			actions.send(.loadProfile)
 		case .switchGameMode(let current):
 			switchGameMode(from: current)
+		case .switchPieceColorScheme(let current):
+			switchPieceColorScheme(from: current)
 		case .appStateChanged:
 			objectWillChange.send()
 
@@ -78,5 +82,15 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 		}
 
 		actions.send(.setGameMode(next))
+	}
+
+	private func switchPieceColorScheme(from colorScheme: Preferences.PieceColorScheme) {
+		let next: Preferences.PieceColorScheme
+		switch colorScheme {
+		case .filled: next = .outlined
+		case .outlined: next = .filled
+		}
+
+		actions.send(.setPieceColorScheme(next))
 	}
 }

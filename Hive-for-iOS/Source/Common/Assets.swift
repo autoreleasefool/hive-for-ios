@@ -33,14 +33,50 @@ enum ImageAsset {
 
 	enum Pieces {
 		static let blank = UIImage(named: "Pieces/Blank")!
-		static let ant = UIImage(named: "Pieces/Ant")!
-		static let beetle = UIImage(named: "Pieces/Beetle")!
-		static let hopper = UIImage(named: "Pieces/Hopper")!
-		static let ladyBug = UIImage(named: "Pieces/Lady Bug")!
-		static let mosquito = UIImage(named: "Pieces/Mosquito")!
-		static let pillBug = UIImage(named: "Pieces/Pill Bug")!
-		static let queen = UIImage(named: "Pieces/Queen")!
-		static let spider = UIImage(named: "Pieces/Spider")!
+
+		enum White {
+			enum Filled {
+				static let ant = UIImage(named: "Pieces/White/Filled/Ant")!
+				static let beetle = UIImage(named: "Pieces/White/Filled/Beetle")!
+				static let hopper = UIImage(named: "Pieces/White/Filled/Hopper")!
+				static let ladyBug = UIImage(named: "Pieces/White/Filled/Lady Bug")!
+				static let mosquito = UIImage(named: "Pieces/White/Filled/Mosquito")!
+				static let pillBug = UIImage(named: "Pieces/White/Filled/Pill Bug")!
+				static let queen = UIImage(named: "Pieces/White/Filled/Queen")!
+				static let spider = UIImage(named: "Pieces/White/Filled/Spider")!
+			}
+
+			static let ant = UIImage(named: "Pieces/White/Ant")!
+			static let beetle = UIImage(named: "Pieces/White/Beetle")!
+			static let hopper = UIImage(named: "Pieces/White/Hopper")!
+			static let ladyBug = UIImage(named: "Pieces/White/Lady Bug")!
+			static let mosquito = UIImage(named: "Pieces/White/Mosquito")!
+			static let pillBug = UIImage(named: "Pieces/White/Pill Bug")!
+			static let queen = UIImage(named: "Pieces/White/Queen")!
+			static let spider = UIImage(named: "Pieces/White/Spider")!
+		}
+
+		enum Black {
+			enum Filled {
+				static let ant = UIImage(named: "Pieces/Black/Filled/Ant")!
+				static let beetle = UIImage(named: "Pieces/Black/Filled/Beetle")!
+				static let hopper = UIImage(named: "Pieces/Black/Filled/Hopper")!
+				static let ladyBug = UIImage(named: "Pieces/Black/Filled/Lady Bug")!
+				static let mosquito = UIImage(named: "Pieces/Black/Filled/Mosquito")!
+				static let pillBug = UIImage(named: "Pieces/Black/Filled/Pill Bug")!
+				static let queen = UIImage(named: "Pieces/Black/Filled/Queen")!
+				static let spider = UIImage(named: "Pieces/Black/Filled/Spider")!
+			}
+
+			static let ant = UIImage(named: "Pieces/Black/Ant")!
+			static let beetle = UIImage(named: "Pieces/Black/Beetle")!
+			static let hopper = UIImage(named: "Pieces/Black/Hopper")!
+			static let ladyBug = UIImage(named: "Pieces/Black/Lady Bug")!
+			static let mosquito = UIImage(named: "Pieces/Black/Mosquito")!
+			static let pillBug = UIImage(named: "Pieces/Black/Pill Bug")!
+			static let queen = UIImage(named: "Pieces/Black/Queen")!
+			static let spider = UIImage(named: "Pieces/Black/Spider")!
+		}
 	}
 
 	enum EmptyState { }

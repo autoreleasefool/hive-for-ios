@@ -31,21 +31,23 @@ struct SettingsList: View {
 	var body: some View {
 		NavigationView {
 			Form {
-				if container.hasAny(of: [.arGameMode, .emojiReactions]) {
-					Section(header: SectionHeader("Game")) {
-						if container.has(feature: .arGameMode) {
-							itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
-								viewModel.postViewAction(.switchGameMode(current: $0))
-							}
-						}
-
-						if container.has(feature: .emojiReactions) {
-							Toggle("Disable emoji reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
-								.foregroundColor(Color(.textRegular))
+				Section(header: SectionHeader("Game")) {
+					if container.has(feature: .arGameMode) {
+						itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
+							viewModel.postViewAction(.switchGameMode(current: $0))
 						}
 					}
-					.listRowBackground(Color(.backgroundLight))
+
+					if container.has(feature: .emojiReactions) {
+						Toggle("Disable emoji reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
+							.foregroundColor(Color(.textRegular))
+					}
+
+					itemToggle(title: "Piece color scheme", selected: viewModel.preferences.pieceColorScheme) {
+						viewModel.postViewAction(.switchPieceColorScheme(current: $0))
+					}
 				}
+				.listRowBackground(Color(.backgroundLight))
 
 				if viewModel.showAccount {
 					Section(header: SectionHeader("Account"), footer: logoutButton) {
@@ -161,6 +163,8 @@ extension SettingsList {
 			loadProfile()
 		case .setGameMode(let mode):
 			preferencesBinding.wrappedValue.gameMode = mode
+		case .setPieceColorScheme(let colorScheme):
+			preferencesBinding.wrappedValue.pieceColorScheme = colorScheme
 		case .logout:
 			logout()
 		case .closeSettings:

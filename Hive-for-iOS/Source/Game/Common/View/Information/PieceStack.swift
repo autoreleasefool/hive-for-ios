@@ -18,12 +18,10 @@ struct PieceStack: View {
 			viewModel.postViewAction(.tappedPiece(piece))
 		} label: {
 			HStack(spacing: .m) {
-				Image(uiImage: piece.class.image)
-					.renderingMode(.template)
+				Image(uiImage: piece.image)
 					.resizable()
 					.scaledToFit()
 					.squareImage(.m)
-					.foregroundColor(Color(piece.owner.color))
 				Text("\(piece.owner.description) \(piece.class.description) #\(piece.index)")
 					.font(.body)
 					.foregroundColor(Color(piece.owner.color))
