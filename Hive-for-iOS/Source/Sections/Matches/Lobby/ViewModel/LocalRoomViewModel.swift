@@ -11,7 +11,6 @@ import SwiftUI
 import HiveEngine
 
 enum LocalRoomViewAction: BaseViewAction {
-	case createMatch
 	case startGame
 
 	case requestExit
@@ -26,15 +25,8 @@ enum LocalRoomAction: BaseAction {
 }
 
 class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
-	@Published var match: Loadable<Match> = .notLoaded {
-		didSet {
-			matchOptions = match.value?.optionSet ?? Set()
-			gameOptions = match.value?.gameOptionSet ?? Set()
-		}
-	}
-
-	@Published private(set) var matchOptions: Set<Match.Option> = Set()
-	@Published private(set) var gameOptions: Set<GameState.Option> = Set()
+	@Published private(set) var matchOptions: Set<Match.Option> = Match.Option.defaultOfflineSet
+	@Published private(set) var gameOptions: Set<GameState.Option> = GameState().options
 
 	@Published var exiting = false
 
@@ -43,20 +35,26 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 		actions.eraseToAnyPublisher()
 	}
 
-	private(set) var opponent: AgentConfiguration
+	private(set) var opponent: LocalOpponent
+
+	var match: Match {
+		Match.createOfflineMatch(
+			against: opponent,
+			withOptions: matchOptions,
+			withGameOptions: gameOptions
+		)
+	}
 
 	var player: Player {
 		matchOptions.contains(.hostIsWhite) ? .white : .black
 	}
 
-	init(opponent: AgentConfiguration) {
+	init(opponent: LocalOpponent) {
 		self.opponent = opponent
 	}
 
 	override func postViewAction(_ viewAction: LocalRoomViewAction) {
 		switch viewAction {
-		case .createMatch:
-			createMatch()
 		case .startGame:
 			startGame()
 
@@ -68,10 +66,6 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 		case .dismissExit:
 			exiting = false
 		}
-	}
-
-	private func createMatch() {
-		match = .loaded(Match.createOfflineMatch(against: opponent))
 	}
 
 	private func startGame() {

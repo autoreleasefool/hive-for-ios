@@ -119,7 +119,7 @@ struct LobbyList: View {
 		) { EmptyView() }
 
 		NavigationLink(
-			destination: AgentPicker(isActive: $viewModel.creatingLocalRoom),
+			destination: LocalOpponentPicker(isActive: $viewModel.creatingLocalRoom),
 			isActive: $viewModel.creatingLocalRoom
 		) { EmptyView() }
 

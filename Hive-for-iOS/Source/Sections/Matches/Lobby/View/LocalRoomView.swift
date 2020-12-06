@@ -16,14 +16,14 @@ struct LocalRoomView: View {
 
 	@StateObject private var viewModel: LocalRoomViewModel
 
-	init(opponent: AgentConfiguration) {
+	init(opponent: LocalOpponent) {
 		_viewModel = StateObject(
 			wrappedValue: LocalRoomViewModel(opponent: opponent)
 		)
 	}
 
 	var body: some View {
-		content
+		content(viewModel.match)
 			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
 			.navigationBarTitle(Text(viewModel.title), displayMode: .inline)
 			.navigationBarBackButtonHidden(true)
@@ -45,24 +45,7 @@ struct LocalRoomView: View {
 			}
 	}
 
-	// MARK: Content
-
-	@ViewBuilder
-	private var content: some View {
-		switch viewModel.match {
-		case .notLoaded: notLoadedView
-		case .loaded(let match): loadedView(match)
-		case .loading, .failed: errorView
-		}
-	}
-
-	private var notLoadedView: some View {
-		Text("")
-			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
-			.onAppear { viewModel.postViewAction(.createMatch) }
-	}
-
-	private func loadedView(_ match: Match) -> some View {
+	private func content(_ match: Match) -> some View {
 		RoomDetailsView(
 			host: match.host?.summary,
 			isHostReady: .notApplicable,
@@ -73,14 +56,6 @@ struct LocalRoomView: View {
 			matchOptionsEnabled: viewModel.matchOptions,
 			gameOptionBinding: viewModel.gameOptionEnabled,
 			matchOptionBinding: viewModel.optionEnabled
-		)
-	}
-
-	private var errorView: some View {
-		EmptyState(
-			header: "An error occurred",
-			message: "We can't create this match right now.",
-			action: .init(text: "Refresh") { viewModel.postViewAction(.createMatch) }
 		)
 	}
 
@@ -121,15 +96,17 @@ extension LocalRoomView {
 	private func startGame() {
 		let gameState = GameState(options: viewModel.gameOptions)
 
-		container.interactors.clientInteractor
-			.prepare(.local, clientConfiguration: .offline(gameState, viewModel.player, viewModel.opponent))
-
-		guard let match = viewModel.match.value else {
-			handleAction(.failedToJoinMatch)
-			return
+		switch viewModel.opponent {
+		case .human:
+			container.interactors.clientInteractor
+				.prepare(.local, clientConfiguration: .local(gameState))
+		case .agent(let configuration):
+			container.interactors.clientInteractor
+				.prepare(.local, clientConfiguration: .agent(gameState, viewModel.player, configuration))
 		}
+
 		container.appState[\.gameSetup] = .init(
-			match: match,
+			match: viewModel.match,
 			state: gameState,
 			mode: .play(player: viewModel.player, configuration: .local)
 		)
@@ -145,7 +122,7 @@ extension LocalRoomView {
 #if DEBUG
 struct LocalRoomViewPreview: PreviewProvider {
 	static var previews: some View {
-		LocalRoomView(opponent: .random)
+		LocalRoomView(opponent: .agent(.random))
 	}
 }
 #endif

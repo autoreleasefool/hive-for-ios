@@ -135,7 +135,11 @@ struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {
 		GameHUD()
 			.environmentObject(GameViewModel(setup: .init(
-				match: Match.createOfflineMatch(against: .random),
+				match: Match.createOfflineMatch(
+					against: .agent(.random),
+					withOptions: Set(),
+					withGameOptions: Set()
+				),
 				state: GameState(),
 				mode: .play(player: .white, configuration: .online)
 			)))

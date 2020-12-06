@@ -11,23 +11,36 @@ import Foundation
 import HiveEngine
 
 class LocalGameClient: GameClient {
-	private var gameState: GameState?
-	private var localPlayer: Player?
-	private var computerConfiguration: AgentConfiguration?
-	private var computerPlayer: AIAgent?
+	private var state: LocalGameState?
 
 	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
 	var isPrepared: Bool {
-		gameState != nil && computerPlayer != nil && localPlayer != nil && computerConfiguration != nil
+		state != nil
 	}
 
 	func prepare(configuration: GameClientConfiguration) {
-		guard case let .offline(gameState, player, computerConfiguration) = configuration else { return }
-		self.gameState = GameState(from: gameState)
-		self.localPlayer = player
-		self.computerConfiguration = computerConfiguration
-		self.computerPlayer = computerConfiguration.player
+		switch configuration {
+		case .local(let gameState):
+			break // TODO: set up local state
+		case .agent(let gameState, let player, let agentConfiguration):
+			prepareAgentConfiguration(gameState, player, agentConfiguration)
+		case .online:
+			break
+		}
+	}
+
+	private func prepareAgentConfiguration(
+		_ gameState: GameState,
+		_ player: Player,
+		_ agentConfiguration: AgentConfiguration
+	) {
+		self.state = AgentGameState(
+			gameState: GameState(from: gameState),
+			localPlayer: player,
+			agentConfiguration: agentConfiguration,
+			agentPlayer: agentConfiguration.agent()
+		)
 	}
 
 	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
@@ -81,7 +94,7 @@ class LocalGameClient: GameClient {
 		case .movement(let movement):
 			playerMovement(movement)
 		case .readyToPlay:
-			playComputerMoveIfFirst()
+			playFirstMove()
 		case .message, .setOption:
 			// Ignored for offline play
 			break
@@ -90,10 +103,7 @@ class LocalGameClient: GameClient {
 	}
 
 	private func resetState() {
-		computerPlayer = nil
-		computerConfiguration = nil
-		localPlayer = nil
-		gameState = nil
+		state = nil
 		subject = nil
 	}
 }
@@ -102,11 +112,12 @@ class LocalGameClient: GameClient {
 
 private extension LocalGameClient {
 	func playerForfeit() {
-		subject?.send(.message(.forfeit(Account.offline.userId)))
+		guard let state = state else { return }
+		subject?.send(.message(.forfeit(state.forfeit())))
 	}
 
 	func playerMovement(_ movement: RelativeMovement) {
-		guard let gameState = gameState else {
+		guard let state = state else {
 			subject?.send(.message(.error(GameServerError(
 				code: .invalidCommand,
 				description: "There doesn't appear to be a game in progress."
@@ -114,7 +125,7 @@ private extension LocalGameClient {
 			return
 		}
 
-		guard gameState.currentPlayer == localPlayer else {
+		guard state.isPlayerTurn else {
 			subject?.send(.message(.error(GameServerError(
 				code: .notPlayerTurn,
 				description: "It's not your turn."
@@ -122,7 +133,7 @@ private extension LocalGameClient {
 			return
 		}
 
-		guard gameState.apply(relativeMovement: movement) else {
+		guard state.gameState.apply(relativeMovement: movement) else {
 			subject?.send(.message(.error(GameServerError(
 				code: .invalidMovement,
 				description: #"Move "\#(movement)" not valid."#
@@ -130,57 +141,69 @@ private extension LocalGameClient {
 			return
 		}
 
-		subject?.send(.message(.gameState(GameState(from: gameState))))
-		if gameState.hasGameEnded {
-			endGame()
+		subject?.send(.message(.gameState(GameState(from: state.gameState))))
+		if state.gameState.hasGameEnded {
+			subject?.send(.message(.gameOver(state.winner)))
 		} else {
-			playComputerMove()
+			state.playNextMove()
+			subject?.send(.message(.gameState(GameState(from: state.gameState))))
+			if state.gameState.hasGameEnded {
+				subject?.send(.message(.gameOver(state.winner)))
+			}
 		}
+	}
+
+	private func playFirstMove() {
+		guard let state = state else { return }
+		state.playFirstMove()
+		subject?.send(.message(.gameState(GameState(from: state.gameState))))
 	}
 }
 
-// MARK: - Computer actions
+// MARK: - LocalGameState
 
-private extension LocalGameClient {
-	func playComputerMoveIfFirst() {
-		guard gameState?.move == 0, gameState?.currentPlayer != localPlayer else { return }
-		playComputerMove()
-	}
+protocol LocalGameState {
+	var gameState: GameState { get set }
+	var isPlayerTurn: Bool { get }
+	var winner: UUID? { get }
 
-	func playComputerMove() {
-		guard let gameState = gameState else {
-			subject?.send(.message(.error(GameServerError(
-				code: .unknownError,
-				description: "There doesn't appear to be a game in progress."
-			))))
-			return
-		}
-
-		guard let computerMove = computerPlayer?.playMove(in: gameState),
-			gameState.apply(computerMove) else {
-			return
-		}
-
-		subject?.send(.message(.gameState(GameState(from: gameState))))
-		if gameState.hasGameEnded {
-			endGame()
-		}
-	}
+	func playFirstMove()
+	func playNextMove()
+	func forfeit() -> UUID
 }
 
-// MARK: - Game actions
+private struct AgentGameState: LocalGameState {
+	var gameState: GameState
+	var localPlayer: Player
+	var agentConfiguration: AgentConfiguration
+	var agentPlayer: AIAgent
 
-private extension LocalGameClient {
+	var isPlayerTurn: Bool {
+		gameState.currentPlayer == localPlayer
+	}
+
 	var winner: UUID? {
-		switch gameState?.endState {
-		case .draw, .none: return nil
-		case .playerWins(.white): return localPlayer == .white ? Account.offline.userId : computerConfiguration?.id
-		case .playerWins(.black): return localPlayer == .white ? computerConfiguration?.id : Account.offline.userId
+		switch gameState.endState {
+		case .draw, .none:
+			return nil
+		case .playerWins(.white):
+			return localPlayer == .white ? Account.offline.userId : agentConfiguration.id
+		case .playerWins(.black):
+			return localPlayer == .white ? agentConfiguration.id : Account.offline.userId
 		}
 	}
 
-	func endGame() {
-		guard gameState?.hasGameEnded == true else { return }
-		subject?.send(.message(.gameOver(winner)))
+	func playFirstMove() {
+		guard gameState.move == 0, gameState.currentPlayer != localPlayer else { return }
+		playNextMove()
+	}
+
+	func playNextMove() {
+		let move = agentPlayer.playMove(in: gameState)
+		gameState.apply(move)
+	}
+
+	func forfeit() -> UUID {
+		Account.offline.userId
 	}
 }

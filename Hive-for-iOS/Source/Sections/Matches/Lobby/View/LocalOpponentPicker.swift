@@ -1,5 +1,5 @@
 //
-//  AgentPicker.swift
+//  LocalOpponentPicker.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-06-28.
@@ -8,15 +8,25 @@
 
 import SwiftUI
 
-struct AgentPicker: View {
+struct LocalOpponentPicker: View {
 	@Environment(\.container) private var container
 	let isActive: Binding<Bool>
 
 	var body: some View {
 		List {
-			Section(header: SectionHeader("Opponent")) {
+			Section(header: SectionHeader("Local")) {
+				NavigationLink(destination: LocalRoomView(opponent: .human)) {
+					Text("Play against a friend on this device")
+						.font(.body)
+						.foregroundColor(Color(.textRegular))
+						.padding(.vertical)
+				}
+			}
+			.listRowBackground(Color(.backgroundLight))
+
+			Section(header: SectionHeader("Computer")) {
 				ForEach(AgentConfiguration.allCases.filter { $0.isEnabled(in: container.features) }) { computer in
-					NavigationLink(destination: LocalRoomView(opponent: computer)) {
+					NavigationLink(destination: LocalRoomView(opponent: .agent(computer))) {
 						Text(computer.name)
 							.font(.body)
 							.foregroundColor(Color(.textRegular))
@@ -34,9 +44,9 @@ struct AgentPicker: View {
 // MARK: - Preview
 
 #if DEBUG
-struct AgentPickerPreview: PreviewProvider {
+struct LocalOpponentPickerPreview: PreviewProvider {
 	static var previews: some View {
-		AgentPicker(isActive: .constant(true))
+		LocalOpponentPicker(isActive: .constant(true))
 	}
 }
 #endif

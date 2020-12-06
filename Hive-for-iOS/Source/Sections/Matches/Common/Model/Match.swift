@@ -37,15 +37,19 @@ struct Match: Identifiable, Decodable, Equatable {
 		return URL(string: "wss://\(host)/spectate/\(id)")
 	}
 
-	static func createOfflineMatch(against enemy: AgentConfiguration) -> Match {
+	static func createOfflineMatch(
+		against enemy: LocalOpponent,
+		withOptions options: Set<Match.Option>,
+		withGameOptions gameOptions: Set<GameState.Option>
+	) -> Match {
 		Match(
 			id: UUID(),
 			host: User.createOfflineUser(),
 			opponent: enemy.user,
 			winner: nil,
 			moves: [],
-			options: OptionSet.encode(Option.defaultOfflineSet),
-			gameOptions: OptionSet.encode(GameState().options),
+			options: OptionSet.encode(options),
+			gameOptions: OptionSet.encode(gameOptions),
 			createdAt: Date(),
 			duration: nil,
 			status: .notStarted,

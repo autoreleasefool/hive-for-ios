@@ -37,7 +37,7 @@ enum AgentConfiguration: CaseIterable, Identifiable {
 		Match.User(id: id, displayName: name, elo: 0, avatarUrl: nil)
 	}
 
-	var player: AIAgent {
+	func agent() -> AIAgent {
 		switch self {
 		case .random: return RandomAgent()
 		case .hiveMind: return HiveMindAgent()

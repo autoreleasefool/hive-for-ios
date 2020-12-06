@@ -39,7 +39,7 @@
 		CA5C82ED254053FD008D47B5 /* ProfileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5C82EC254053FD008D47B5 /* ProfileListViewModel.swift */; };
 		CA6C952824EF486300F58289 /* SpectatorRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952724EF486300F58289 /* SpectatorRoomView.swift */; };
 		CA6C952C24EF5B0600F58289 /* SpectatorRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */; };
-		CA6CC92924A9579700E8CB27 /* AgentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* AgentPicker.swift */; };
+		CA6CC92924A9579700E8CB27 /* LocalOpponentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92824A9579700E8CB27 /* LocalOpponentPicker.swift */; };
 		CA6CC92B24A96D8700E8CB27 /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */; };
 		CA6CC92D24AE94E900E8CB27 /* RandomAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92C24AE94E900E8CB27 /* RandomAgent.swift */; };
 		CA6CC92F24AE952400E8CB27 /* HiveMindAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA6CC92E24AE952400E8CB27 /* HiveMindAgent.swift */; };
@@ -73,6 +73,7 @@
 		CA92525124B6A83D003DB4F2 /* Emoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA92525024B6A83D003DB4F2 /* Emoji.swift */; };
 		CA9DFA0524F36A650045DA26 /* SpectatorGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9DFA0424F36A650045DA26 /* SpectatorGameViewModel.swift */; };
 		CA9DFA0724F421BB0045DA26 /* PlayerGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9DFA0624F421BB0045DA26 /* PlayerGameViewModel.swift */; };
+		CAA3FC91257C0C7500F78EBC /* LocalOpponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA3FC90257C0C7500F78EBC /* LocalOpponent.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */; };
 		CABDFCCD23DB73E400C697AD /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCCC23DB73E400C697AD /* GameClient.swift */; };
@@ -174,7 +175,7 @@
 		CA5C82EC254053FD008D47B5 /* ProfileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileListViewModel.swift; sourceTree = "<group>"; };
 		CA6C952724EF486300F58289 /* SpectatorRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorRoomView.swift; sourceTree = "<group>"; };
 		CA6C952B24EF5B0600F58289 /* SpectatorRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorRoomViewModel.swift; sourceTree = "<group>"; };
-		CA6CC92824A9579700E8CB27 /* AgentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgentPicker.swift; sourceTree = "<group>"; };
+		CA6CC92824A9579700E8CB27 /* LocalOpponentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalOpponentPicker.swift; sourceTree = "<group>"; };
 		CA6CC92A24A96D8700E8CB27 /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
 		CA6CC92C24AE94E900E8CB27 /* RandomAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomAgent.swift; sourceTree = "<group>"; };
 		CA6CC92E24AE952400E8CB27 /* HiveMindAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveMindAgent.swift; sourceTree = "<group>"; };
@@ -208,6 +209,7 @@
 		CA92525024B6A83D003DB4F2 /* Emoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Emoji.swift; sourceTree = "<group>"; };
 		CA9DFA0424F36A650045DA26 /* SpectatorGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorGameViewModel.swift; sourceTree = "<group>"; };
 		CA9DFA0624F421BB0045DA26 /* PlayerGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGameViewModel.swift; sourceTree = "<group>"; };
+		CAA3FC90257C0C7500F78EBC /* LocalOpponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalOpponent.swift; sourceTree = "<group>"; };
 		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterTabBar.swift; sourceTree = "<group>"; };
 		CABDFCCC23DB73E400C697AD /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
@@ -441,7 +443,7 @@
 			children = (
 				CAC6861123CE43F600B882D2 /* API */,
 				CAC685FA23CCF65F00B882D2 /* Common */,
-				CAD32BFC249510F000984610 /* AIAgent */,
+				CAD32BFC249510F000984610 /* LocalPlay */,
 				CAC6860423CD227A00B882D2 /* Extensions */,
 				CAFA467123D8B38F003C38AB /* Game */,
 				CAC685F723CCE9FA00B882D2 /* Sections */,
@@ -498,11 +500,11 @@
 			isa = PBXGroup;
 			children = (
 				CA8F46E0245EBD0D00B136D0 /* LobbyList.swift */,
+				CA6CC92824A9579700E8CB27 /* LocalOpponentPicker.swift */,
 				CAC6861723CE4E6800B882D2 /* LobbyRow.swift */,
 				CAD32BF62493103200984610 /* LocalRoomView.swift */,
 				CA8F46E8245F3D4500B136D0 /* OnlineRoomView.swift */,
 				CAD32BF42493070A00984610 /* RoomDetailsView.swift */,
-				CA6CC92824A9579700E8CB27 /* AgentPicker.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -831,14 +833,15 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		CAD32BFC249510F000984610 /* AIAgent */ = {
+		CAD32BFC249510F000984610 /* LocalPlay */ = {
 			isa = PBXGroup;
 			children = (
+				CAA3FC90257C0C7500F78EBC /* LocalOpponent.swift */,
 				CAD32BFD2495110900984610 /* AIAgent.swift */,
 				CA6CC92C24AE94E900E8CB27 /* RandomAgent.swift */,
 				CA6CC92E24AE952400E8CB27 /* HiveMindAgent.swift */,
 			);
-			path = AIAgent;
+			path = LocalPlay;
 			sourceTree = "<group>";
 		};
 		CAF82561245C77B20064359E /* State */ = {
@@ -1089,6 +1092,7 @@
 				CAFA467623D8BCEF003C38AB /* GameViewARController.swift in Sources */,
 				CAF82570245D59730064359E /* AppEnvironment.swift in Sources */,
 				CAC730F7246BDF26004DB450 /* SettingsList.swift in Sources */,
+				CAA3FC91257C0C7500F78EBC /* LocalOpponent.swift in Sources */,
 				CA804536254BA6B900415DF8 /* Logger.swift in Sources */,
 				CA1BDD922570C35200A16D26 /* LoadingView.swift in Sources */,
 				CAF8255C245C6C640064359E /* Loadable.swift in Sources */,
@@ -1169,7 +1173,7 @@
 				CA8F46DD245DD27600B136D0 /* LoginSignupForm.swift in Sources */,
 				CAC730FF246DF74E004DB450 /* ProfileViewModel.swift in Sources */,
 				CAFA469C23DAD215003C38AB /* GameHUD.swift in Sources */,
-				CA6CC92924A9579700E8CB27 /* AgentPicker.swift in Sources */,
+				CA6CC92924A9579700E8CB27 /* LocalOpponentPicker.swift in Sources */,
 				CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */,
 				CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */,
 				CAF8256C245C87340064359E /* Publisher+Extensions.swift in Sources */,
