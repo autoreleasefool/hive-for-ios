@@ -21,8 +21,8 @@ class LocalGameClient: GameClient {
 
 	func prepare(configuration: GameClientConfiguration) {
 		switch configuration {
-		case .local(let gameState):
-			break // TODO: set up local state
+		case .local(let gameState, let whitePlayer, let blackPlayer):
+			prepareLocalConfiguration(gameState, whitePlayer, blackPlayer)
 		case .agent(let gameState, let player, let agentConfiguration):
 			prepareAgentConfiguration(gameState, player, agentConfiguration)
 		case .online:
@@ -40,6 +40,18 @@ class LocalGameClient: GameClient {
 			localPlayer: player,
 			agentConfiguration: agentConfiguration,
 			agentPlayer: agentConfiguration.agent()
+		)
+	}
+
+	private func prepareLocalConfiguration(
+		_ gameState: GameState,
+		_ whitePlayer: UUID,
+		_ blackPlayer: UUID
+	) {
+		self.state = PlayerGameState(
+			gameState: GameState(from: gameState),
+			whitePlayer: whitePlayer,
+			blackPlayer: blackPlayer
 		)
 	}
 
@@ -205,5 +217,38 @@ private struct AgentGameState: LocalGameState {
 
 	func forfeit() -> UUID {
 		Account.offline.userId
+	}
+}
+
+private struct PlayerGameState: LocalGameState {
+	var gameState: GameState
+	var whitePlayer: UUID
+	var blackPlayer: UUID
+
+	var isPlayerTurn: Bool {
+		true
+	}
+
+	var winner: UUID? {
+		switch gameState.endState {
+		case .draw, .none:
+			return nil
+		case .playerWins(.white):
+			return whitePlayer
+		case .playerWins(.black):
+			return blackPlayer
+		}
+	}
+
+	func playFirstMove() {}
+	func playNextMove() {}
+
+	func forfeit() -> UUID {
+		switch gameState.currentPlayer {
+		case .white:
+			return whitePlayer
+		case .black:
+			return blackPlayer
+		}
 	}
 }

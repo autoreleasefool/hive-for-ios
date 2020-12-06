@@ -98,8 +98,15 @@ extension LocalRoomView {
 
 		switch viewModel.opponent {
 		case .human:
+			guard let host = viewModel.match.host, let opponent = viewModel.match.opponent else {
+				handleAction(.failedToJoinMatch)
+				return
+			}
+
+			let whitePlayer = viewModel.matchOptions.contains(.hostIsWhite) ? host.id : opponent.id
+			let blackPlayer = viewModel.matchOptions.contains(.hostIsWhite) ? opponent.id : host.id
 			container.interactors.clientInteractor
-				.prepare(.local, clientConfiguration: .local(gameState))
+				.prepare(.local, clientConfiguration: .local(gameState, whitePlayer: whitePlayer, blackPlayer: blackPlayer))
 		case .agent(let configuration):
 			container.interactors.clientInteractor
 				.prepare(.local, clientConfiguration: .agent(gameState, viewModel.player, configuration))

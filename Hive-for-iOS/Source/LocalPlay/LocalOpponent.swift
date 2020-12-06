@@ -15,7 +15,7 @@ enum LocalOpponent: Identifiable {
 	var name: String {
 		switch self {
 		case .human:
-			return "Human"
+			return "Second player"
 		case .agent(let agent):
 			return agent.name
 		}

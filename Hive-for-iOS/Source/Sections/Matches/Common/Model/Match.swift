@@ -42,9 +42,15 @@ struct Match: Identifiable, Decodable, Equatable {
 		withOptions options: Set<Match.Option>,
 		withGameOptions gameOptions: Set<GameState.Option>
 	) -> Match {
-		Match(
+		let hostName: String
+		switch enemy {
+		case .human: hostName = "First player"
+		case .agent: hostName = "Human player"
+		}
+
+		return Match(
 			id: UUID(),
-			host: User.createOfflineUser(),
+			host: User.createOfflineUser(withName: hostName),
 			opponent: enemy.user,
 			winner: nil,
 			moves: [],
@@ -75,10 +81,10 @@ extension Match {
 			id == Account.offline.userId
 		}
 
-		static func createOfflineUser() -> User {
+		static func createOfflineUser(withName name: String) -> User {
 			User(
 				id: Account.offline.userId,
-				displayName: "Local",
+				displayName: name,
 				elo: 0,
 				avatarUrl: nil
 			)

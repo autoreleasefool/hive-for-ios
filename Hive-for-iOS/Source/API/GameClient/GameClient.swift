@@ -26,7 +26,7 @@ enum GameClientError: LocalizedError {
 
 enum GameClientConfiguration {
 	case online(URL, Account?)
-	case local(GameState)
+	case local(GameState, whitePlayer: UUID, blackPlayer: UUID)
 	case agent(GameState, Player, AgentConfiguration)
 }
 
