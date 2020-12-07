@@ -20,8 +20,8 @@ enum LobbyListViewAction: BaseViewAction {
 
 	case joinMatch(Match.ID)
 	case createNewMatch
-	case createOnlineMatchVsPlayer
-	case createLocalMatchVsComputer
+	case createOnlineMatch
+	case createLocalMatch
 	case cancelCreateMatch
 }
 
@@ -101,10 +101,10 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			createNewMatch()
 		case .joinMatch(let id):
 			joinMatch(withId: id)
-		case .createOnlineMatchVsPlayer:
+		case .createOnlineMatch:
 			creatingOnlineRoom = true
 			showCreateMatchPrompt = false
-		case .createLocalMatchVsComputer:
+		case .createLocalMatch:
 			creatingLocalRoom = true
 			showCreateMatchPrompt = false
 		case .cancelCreateMatch:
@@ -141,7 +141,7 @@ class LobbyListViewModel: ViewModel<LobbyListViewAction>, ObservableObject {
 			} else if isAIGameModeEnabled {
 				showCreateMatchPrompt = true
 			} else {
-				postViewAction(.createOnlineMatchVsPlayer)
+				postViewAction(.createOnlineMatch)
 			}
 		}
 	}

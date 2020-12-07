@@ -58,13 +58,13 @@ struct LobbyList: View {
 				.popoverSheet(isPresented: $viewModel.showCreateMatchPrompt) {
 					PopoverSheetConfig(
 						title: "Create a match?",
-						message: "You can create a new match against another player, or play locally vs the computer.",
+						message: "You can create a new match online, or play locally vs the computer or a friend.",
 						buttons: [
-							PopoverSheetConfig.ButtonConfig(title: "vs Player", type: .default) {
-								viewModel.postViewAction(.createOnlineMatchVsPlayer)
+							PopoverSheetConfig.ButtonConfig(title: "Online", type: .default) {
+								viewModel.postViewAction(.createOnlineMatch)
 							},
-							PopoverSheetConfig.ButtonConfig(title: "vs Computer", type: .default) {
-								viewModel.postViewAction(.createLocalMatchVsComputer)
+							PopoverSheetConfig.ButtonConfig(title: "Local", type: .default) {
+								viewModel.postViewAction(.createLocalMatch)
 							},
 							PopoverSheetConfig.ButtonConfig(title: "Cancel", type: .cancel) {
 								viewModel.postViewAction(.cancelCreateMatch)
