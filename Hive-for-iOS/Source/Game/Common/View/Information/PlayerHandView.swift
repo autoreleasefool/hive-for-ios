@@ -53,7 +53,14 @@ struct PlayerHandView: View {
 #if DEBUG
 struct PlayerHandViewPreview: PreviewProvider {
 	static var previews: some View {
-		PlayerHandView(hand: .init(player: .white, playingAs: .black, state: .init()))
+		PlayerHandView(
+			hand: GameInformation.PlayerHand(
+				owner: .white,
+				title: "White's hand",
+				isPlayable: false,
+				state: .init()
+			)
+		)
 			.background(Color(.backgroundRegular))
 	}
 }

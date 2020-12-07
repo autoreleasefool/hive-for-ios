@@ -183,7 +183,7 @@ class GameView2D: SKScene {
 		selectedPiece: GameViewModel.SelectedPiece?
 	) {
 		if let viewModel = playerViewModel {
-			viewModel.gameState.unitsInHand[viewModel.playingAs]?.forEach {
+			viewModel.gameState.unitsInHand[viewModel.activePlayer]?.forEach {
 				guard $0 != selectedPiece?.piece else { return }
 				resetPiece($0)
 			}

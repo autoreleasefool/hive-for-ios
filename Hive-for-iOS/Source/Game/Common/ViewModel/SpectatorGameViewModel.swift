@@ -27,7 +27,7 @@ class SpectatorGameViewModel: GameViewModel {
 	override init(setup: Game.Setup) {
 		switch setup.mode {
 		case .spectate: break
-		case .play:
+		case .singlePlayer, .twoPlayer:
 			fatalError("Cannot play with SpectatorViewModel")
 		}
 		super.init(setup: setup)
@@ -39,7 +39,18 @@ class SpectatorGameViewModel: GameViewModel {
 		switch viewAction {
 		case .openHand(let player):
 			promptFeedbackGenerator.impactOccurred()
-			postViewAction(.presentInformation(.playerHand(.init(player: player, playingAs: player.next, state: gameState))))
+			postViewAction(
+				.presentInformation(
+					.playerHand(
+						GameInformation.PlayerHand(
+							owner: player,
+							title: "\(player)'s hand",
+							isPlayable: false,
+							state: gameState
+						)
+					)
+				)
+			)
 		case .selectedFromHand(_, let pieceClass):
 			enquireFromHand(pieceClass)
 
@@ -62,20 +73,24 @@ class SpectatorGameViewModel: GameViewModel {
 
 	override func showEndGame(withWinner winner: Player?) {
 		_hasGameEnded = true
-		presentedGameInformation = .gameEnd(.init(
-			winner: winner,
-			playingAs: nil,
-			wasForfeit: false
-		))
+		presentedGameInformation = .gameEnd(
+			GameInformation.EndState(
+				winner: winner,
+				playingAs: nil,
+				wasForfeit: false,
+				wasSpectating: true
+			)
+		)
 	}
 
 	override func showForfeit(byPlayer player: Player) {
 		_hasGameEnded = true
 		presentedGameInformation = .gameEnd(
-			.init(
+			GameInformation.EndState(
 				winner: player.next,
 				playingAs: nil,
-				wasForfeit: true
+				wasForfeit: true,
+				wasSpectating: true
 			)
 		)
 	}

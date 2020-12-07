@@ -16,7 +16,7 @@ enum GameInformation {
 	case rule(GameRule?)
 	case gameEnd(EndState)
 	case settings
-	case playerMustPass
+	case playerMustPass(Player)
 	case reconnecting(Int)
 
 	init?(fromLink link: String) {
@@ -36,7 +36,7 @@ enum GameInformation {
 
 	var title: String {
 		switch self {
-		case .playerHand(let hand): return (hand.isPlayerHand ? "Your" : "Opponent's") + " hand"
+		case .playerHand(let hand): return hand.title
 		case .pieceClass(let pieceClass): return pieceClass.description
 		case .stack: return "Pieces in stack"
 		case .rule(let rule): return rule?.title ?? "All rules"
@@ -54,7 +54,7 @@ enum GameInformation {
 
 	var subtitle: String? {
 		switch self {
-		case .playerHand(let hand): return hand.player.description
+		case .playerHand(let hand): return hand.owner.description
 		case .pieceClass(let pieceClass): return pieceClass.rules
 		case .rule(let rule): return rule?.description
 		case .stack: return
@@ -81,7 +81,7 @@ enum GameInformation {
 				subtitle = "Both queens have been surrounded in the same turn, which means it's a tie!"
 			}
 
-			if state.playingAs == nil {
+			if state.wasSpectating {
 				subtitle += " Return to the lobby to watch another game."
 			} else {
 				subtitle += " Return to the lobby to play another game."
@@ -93,10 +93,10 @@ enum GameInformation {
 				"but if a connection cannot be made, you will forfeit the match. This dialog will dismiss " +
 				"automatically if the connection is restored.\n" +
 				"Please wait (\(attempts)/\(OnlineGameClient.maxReconnectAttempts))."
-		case .playerMustPass:
-			return "Abiding by the rules of the game, there is nowhere for you to place a new piece, " +
+		case .playerMustPass(let player):
+			return "Abiding by the rules of the game, there is nowhere for you (\(player)) to place a new piece, " +
 				"or move an existing piece on the board. You are considered blocked and must [pass](rule:Passing) this turn. " +
-				"Your opponent will move again. Dismiss this dialog or tap below to pass your turn."
+				"Your opponent (\(player.next)) will move again. Dismiss this dialog or tap below to pass your turn."
 		case .settings: return nil
 		}
 	}
@@ -130,6 +130,7 @@ extension GameInformation {
 		let winner: Player?
 		let playingAs: Player?
 		let wasForfeit: Bool
+		let wasSpectating: Bool
 	}
 }
 
@@ -137,18 +138,16 @@ extension GameInformation {
 
 extension GameInformation {
 	struct PlayerHand {
-		let player: Player
-		let playingAs: Player
+		let owner: Player
+		let title: String
+		let isPlayable: Bool
 		let piecesInHand: [Piece]
 
-		var isPlayerHand: Bool {
-			playingAs == player
-		}
-
-		init(player: Player, playingAs: Player, state: GameState) {
-			self.player = player
-			self.playingAs = playingAs
-			self.piecesInHand = Array(state.unitsInHand[player] ?? []).sorted()
+		init(owner: Player, title: String, isPlayable: Bool, state: GameState) {
+			self.owner = owner
+			self.title = title
+			self.isPlayable = isPlayable
+			self.piecesInHand = Array(state.unitsInHand[owner] ?? []).sorted()
 		}
 	}
 }

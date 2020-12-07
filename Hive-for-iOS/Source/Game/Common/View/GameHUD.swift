@@ -141,7 +141,7 @@ struct GameHUDPreview: PreviewProvider {
 					withGameOptions: Set()
 				),
 				state: GameState(),
-				mode: .play(player: .white, configuration: .online)
+				mode: .singlePlayer(player: .white, configuration: .local)
 			)))
 			.background(Color(.backgroundDark).edgesIgnoringSafeArea(.all))
 	}

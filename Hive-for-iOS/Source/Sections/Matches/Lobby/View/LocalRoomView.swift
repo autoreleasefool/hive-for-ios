@@ -107,16 +107,22 @@ extension LocalRoomView {
 			let blackPlayer = viewModel.matchOptions.contains(.hostIsWhite) ? opponent.id : host.id
 			container.interactors.clientInteractor
 				.prepare(.local, clientConfiguration: .local(gameState, whitePlayer: whitePlayer, blackPlayer: blackPlayer))
+
+			container.appState[\.gameSetup] = .init(
+				match: viewModel.match,
+				state: gameState,
+				mode: .twoPlayer
+			)
 		case .agent(let configuration):
 			container.interactors.clientInteractor
 				.prepare(.local, clientConfiguration: .agent(gameState, viewModel.player, configuration))
-		}
 
-		container.appState[\.gameSetup] = .init(
-			match: viewModel.match,
-			state: gameState,
-			mode: .play(player: viewModel.player, configuration: .local)
-		)
+			container.appState[\.gameSetup] = .init(
+				match: viewModel.match,
+				state: gameState,
+				mode: .singlePlayer(player: viewModel.player, configuration: .local)
+			)
+		}
 	}
 
 	private func exitMatch() {

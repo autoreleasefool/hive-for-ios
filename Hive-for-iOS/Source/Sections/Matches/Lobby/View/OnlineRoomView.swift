@@ -170,7 +170,7 @@ extension OnlineRoomView {
 		container.appState[\.gameSetup] = Game.Setup(
 			match: match,
 			state: state,
-			mode: .play(player: player, configuration: .online)
+			mode: .singlePlayer(player: player, configuration: .online)
 		)
 	}
 

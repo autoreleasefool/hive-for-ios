@@ -26,8 +26,10 @@ struct Game: View {
 
 	init(setup: Setup) {
 		switch setup.mode {
-		case .play: _viewModel = StateObject(wrappedValue: PlayerGameViewModel(setup: setup))
-		case .spectate: _viewModel = StateObject(wrappedValue: SpectatorGameViewModel(setup: setup))
+		case .singlePlayer, .twoPlayer
+		: _viewModel = StateObject(wrappedValue: PlayerGameViewModel(setup: setup))
+		case .spectate:
+			_viewModel = StateObject(wrappedValue: SpectatorGameViewModel(setup: setup))
 		}
 	}
 
@@ -80,7 +82,8 @@ extension Game {
 
 extension Game.Setup {
 	enum Mode: Equatable {
-		case play(player: Player, configuration: ClientInteractorConfiguration)
+		case singlePlayer(player: Player, configuration: ClientInteractorConfiguration)
+		case twoPlayer
 		case spectate
 	}
 }

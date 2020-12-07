@@ -14,7 +14,10 @@ import SwiftUI
 class PlayerGameViewModel: GameViewModel {
 	@Published var state: State = .begin
 
-	var playingAs: Player
+	var playingAs: Player?
+	var activePlayer: Player {
+		playingAs ?? gameState.currentPlayer
+	}
 
 	override var isSpectating: Bool {
 		false
@@ -31,9 +34,12 @@ class PlayerGameViewModel: GameViewModel {
 	override init(setup: Game.Setup) {
 		let clientMode: ClientInteractorConfiguration
 		switch setup.mode {
-		case .play(let player, let configuration):
+		case .singlePlayer(let player, let configuration):
 			self.playingAs = player
 			clientMode = configuration
+		case .twoPlayer:
+			self.playingAs = nil
+			clientMode = .local
 		case .spectate:
 			fatalError("Cannot spectate with PlayerGameViewModel")
 		}
@@ -49,7 +55,20 @@ class PlayerGameViewModel: GameViewModel {
 			hideEmojiPicker()
 		case .openHand(let player):
 			promptFeedbackGenerator.impactOccurred()
-			postViewAction(.presentInformation(.playerHand(.init(player: player, playingAs: playingAs, state: gameState))))
+			postViewAction(
+				.presentInformation(
+					.playerHand(
+						GameInformation.PlayerHand(
+							owner: player,
+							title: playingAs == nil
+								? "\(player)'s hand"
+								: (playingAs == player ? "Your" : "Opponent's") + " hand",
+							isPlayable: playingAs == nil || (playingAs == player && gameState.currentPlayer == player),
+							state: gameState
+						)
+					)
+				)
+			)
 		case .selectedFromHand(let player, let pieceClass):
 			selectFromHand(player, pieceClass)
 
@@ -90,7 +109,7 @@ class PlayerGameViewModel: GameViewModel {
 
 	override func setupNewGame() {
 		guard !inGame && viewContentReady && viewInteractionsReady else { return }
-		if gameState.currentPlayer == playingAs {
+		if gameState.currentPlayer == activePlayer {
 			transition(to: .playerTurn)
 		} else {
 			transition(to: .opponentTurn)
@@ -110,19 +129,25 @@ class PlayerGameViewModel: GameViewModel {
 	}
 
 	override func showEndGame(withWinner winner: Player?) {
-		presentedGameInformation = .gameEnd(.init(
-			winner: winner,
-			playingAs: playingAs,
-			wasForfeit: false
-		))
+		presentedGameInformation = .gameEnd(
+			GameInformation.EndState(
+				winner: winner,
+				playingAs: playingAs,
+				wasForfeit: false,
+				wasSpectating: false
+			)
+		)
 	}
 
 	override func showForfeit(byPlayer player: Player) {
-		presentedGameInformation = .gameEnd(.init(
-			winner: player.next,
-			playingAs: playingAs,
-			wasForfeit: true
-		))
+		presentedGameInformation = .gameEnd(
+			GameInformation.EndState(
+				winner: player.next,
+				playingAs: playingAs,
+				wasForfeit: true,
+				wasSpectating: false
+			)
+		)
 	}
 
 	override func endGame() {
@@ -135,7 +160,7 @@ class PlayerGameViewModel: GameViewModel {
 		let previousState = gameState
 		self.gameState = newState
 
-		let opponent = playingAs.next
+		let opponent = playingAs?.next
 		guard let previousUpdate = newState.updates.last,
 			previousUpdate != previousState.updates.last else {
 			return
@@ -146,18 +171,18 @@ class PlayerGameViewModel: GameViewModel {
 		if newState.hasGameEnded {
 			endGame()
 		} else {
-			transition(to: wasOpponentMove ? .playerTurn : .opponentTurn)
+			transition(to: playingAs == nil ? .playerTurn : (wasOpponentMove ? .playerTurn : .opponentTurn))
 		}
 
-		guard wasOpponentMove else { return }
-		presentMovement(from: opponent, movement: previousUpdate.movement)
+		guard let opp = opponent, wasOpponentMove else { return }
+		presentMovement(from: opp, movement: previousUpdate.movement)
 	}
 
 	// MARK: Interactions
 
 	private func selectFromHand(_ player: Player, _ pieceClass: Piece.Class) {
 		guard inGame else { return }
-		if player == playingAs {
+		if player == activePlayer {
 			placeFromHand(pieceClass)
 		} else {
 			enquireFromHand(pieceClass)
@@ -167,7 +192,7 @@ class PlayerGameViewModel: GameViewModel {
 	private func placeFromHand(_ pieceClass: Piece.Class) {
 		guard inGame else { return }
 		actionFeedbackGenerator.impactOccurred()
-		if let piece = gameState.firstUnplayed(of: pieceClass, inHand: playingAs) {
+		if let piece = gameState.firstUnplayed(of: pieceClass, inHand: activePlayer) {
 			let position = selectedPieceDefaultPosition
 			selectedPiece = (
 				selectedPiece.selected,
@@ -310,7 +335,9 @@ class PlayerGameViewModel: GameViewModel {
 	override var displayState: String {
 		switch state {
 		case .playerTurn:
-			return "Your turn"
+			return playingAs == nil
+				? ("\(gameState.currentPlayer)'s turn")
+				: "Your turn"
 		case .sendingMovement:
 			return "Sending movement..."
 		case .opponentTurn:
@@ -323,7 +350,7 @@ class PlayerGameViewModel: GameViewModel {
 	}
 
 	override func handImage(for player: Player) -> UIImage {
-		if player == playingAs {
+		if player == activePlayer {
 			return state == .playerTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
 		} else {
 			return state == .opponentTurn ? ImageAsset.Icon.handFilled : ImageAsset.Icon.handOutlined
@@ -360,7 +387,7 @@ class PlayerGameViewModel: GameViewModel {
 extension PlayerGameViewModel {
 	private var selectedPieceDefaultPosition: Position {
 		let piecePositions = Set(gameState.stacks.keys)
-		let placeablePositions = gameState.placeablePositions(for: playingAs)
+		let placeablePositions = gameState.placeablePositions(for: activePlayer)
 		let adjacentToPiecePositions = Set(piecePositions.flatMap { $0.adjacent() })
 			.subtracting(piecePositions)
 		let adjacentToAdjacentPositions = Set(adjacentToPiecePositions.flatMap { $0.adjacent() })
@@ -442,8 +469,8 @@ extension PlayerGameViewModel {
 
 		guard nextState == .playerTurn else { return }
 
-		if gameState.currentPlayer == playingAs && gameState.availableMoves == [.pass] {
-			presentedGameInformation = .playerMustPass
+		if gameState.currentPlayer == activePlayer && gameState.availableMoves == [.pass] {
+			presentedGameInformation = .playerMustPass(activePlayer)
 		}
 	}
 
@@ -475,7 +502,7 @@ extension PlayerGameViewModel {
 		case (.playerTurn, _): return false
 
 		// A played move leads to a new turn
-		case (.sendingMovement, .opponentTurn): return true
+		case (.sendingMovement, .opponentTurn), (.sendingMovement, .playerTurn): return true
 		case (.opponentTurn, .playerTurn): return true
 		case (.opponentTurn, _): return false
 
