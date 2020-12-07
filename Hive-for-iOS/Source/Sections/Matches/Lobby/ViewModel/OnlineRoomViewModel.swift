@@ -180,7 +180,7 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 
 	private func playerJoined(id: UUID) {
 		if userIsHost {
-			actions.send(.showLoaf(LoafState("An opponent has joined!", state: .success)))
+			actions.send(.showLoaf(LoafState("An opponent has joined!", style: .success())))
 		}
 		actions.send(.loadMatchDetails)
 	}
@@ -188,10 +188,10 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 	private func playerLeft(id: UUID) {
 		readyPlayers.remove(id)
 		if userIsHost && id == match.value?.opponent?.id {
-			actions.send(.showLoaf(LoafState("Your opponent has left!", state: .warning)))
+			actions.send(.showLoaf(LoafState("Your opponent has left!", style: .warning())))
 			actions.send(.loadMatchDetails)
 		} else if !userIsHost && id == match.value?.host?.id {
-			actions.send(.showLoaf(LoafState("The host has left!", state: .warning)))
+			actions.send(.showLoaf(LoafState("The host has left!", style: .warning())))
 			actions.send(.closeConnection)
 		}
 	}

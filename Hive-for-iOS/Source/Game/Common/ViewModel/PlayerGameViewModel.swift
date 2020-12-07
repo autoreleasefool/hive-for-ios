@@ -95,7 +95,7 @@ class PlayerGameViewModel: GameViewModel {
 		case .forfeitConfirmed:
 			forfeitGame()
 		case .arViewError(let error):
-			loafState.send(LoafState(error.localizedDescription, state: .error))
+			loafState.send(LoafState(error.localizedDescription, style: .error()))
 
 		case .toggleDebug:
 			debugMode.toggle()

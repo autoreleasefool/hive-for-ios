@@ -30,7 +30,7 @@ extension Store {
 
 extension Binding where Value: Equatable {
 	func dispatched<State>(to state: Store<State>, _ keypath: WritableKeyPath<State, Value>) -> Self {
-		.init(
+		Binding(
 			get: { () -> Value in
 				self.wrappedValue
 			},

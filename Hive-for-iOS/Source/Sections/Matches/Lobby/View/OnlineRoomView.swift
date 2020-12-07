@@ -192,12 +192,12 @@ extension OnlineRoomView {
 	}
 
 	private func failedToJoin() {
-		toaster.loaf.send(LoafState("Failed to join match", state: .error))
+		toaster.loaf.send(LoafState("Failed to join match", style: .error()))
 		presentationMode.wrappedValue.dismiss()
 	}
 
 	private func failedToReconnect() {
-		toaster.loaf.send(LoafState("Failed to reconnect", state: .error))
+		toaster.loaf.send(LoafState("Failed to reconnect", style: .error()))
 		presentationMode.wrappedValue.dismiss()
 	}
 

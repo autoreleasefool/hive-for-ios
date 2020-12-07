@@ -50,7 +50,7 @@ enum HiveAPIError: LocalizedError {
 	}
 
 	var loaf: LoafState {
-		LoafState(errorDescription ?? "Unknown (API Error)", state: .error)
+		LoafState(errorDescription ?? "Unknown (API Error)", style: .error())
 	}
 }
 

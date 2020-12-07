@@ -171,7 +171,7 @@ struct GameServerError {
 	}
 
 	var loaf: LoafState {
-		return LoafState("\(description) (\(code))", state: .error)
+		return LoafState("\(description) (\(code))", style: .error())
 	}
 }
 

@@ -49,7 +49,7 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			}
 
 			if let errorMessage = errorMessage {
-				actions.send(.showLoaf(LoafState(errorMessage, state: .error)))
+				actions.send(.showLoaf(LoafState(errorMessage, style: .error())))
 			}
 		}
 	}

@@ -179,7 +179,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		case .returnToLobby:
 			exitToLobby()
 		case .arViewError(let error):
-			loafState.send(LoafState(error.localizedDescription, state: .error))
+			loafState.send(LoafState(error.localizedDescription, style: .error()))
 
 		case .hasMovedInBounds:
 			isOutOfBounds = false
@@ -318,13 +318,15 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			image = ImageAsset.Movement.place
 		}
 
-		loafState.send(LoafState(
-			message,
-			state: .custom(Loaf.Style(
-				backgroundColor: UIColor(.backgroundRegular),
-				textColor: UIColor(.textRegular),
-				icon: image)
-			)) { [weak self] dismissalReason in
+		loafState.send(
+			LoafState(
+				message,
+				style: LoafState.Style(
+					backgroundColor: .backgroundLight,
+					textColor: .textRegular,
+					icon: image
+				)
+			) { [weak self] dismissalReason in
 				guard let self = self,
 					dismissalReason == .tapped,
 					let position = movement.targetPosition else { return }
@@ -350,7 +352,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		logger.debug("Client did not connect: \(String(describing: error))")
 
 		guard reconnectAttempts < OnlineGameClient.maxReconnectAttempts else {
-			loafState.send(LoafState("Failed to reconnect", state: .error))
+			loafState.send(LoafState("Failed to reconnect", style: .error()))
 			exitToLobby()
 			return
 		}
@@ -418,13 +420,13 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			.optionNonModifiable,
 			.optionValueNotUpdated,
 			.unknownError:
-			loafState.send(LoafState("Unknown server error", state: .error))
+			loafState.send(LoafState("Unknown server error", style: .error()))
 		case .invalidCommand:
-			loafState.send(LoafState("Invalid command", state: .error))
+			loafState.send(LoafState("Invalid command", style: .error()))
 		case .invalidMovement:
-			loafState.send(LoafState("Invalid movement. Try again", state: .warning))
+			loafState.send(LoafState("Invalid movement. Try again", style: .warning()))
 		case .notPlayerTurn:
-			loafState.send(LoafState("It's not your turn", state: .info))
+			loafState.send(LoafState("It's not your turn", style: .info()))
 		}
 	}
 }

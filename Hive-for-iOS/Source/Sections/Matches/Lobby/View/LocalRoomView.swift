@@ -88,7 +88,7 @@ extension LocalRoomView {
 		case .exitMatch:
 			exitMatch()
 		case .failedToJoinMatch:
-			toaster.loaf.send(LoafState("Failed to start match", state: .error))
+			toaster.loaf.send(LoafState("Failed to start match", style: .error()))
 			exitMatch()
 		}
 	}

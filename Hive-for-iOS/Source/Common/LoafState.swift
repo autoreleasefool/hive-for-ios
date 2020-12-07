@@ -18,7 +18,7 @@ struct LoafState: Hashable, Equatable {
 
 	private let id: Int
 	let message: String
-	let state: Loaf.State
+	let style: Style
 	let location: Loaf.Location
 	let presentingDirection: Loaf.Direction
 	let dismissingDirection: Loaf.Direction
@@ -27,7 +27,7 @@ struct LoafState: Hashable, Equatable {
 
 	init(
 		_ message: String,
-		state: Loaf.State = .info,
+		style: Style = .info(),
 		location: Loaf.Location = .bottom,
 		presentingDirection: Loaf.Direction = .vertical,
 		dismissingDirection: Loaf.Direction = .vertical,
@@ -36,7 +36,7 @@ struct LoafState: Hashable, Equatable {
 	) {
 		self.id = Self.nextId()
 		self.message = message
-		self.state = state
+		self.style = style
 		self.location = location
 		self.presentingDirection = presentingDirection
 		self.dismissingDirection = dismissingDirection
@@ -47,7 +47,7 @@ struct LoafState: Hashable, Equatable {
 	func show(withSender sender: UIViewController) {
 		Loaf(
 			message,
-			state: state,
+			state: .custom(style.build()),
 			location: location,
 			presentingDirection: presentingDirection,
 			dismissingDirection: dismissingDirection,
@@ -58,7 +58,7 @@ struct LoafState: Hashable, Equatable {
 	func build() -> Loaf {
 		Loaf(
 			message,
-			state: state,
+			state: .custom(style.build()),
 			location: location,
 			presentingDirection: presentingDirection,
 			dismissingDirection: dismissingDirection,
@@ -72,5 +72,65 @@ struct LoafState: Hashable, Equatable {
 
 	func hash(into hasher: inout Hasher) {
 		hasher.combine(id)
+	}
+}
+
+// MARK: - Style
+
+extension LoafState {
+	struct Style {
+		let backgroundColor: ColorAsset
+		let textColor: ColorAsset
+		let icon: UIImage?
+
+		init(
+			backgroundColor: ColorAsset,
+			textColor: ColorAsset,
+			icon: UIImage?
+		) {
+			self.backgroundColor = backgroundColor
+			self.textColor = textColor
+			self.icon = icon
+		}
+
+		func build() -> Loaf.Style {
+			Loaf.Style(
+				backgroundColor: UIColor(backgroundColor),
+				textColor: UIColor(textColor),
+				icon: icon
+			)
+		}
+
+		static func info() -> Self {
+			Style(
+				backgroundColor: .backgroundLight,
+				textColor: .textRegular,
+				icon: Loaf.Icon.info
+			)
+		}
+
+		static func error() -> Self {
+			Style(
+				backgroundColor: .highlightDestructive,
+				textColor: .textRegular,
+				icon: Loaf.Icon.error
+			)
+		}
+
+		static func success() -> Self {
+			Style(
+				backgroundColor: .highlightSuccess,
+				textColor: .textRegular,
+				icon: Loaf.Icon.success
+			)
+		}
+
+		static func warning() -> Self {
+			Style(
+				backgroundColor: .highlightRegular,
+				textColor: .textRegular,
+				icon: Loaf.Icon.warning
+			)
+		}
 	}
 }

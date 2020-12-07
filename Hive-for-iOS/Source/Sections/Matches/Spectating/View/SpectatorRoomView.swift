@@ -91,7 +91,7 @@ extension SpectatorRoomView {
 		case .exit:
 			presentationMode.wrappedValue.dismiss()
 		case .failedToSpectateMatch, .matchNotOpenForSpectating:
-			toaster.loaf.send(LoafState("Failed to start spectating", state: .error))
+			toaster.loaf.send(LoafState("Failed to start spectating", style: .error()))
 			presentationMode.wrappedValue.dismiss()
 		}
 	}
