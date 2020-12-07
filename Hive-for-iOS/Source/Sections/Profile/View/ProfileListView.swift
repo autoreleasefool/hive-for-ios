@@ -101,7 +101,7 @@ extension ProfileListView {
 		EmptyState(
 			header: "An error occurred",
 			message: "We can't fetch any users right now.\n\(viewModel.errorMessage(from: error))",
-			action: .init(text: "Refresh") {
+			action: EmptyState.Action(text: "Refresh") {
 				viewModel.postViewAction(.reload)
 			}
 		)

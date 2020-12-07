@@ -108,7 +108,7 @@ extension LocalRoomView {
 			container.interactors.clientInteractor
 				.prepare(.local, clientConfiguration: .local(gameState, whitePlayer: whitePlayer, blackPlayer: blackPlayer))
 
-			container.appState[\.gameSetup] = .init(
+			container.appState[\.gameSetup] = Game.Setup(
 				match: viewModel.match,
 				state: gameState,
 				mode: .twoPlayer
@@ -117,7 +117,7 @@ extension LocalRoomView {
 			container.interactors.clientInteractor
 				.prepare(.local, clientConfiguration: .agent(gameState, viewModel.player, configuration))
 
-			container.appState[\.gameSetup] = .init(
+			container.appState[\.gameSetup] = Game.Setup(
 				match: viewModel.match,
 				state: gameState,
 				mode: .singlePlayer(player: viewModel.player, configuration: .local)

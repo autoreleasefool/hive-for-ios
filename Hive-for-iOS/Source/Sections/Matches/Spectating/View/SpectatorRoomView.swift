@@ -87,7 +87,7 @@ extension SpectatorRoomView {
 				handleAction(.failedToSpectateMatch)
 				return
 			}
-			container.appState[\.gameSetup] = .init(match: match, state: state, mode: .spectate)
+			container.appState[\.gameSetup] = Game.Setup(match: match, state: state, mode: .spectate)
 		case .exit:
 			presentationMode.wrappedValue.dismiss()
 		case .failedToSpectateMatch, .matchNotOpenForSpectating:

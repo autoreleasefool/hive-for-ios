@@ -134,7 +134,7 @@ struct GameHUD: View {
 struct GameHUDPreview: PreviewProvider {
 	static var previews: some View {
 		GameHUD()
-			.environmentObject(GameViewModel(setup: .init(
+			.environmentObject(GameViewModel(setup: Game.Setup(
 				match: Match.createOfflineMatch(
 					against: .agent(.random),
 					withOptions: Set(),

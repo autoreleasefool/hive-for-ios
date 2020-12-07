@@ -182,12 +182,12 @@ struct ContentViewPreview: PreviewProvider {
 			.inject(
 				.init(
 					appState: .init(
-						.init(
+						AppState(
 							account: .failed(AccountRepositoryError.loggedOut),
 							gameSetup: nil,
 							contentSheetNavigation: nil,
-							preferences: .init(),
-							features: .init()
+							preferences: Preferences(),
+							features: Features()
 						)
 					),
 					interactors: .stub

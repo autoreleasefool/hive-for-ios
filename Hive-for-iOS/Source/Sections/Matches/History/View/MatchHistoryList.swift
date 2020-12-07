@@ -104,9 +104,9 @@ struct MatchHistoryList: View {
 		ScrollView {
 			RoomDetailsView(
 				host: match.host?.summary,
-				isHostReady: .init(match.winner?.id == match.host?.id),
+				isHostReady: RoomDetailsView.ReadyStatus(match.winner?.id == match.host?.id),
 				opponent: match.opponent?.summary,
-				isOpponentReady: .init(match.winner?.id == match.opponent?.id),
+				isOpponentReady: RoomDetailsView.ReadyStatus(match.winner?.id == match.opponent?.id),
 				optionsDisabled: true,
 				gameOptionsEnabled: match.gameOptionSet,
 				matchOptionsEnabled: match.optionSet,
@@ -149,7 +149,7 @@ extension MatchHistoryList {
 			header: "No matches found",
 			message: "Try playing a match and when you're finished, you'll find it here. You'll also be able to see " +
 				"your incomplete matches",
-			action: .init(text: "Refresh") {
+			action: EmptyState.Action(text: "Refresh") {
 				viewModel.postViewAction(.loadMatchHistory)
 			}
 		)
@@ -159,7 +159,7 @@ extension MatchHistoryList {
 		EmptyState(
 			header: "An error occurred",
 			message: "We can't fetch your history right now.\n\(viewModel.errorMessage(from: error))",
-			action: .init(text: "Refresh") {
+			action: EmptyState.Action(text: "Refresh") {
 				viewModel.postViewAction(.loadMatchHistory)
 			}
 		)

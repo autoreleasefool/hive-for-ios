@@ -103,7 +103,7 @@ extension ProfileView {
 			message: viewModel.id == nil
 				? "We can't fetch your profile right now.\n\(viewModel.errorMessage(from: error))"
 				: "We can't fetch this profile right now.\n\(viewModel.errorMessage(from: error))",
-			action: .init(text: "Refresh") {
+			action: EmptyState.Action(text: "Refresh") {
 				viewModel.postViewAction(.loadProfile)
 			}
 		)

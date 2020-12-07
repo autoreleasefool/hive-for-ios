@@ -84,7 +84,7 @@ struct OnlineRoomView: View {
 		EmptyState(
 			header: "An error occurred",
 			message: "We can't fetch the match right now.\n\(viewModel.errorMessage(from: error))",
-			action: .init(text: "Refresh") { viewModel.postViewAction(.retryInitialAction) }
+			action: EmptyState.Action(text: "Refresh") { viewModel.postViewAction(.retryInitialAction) }
 		)
 	}
 
@@ -115,9 +115,9 @@ struct OnlineRoomView: View {
 	private func matchDetail(_ match: Match) -> some View {
 		RoomDetailsView(
 			host: match.host?.summary,
-			isHostReady: .init(viewModel.isPlayerReady(id: match.host?.id)),
+			isHostReady: RoomDetailsView.ReadyStatus(viewModel.isPlayerReady(id: match.host?.id)),
 			opponent: match.opponent?.summary,
-			isOpponentReady: .init(viewModel.isPlayerReady(id: match.opponent?.id)),
+			isOpponentReady: RoomDetailsView.ReadyStatus(viewModel.isPlayerReady(id: match.opponent?.id)),
 			optionsDisabled: !viewModel.userIsHost,
 			gameOptionsEnabled: viewModel.gameOptions,
 			matchOptionsEnabled: viewModel.matchOptions,

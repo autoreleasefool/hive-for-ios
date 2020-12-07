@@ -216,7 +216,7 @@ extension LobbyList {
 					? "There don't seem to be any active games right now. Go to the lobby to start your own"
 					: "There doesn't seem to be anybody waiting to play right now. You can start your own match " +
 						"with the '+' button in the top right",
-				action: .init(text: "Refresh") { viewModel.postViewAction(.refresh) }
+				action: EmptyState.Action(text: "Refresh") { viewModel.postViewAction(.refresh) }
 			)
 		}
 	}
@@ -229,7 +229,7 @@ extension LobbyList {
 			EmptyState(
 				header: "An error occurred",
 				message: "We can't fetch the lobby right now.\n\(viewModel.errorMessage(from: error))",
-				action: .init(text: "Refresh") { viewModel.postViewAction(.refresh) }
+				action: EmptyState.Action(text: "Refresh") { viewModel.postViewAction(.refresh) }
 			)
 		}
 	}
@@ -247,7 +247,7 @@ extension LobbyList {
 				isGuestModeEnabled: container.has(feature: .guestMode)
 			),
 			action: offlineStateAction != nil
-				? .init(text: offlineStateAction!) { viewModel.postViewAction(.offlineStateAction) }
+				? EmptyState.Action(text: offlineStateAction!) { viewModel.postViewAction(.offlineStateAction) }
 				: nil
 		)
 	}

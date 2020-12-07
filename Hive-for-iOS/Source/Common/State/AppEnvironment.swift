@@ -98,7 +98,10 @@ extension AppEnvironment {
 		)
 
 		let clientInteractor = LiveClientInteractor(
-			clients: .init(online: repositories.clients.online, local: repositories.clients.local),
+			clients: LiveClientInteractor.Clients(
+				online: repositories.clients.online,
+				local: repositories.clients.local
+			),
 			appState: appState
 		)
 
