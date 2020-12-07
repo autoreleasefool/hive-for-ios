@@ -27,6 +27,11 @@ struct Preferences: Equatable {
 		}
 		set { UserDefaults.standard.set(newValue.rawValue, forKey: Key.pieceColorScheme.rawValue) }
 	}
+
+	var hasDismissedReplayTooltip: Bool {
+		get { UserDefaults.standard.bool(forKey: Key.hasDismissedReplayTooltip.rawValue) }
+		set { UserDefaults.standard.set(newValue, forKey: Key.hasDismissedReplayTooltip.rawValue) }
+	}
 }
 
 // MARK: - Game Mode
@@ -70,5 +75,6 @@ private extension Preferences {
 		case gameMode
 		case disabledEmojiReactions
 		case pieceColorScheme
+		case hasDismissedReplayTooltip
 	}
 }

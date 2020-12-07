@@ -13,37 +13,48 @@ struct Tooltip: View {
 	private var origin: CGPoint = .zero
 	private var foregroundColor: ColorAsset = .textRegular
 	private var backgroundColor: ColorAsset = .highlightPrimary
+	private let onClose: () -> Void
 
-	init(_ title: String) {
+	init(_ title: String, onClose: @escaping () -> Void) {
 		self.title = title
+		self.onClose = onClose
 	}
 
 	@ViewBuilder
 	var body: some View {
 		GeometryReader { geometry in
-			VStack(spacing: 0) {
-				if !indicatorPointingDown(in: geometry) {
-					indicator(geometry)
-				}
+			Button {
+				onClose()
+			} label: {
+				VStack(spacing: 0) {
+					if !indicatorPointingDown(in: geometry) {
+						indicator(geometry)
+					}
 
-				Text(title)
-					.font(.caption)
-					.foregroundColor(foregroundColor)
+					HStack {
+						Image(systemName: "xmark")
+							.foregroundColor(.textRegular)
+							.imageScale(.small)
+						Text(title)
+							.font(.caption)
+							.foregroundColor(foregroundColor)
+					}
 					.padding()
 					.background(
 						RoundedRectangle(cornerRadius: .s)
 							.fill(Color(backgroundColor))
 					)
 
-				if indicatorPointingDown(in: geometry) {
-					indicator(geometry)
+					if indicatorPointingDown(in: geometry) {
+						indicator(geometry)
+					}
 				}
+				.offset(
+					y: origin.y < geometry.frame(in: .local).midY
+						? origin.y + 64
+						: origin.y - 64
+				)
 			}
-			.offset(
-				y: origin.y < geometry.frame(in: .local).midY
-					? origin.y + 64
-					: origin.y - 64
-			)
 		}
 	}
 

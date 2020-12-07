@@ -39,6 +39,7 @@ enum GameViewAction: BaseViewAction {
 	case returnToGameBounds
 
 	case replayLastMove
+	case dismissReplayTooltip
 	case openSettings
 	case forfeit
 	case forfeitConfirmed
@@ -192,6 +193,9 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		case .replayLastMove:
 			replayLastMove()
+		case .dismissReplayTooltip:
+			preferences.hasDismissedReplayTooltip = true
+			objectWillChange.send()
 
 		case .onDisappear:
 			cleanUp()

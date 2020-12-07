@@ -104,15 +104,19 @@ struct GameHUD: View {
 
 	private func replayButton(_ geometry: GeometryProxy) -> some View {
 		Group {
-			Tooltip("If you forget your opponent's last move, tap here for a reminder!")
-				.originating(
-					from: CGPoint(
-						x: geometry.size.width - (buttonDistanceFromEdge.rawValue + Metrics.Spacing.m.rawValue),
-						y: geometry.size.height
-							- (buttonDistanceFromEdge.rawValue + Metrics.Spacing.m.rawValue)
-							- buttonSize.rawValue
-					)
-				)
+//			if !container.preferences.hasDismissedReplayTooltip {
+//				Tooltip("If you forget your opponent's last move, tap here for a reminder!") {
+//					viewModel.postViewAction(.dismissReplayTooltip)
+//				}
+//					.originating(
+//						from: CGPoint(
+//							x: geometry.size.width - (buttonDistanceFromEdge.rawValue + Metrics.Spacing.m.rawValue),
+//							y: geometry.size.height
+//								- (buttonDistanceFromEdge.rawValue + Metrics.Spacing.m.rawValue)
+//								- buttonSize.rawValue
+//						)
+//					)
+//			}
 
 			Button {
 				viewModel.postViewAction(.replayLastMove)
