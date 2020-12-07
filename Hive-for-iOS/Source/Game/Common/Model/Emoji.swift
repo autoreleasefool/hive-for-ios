@@ -18,7 +18,7 @@ enum Emoji: String, CaseIterable {
 	case noGeorge = "NoGeorge"
 
 	var image: UIImage? {
-		UIImage(named: rawValue)
+		UIImage(named: "Emoji/\(rawValue)")
 	}
 }
 
