@@ -102,6 +102,20 @@ struct GameHUD: View {
 		)
 	}
 
+	private func replayButton(_ geometry: GeometryProxy) -> some View {
+		Button {
+			viewModel.postViewAction(.replayLastMove)
+		} label: {
+			Image(systemName: "arrow.2.circlepath")
+				.imageScale(.medium)
+				.foregroundColor(Color(.textSecondary))
+		}
+		.position(
+			x: geometry.size.width - (buttonDistanceFromEdge.rawValue + Metrics.Spacing.m.rawValue),
+			y: geometry.size.height - (buttonDistanceFromEdge.rawValue + Metrics.Spacing.m.rawValue)
+		)
+	}
+
 	var body: some View {
 		GeometryReader { geometry in
 			if !viewModel.shouldHideHUDControls {
@@ -113,6 +127,10 @@ struct GameHUD: View {
 				handButton(for: .white, geometry)
 				handButton(for: .black, geometry)
 				returnToGameButton(geometry)
+
+				if viewModel.gameState.updates.count > 0 {
+					replayButton(geometry)
+				}
 			}
 
 			if hasEmojiEnabled {

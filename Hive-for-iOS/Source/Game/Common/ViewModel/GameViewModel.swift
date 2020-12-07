@@ -38,6 +38,7 @@ enum GameViewAction: BaseViewAction {
 	case hasMovedOutOfBounds
 	case returnToGameBounds
 
+	case replayLastMove
 	case openSettings
 	case forfeit
 	case forfeitConfirmed
@@ -189,6 +190,9 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			isOutOfBounds = false
 			animateToPosition.send(.origin)
 
+		case .replayLastMove:
+			replayLastMove()
+
 		case .onDisappear:
 			cleanUp()
 
@@ -296,6 +300,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	func handImage(for player: Player) -> UIImage {
 		return ImageAsset.Icon.handFilled
+	}
+
+	private func replayLastMove() {
+		guard let lastUpdate = gameState.updates.last else { return }
+		presentMovement(from: lastUpdate.player, movement: lastUpdate.movement)
 	}
 
 	func presentMovement(from player: Player, movement: Movement) {
