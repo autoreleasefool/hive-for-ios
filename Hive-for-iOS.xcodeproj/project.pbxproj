@@ -74,6 +74,7 @@
 		CA9DFA0524F36A650045DA26 /* SpectatorGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9DFA0424F36A650045DA26 /* SpectatorGameViewModel.swift */; };
 		CA9DFA0724F421BB0045DA26 /* PlayerGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9DFA0624F421BB0045DA26 /* PlayerGameViewModel.swift */; };
 		CAA3FC91257C0C7500F78EBC /* LocalOpponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA3FC90257C0C7500F78EBC /* LocalOpponent.swift */; };
+		CAA78AD1257DC9D200246CCD /* Tooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA78AD0257DC9D200246CCD /* Tooltip.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */; };
 		CABDFCCD23DB73E400C697AD /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCCC23DB73E400C697AD /* GameClient.swift */; };
@@ -210,6 +211,7 @@
 		CA9DFA0424F36A650045DA26 /* SpectatorGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpectatorGameViewModel.swift; sourceTree = "<group>"; };
 		CA9DFA0624F421BB0045DA26 /* PlayerGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGameViewModel.swift; sourceTree = "<group>"; };
 		CAA3FC90257C0C7500F78EBC /* LocalOpponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalOpponent.swift; sourceTree = "<group>"; };
+		CAA78AD0257DC9D200246CCD /* Tooltip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tooltip.swift; sourceTree = "<group>"; };
 		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterTabBar.swift; sourceTree = "<group>"; };
 		CABDFCCC23DB73E400C697AD /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
@@ -759,6 +761,7 @@
 				CA797F62246892AC0011E7D1 /* EmptyState.swift */,
 				CABDFD0723DD9FE300C697AD /* UserPreview.swift */,
 				CA5C82E5253E715E008D47B5 /* SearchBar.swift */,
+				CAA78AD0257DC9D200246CCD /* Tooltip.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1150,6 +1153,7 @@
 				CA8F46E5245EC35800B136D0 /* MatchInteractor.swift in Sources */,
 				CA286D08247140A80044BAAE /* SettingsListViewModel.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
+				CAA78AD1257DC9D200246CCD /* Tooltip.swift in Sources */,
 				CAF82560245C76EA0064359E /* Interactors.swift in Sources */,
 				CAFC7A65245C54EE00747E82 /* ProfileView.swift in Sources */,
 				CA797F67246930C80011E7D1 /* UserInteractor.swift in Sources */,

@@ -122,3 +122,13 @@ extension Color {
 		self.init(UIColor(asset))
 	}
 }
+
+extension View {
+	func foregroundColor(_ asset: ColorAsset) -> some View {
+		self.foregroundColor(Color(asset))
+	}
+
+	func backgroundColor(_ asset: ColorAsset) -> some View {
+		self.background(Color(asset))
+	}
+}
