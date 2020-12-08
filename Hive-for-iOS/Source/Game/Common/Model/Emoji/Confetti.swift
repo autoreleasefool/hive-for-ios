@@ -63,6 +63,10 @@ extension Confetti: Emoji {
 		return Confetti(rawValue: confettiName)
 	}
 
+	static func burstCount() -> Int {
+		Int.random(in: 20...30)
+	}
+
 	func serialize() -> String {
 		"CONFETTI {\(rawValue)}"
 	}
@@ -77,7 +81,11 @@ extension Confetti: Emoji {
 	}
 
 	func randomDuration() -> Double {
-		Double.random(in: (3...5))
+		Double.random(in: (3.5...4.5))
+	}
+
+	func initialDelay() -> Double {
+		Double.random(in: 0...1.5)
 	}
 
 	func generatePath(with geometry: GeometryProxy) -> Path {

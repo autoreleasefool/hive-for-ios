@@ -17,8 +17,10 @@ protocol Emoji {
 	func serialize() -> String
 
 	static func from(message: String) -> Self?
+	static func burstCount() -> Int
 	func generatePath(with geometry: GeometryProxy) -> Path
 	func randomDuration() -> Double
+	func initialDelay() -> Double
 	func scale() -> (start: CGFloat, end: CGFloat)
 	func rotationSpeed() -> EmojiRotationSpeed
 	func shouldEaseInOut() -> Bool

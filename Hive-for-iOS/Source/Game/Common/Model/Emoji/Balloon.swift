@@ -34,6 +34,10 @@ extension Balloon: Emoji {
 		return Balloon(rawValue: emojiName)
 	}
 
+	static func burstCount() -> Int {
+		Int.random(in: 15...25)
+	}
+
 	func serialize() -> String {
 		"EMOJI {\(rawValue)}"
 	}
@@ -48,6 +52,10 @@ extension Balloon: Emoji {
 
 	func randomDuration() -> Double {
 		Double.random(in: (1.5...2.5))
+	}
+
+	func initialDelay() -> Double {
+		0
 	}
 
 	func generatePath(with geometry: GeometryProxy) -> Path {

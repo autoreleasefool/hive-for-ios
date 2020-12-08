@@ -15,14 +15,20 @@ struct AnimateableEmoji: Equatable {
 	let shouldEaseInOut: Bool
 
 	let path: Path
+	let initialDelay: Double
 	let duration: Double
 	let scale: (start: CGFloat, end: CGFloat)
 	let rotationSpeed: EmojiRotationSpeed
+
+	var totalDuration: Double {
+		initialDelay + duration
+	}
 
 	init(emoji: Emoji, image: UIImage, geometry: GeometryProxy) {
 		self.emoji = emoji
 		self.image = image
 		self.path = emoji.generatePath(with: geometry)
+		self.initialDelay = emoji.initialDelay()
 		self.duration = emoji.randomDuration()
 		self.scale = emoji.scale()
 		self.rotationSpeed = emoji.rotationSpeed()
@@ -63,19 +69,19 @@ struct AnimatedEmoji: View {
 			.onAppear {
 				withAnimation(
 					emoji.shouldEaseInOut
-						? .easeInOut(duration: emoji.duration)
-						: .linear(duration: emoji.duration)
+						? Animation.easeInOut(duration: emoji.duration).delay(emoji.initialDelay)
+						: Animation.linear(duration: emoji.duration).delay(emoji.initialDelay)
 				) {
 					flag.toggle()
 				}
-				withAnimation(Animation.linear(duration: 1).delay(emoji.duration - 1)) {
+				withAnimation(Animation.linear(duration: 1).delay(emoji.totalDuration - 1)) {
 					opacity = 0
 				}
-				withAnimation(Animation.linear(duration: 0.5).delay(emoji.duration - 0.5)) {
+				withAnimation(Animation.linear(duration: 0.5).delay(emoji.totalDuration - 0.5)) {
 					scale = emoji.scale.end
 				}
 
-				DispatchQueue.main.asyncAfter(deadline: .now() + emoji.duration) {
+				DispatchQueue.main.asyncAfter(deadline: .now() + emoji.totalDuration) {
 					isAnimating = false
 				}
 			}

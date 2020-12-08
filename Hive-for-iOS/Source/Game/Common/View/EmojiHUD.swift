@@ -40,7 +40,7 @@ struct EmojiHUD: View {
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
 			.onReceive(viewModel.animatedEmoji) { emoji in
-				let animations = (0...Int.random(in: 15...20))
+				let animations = (0...type(of: emoji).burstCount())
 					.map { _ in
 						AnimateableEmoji(
 							emoji: emoji,
