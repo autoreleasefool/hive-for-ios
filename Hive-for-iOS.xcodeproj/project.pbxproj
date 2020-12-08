@@ -75,6 +75,9 @@
 		CA9DFA0724F421BB0045DA26 /* PlayerGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA9DFA0624F421BB0045DA26 /* PlayerGameViewModel.swift */; };
 		CAA3FC91257C0C7500F78EBC /* LocalOpponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA3FC90257C0C7500F78EBC /* LocalOpponent.swift */; };
 		CAA78AD1257DC9D200246CCD /* Tooltip.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA78AD0257DC9D200246CCD /* Tooltip.swift */; };
+		CAA78AD4257F3DC400246CCD /* Confetti.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA78AD3257F3DC400246CCD /* Confetti.swift */; };
+		CAA78AD8257F4A9C00246CCD /* Balloon.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA78AD7257F4A9C00246CCD /* Balloon.swift */; };
+		CAA78AE1257F527000246CCD /* AnimateableEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA78AE0257F527000246CCD /* AnimateableEmoji.swift */; };
 		CAA87BC124328F53006E418B /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA87BC024328F53006E418B /* User.swift */; };
 		CAAB6FB924766A4600A698F9 /* BetterTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */; };
 		CABDFCCD23DB73E400C697AD /* GameClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = CABDFCCC23DB73E400C697AD /* GameClient.swift */; };
@@ -116,7 +119,6 @@
 		CAD32BFE2495110900984610 /* AIAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BFD2495110900984610 /* AIAgent.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
-		CAEBA7CD24B9403D0051100D /* AnimatedEmoji.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */; };
 		CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CE24BA01200051100D /* PlayerHandView.swift */; };
 		CAF155C62536952C00305CBE /* AppStateChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF155C52536952C00305CBE /* AppStateChangeListener.swift */; };
 		CAF75559256B2CAF00BEC0DE /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF75558256B2CAF00BEC0DE /* AppInfo.swift */; };
@@ -212,6 +214,9 @@
 		CA9DFA0624F421BB0045DA26 /* PlayerGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerGameViewModel.swift; sourceTree = "<group>"; };
 		CAA3FC90257C0C7500F78EBC /* LocalOpponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalOpponent.swift; sourceTree = "<group>"; };
 		CAA78AD0257DC9D200246CCD /* Tooltip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tooltip.swift; sourceTree = "<group>"; };
+		CAA78AD3257F3DC400246CCD /* Confetti.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confetti.swift; sourceTree = "<group>"; };
+		CAA78AD7257F4A9C00246CCD /* Balloon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balloon.swift; sourceTree = "<group>"; };
+		CAA78AE0257F527000246CCD /* AnimateableEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimateableEmoji.swift; sourceTree = "<group>"; };
 		CAA87BC024328F53006E418B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		CAAB6FB824766A4600A698F9 /* BetterTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BetterTabBar.swift; sourceTree = "<group>"; };
 		CABDFCCC23DB73E400C697AD /* GameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameClient.swift; sourceTree = "<group>"; };
@@ -256,7 +261,6 @@
 		CAD32BF82493130000984610 /* LocalRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoomViewModel.swift; sourceTree = "<group>"; };
 		CAD32BFD2495110900984610 /* AIAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIAgent.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
-		CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedEmoji.swift; sourceTree = "<group>"; };
 		CAEBA7CE24BA01200051100D /* PlayerHandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandView.swift; sourceTree = "<group>"; };
 		CAF155C52536952C00305CBE /* AppStateChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateChangeListener.swift; sourceTree = "<group>"; };
 		CAF75558256B2CAF00BEC0DE /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
@@ -555,6 +559,16 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		CAA78AD6257F4A8D00246CCD /* Emoji */ = {
+			isa = PBXGroup;
+			children = (
+				CAA78AD7257F4A9C00246CCD /* Balloon.swift */,
+				CAA78AD3257F3DC400246CCD /* Confetti.swift */,
+				CA92525024B6A83D003DB4F2 /* Emoji.swift */,
+			);
+			path = Emoji;
+			sourceTree = "<group>";
+		};
 		CAAB6FB4247669B200A698F9 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,7 +615,7 @@
 		CABDFCDF23DBAC3E00C697AD /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CA92525024B6A83D003DB4F2 /* Emoji.swift */,
+				CAA78AD6257F4A8D00246CCD /* Emoji */,
 				CA45F9BB242B85C2007EC94D /* GameAction.swift */,
 				CABDFCE023DBAC5700C697AD /* GameInformation.swift */,
 				CA45F9C3242E758C007EC94D /* GameRule.swift */,
@@ -917,7 +931,7 @@
 			children = (
 				CA90799D24B2934C00B30CF6 /* Information */,
 				CA45F9B9242B7C4C007EC94D /* ActionHUD.swift */,
-				CAEBA7CC24B9403D0051100D /* AnimatedEmoji.swift */,
+				CAA78AE0257F527000246CCD /* AnimateableEmoji.swift */,
 				CA0C77E325295BAF00C9AA89 /* EmojiHUD.swift */,
 				CAFA469B23DAD215003C38AB /* GameHUD.swift */,
 				CABDFD1123E0C97000C697AD /* InformationHUD.swift */,
@@ -1079,7 +1093,6 @@
 				CA8F46E7245EC36200B136D0 /* MatchRepository.swift in Sources */,
 				CA7299A42393156100AD1285 /* AppDelegate.swift in Sources */,
 				CA45F9BC242B85C2007EC94D /* GameAction.swift in Sources */,
-				CAEBA7CD24B9403D0051100D /* AnimatedEmoji.swift in Sources */,
 				CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */,
 				CAC6861023CE3F3700B882D2 /* HostingController.swift in Sources */,
 				CA90799C24B2931700B30CF6 /* GameSettings.swift in Sources */,
@@ -1110,6 +1123,7 @@
 				CA9079A224B41A4000B30CF6 /* Features.swift in Sources */,
 				CA9DFA0724F421BB0045DA26 /* PlayerGameViewModel.swift in Sources */,
 				CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */,
+				CAA78AE1257F527000246CCD /* AnimateableEmoji.swift in Sources */,
 				CA0F939A24264DE400F6E104 /* GameState+2D.swift in Sources */,
 				CA0F939824264CB700F6E104 /* SpriteManager.swift in Sources */,
 				CA41ACAC2454A30B00B6F88E /* Toaster.swift in Sources */,
@@ -1117,6 +1131,7 @@
 				CAD32BF72493103200984610 /* LocalRoomView.swift in Sources */,
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
 				CAF82568245C7A1D0064359E /* AccountRepository.swift in Sources */,
+				CAA78AD8257F4A9C00246CCD /* Balloon.swift in Sources */,
 				CA45F9C0242E4857007EC94D /* PieceStack.swift in Sources */,
 				CA6CC92F24AE952400E8CB27 /* HiveMindAgent.swift in Sources */,
 				CA797F61246868000011E7D1 /* MatchHistoryList.swift in Sources */,
@@ -1165,6 +1180,7 @@
 				CAC6861823CE4E6800B882D2 /* LobbyRow.swift in Sources */,
 				CAC73109246E0505004DB450 /* OnlineRoomViewModel.swift in Sources */,
 				CA45F9C4242E758C007EC94D /* GameRule.swift in Sources */,
+				CAA78AD4257F3DC400246CCD /* Confetti.swift in Sources */,
 				CAC730FC246DCE5B004DB450 /* LoginSignupFormViewModel.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
 				CA286D0A2471E84B0044BAAE /* Preferences.swift in Sources */,

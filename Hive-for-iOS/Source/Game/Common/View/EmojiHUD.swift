@@ -40,8 +40,26 @@ struct EmojiHUD: View {
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
 			.onReceive(viewModel.animatedEmoji) { emoji in
-				let animations = (0...Int.random(in: (15...20))).map { _ in AnimateableEmoji(emoji: emoji, geometry: geometry) }
-				animatingEmoji.append(contentsOf: animations)
+				if let balloon = emoji as? Balloon {
+					let animations = (0...Int.random(in: 15...20))
+						.map { _ in
+							AnimateableEmoji(
+								emoji: balloon,
+								image: balloon.image ?? UIImage(),
+								geometry: geometry)
+						}
+					animatingEmoji.append(contentsOf: animations)
+				} else if let confetti = emoji as? Confetti {
+					let animations = (0...Int.random(in: 15...20))
+						.map { _ in
+							AnimateableEmoji(
+								emoji: confetti,
+								image: confetti.images.randomElement() ?? UIImage(),
+								geometry: geometry
+							)
+						}
+					animatingEmoji.append(contentsOf: animations)
+				}
 			}
 		}
 	}
@@ -74,15 +92,25 @@ struct EmojiHUD: View {
 
 	fileprivate var HUD: some View {
 		LazyVGrid(columns: [GridItem(.adaptive(minimum: Metrics.Image.l.rawValue))]) {
-			ForEach(Emoji.allCases.indices) { index in
+			ForEach(Balloon.allCases.indices) { index in
 				Button {
-					viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
+					viewModel.postViewAction(.pickedEmoji(Balloon.allCases[index]))
 				} label: {
-					Image(uiImage: Emoji.allCases[index].image ?? UIImage())
+					Image(uiImage: Balloon.allCases[index].image ?? UIImage())
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.squareImage(.l)
-						.clipShape(Circle())
+				}
+			}
+
+			ForEach(Confetti.allCases.indices) { index in
+				Button {
+					viewModel.postViewAction(.pickedEmoji(Confetti.allCases[index]))
+				} label: {
+					Image(uiImage: Confetti.allCases[index].headshot ?? UIImage())
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.squareImage(.xl)
 				}
 			}
 		}

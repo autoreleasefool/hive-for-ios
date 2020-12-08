@@ -1,8 +1,8 @@
 //
-//  AnimatedEmoji.swift
+//  AnimateableEmoji.swift
 //  Hive-for-iOS
 //
-//  Created by Joseph Roque on 2020-07-10.
+//  Created by Joseph Roque on 2020-12-08.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
@@ -11,13 +11,22 @@ import SwiftUI
 struct AnimateableEmoji: Equatable {
 	let id = UUID()
 	let emoji: Emoji
+	let image: UIImage
+	let shouldEaseInOut: Bool
+
 	let path: Path
 	let duration: Double
+	let scale: (start: CGFloat, end: CGFloat)
+	let rotationSpeed: EmojiRotationSpeed
 
-	init(emoji: Emoji, geometry: GeometryProxy) {
+	init(emoji: Emoji, image: UIImage, geometry: GeometryProxy) {
 		self.emoji = emoji
-		self.path = AnimateableEmoji.generatePath(with: geometry)
-		self.duration = Double.random(in: (1.5...2.5))
+		self.image = image
+		self.path = emoji.generatePath(with: geometry)
+		self.duration = emoji.randomDuration()
+		self.scale = emoji.scale()
+		self.rotationSpeed = emoji.rotationSpeed()
+		self.shouldEaseInOut = emoji.shouldEaseInOut()
 	}
 
 	static func == (lhs: AnimateableEmoji, rhs: AnimateableEmoji) -> Bool {
@@ -39,56 +48,37 @@ struct AnimatedEmoji: View {
 		self.emoji = emoji
 		self.geometry = geometry
 		self._isAnimating = isAnimating
+		self.scale = emoji.scale.start
 	}
 
 	var body: some View {
-		Image(uiImage: emoji.emoji.image ?? UIImage())
+		Image(uiImage: emoji.image)
 			.resizable()
 			.aspectRatio(contentMode: .fit)
 			.squareImage(.l)
 			.opacity(opacity)
 			.scaleEffect(scale)
+			.rotationEffect(.degrees(flag ? 0 : emoji.rotationSpeed.revolutions * 360))
 			.modifier(FollowPathEffect(percent: flag ? 1 : 0, path: emoji.path))
 			.onAppear {
-				withAnimation(.easeInOut(duration: emoji.duration)) {
+				withAnimation(
+					emoji.shouldEaseInOut
+						? .easeInOut(duration: emoji.duration)
+						: .linear(duration: emoji.duration)
+				) {
 					flag.toggle()
 				}
 				withAnimation(Animation.linear(duration: 1).delay(emoji.duration - 1)) {
 					opacity = 0
 				}
 				withAnimation(Animation.linear(duration: 0.5).delay(emoji.duration - 0.5)) {
-					scale = 0
+					scale = emoji.scale.end
 				}
 
 				DispatchQueue.main.asyncAfter(deadline: .now() + emoji.duration) {
 					isAnimating = false
 				}
 			}
-	}
-}
-
-// MARK: Path generation
-
-extension AnimateableEmoji {
-	static func generatePath(with geometry: GeometryProxy) -> Path {
-		let endPoint = CGPoint(
-			x: CGFloat.random(in: (-geometry.size.width / 4)...(geometry.size.width / 4)),
-			y: CGFloat.random(in: (-geometry.size.height / 8)...(geometry.size.height / 8)) - geometry.size.height / 2
-		)
-
-		let animationWidth = geometry.size.width / 4 +
-			CGFloat.random(in: -geometry.size.width / 8 ... geometry.size.width / 8)
-		let widthModifier: CGFloat = Bool.random()
-			? animationWidth
-			: -animationWidth
-
-		let control1 = CGPoint(x: endPoint.x * 2 - widthModifier, y: endPoint.y / 3)
-		let control2 = CGPoint(x: endPoint.x * -2 + widthModifier, y: endPoint.y * (2 / 3))
-
-		var path = Path()
-		path.move(to: .zero)
-		path.addCurve(to: endPoint, control1: control1, control2: control2)
-		return path
 	}
 }
 
