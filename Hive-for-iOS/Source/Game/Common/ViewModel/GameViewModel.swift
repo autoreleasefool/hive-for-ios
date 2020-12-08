@@ -373,12 +373,12 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	}
 
 	private func handleMessage(_ message: String, from id: UUID) {
-		guard id != self.userId else { return }
-		if let emoji = Balloon.from(message: message) {
-			guard EmojiManager.shared.canReceive(emoji: emoji) else { return }
-			animatedEmoji.send(emoji)
-			EmojiManager.shared.didReceive(emoji: emoji)
-		}
+		guard id != self.userId,
+					let emoji: Emoji = Balloon.from(message: message) ?? Confetti.from(message: message),
+					EmojiManager.shared.canReceive(emoji: emoji) else { return }
+
+		animatedEmoji.send(emoji)
+		EmojiManager.shared.didReceive(emoji: emoji)
 	}
 
 	// MARK: Spectators
