@@ -273,6 +273,8 @@ extension OnlineRoomViewModel {
 	}
 
 	private func handleGameClientMessage(_ message: GameServerMessage) {
+		// TODO: Make it more clear that this is only active in Match Details
+
 		switch message {
 		case .playerJoined(let id):
 			playerJoined(id: id)
@@ -286,7 +288,7 @@ extension OnlineRoomViewModel {
 			setOption(option, to: value)
 		case .error(let error):
 			actions.send(.showLoaf(error.loaf))
-		case .forfeit, .gameOver, .message:
+		case .forfeit, .gameOver, .message, .spectatorLeft, .spectatorJoined:
 			logger.error("Received invalid message in Match Details: \(message)")
 		}
 	}

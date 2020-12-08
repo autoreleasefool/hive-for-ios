@@ -145,7 +145,8 @@ extension SpectatorRoomViewModel {
 			updateGameState(to: state)
 		case .forfeit, .gameOver:
 			actions.send(.matchNotOpenForSpectating)
-		case .error, .playerJoined, .playerLeft, .playerReady, .setOption, .message:
+		case .error, .playerJoined, .playerLeft, .playerReady, .setOption, .message,
+				 .spectatorJoined, .spectatorLeft:
 			break
 		}
 	}

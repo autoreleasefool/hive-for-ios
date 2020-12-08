@@ -20,6 +20,8 @@ enum GameServerMessage {
 	case playerReady(UUID, Bool)
 	case playerJoined(UUID)
 	case playerLeft(UUID)
+	case spectatorJoined(name: String)
+	case spectatorLeft(name: String)
 	case message(UUID, String)
 	case forfeit(UUID)
 	case gameOver(UUID?)
@@ -56,6 +58,12 @@ enum GameServerMessage {
 		} else if message.hasPrefix("LEAVE") {
 			guard let userId = GameServerMessage.extractUserId(from: message) else { return nil}
 			self = .playerLeft(userId)
+		} else if message.hasPrefix("SPECJOIN") {
+			let string = GameServerMessage.extractString(from: message)
+			self = .spectatorJoined(name: string)
+		} else if message.hasPrefix("SPECLEAVE") {
+			let string = GameServerMessage.extractString(from: message)
+			self = .spectatorLeft(name: string)
 		} else if message.hasPrefix("WINNER") {
 			let userId = GameServerMessage.extractUserId(from: message)
 			self = .gameOver(userId)
@@ -130,6 +138,11 @@ extension GameServerMessage {
 	static func extractMessage(withId id: UUID, from message: String) -> String? {
 		guard let idStart = message.firstIndex(of: " ") else { return nil }
 		let messageStart = message.index(idStart, offsetBy: id.uuidString.count)
+		return String(message[messageStart...]).trimmingCharacters(in: .whitespaces)
+	}
+
+	static func extractString(from message: String) -> String {
+		guard let messageStart = message.firstIndex(of: " ") else { return "" }
 		return String(message[messageStart...]).trimmingCharacters(in: .whitespaces)
 	}
 }

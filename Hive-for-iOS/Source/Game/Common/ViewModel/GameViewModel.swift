@@ -381,6 +381,17 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		}
 	}
 
+	// MARK: Spectators
+
+	func announceSpectator(_ name: String, joined: Bool) {
+		guard !isSpectating else { return }
+		if joined {
+			loafState.send(LoafState("\(name) is now spectating", style: .success(), duration: .short))
+		} else {
+			loafState.send(LoafState("\(name) stopped spectating", style: .info(), duration: .short))
+		}
+	}
+
 	// MARK: GameClient
 
 	func handleGameClientError(_ error: GameClientError) {
@@ -446,14 +457,19 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			promptFeedbackGenerator.impactOccurred()
 			showForfeit(byPlayer: player(forUser: user) ?? .white)
 
+		case .message(let id, let message):
+			handleMessage(message, from: id)
+
+		case .spectatorJoined(let name):
+			announceSpectator(name, joined: true)
+		case .spectatorLeft(let name):
+			announceSpectator(name, joined: false)
+
 		case .error(let error):
 			logger.error("Recieved error: \(error)")
 			handleGameServerError(error)
 		case .playerJoined, .playerLeft, .playerReady, .setOption:
 			logger.error("Received invalid message: \(message)")
-
-		case .message(let id, let message):
-			handleMessage(message, from: id)
 		}
 	}
 
