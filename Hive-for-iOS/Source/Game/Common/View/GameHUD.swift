@@ -20,7 +20,6 @@ struct GameHUD: View {
 	private var hasEmojiEnabled: Bool {
 		container.has(feature: .emojiReactions) &&
 			!container.preferences.hasDisabledEmojiReactions &&
-			!viewModel.isSpectating &&
 			!(container.account?.isOffline == true)
 	}
 
