@@ -317,7 +317,7 @@ class PlayerGameViewModel: GameViewModel {
 		hideEmojiPicker()
 		promptFeedbackGenerator.impactOccurred()
 		animatedEmoji.send(emoji)
-		clientInteractor.send(clientMode, .message("EMOJI {\(emoji.rawValue)}")) { _ in }
+		clientInteractor.send(clientMode, .message(emoji.serialize())) { _ in }
 		EmojiManager.shared.didSend(emoji: emoji)
 	}
 

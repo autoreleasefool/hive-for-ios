@@ -19,41 +19,57 @@ struct EmojiHUD: View {
 			: -EmojiHUD.width
 	}
 
-	@State private var animatingBalloons: [AnimateableBalloon] = []
+	@State private var animatingEmoji: [AnimateableEmoji] = []
 
 	var body: some View {
 		ZStack {
-			animatedBalloons
+			animatedEmoji
 			picker
 		}
 	}
 
 	// MARK: Animations
 
-	private var animatedBalloons: some View {
+	private var animatedEmoji: some View {
 		GeometryReader { geometry in
 			ZStack {
-				ForEach(animatingBalloons, id: \.id) { emoji in
-					AnimatedBalloon(emoji: emoji, isAnimating: isAnimating(emoji), geometry: geometry)
+				ForEach(animatingEmoji, id: \.id) { emoji in
+					AnimatedEmoji(emoji: emoji, isAnimating: isAnimating(emoji), geometry: geometry)
 						.position(x: geometry.size.width / 2, y: geometry.size.height)
 				}
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
 			.onReceive(viewModel.animatedEmoji) { emoji in
-				guard let balloon = emoji as? Balloon else { return }
-				let animations = (0...Int.random(in: (15...20)))
-					.map { _ in AnimateableBalloon(emoji: balloon, geometry: geometry) }
-				animatingBalloons.append(contentsOf: animations)
+				if let balloon = emoji as? Balloon {
+					let animations = (0...Int.random(in: 15...20))
+						.map { _ in
+							AnimateableEmoji(
+								emoji: balloon,
+								image: balloon.image ?? UIImage(),
+								geometry: geometry)
+						}
+					animatingEmoji.append(contentsOf: animations)
+				} else if let confetti = emoji as? Confetti {
+					let animations = (0...Int.random(in: 15...20))
+						.map { _ in
+							AnimateableEmoji(
+								emoji: confetti,
+								image: confetti.images.randomElement() ?? UIImage(),
+								geometry: geometry
+							)
+						}
+					animatingEmoji.append(contentsOf: animations)
+				}
 			}
 		}
 	}
 
-	private func isAnimating(_ emoji: AnimateableBalloon) -> Binding<Bool> {
+	private func isAnimating(_ emoji: AnimateableEmoji) -> Binding<Bool> {
 		Binding(
-			get: { animatingBalloons.contains(emoji) },
+			get: { animatingEmoji.contains(emoji) },
 			set: { newValue in
-				guard !newValue, let index = animatingBalloons.firstIndex(of: emoji) else { return }
-				animatingBalloons.remove(at: index)
+				guard !newValue, let index = animatingEmoji.firstIndex(of: emoji) else { return }
+				animatingEmoji.remove(at: index)
 			}
 		)
 	}
@@ -84,7 +100,17 @@ struct EmojiHUD: View {
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.squareImage(.l)
-						.clipShape(Circle())
+				}
+			}
+
+			ForEach(Confetti.allCases.indices) { index in
+				Button {
+					viewModel.postViewAction(.pickedEmoji(Confetti.allCases[index]))
+				} label: {
+					Image(uiImage: Confetti.allCases[index].headshot ?? UIImage())
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.squareImage(.xl)
 				}
 			}
 		}
