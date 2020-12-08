@@ -51,8 +51,6 @@ class PlayerGameViewModel: GameViewModel {
 		super.postViewAction(viewAction)
 
 		switch viewAction {
-		case .presentInformation:
-			hideEmojiPicker()
 		case .openHand(let player):
 			promptFeedbackGenerator.impactOccurred()
 			postViewAction(
@@ -84,12 +82,6 @@ class PlayerGameViewModel: GameViewModel {
 			clearSelectedPiece()
 			updateGameState(to: gameState)
 
-		case .toggleEmojiPicker:
-			promptFeedbackGenerator.impactOccurred()
-			isShowingEmojiPicker.toggle()
-		case .pickedEmoji(let emoji):
-			pickedEmoji(emoji)
-
 		case .forfeit:
 			promptForfeit()
 		case .forfeitConfirmed:
@@ -100,7 +92,11 @@ class PlayerGameViewModel: GameViewModel {
 		case .toggleDebug:
 			debugMode.toggle()
 
-		default:
+		// Not used in PlayerGameViewModel
+		case .onAppear, .viewContentDidLoad, .viewContentReady, .viewInteractionsReady, .presentInformation,
+				 .closeInformation, .enquiredFromHand, .tappedPiece, .tappedGamePiece, .toggleEmojiPicker,
+				 .pickedEmoji, .hasMovedInBounds, .hasMovedOutOfBounds, .returnToGameBounds,
+				 .replayLastMove, .dismissReplayTooltip, .openSettings, .returnToLobby, .onDisappear:
 			break
 		}
 	}
@@ -303,33 +299,6 @@ class PlayerGameViewModel: GameViewModel {
 		transition(to: .forfeit)
 	}
 
-	// MARK: Emoji
-
-	private func hideEmojiPicker() {
-		if isShowingEmojiPicker {
-			isShowingEmojiPicker = false
-		}
-	}
-
-	private func pickedEmoji(_ emoji: Emoji) {
-		guard EmojiManager.shared.canSend(emoji: emoji) else { return }
-
-		hideEmojiPicker()
-		promptFeedbackGenerator.impactOccurred()
-		animatedEmoji.send(emoji)
-		clientInteractor.send(clientMode, .message(emoji.serialize())) { _ in }
-		EmojiManager.shared.didSend(emoji: emoji)
-	}
-
-	private func handleMessage(_ message: String, from id: UUID) {
-		guard id != self.userId else { return }
-		if let emoji = Balloon.from(message: message) {
-			guard EmojiManager.shared.canReceive(emoji: emoji) else { return }
-			animatedEmoji.send(emoji)
-			EmojiManager.shared.didReceive(emoji: emoji)
-		}
-	}
-
 	// MARK: UI
 
 	override var displayState: String {
@@ -364,20 +333,6 @@ class PlayerGameViewModel: GameViewModel {
 				+ "\(movement.movedUnit.description) \(direction.description.lowercased()) of \(adjacent.unit)?"
 		} else {
 			return "Place \(movement.movedUnit.description)?"
-		}
-	}
-
-	// MARK: Game Client
-
-	override func handleGameServerMessage(_ message: GameServerMessage) {
-		super.handleGameServerMessage(message)
-		switch message {
-		case .message(let id, let message):
-			handleMessage(message, from: id)
-
-		// Not handled specifically
-		case .error, .forfeit, .playerJoined, .playerLeft, .playerReady, .setOption, .gameState, .gameOver:
-			break
 		}
 	}
 }

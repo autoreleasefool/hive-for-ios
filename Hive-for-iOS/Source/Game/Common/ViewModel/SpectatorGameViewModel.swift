@@ -54,8 +54,14 @@ class SpectatorGameViewModel: GameViewModel {
 		case .selectedFromHand(_, let pieceClass):
 			enquireFromHand(pieceClass)
 
-		default:
-			break
+		// Not used in SpectatorGameViewModel
+		case .onAppear, .viewContentDidLoad, .viewContentReady, .viewInteractionsReady, .presentInformation,
+				 .closeInformation, .enquiredFromHand, .tappedPiece, .tappedGamePiece, .toggleEmojiPicker,
+				 .pickedEmoji, .hasMovedInBounds, .hasMovedOutOfBounds, .returnToGameBounds,
+				 .replayLastMove, .dismissReplayTooltip, .openSettings, .returnToLobby, .onDisappear,
+				 .gamePieceSnapped, .gamePieceMoved, .movementConfirmed, .cancelMovement, .forfeit,
+				 .forfeitConfirmed, .arViewError, .toggleDebug:
+					break
 		}
 	}
 

@@ -162,6 +162,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		case .presentInformation(let information):
 			presentedGameInformation = information
+			hideEmojiPicker()
 		case .closeInformation(let withFeedback):
 			if withFeedback {
 				actionFeedbackGenerator.impactOccurred()
@@ -177,6 +178,12 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 		case .openSettings:
 			openSettings()
+
+		case .toggleEmojiPicker:
+			promptFeedbackGenerator.impactOccurred()
+			isShowingEmojiPicker.toggle()
+		case .pickedEmoji(let emoji):
+			pickedEmoji(emoji)
 
 		case .returnToLobby:
 			exitToLobby()
@@ -201,9 +208,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			cleanUp()
 
 		// Not used in common GameViewModel
-		case .toggleEmojiPicker, .pickedEmoji, .forfeit, .forfeitConfirmed,
-				 .toggleDebug, .gamePieceSnapped, .gamePieceMoved, .movementConfirmed,
-				 .cancelMovement, .selectedFromHand, .openHand:
+		case .forfeit, .forfeitConfirmed, .toggleDebug, .gamePieceSnapped, .gamePieceMoved,
+				 .movementConfirmed, .cancelMovement, .selectedFromHand, .openHand:
 			break
 		}
 	}
@@ -348,6 +354,33 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		)
 	}
 
+	// MARK: Emoji
+
+	private func hideEmojiPicker() {
+		if isShowingEmojiPicker {
+			isShowingEmojiPicker = false
+		}
+	}
+
+	private func pickedEmoji(_ emoji: Emoji) {
+		guard EmojiManager.shared.canSend(emoji: emoji) else { return }
+
+		hideEmojiPicker()
+		promptFeedbackGenerator.impactOccurred()
+		animatedEmoji.send(emoji)
+		clientInteractor.send(clientMode, .message(emoji.serialize())) { _ in }
+		EmojiManager.shared.didSend(emoji: emoji)
+	}
+
+	private func handleMessage(_ message: String, from id: UUID) {
+		guard id != self.userId else { return }
+		if let emoji = Balloon.from(message: message) {
+			guard EmojiManager.shared.canReceive(emoji: emoji) else { return }
+			animatedEmoji.send(emoji)
+			EmojiManager.shared.didReceive(emoji: emoji)
+		}
+	}
+
 	// MARK: GameClient
 
 	func handleGameClientError(_ error: GameClientError) {
@@ -419,9 +452,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		case .playerJoined, .playerLeft, .playerReady, .setOption:
 			logger.error("Received invalid message: \(message)")
 
-		// Handled in children
-		case .message:
-			break
+		case .message(let id, let message):
+			handleMessage(message, from: id)
 		}
 	}
 
