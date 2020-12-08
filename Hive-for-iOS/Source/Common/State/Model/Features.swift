@@ -51,6 +51,7 @@ enum Feature: String, CaseIterable {
 	case guestMode = "Guest Mode"
 	case offlineMode = "Offline Mode"
 	case aiOpponents = "AI Opponents"
+	case emojiMasterMode = "Emoji Master Mode"
 
 	var rollout: Rollout {
 		switch self {
@@ -64,6 +65,7 @@ enum Feature: String, CaseIterable {
 		case .profileList: return .disabled
 		case .spectating: return .released
 		case .aiOpponents: return .released
+		case .emojiMasterMode: return .inDevelopment
 		}
 	}
 
@@ -73,6 +75,8 @@ enum Feature: String, CaseIterable {
 			return [.aiOpponents]
 		case .hiveMindAgent:
 			return [.aiOpponents]
+		case .emojiMasterMode:
+			return [.emojiReactions]
 		case .arGameMode, .emojiReactions, .aiOpponents, .matchHistory, .profileList, .spectating, .guestMode, .accounts:
 			return []
 		}
