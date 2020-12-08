@@ -19,39 +19,41 @@ struct EmojiHUD: View {
 			: -EmojiHUD.width
 	}
 
-	@State private var animatingEmoji: [AnimateableEmoji] = []
+	@State private var animatingBalloons: [AnimateableBalloon] = []
 
 	var body: some View {
 		ZStack {
-			animatedEmoji
+			animatedBalloons
 			picker
 		}
 	}
 
 	// MARK: Animations
 
-	private var animatedEmoji: some View {
+	private var animatedBalloons: some View {
 		GeometryReader { geometry in
 			ZStack {
-				ForEach(animatingEmoji, id: \.id) { emoji in
-					AnimatedEmoji(emoji: emoji, isAnimating: isAnimating(emoji), geometry: geometry)
+				ForEach(animatingBalloons, id: \.id) { emoji in
+					AnimatedBalloon(emoji: emoji, isAnimating: isAnimating(emoji), geometry: geometry)
 						.position(x: geometry.size.width / 2, y: geometry.size.height)
 				}
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
 			.onReceive(viewModel.animatedEmoji) { emoji in
-				let animations = (0...Int.random(in: (15...20))).map { _ in AnimateableEmoji(emoji: emoji, geometry: geometry) }
-				animatingEmoji.append(contentsOf: animations)
+				guard let balloon = emoji as? Balloon else { return }
+				let animations = (0...Int.random(in: (15...20)))
+					.map { _ in AnimateableBalloon(emoji: balloon, geometry: geometry) }
+				animatingBalloons.append(contentsOf: animations)
 			}
 		}
 	}
 
-	private func isAnimating(_ emoji: AnimateableEmoji) -> Binding<Bool> {
+	private func isAnimating(_ emoji: AnimateableBalloon) -> Binding<Bool> {
 		Binding(
-			get: { animatingEmoji.contains(emoji) },
+			get: { animatingBalloons.contains(emoji) },
 			set: { newValue in
-				guard !newValue, let index = animatingEmoji.firstIndex(of: emoji) else { return }
-				animatingEmoji.remove(at: index)
+				guard !newValue, let index = animatingBalloons.firstIndex(of: emoji) else { return }
+				animatingBalloons.remove(at: index)
 			}
 		)
 	}
@@ -74,11 +76,11 @@ struct EmojiHUD: View {
 
 	fileprivate var HUD: some View {
 		LazyVGrid(columns: [GridItem(.adaptive(minimum: Metrics.Image.l.rawValue))]) {
-			ForEach(Emoji.allCases.indices) { index in
+			ForEach(Balloon.allCases.indices) { index in
 				Button {
-					viewModel.postViewAction(.pickedEmoji(Emoji.allCases[index]))
+					viewModel.postViewAction(.pickedEmoji(Balloon.allCases[index]))
 				} label: {
-					Image(uiImage: Emoji.allCases[index].image ?? UIImage())
+					Image(uiImage: Balloon.allCases[index].image ?? UIImage())
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.squareImage(.l)

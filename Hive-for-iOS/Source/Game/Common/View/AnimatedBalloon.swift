@@ -1,5 +1,5 @@
 //
-//  AnimatedEmoji.swift
+//  AnimatedBalloon.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-07-10.
@@ -8,25 +8,25 @@
 
 import SwiftUI
 
-struct AnimateableEmoji: Equatable {
+struct AnimateableBalloon: Equatable {
 	let id = UUID()
-	let emoji: Emoji
+	let emoji: Balloon
 	let path: Path
 	let duration: Double
 
-	init(emoji: Emoji, geometry: GeometryProxy) {
+	init(emoji: Balloon, geometry: GeometryProxy) {
 		self.emoji = emoji
-		self.path = AnimateableEmoji.generatePath(with: geometry)
+		self.path = AnimateableBalloon.generatePath(with: geometry)
 		self.duration = Double.random(in: (1.5...2.5))
 	}
 
-	static func == (lhs: AnimateableEmoji, rhs: AnimateableEmoji) -> Bool {
+	static func == (lhs: AnimateableBalloon, rhs: AnimateableBalloon) -> Bool {
 		lhs.id == rhs.id
 	}
 }
 
-struct AnimatedEmoji: View {
-	let emoji: AnimateableEmoji
+struct AnimatedBalloon: View {
+	let emoji: AnimateableBalloon
 	let geometry: GeometryProxy
 
 	@Binding private var isAnimating: Bool
@@ -35,7 +35,7 @@ struct AnimatedEmoji: View {
 	@State private var opacity: Double = 1
 	@State private var scale: CGFloat = 1
 
-	init(emoji: AnimateableEmoji, isAnimating: Binding<Bool>, geometry: GeometryProxy) {
+	init(emoji: AnimateableBalloon, isAnimating: Binding<Bool>, geometry: GeometryProxy) {
 		self.emoji = emoji
 		self.geometry = geometry
 		self._isAnimating = isAnimating
@@ -69,7 +69,7 @@ struct AnimatedEmoji: View {
 
 // MARK: Path generation
 
-extension AnimateableEmoji {
+extension AnimateableBalloon {
 	static func generatePath(with geometry: GeometryProxy) -> Path {
 		let endPoint = CGPoint(
 			x: CGFloat.random(in: (-geometry.size.width / 4)...(geometry.size.width / 4)),

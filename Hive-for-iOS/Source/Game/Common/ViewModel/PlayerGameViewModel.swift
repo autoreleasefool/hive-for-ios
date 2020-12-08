@@ -312,21 +312,21 @@ class PlayerGameViewModel: GameViewModel {
 	}
 
 	private func pickedEmoji(_ emoji: Emoji) {
-		guard Emoji.canSend(emoji: emoji) else { return }
+		guard EmojiManager.shared.canSend(emoji: emoji) else { return }
 
 		hideEmojiPicker()
 		promptFeedbackGenerator.impactOccurred()
 		animatedEmoji.send(emoji)
 		clientInteractor.send(clientMode, .message("EMOJI {\(emoji.rawValue)}")) { _ in }
-		Emoji.didSend(emoji: emoji)
+		EmojiManager.shared.didSend(emoji: emoji)
 	}
 
 	private func handleMessage(_ message: String, from id: UUID) {
 		guard id != self.userId else { return }
-		if let emoji = Emoji.from(message: message) {
-			guard Emoji.canReceive(emoji: emoji) else { return }
+		if let emoji = Balloon.from(message: message) {
+			guard EmojiManager.shared.canReceive(emoji: emoji) else { return }
 			animatedEmoji.send(emoji)
-			Emoji.didReceive(emoji: emoji)
+			EmojiManager.shared.didReceive(emoji: emoji)
 		}
 	}
 
