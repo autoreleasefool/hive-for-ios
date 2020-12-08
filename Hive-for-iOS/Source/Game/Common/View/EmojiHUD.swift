@@ -40,26 +40,14 @@ struct EmojiHUD: View {
 			}
 			.frame(width: geometry.size.width, height: geometry.size.height)
 			.onReceive(viewModel.animatedEmoji) { emoji in
-				if let balloon = emoji as? Balloon {
-					let animations = (0...Int.random(in: 15...20))
-						.map { _ in
-							AnimateableEmoji(
-								emoji: balloon,
-								image: balloon.image ?? UIImage(),
-								geometry: geometry)
-						}
-					animatingEmoji.append(contentsOf: animations)
-				} else if let confetti = emoji as? Confetti {
-					let animations = (0...Int.random(in: 15...20))
-						.map { _ in
-							AnimateableEmoji(
-								emoji: confetti,
-								image: confetti.images.randomElement() ?? UIImage(),
-								geometry: geometry
-							)
-						}
-					animatingEmoji.append(contentsOf: animations)
-				}
+				let animations = (0...Int.random(in: 15...20))
+					.map { _ in
+						AnimateableEmoji(
+							emoji: emoji,
+							image: emoji.image,
+							geometry: geometry)
+					}
+				animatingEmoji.append(contentsOf: animations)
 			}
 		}
 	}

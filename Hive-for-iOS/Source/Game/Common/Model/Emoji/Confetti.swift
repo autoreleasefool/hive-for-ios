@@ -38,6 +38,10 @@ enum Confetti: String, CaseIterable {
 		}
 	}
 
+	var image: UIImage {
+		images.randomElement() ?? UIImage()
+	}
+
 	var images: [UIImage] {
 		imageNames.compactMap { UIImage(named: "Emoji/Confetti/\(rawValue)/\($0)") }
 	}

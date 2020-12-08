@@ -10,6 +10,7 @@ import SwiftUI
 
 protocol Emoji {
 	var rawValue: String { get }
+	var image: UIImage { get }
 
 	init?(rawValue: String)
 

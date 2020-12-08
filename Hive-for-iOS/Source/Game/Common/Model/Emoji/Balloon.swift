@@ -17,8 +17,8 @@ enum Balloon: String, CaseIterable {
 	case dead = "Dead"
 	case noGeorge = "NoGeorge"
 
-	var image: UIImage? {
-		UIImage(named: "Emoji/Basic/\(rawValue)")
+	var image: UIImage {
+		UIImage(named: "Emoji/Basic/\(rawValue)") ?? UIImage()
 	}
 }
 
