@@ -84,7 +84,7 @@ struct EmojiHUD: View {
 				Button {
 					viewModel.postViewAction(.pickedEmoji(Balloon.allCases[index]))
 				} label: {
-					Image(uiImage: Balloon.allCases[index].image ?? UIImage())
+					Image(uiImage: Balloon.allCases[index].image)
 						.resizable()
 						.aspectRatio(contentMode: .fit)
 						.squareImage(.l)
