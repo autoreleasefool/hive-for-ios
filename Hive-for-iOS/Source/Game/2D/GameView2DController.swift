@@ -29,8 +29,6 @@ class GameView2DController: UIViewController {
 		super.viewDidLoad()
 		let scene = GameView2D(viewModel: viewModel, size: view.bounds.size)
 		guard let view = view as? SKView else { fatalError("GameView2DController view must be SKView") }
-		view.showsFPS = true
-		view.showsNodeCount = true
 		view.ignoresSiblingOrder = true
 		scene.scaleMode = .resizeFill
 		view.presentScene(scene)
@@ -64,11 +62,5 @@ struct GameView2DContainer: UIViewControllerRepresentable {
 extension GameView2DController {
 	override var canBecomeFirstResponder: Bool {
 		true
-	}
-
-	override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-		if motion == .motionShake {
-			viewModel.postViewAction(.toggleDebug)
-		}
 	}
 }
