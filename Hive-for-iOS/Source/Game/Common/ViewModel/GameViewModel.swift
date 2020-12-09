@@ -374,6 +374,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private func handleMessage(_ message: String, from id: UUID) {
 		guard id != self.userId,
+					(!preferences.hasDisabledSpectatorEmotes || match.opponent?.id == id),
 					let emoji: Emoji = Balloon.from(message: message) ?? Confetti.from(message: message),
 					EmojiManager.shared.canReceive(emoji: emoji) else { return }
 

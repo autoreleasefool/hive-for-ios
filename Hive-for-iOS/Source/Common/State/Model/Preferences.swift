@@ -19,6 +19,16 @@ struct Preferences: Equatable {
 		set { UserDefaults.standard.set(newValue, forKey: Key.disabledEmojiReactions.rawValue) }
 	}
 
+	var hasDisabledSpectatorEmotes: Bool {
+		get { UserDefaults.standard.bool(forKey: Key.hasDisabledSpectatorEmotes.rawValue) }
+		set { UserDefaults.standard.set(newValue, forKey: Key.hasDisabledSpectatorEmotes.rawValue) }
+	}
+
+	var hasDisabledSpectatorNotifications: Bool {
+		get { UserDefaults.standard.bool(forKey: Key.hasDisabledSpectatorNotifications.rawValue) }
+		set { UserDefaults.standard.set(newValue, forKey: Key.hasDisabledSpectatorNotifications.rawValue) }
+	}
+
 	var pieceColorScheme: PieceColorScheme {
 		get {
 			PieceColorScheme(
@@ -76,5 +86,7 @@ private extension Preferences {
 		case disabledEmojiReactions
 		case pieceColorScheme
 		case hasDismissedReplayTooltip
+		case hasDisabledSpectatorEmotes
+		case hasDisabledSpectatorNotifications
 	}
 }

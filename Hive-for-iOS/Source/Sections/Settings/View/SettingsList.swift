@@ -39,8 +39,11 @@ struct SettingsList: View {
 					}
 
 					if container.has(feature: .emojiReactions) {
-						Toggle("Disable emoji reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
+						Toggle("Disable emote reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
 							.foregroundColor(Color(.textRegular))
+						Toggle("Disable spectator emotes", isOn: binding(for: \.hasDisabledSpectatorEmotes))
+							.foregroundColor(Color(.textRegular))
+							.disabled(container.preferences.hasDisabledEmojiReactions)
 					}
 
 					VStack {
