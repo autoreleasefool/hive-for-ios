@@ -34,6 +34,7 @@ enum Theme {
 
 	static func applyMarkdownTheme(to markdown: SwiftyMarkdown) {
 		markdown.body.color = UIColor(.textRegular)
+		markdown.bold.color = UIColor(.textRegular)
 		markdown.h1.color = UIColor(.textRegular)
 		markdown.h2.color = UIColor(.textRegular)
 		markdown.h3.color = UIColor(.textRegular)
