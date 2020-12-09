@@ -82,7 +82,7 @@ struct ContentView: View {
 		WelcomeView(
 			guestAccount: $viewModel.guestAccount,
 			onShowSettings: {
-				container.appState.value.setNavigation(to: .settings)
+				container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: false))
 			}, onLogin: {
 				container.appState.value.setNavigation(to: .login)
 			}, onPlayAsGuest: {
@@ -150,10 +150,21 @@ extension ContentView {
 // MARK: - Navigation
 
 extension ContentView {
-	enum SheetNavigation {
+	enum SheetNavigation: Equatable {
 		case appVersionUnsupported
-		case settings
 		case login
+		case settings(inGame: Bool, showAccount: Bool)
+
+		static func == (lhs: SheetNavigation, rhs: SheetNavigation) -> Bool {
+			switch (lhs, rhs) {
+			case (.appVersionUnsupported, .appVersionUnsupported),
+					 (.login, .login),
+					 (.settings, .settings):
+				return true
+			default:
+				return false
+			}
+		}
 	}
 
 	@ViewBuilder
@@ -161,8 +172,8 @@ extension ContentView {
 		switch sheetNavigation {
 		case .appVersionUnsupported:
 			AppVersionUnsupportedView()
-		case .settings:
-			SettingsList()
+		case .settings(let inGame, let showAccount):
+			SettingsList(inGame: inGame, showAccount: showAccount)
 				.inject(container)
 		case .login:
 			LoginSignupForm()

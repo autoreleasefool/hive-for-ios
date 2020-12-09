@@ -268,7 +268,7 @@ extension LobbyList {
 		case .loadMatches:
 			loadMatches()
 		case .openSettings:
-			container.appState.value.setNavigation(to: .settings)
+			container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: true))
 		case .goOnline:
 			if container.has(feature: .accounts) {
 				container.appState.value.setNavigation(to: .login)

@@ -116,7 +116,7 @@ extension ProfileListView {
 		case .loadUsers(let filter):
 			loadUsers(filter: filter)
 		case .openSettings:
-			container.appState.value.setNavigation(to: .settings)
+			container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: true))
 		}
 	}
 

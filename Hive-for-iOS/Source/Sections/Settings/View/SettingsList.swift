@@ -15,6 +15,7 @@ struct SettingsList: View {
 	@StateObject private var viewModel: SettingsListViewModel
 
 	init(
+		inGame: Bool = false,
 		showAccount: Bool = true,
 		user: Loadable<User> = .notLoaded,
 		logoutResult: Loadable<Bool> = .notLoaded
@@ -23,7 +24,8 @@ struct SettingsList: View {
 			wrappedValue: SettingsListViewModel(
 				user: user,
 				logoutResult: logoutResult,
-				showAccount: showAccount
+				showAccount: showAccount,
+				inGame: inGame
 			)
 		)
 	}
@@ -31,79 +33,10 @@ struct SettingsList: View {
 	var body: some View {
 		NavigationView {
 			Form {
-				Section(header: SectionHeader("Game")) {
-					if container.has(feature: .arGameMode) {
-						itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
-							viewModel.postViewAction(.switchGameMode(current: $0))
-						}
-					}
-
-					if container.has(feature: .emojiReactions) {
-						Toggle("Allow emote reactions", isOn: binding(for: \.isEmotesEnabled))
-							.foregroundColor(Color(.textRegular))
-						Toggle("Show spectator emotes", isOn: binding(for: \.isSpectatorEmotesEnabled))
-							.foregroundColor(Color(.textRegular))
-							.disabled(!container.preferences.isEmotesEnabled)
-					}
-
-					Toggle("Announce spectators", isOn: binding(for: \.isSpectatorNotificationsEnabled))
-						.foregroundColor(Color(.textRegular))
-
-					VStack {
-						itemToggle(title: "Piece color scheme", selected: viewModel.preferences.pieceColorScheme) {
-							viewModel.postViewAction(.switchPieceColorScheme(current: $0))
-						}
-						HStack {
-							Image(uiImage: whiteAnt)
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.squareImage(.l)
-							Image(uiImage: whiteBeetle)
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.squareImage(.l)
-							Image(uiImage: blackAnt)
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.squareImage(.l)
-							Image(uiImage: blackBeetle)
-								.resizable()
-								.aspectRatio(contentMode: .fit)
-								.squareImage(.l)
-						}
-						.padding()
-					}
+				gameSettingsSection
+				if !viewModel.inGame {
+					appSettingsSection
 				}
-				.listRowBackground(Color(.backgroundLight))
-
-				if viewModel.showAccount {
-					Section(header: SectionHeader("Account"), footer: logoutButton) {
-						UserPreview(viewModel.user.value?.summary)
-					}
-					.listRowBackground(Color(.backgroundLight))
-				}
-
-				Section(
-					header: SectionHeader("About"),
-					footer: HStack {
-						Spacer()
-						VStack(alignment: .trailing) {
-							Text(AppInfo.name)
-								.foregroundColor(Color(.textSecondary))
-							Text(AppInfo.fullSemanticVersion)
-								.foregroundColor(Color(.textSecondary))
-						}
-					},
-					content: {
-						Link(destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!) {
-							Text("View Source")
-								.foregroundColor(Color(.highlightRegular))
-						}
-
-						ThemeNavigationLink("Attributions", destination: { AttributionsList() })
-					}
-				)
-				.listRowBackground(Color(.backgroundLight))
 
 				#if DEBUG
 				Section(header: SectionHeader("Features")) {
@@ -121,6 +54,85 @@ struct SettingsList: View {
 			}
 		}
 		.navigationViewStyle(StackNavigationViewStyle())
+	}
+
+	private var gameSettingsSection: some View {
+		Section(header: SectionHeader("Game")) {
+			if container.has(feature: .arGameMode) {
+				itemToggle(title: "Mode", selected: viewModel.preferences.gameMode) {
+					viewModel.postViewAction(.switchGameMode(current: $0))
+				}
+			}
+
+			if container.has(feature: .emojiReactions) {
+				Toggle("Allow emote reactions", isOn: binding(for: \.isEmotesEnabled))
+					.foregroundColor(Color(.textRegular))
+				Toggle("Show spectator emotes", isOn: binding(for: \.isSpectatorEmotesEnabled))
+					.foregroundColor(Color(.textRegular))
+					.disabled(!container.preferences.isEmotesEnabled)
+			}
+
+			Toggle("Announce spectators", isOn: binding(for: \.isSpectatorNotificationsEnabled))
+				.foregroundColor(Color(.textRegular))
+
+			VStack {
+				itemToggle(title: "Piece color scheme", selected: viewModel.preferences.pieceColorScheme) {
+					viewModel.postViewAction(.switchPieceColorScheme(current: $0))
+				}
+				HStack {
+					Image(uiImage: whiteAnt)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.squareImage(.l)
+					Image(uiImage: whiteBeetle)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.squareImage(.l)
+					Image(uiImage: blackAnt)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.squareImage(.l)
+					Image(uiImage: blackBeetle)
+						.resizable()
+						.aspectRatio(contentMode: .fit)
+						.squareImage(.l)
+				}
+				.padding()
+			}
+		}
+		.listRowBackground(Color(.backgroundLight))
+	}
+
+	@ViewBuilder
+	private var appSettingsSection: some View {
+		if viewModel.showAccount {
+			Section(header: SectionHeader("Account"), footer: logoutButton) {
+				UserPreview(viewModel.user.value?.summary)
+			}
+			.listRowBackground(Color(.backgroundLight))
+		}
+
+		Section(
+			header: SectionHeader("About"),
+			footer: HStack {
+				Spacer()
+				VStack(alignment: .trailing) {
+					Text(AppInfo.name)
+						.foregroundColor(Color(.textSecondary))
+					Text(AppInfo.fullSemanticVersion)
+						.foregroundColor(Color(.textSecondary))
+				}
+			},
+			content: {
+				Link(destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!) {
+					Text("View Source")
+						.foregroundColor(Color(.highlightRegular))
+				}
+
+				ThemeNavigationLink("Attributions", destination: { AttributionsList() })
+			}
+		)
+		.listRowBackground(Color(.backgroundLight))
 	}
 
 	// MARK: Content
@@ -233,7 +245,7 @@ extension SettingsList {
 		case .logout:
 			logout()
 		case .closeSettings:
-			container.appState.value.clearNavigation(of: .settings)
+			container.appState.value.clearNavigation(of: .settings(inGame: true, showAccount: true))
 		}
 	}
 

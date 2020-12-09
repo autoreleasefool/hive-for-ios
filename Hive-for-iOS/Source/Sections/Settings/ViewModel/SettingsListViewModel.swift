@@ -33,7 +33,6 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 			switch logoutResult {
 			case .failed, .loaded:
 				actions.send(.closeSettings)
-				showAccount = false
 			case .loading, .notLoaded:
 				break
 			}
@@ -44,15 +43,17 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 	@Published var showAttributions: Bool = false
 	@Published var showAccount: Bool
 	@Published var preferences = Preferences()
+	let inGame: Bool
 
 	private let actions = PassthroughSubject<SettingsListAction, Never>()
 	var actionsPublisher: AnyPublisher<SettingsListAction, Never> {
 		actions.eraseToAnyPublisher()
 	}
 
-	init(user: Loadable<User>, logoutResult: Loadable<Bool>, showAccount: Bool) {
+	init(user: Loadable<User>, logoutResult: Loadable<Bool>, showAccount: Bool, inGame: Bool) {
 		_user = .init(initialValue: user)
 		_logoutResult = .init(initialValue: logoutResult)
+		self.inGame = inGame
 		self.showAccount = showAccount
 	}
 
