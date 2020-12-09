@@ -20,7 +20,7 @@ struct GameHUD: View {
 	private var hasEmojiEnabled: Bool {
 		container.has(feature: .emojiMasterMode) || (
 			container.has(feature: .emojiReactions) &&
-			!container.preferences.hasDisabledEmojiReactions &&
+			container.preferences.isEmotesEnabled &&
 			!(container.account?.isOffline == true)
 		)
 	}

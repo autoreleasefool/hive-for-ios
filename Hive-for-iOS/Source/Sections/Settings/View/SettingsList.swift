@@ -39,12 +39,15 @@ struct SettingsList: View {
 					}
 
 					if container.has(feature: .emojiReactions) {
-						Toggle("Disable emote reactions", isOn: binding(for: \.hasDisabledEmojiReactions))
+						Toggle("Allow emote reactions", isOn: binding(for: \.isEmotesEnabled))
 							.foregroundColor(Color(.textRegular))
-						Toggle("Disable spectator emotes", isOn: binding(for: \.hasDisabledSpectatorEmotes))
+						Toggle("Show spectator emotes", isOn: binding(for: \.isSpectatorEmotesEnabled))
 							.foregroundColor(Color(.textRegular))
-							.disabled(container.preferences.hasDisabledEmojiReactions)
+							.disabled(!container.preferences.isEmotesEnabled)
 					}
+
+					Toggle("Announce spectators", isOn: binding(for: \.isSpectatorNotificationsEnabled))
+						.foregroundColor(Color(.textRegular))
 
 					VStack {
 						itemToggle(title: "Piece color scheme", selected: viewModel.preferences.pieceColorScheme) {

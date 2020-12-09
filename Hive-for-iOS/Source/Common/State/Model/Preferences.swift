@@ -14,21 +14,6 @@ struct Preferences: Equatable {
 		set { UserDefaults.standard.set(newValue.rawValue, forKey: Key.gameMode.rawValue) }
 	}
 
-	var hasDisabledEmojiReactions: Bool {
-		get { UserDefaults.standard.bool(forKey: Key.disabledEmojiReactions.rawValue) }
-		set { UserDefaults.standard.set(newValue, forKey: Key.disabledEmojiReactions.rawValue) }
-	}
-
-	var hasDisabledSpectatorEmotes: Bool {
-		get { UserDefaults.standard.bool(forKey: Key.hasDisabledSpectatorEmotes.rawValue) }
-		set { UserDefaults.standard.set(newValue, forKey: Key.hasDisabledSpectatorEmotes.rawValue) }
-	}
-
-	var hasDisabledSpectatorNotifications: Bool {
-		get { UserDefaults.standard.bool(forKey: Key.hasDisabledSpectatorNotifications.rawValue) }
-		set { UserDefaults.standard.set(newValue, forKey: Key.hasDisabledSpectatorNotifications.rawValue) }
-	}
-
 	var pieceColorScheme: PieceColorScheme {
 		get {
 			PieceColorScheme(
@@ -38,9 +23,31 @@ struct Preferences: Equatable {
 		set { UserDefaults.standard.set(newValue.rawValue, forKey: Key.pieceColorScheme.rawValue) }
 	}
 
+	var isEmotesEnabled: Bool {
+		get { bool(for: Key.isEmotesEnabled, defaultValue: true) }
+		set { UserDefaults.standard.set(newValue, forKey: Key.isEmotesEnabled.rawValue) }
+	}
+
+	var isSpectatorEmotesEnabled: Bool {
+		get { bool(for: Key.isSpectatorEmotesEnabled, defaultValue: true) }
+		set { UserDefaults.standard.set(newValue, forKey: Key.isSpectatorEmotesEnabled.rawValue) }
+	}
+
+	var isSpectatorNotificationsEnabled: Bool {
+		get { bool(for: Key.isSpectatorNotificationsEnabled, defaultValue: true) }
+		set { UserDefaults.standard.set(newValue, forKey: Key.isSpectatorNotificationsEnabled.rawValue) }
+	}
+
 	var hasDismissedReplayTooltip: Bool {
-		get { UserDefaults.standard.bool(forKey: Key.hasDismissedReplayTooltip.rawValue) }
+		get { bool(for: Key.hasDismissedReplayTooltip, defaultValue: false) }
 		set { UserDefaults.standard.set(newValue, forKey: Key.hasDismissedReplayTooltip.rawValue) }
+	}
+
+	private func bool(for key: Key, defaultValue: Bool) -> Bool {
+		guard UserDefaults.standard.object(forKey: key.rawValue) != nil else {
+			return defaultValue
+		}
+		return UserDefaults.standard.bool(forKey: key.rawValue)
 	}
 }
 
@@ -83,10 +90,10 @@ extension Preferences {
 private extension Preferences {
 	enum Key: String {
 		case gameMode
-		case disabledEmojiReactions
+		case isEmotesEnabled
 		case pieceColorScheme
 		case hasDismissedReplayTooltip
-		case hasDisabledSpectatorEmotes
-		case hasDisabledSpectatorNotifications
+		case isSpectatorEmotesEnabled
+		case isSpectatorNotificationsEnabled
 	}
 }
