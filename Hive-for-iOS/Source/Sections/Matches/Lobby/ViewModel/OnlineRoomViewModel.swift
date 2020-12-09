@@ -273,8 +273,6 @@ extension OnlineRoomViewModel {
 	}
 
 	private func handleGameClientMessage(_ message: GameServerMessage) {
-		// TODO: Make it more clear that this is only active in Match Details
-
 		switch message {
 		case .playerJoined(let id):
 			playerJoined(id: id)
