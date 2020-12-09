@@ -33,17 +33,10 @@ struct PlayerHandView: View {
 				viewModel.postViewAction(.selectedFromHand(piece.owner, piece.class))
 			}
 		} label: {
-			Image(uiImage: image(for: piece))
+			Image(uiImage: piece.image(forScheme: container.preferences.pieceColorScheme))
 				.resizable()
 				.scaledToFit()
 				.squareImage(.l)
-		}
-	}
-
-	private func image(for piece: Piece) -> UIImage {
-		switch container.preferences.pieceColorScheme {
-		case .outlined: return piece.image
-		case .filled: return piece.filledImage
 		}
 	}
 }

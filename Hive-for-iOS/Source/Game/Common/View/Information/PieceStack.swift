@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct PieceStack: View {
+	@Environment(\.container) private var container
 	@EnvironmentObject var viewModel: GameViewModel
 	let stack: [Piece]
 
@@ -18,7 +19,7 @@ struct PieceStack: View {
 			viewModel.postViewAction(.tappedPiece(piece))
 		} label: {
 			HStack(spacing: .m) {
-				Image(uiImage: piece.image)
+				Image(uiImage: piece.image(forScheme: container.preferences.pieceColorScheme))
 					.resizable()
 					.scaledToFit()
 					.squareImage(.m)

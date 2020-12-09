@@ -14,7 +14,14 @@ import HiveEngine
 typealias Piece = HiveEngine.Unit
 
 extension Piece {
-	var image: UIImage {
+	func image(forScheme colorScheme: Preferences.PieceColorScheme) -> UIImage {
+		switch colorScheme {
+		case .filled: return filledImage
+		case .outlined: return outlinedImage
+		}
+	}
+
+	var outlinedImage: UIImage {
 		switch self.class {
 		case .ant: return owner == .white ? ImageAsset.Pieces.White.ant : ImageAsset.Pieces.Black.ant
 		case .beetle: return owner == .white ? ImageAsset.Pieces.White.beetle : ImageAsset.Pieces.Black.beetle
