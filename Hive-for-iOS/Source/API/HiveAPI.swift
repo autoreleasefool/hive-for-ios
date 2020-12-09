@@ -57,7 +57,15 @@ enum HiveAPIError: LocalizedError {
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
 class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
-	static let baseURL = URL(string: "https://hive.josephroque.dev")!
+	static let baseURL = {
+		#if DEBUG
+		let debugURL = URL(string: "https://hive.josephroque.dev")!
+		return debugURL
+		#else
+		let releaseURL = URL(string: "https://hive.josephroque.dev")!
+		return releaseURL
+		#endif
+	}()
 
 	private var session: URLSession!
 	private let requestQueue: DispatchQueue
