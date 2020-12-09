@@ -51,6 +51,11 @@ enum GameViewAction: BaseViewAction {
 	case onDisappear
 }
 
+enum GameAction: BaseAction {
+	case showAppSettings
+	case endGame
+}
+
 class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private(set) var preferences = Preferences() // TODO: use passed in value
 	private(set) var clientInteractor: ClientInteractor!
@@ -76,7 +81,6 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	private(set) var loafState = PassthroughSubject<LoafState, Never>()
 	private(set) var animateToPosition = PassthroughSubject<Position, Never>()
-	private(set) var gameEndPublisher = PassthroughSubject<Void, Never>()
 	private(set) var animatedEmoji = PassthroughSubject<Emoji, Never>()
 
 	private(set) var gameContent: GameViewContent!
@@ -89,6 +93,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
 	let actionFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 	let promptFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
+
+	private let actions = PassthroughSubject<GameAction, Never>()
+	var actionsPublisher: AnyPublisher<GameAction, Never> {
+		actions.eraseToAnyPublisher()
+	}
 
 	var inGame: Bool {
 		fatalError("GameViewModel subclasses should override")
@@ -180,8 +189,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		case .openGameSettings:
 			openGameSettings()
 		case .openAppSettings:
-			// TODO: open app settings
-			break
+			actions.send(.showAppSettings)
 
 		case .toggleEmojiPicker:
 			promptFeedbackGenerator.impactOccurred()
@@ -267,7 +275,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	}
 
 	func exitToLobby() {
-		gameEndPublisher.send()
+		actions.send(.endGame)
 	}
 
 	// MARK: Interactions

@@ -40,7 +40,7 @@ struct Game: View {
 			GameHUD()
 				.environmentObject(viewModel)
 		}
-		.onReceive(viewModel.gameEndPublisher) { container.appState[\.gameSetup] = nil }
+		.onReceive(viewModel.actionsPublisher) { handleAction($0) }
 		.onAppear {
 			UIApplication.shared.isIdleTimerDisabled = true
 			viewModel.postViewAction(
@@ -67,6 +67,19 @@ struct Game: View {
 		case .sprite: GameView2DContainer(viewModel: viewModel)
 		}
 		#endif
+	}
+}
+
+// MARK: Actions
+
+extension Game {
+	private func handleAction(_ action: GameAction) {
+		switch action {
+		case .endGame:
+			container.appState[\.gameSetup] = nil
+		case .showAppSettings:
+			container.appState.value.setNavigation(to: .settings(inGame: true, showAccount: false))
+		}
 	}
 }
 
