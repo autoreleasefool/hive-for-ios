@@ -38,7 +38,7 @@ struct GameHUD: View {
 
 	private func settingsButton(_ geometry: GeometryProxy) -> some View {
 		Button {
-			viewModel.postViewAction(.openSettings)
+			viewModel.postViewAction(.openGameSettings)
 		} label: {
 			Image(uiImage: ImageAsset.Icon.info)
 				.resizable()

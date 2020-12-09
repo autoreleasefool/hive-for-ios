@@ -40,7 +40,8 @@ enum GameViewAction: BaseViewAction {
 
 	case replayLastMove
 	case dismissReplayTooltip
-	case openSettings
+	case openGameSettings
+	case openAppSettings
 	case forfeit
 	case forfeitConfirmed
 	case returnToLobby
@@ -176,8 +177,11 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		case .tappedGamePiece(let piece):
 			tappedPiece(piece, showStack: true)
 
-		case .openSettings:
-			openSettings()
+		case .openGameSettings:
+			openGameSettings()
+		case .openAppSettings:
+			// TODO: open app settings
+			break
 
 		case .toggleEmojiPicker:
 			promptFeedbackGenerator.impactOccurred()
@@ -297,7 +301,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		presentedGameInformation = .pieceClass(piece.class)
 	}
 
-	private func openSettings() {
+	private func openGameSettings() {
 		promptFeedbackGenerator.impactOccurred()
 		presentedGameInformation = .settings
 	}

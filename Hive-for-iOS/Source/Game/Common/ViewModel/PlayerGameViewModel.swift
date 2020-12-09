@@ -95,8 +95,8 @@ class PlayerGameViewModel: GameViewModel {
 		// Not used in PlayerGameViewModel
 		case .onAppear, .viewContentDidLoad, .viewContentReady, .viewInteractionsReady, .presentInformation,
 				 .closeInformation, .enquiredFromHand, .tappedPiece, .tappedGamePiece, .toggleEmojiPicker,
-				 .pickedEmoji, .hasMovedInBounds, .hasMovedOutOfBounds, .returnToGameBounds,
-				 .replayLastMove, .dismissReplayTooltip, .openSettings, .returnToLobby, .onDisappear:
+				 .pickedEmoji, .hasMovedInBounds, .hasMovedOutOfBounds, .returnToGameBounds, .openAppSettings,
+				 .replayLastMove, .dismissReplayTooltip, .openGameSettings, .returnToLobby, .onDisappear:
 			break
 		}
 	}

@@ -17,6 +17,7 @@ struct GameSettings: View {
 				returnToLobbyButton
 			}
 			rulesButton
+			settingsButton
 			if !viewModel.hasGameEnded && !viewModel.isSpectating {
 				forfeitButton
 			}
@@ -33,6 +34,12 @@ struct GameSettings: View {
 	private var rulesButton: some View {
 		PrimaryButton("Game rules") {
 			viewModel.postViewAction(.presentInformation(.rule(nil)))
+		}
+	}
+
+	private var settingsButton: some View {
+		PrimaryButton("Settings") {
+			viewModel.postViewAction(.openAppSettings)
 		}
 	}
 

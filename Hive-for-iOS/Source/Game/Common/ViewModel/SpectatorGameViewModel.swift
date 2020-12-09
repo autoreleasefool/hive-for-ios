@@ -58,9 +58,9 @@ class SpectatorGameViewModel: GameViewModel {
 		case .onAppear, .viewContentDidLoad, .viewContentReady, .viewInteractionsReady, .presentInformation,
 				 .closeInformation, .enquiredFromHand, .tappedPiece, .tappedGamePiece, .toggleEmojiPicker,
 				 .pickedEmoji, .hasMovedInBounds, .hasMovedOutOfBounds, .returnToGameBounds,
-				 .replayLastMove, .dismissReplayTooltip, .openSettings, .returnToLobby, .onDisappear,
+				 .replayLastMove, .dismissReplayTooltip, .openGameSettings, .returnToLobby, .onDisappear,
 				 .gamePieceSnapped, .gamePieceMoved, .movementConfirmed, .cancelMovement, .forfeit,
-				 .forfeitConfirmed, .arViewError, .toggleDebug:
+				 .forfeitConfirmed, .arViewError, .toggleDebug, .openAppSettings:
 					break
 		}
 	}
