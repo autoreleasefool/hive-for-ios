@@ -1,5 +1,5 @@
 //
-//  ActionHUD.swift
+//  EventHUD.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-03-25.
@@ -9,7 +9,7 @@
 import SwiftUI
 import HiveEngine
 
-struct ActionHUD: View {
+struct EventHUD: View {
 	@EnvironmentObject var viewModel: GameViewModel
 
 	private func cancelButton(from config: PopoverSheetConfig) -> PopoverSheetConfig.ButtonConfig? {
@@ -101,26 +101,26 @@ struct ActionHUD: View {
 		}
 	}
 
-	fileprivate func HUD(action: GameAction) -> some View {
+	fileprivate func HUD(event: GameEvent) -> some View {
 		VStack {
 			Spacer()
-			prompt(config: action.config)
-			cancel(config: action.config)
+			prompt(config: event.config)
+			cancel(config: event.config)
 		}
 	}
 
 	var body: some View {
 		GeometryReader { geometry in
 			BottomSheet(
-				isOpen: viewModel.presentingGameAction,
+				isOpen: viewModel.presentingGameEvent,
 				minHeight: 0,
 				maxHeight: geometry.size.height / 2.0,
 				showsDragIndicator: false,
 				dragGestureEnabled: false,
 				backgroundColor: .clear
 			) {
-				if viewModel.presentingGameAction.wrappedValue {
-					HUD(action: viewModel.presentedGameAction!)
+				if viewModel.presentingGameEvent.wrappedValue {
+					HUD(event: viewModel.presentedGameEvent!)
 				} else {
 					EmptyView()
 				}
@@ -133,20 +133,20 @@ struct ActionHUD: View {
 // MARK: - Preview
 
 #if DEBUG
-struct ActionHUDPreview: PreviewProvider {
+struct EventHUDPreview: PreviewProvider {
 	@State static var isOpen: Bool = true
 
 	static var previews: some View {
 		GeometryReader { geometry in
 			BottomSheet(
-				isOpen: ActionHUDPreview.$isOpen,
+				isOpen: EventHUDPreview.$isOpen,
 				minHeight: 0,
 				maxHeight: geometry.size.height / 2.0,
 				showsDragIndicator: false,
 				dragGestureEnabled: false,
 				backgroundColor: .clear
 			) {
-				ActionHUD().HUD(action: GameAction(config: PopoverSheetConfig(
+				EventHUD().HUD(event: GameEvent(config: PopoverSheetConfig(
 					title: "Move Ant?",
 					message: "From in hand to (0, 0, 0)",
 					buttons: [

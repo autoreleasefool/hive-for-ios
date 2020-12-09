@@ -65,7 +65,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 
 	@Published var isShowingEmojiPicker = false
 
-	@Published var presentedGameAction: GameAction?
+	@Published var presentedGameEvent: GameEvent?
 	@Published var presentedGameInformation: GameInformation? {
 		didSet {
 			if case .playerMustPass = oldValue {
@@ -122,19 +122,19 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 		)
 	}
 
-	var presentingGameAction: Binding<Bool> {
+	var presentingGameEvent: Binding<Bool> {
 		Binding(
-			get: { [weak self] in self?.presentedGameAction != nil },
+			get: { [weak self] in self?.presentedGameEvent != nil },
 			set: { [weak self] newValue in
 				guard !newValue else { return }
-				self?.presentedGameAction?.onClose?()
-				self?.presentedGameAction = nil
+				self?.presentedGameEvent?.onClose?()
+				self?.presentedGameEvent = nil
 			}
 		)
 	}
 
 	var shouldHideHUDControls: Bool {
-		presentingGameInformation.wrappedValue || presentingGameAction.wrappedValue
+		presentingGameInformation.wrappedValue || presentingGameEvent.wrappedValue
 	}
 
 	private(set) var viewContentReady = false

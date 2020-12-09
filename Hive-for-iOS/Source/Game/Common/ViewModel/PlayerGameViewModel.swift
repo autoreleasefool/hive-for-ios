@@ -234,20 +234,20 @@ class PlayerGameViewModel: GameViewModel {
 					type: .default
 				) { [weak self] in
 					self?.postViewAction(.movementConfirmed(movement))
-					self?.presentedGameAction = nil
+					self?.presentedGameEvent = nil
 				},
 				PopoverSheetConfig.ButtonConfig(
 					title: "Cancel",
 					type: .cancel
 				) { [weak self] in
 					self?.postViewAction(.cancelMovement)
-					self?.presentedGameAction = nil
+					self?.presentedGameEvent = nil
 				},
 			]
 		)
 
 		promptFeedbackGenerator.impactOccurred()
-		presentedGameAction = GameAction(config: popoverSheet) { [weak self] in
+		presentedGameEvent = GameEvent(config: popoverSheet) { [weak self] in
 			self?.postViewAction(.cancelMovement)
 		}
 	}
@@ -277,19 +277,19 @@ class PlayerGameViewModel: GameViewModel {
 					type: .destructive
 				) { [weak self] in
 					self?.postViewAction(.forfeitConfirmed)
-					self?.presentedGameAction = nil
+					self?.presentedGameEvent = nil
 				},
 				PopoverSheetConfig.ButtonConfig(
 					title: "Cancel",
 					type: .cancel
 				) { [weak self] in
-					self?.presentedGameAction = nil
+					self?.presentedGameEvent = nil
 				},
 			]
 		)
 
 		promptFeedbackGenerator.impactOccurred()
-		presentedGameAction = GameAction(config: popoverSheet, onClose: nil)
+		presentedGameEvent = GameEvent(config: popoverSheet, onClose: nil)
 	}
 
 	private func forfeitGame() {

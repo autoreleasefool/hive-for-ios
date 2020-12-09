@@ -156,7 +156,7 @@ struct GameHUD: View {
 			}
 			InformationHUD()
 				.edgesIgnoringSafeArea(.bottom)
-			ActionHUD()
+			EventHUD()
 				.edgesIgnoringSafeArea(.bottom)
 		}
 		.padding(.top)
