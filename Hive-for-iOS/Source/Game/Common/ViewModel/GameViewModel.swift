@@ -385,7 +385,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	// MARK: Spectators
 
 	func announceSpectator(_ name: String, joined: Bool) {
-		guard !isSpectating else { return }
+		guard !isSpectating, preferences.isSpectatorNotificationsEnabled else { return }
 		if joined {
 			loafState.send(LoafState("\(name) is now spectating", style: .success(), duration: .short))
 		} else {
