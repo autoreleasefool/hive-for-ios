@@ -7,7 +7,7 @@
 //
 
 struct AppState: Equatable {
-	var account: Loadable<Account> = .notLoaded
+	var account: Loadable<AnyAccount> = .notLoaded
 	var gameSetup: Game.Setup?
 
 	private(set) var contentSheetNavigation: ContentView.SheetNavigation?

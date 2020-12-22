@@ -57,7 +57,7 @@ enum HiveAPIError: LocalizedError {
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 
 class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
-	static let baseURL = {
+	static let baseURL: URL = {
 		#if DEBUG
 		let debugURL = URL(string: "https://hive.josephroque.dev")!
 		return debugURL
@@ -179,6 +179,8 @@ class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
 			return try encoder.encode(data)
 		case .signup(let data):
 			return try encoder.encode(data)
+		case .signInWithApple(let data):
+			return try encoder.encode(data)
 		case
 			.createGuestAccount,
 			.openMatches,
@@ -216,7 +218,7 @@ class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
 extension HiveAPI {
 	enum Endpoint {
 		// Auth
-		case login(User.Login.Request)
+		case signInWithApple(User.SignInWithApple.Request)
 		case signup(User.Signup.Request)
 		case createGuestAccount
 		case logout(Account)
@@ -240,6 +242,7 @@ extension HiveAPI {
 			case .logout: return "users/logout"
 			case .checkToken: return "users/validate"
 			case .createGuestAccount: return "users/guestSignup"
+			case .signInWithApple: return "users/siwa"
 
 			case .userDetails(let id): return "users/\(id.uuidString)/details"
 			case .filterUsers: return "users/all"
@@ -265,7 +268,8 @@ extension HiveAPI {
 				.openMatches,
 				.signup,
 				.userDetails,
-				.createGuestAccount:
+				.createGuestAccount,
+				.signInWithApple:
 				return nil
 			case .filterUsers(let filter):
 				if let filter = filter {
@@ -301,9 +305,25 @@ extension HiveAPI {
 
 		var httpMethod: HTTPMethod {
 			switch self {
-			case .login, .signup, .createGuestAccount, .createMatch, .joinMatch: return .post
-			case .logout: return .delete
-			case .checkToken, .openMatches, .activeMatches, .userDetails, .matchDetails, .filterUsers: return .get
+			case
+				.login,
+				.signup,
+				.createGuestAccount,
+				.createMatch,
+				.joinMatch,
+				.signInWithApple:
+				return .post
+			case
+				.logout:
+				return .delete
+			case
+				.checkToken,
+				.openMatches,
+				.activeMatches,
+				.userDetails,
+				.matchDetails,
+				.filterUsers:
+				return .get
 			}
 		}
 	}

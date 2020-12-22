@@ -18,13 +18,17 @@ enum AccountRepositoryError: Error {
 }
 
 protocol AccountRepository {
-	func loadAccount() -> AnyPublisher<Account, AccountRepositoryError>
+	func loadAccount() -> AnyPublisher<AnyAccount, AccountRepositoryError>
 	func clearAccount()
 
 	func saveAccount(_ account: Account)
-	func login(_ loginData: User.Login.Request) -> AnyPublisher<Account, AccountRepositoryError>
-	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<Account, AccountRepositoryError>
-	func createGuestAccount() -> AnyPublisher<Account, AccountRepositoryError>
+	func login(_ loginData: User.Login.Request) -> AnyPublisher<AnyAccount, AccountRepositoryError>
+	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<AnyAccount, AccountRepositoryError>
+	func createGuestAccount() -> AnyPublisher<AnyAccount, AccountRepositoryError>
+	func signInWithApple(
+		_ appleData: User.SignInWithApple.Request
+	) -> AnyPublisher<AppleAccount, AccountRepositoryError>
+
 	func logout(fromAccount account: Account) -> AnyPublisher<Bool, AccountRepositoryError>
 }
 
@@ -44,11 +48,11 @@ struct LiveAccountRepository: AccountRepository {
 		self.api = api
 	}
 
-	func loadAccount() -> AnyPublisher<Account, AccountRepositoryError> {
-		Future<Account, AccountRepositoryError> { promise in
+	func loadAccount() -> AnyPublisher<AnyAccount, AccountRepositoryError> {
+		Future<AnyAccount, AccountRepositoryError> { promise in
 			do {
 				guard let accountData = try keychain.getData(Key.account.rawValue),
-					let account = try? accountDecoder.decode(Account.self, from: accountData) else {
+					let account = try? accountDecoder.decode(AnyAccount.self, from: accountData) else {
 					return promise(.failure(AccountRepositoryError.notFound))
 				}
 				promise(.success(account))
@@ -77,38 +81,56 @@ struct LiveAccountRepository: AccountRepository {
 		guard !account.isOffline, !account.isGuest else { return }
 
 		do {
-			let accountData = try accountEncoder.encode(account)
+			let accountData = try accountEncoder.encode(AnyAccount(account))
 			try keychain.set(accountData, key: Key.account.rawValue)
 		} catch {
 			logger.error("Error saving login: \(error)")
 		}
 	}
 
-	func login(_ loginData: User.Login.Request) -> AnyPublisher<Account, AccountRepositoryError> {
+	func login(_ loginData: User.Login.Request) -> AnyPublisher<AnyAccount, AccountRepositoryError> {
 		api.fetch(.login(loginData))
 			.mapError { .apiError($0) }
-			.map { (token: SessionToken) in Account(userId: token.userId, token: token.token, isGuest: false) }
+			.map { (token: SessionToken) in
+				HiveAccount(userId: token.userId, token: token.token, isGuest: false)
+					.eraseToAnyAccount()
+			}
 			.eraseToAnyPublisher()
 	}
 
-	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<Account, AccountRepositoryError> {
+	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<AnyAccount, AccountRepositoryError> {
 		api.fetch(.signup(signupData))
 			.mapError { .apiError($0) }
 			.map { (result: User.Signup.Response) in
 				let notificationObject = User.Signup.Success(response: result, isGuest: true)
 				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
-				return Account(userId: result.token.userId, token: result.token.token, isGuest: false)
+				return HiveAccount(userId: result.token.userId, token: result.token.token, isGuest: false)
+					.eraseToAnyAccount()
 			}
 			.eraseToAnyPublisher()
 	}
 
-	func createGuestAccount() -> AnyPublisher<Account, AccountRepositoryError> {
+	func createGuestAccount() -> AnyPublisher<AnyAccount, AccountRepositoryError> {
 		api.fetch(.createGuestAccount)
 			.mapError { .apiError($0) }
 			.map { (result: User.Signup.Response) in
 				let notificationObject = User.Signup.Success(response: result, isGuest: true)
 				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
-				return Account(userId: result.token.userId, token: result.token.token, isGuest: true)
+				return HiveAccount(userId: result.token.userId, token: result.token.token, isGuest: true)
+					.eraseToAnyAccount()
+			}
+			.eraseToAnyPublisher()
+	}
+
+	func signInWithApple(
+		_ appleData: User.SignInWithApple.Request
+	) -> AnyPublisher<AppleAccount, AccountRepositoryError> {
+		api.fetch(.signInWithApple(appleData))
+			.mapError { .apiError($0) }
+			.map { (result: User.SignInWithApple.Response) in
+//				let notificationObject = User.Signup.Success(response: result, isGuest: true)
+//				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
+				return AppleAccount(id: result.userId, token: result.token)
 			}
 			.eraseToAnyPublisher()
 	}

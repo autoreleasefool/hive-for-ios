@@ -61,3 +61,22 @@ extension User.Logout {
 		let success: Bool
 	}
 }
+
+// MARK: Sign in with Apple
+
+extension User {
+	enum SignInWithApple {}
+}
+
+extension User.SignInWithApple {
+	struct Request: Codable {
+		let appleIdentityToken: String
+		let displayName: String?
+		let avatarUrl: String?
+	}
+
+	struct Response: Codable {
+		let accessToken: String
+		let user: User
+	}
+}

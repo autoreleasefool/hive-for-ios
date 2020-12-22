@@ -78,12 +78,12 @@ extension Match {
 		}
 
 		var isOffline: Bool {
-			id == Account.offline.userId
+			id == HiveAccount.offline.id
 		}
 
 		static func createOfflineUser(withName name: String) -> User {
 			User(
-				id: Account.offline.userId,
+				id: HiveAccount.offline.id,
 				displayName: name,
 				elo: 0,
 				avatarUrl: nil

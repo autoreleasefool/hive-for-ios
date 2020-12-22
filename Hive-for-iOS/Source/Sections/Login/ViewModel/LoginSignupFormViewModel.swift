@@ -24,7 +24,7 @@ enum LoginSignupAction: BaseAction {
 }
 
 class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
-	@Published var account: Loadable<Account>
+	@Published var account: Loadable<AnyAccount>
 	@Published var form: Form
 
 	@Published var email: String = ""
@@ -37,7 +37,7 @@ class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObje
 		actions.eraseToAnyPublisher()
 	}
 
-	init(defaultForm: Form = .login, account: Loadable<Account> = .notLoaded) {
+	init(defaultForm: Form = .login, account: Loadable<AnyAccount> = .notLoaded) {
 		self._account = .init(initialValue: account)
 		self._form = .init(initialValue: defaultForm)
 	}

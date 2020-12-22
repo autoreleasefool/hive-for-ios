@@ -199,9 +199,9 @@ private struct AgentGameState: LocalGameState {
 		case .draw, .none:
 			return nil
 		case .playerWins(.white):
-			return localPlayer == .white ? Account.offline.userId : agentConfiguration.id
+			return localPlayer == .white ? HiveAccount.offline.id : agentConfiguration.id
 		case .playerWins(.black):
-			return localPlayer == .white ? agentConfiguration.id : Account.offline.userId
+			return localPlayer == .white ? agentConfiguration.id : HiveAccount.offline.id
 		}
 	}
 
@@ -216,7 +216,7 @@ private struct AgentGameState: LocalGameState {
 	}
 
 	func forfeit() -> UUID {
-		Account.offline.userId
+		HiveAccount.offline.id
 	}
 }
 

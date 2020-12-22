@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import AuthenticationServices
 import SwiftUI
 
 struct WelcomeView: View {
@@ -15,11 +16,11 @@ struct WelcomeView: View {
 	let onShowSettings: () -> Void
 	let onLogin: () -> Void
 	let onPlayAsGuest: () -> Void
+	let onSignInWithApple: (Result<ASAuthorization, Error>) -> Void
 	let onPlayOffline: () -> Void
 
 	var body: some View {
 		VStack {
-
 			Image(uiImage: ImageAsset.glyph)
 				.foregroundColor(Color(.highlightPrimary))
 				.padding(.top, Metrics.Spacing.xl.rawValue)
@@ -38,18 +39,20 @@ struct WelcomeView: View {
 
 	@ViewBuilder
 	private var form: some View {
-		if container.has(feature: .accounts) {
-			PrimaryButton("Login") {
-				onLogin()
+		if container.has(feature: .signInWithApple) {
+			SignInWithAppleButton(.signIn) { _ in } onCompletion: { result in
+
 			}
-			.buttonBackground(.backgroundLight)
+			.signInWithAppleButtonStyle(.white)
+			.cornerRadius(Metrics.CornerRadius.s.rawValue)
+			.frame(height: 48)
 			.padding(.horizontal)
 			.padding(.bottom)
 		}
 
-		if container.has(feature: .guestMode) {
-			PrimaryButton("Play as guest") {
-				onPlayAsGuest()
+		if container.has(feature: .accounts) {
+			PrimaryButton("Login") {
+				onLogin()
 			}
 			.buttonBackground(.backgroundLight)
 			.padding(.horizontal)
@@ -90,6 +93,7 @@ struct WelcomeViewPreview: PreviewProvider {
 			onShowSettings: { },
 			onLogin: { },
 			onPlayAsGuest: { },
+			onSignInWithApple: { _ in },
 			onPlayOffline: { }
 		)
 	}

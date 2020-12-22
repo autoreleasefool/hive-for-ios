@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import AuthenticationServices
 import Foundation
 import Combine
 import SwiftUI
@@ -15,6 +16,7 @@ enum ContentViewViewAction: BaseViewAction {
 	case playOffline
 	case playAsGuest
 	case accountChanged
+	case handleSignInWithApple(Result<ASAuthorization, Error>)
 }
 
 enum ContentViewAction: BaseAction {
@@ -79,6 +81,8 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			actions.send(.createGuestAccount)
 		case .accountChanged:
 			objectWillChange.send()
+		case .handleSignInWithApple(let result):
+			handleSignInWithApple(result)
 		}
 	}
 
@@ -107,11 +111,23 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			}
 			.store(in: self)
 	}
-}
 
-extension ContentViewViewModel {
-	struct GuestNameAlert: Identifiable {
-		var id: String { guestName }
-		let guestName: String
+	private func handleSignInWithApple(_ result: Result<ASAuthorization, Error>) {
+		guard case .success(let authorization) = result else {
+			actions.send(.showLoaf(LoafState("Sign in with Apple failed", style: .error())))
+			return
+		}
+
+		guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+			actions.send(.showLoaf(LoafState("Invalid credentials", style: .error())))
+			return
+		}
+
+//		switch result {
+//		case .success(let authorization):
+//			swi
+//		case .failure:
+//			actions.send(.showLoaf(LoafState("Sign in with Apple failed", style: .error())))
+//		}
 	}
 }

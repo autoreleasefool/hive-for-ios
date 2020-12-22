@@ -41,7 +41,7 @@ enum AppStateChange: Hashable, Equatable {
 struct AppStateChangeListener: ViewModifier {
 	@Environment(\.container) private var container
 
-	@State private var account: Loadable<Account> = .notLoaded
+	@State private var account: Loadable<AnyAccount> = .notLoaded
 	@State private var features: Features?
 
 	private let observedChanges: Set<AppStateChange>
@@ -76,7 +76,7 @@ struct AppStateChangeListener: ViewModifier {
 // MARK: - Updates
 
 extension AppStateChangeListener {
-	private var accountUpdates: AnyPublisher<Loadable<Account>, Never> {
+	private var accountUpdates: AnyPublisher<Loadable<AnyAccount>, Never> {
 		container.appState.updates(for: \.account)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()

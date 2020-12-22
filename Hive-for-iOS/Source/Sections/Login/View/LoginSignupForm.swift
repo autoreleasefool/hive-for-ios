@@ -16,7 +16,7 @@ struct LoginSignupForm: View {
 
 	init(
 		defaultForm: LoginSignupFormViewModel.Form = .login,
-		account: Loadable<Account> = .notLoaded
+		account: Loadable<AnyAccount> = .notLoaded
 	) {
 		_viewModel = StateObject(
 			wrappedValue: LoginSignupFormViewModel(defaultForm: defaultForm, account: account)
@@ -167,7 +167,7 @@ extension LoginSignupForm {
 			.createGuestAccount(account: $viewModel.account)
 	}
 
-	private func handleAccountChange(_ account: Loadable<Account>) {
+	private func handleAccountChange(_ account: Loadable<AnyAccount>) {
 		switch account {
 		case .loaded:
 			viewModel.postViewAction(.dismissForm)

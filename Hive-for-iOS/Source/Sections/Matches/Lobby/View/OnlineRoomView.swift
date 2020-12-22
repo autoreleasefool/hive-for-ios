@@ -64,7 +64,7 @@ struct OnlineRoomView: View {
 	private var notLoadedView: some View {
 		Text("")
 			.background(Color(.backgroundRegular).edgesIgnoringSafeArea(.all))
-			.onAppear { viewModel.postViewAction(.onAppear(container.account?.userId)) }
+			.onAppear { viewModel.postViewAction(.onAppear(container.account?.id)) }
 	}
 
 	@ViewBuilder

@@ -20,7 +20,7 @@ struct LiveUserInteractor: UserInteractor {
 	let appState: Store<AppState>
 
 	func loadProfile(user: LoadableSubject<User>) {
-		guard let id = appState.value.account.value?.userId else {
+		guard let id = appState.value.account.value?.id else {
 			user.wrappedValue = .failed(UserRepositoryError.missingID)
 			return
 		}

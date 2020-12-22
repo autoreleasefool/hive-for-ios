@@ -45,7 +45,7 @@ struct Game: View {
 			UIApplication.shared.isIdleTimerDisabled = true
 			viewModel.postViewAction(
 				.onAppear(
-					container.account?.userId,
+					container.account?.id,
 					container.interactors.clientInteractor,
 					container.preferences
 				)

@@ -121,6 +121,9 @@
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
 		CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CE24BA01200051100D /* PlayerHandView.swift */; };
 		CAF155C62536952C00305CBE /* AppStateChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF155C52536952C00305CBE /* AppStateChangeListener.swift */; };
+		CAF40D7C2591604D00DCD4E5 /* AppleAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF40D7B2591604D00DCD4E5 /* AppleAccount.swift */; };
+		CAF40D7F2591605B00DCD4E5 /* HiveAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF40D7E2591605B00DCD4E5 /* HiveAccount.swift */; };
+		CAF40D8725917E4800DCD4E5 /* AnyAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF40D8625917E4800DCD4E5 /* AnyAccount.swift */; };
 		CAF75559256B2CAF00BEC0DE /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF75558256B2CAF00BEC0DE /* AppInfo.swift */; };
 		CAF82556245C6B030064359E /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82555245C6B030064359E /* AppState.swift */; };
 		CAF82558245C6B2B0064359E /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF82557245C6B2B0064359E /* Account.swift */; };
@@ -263,6 +266,10 @@
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAEBA7CE24BA01200051100D /* PlayerHandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandView.swift; sourceTree = "<group>"; };
 		CAF155C52536952C00305CBE /* AppStateChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateChangeListener.swift; sourceTree = "<group>"; };
+		CAF40D7725911CE000DCD4E5 /* Hive for iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hive for iOS.entitlements"; sourceTree = "<group>"; };
+		CAF40D7B2591604D00DCD4E5 /* AppleAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAccount.swift; sourceTree = "<group>"; };
+		CAF40D7E2591605B00DCD4E5 /* HiveAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveAccount.swift; sourceTree = "<group>"; };
+		CAF40D8625917E4800DCD4E5 /* AnyAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyAccount.swift; sourceTree = "<group>"; };
 		CAF75558256B2CAF00BEC0DE /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		CAF82555245C6B030064359E /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		CAF82557245C6B2B0064359E /* Account.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
@@ -427,6 +434,7 @@
 		CA7299A22393156100AD1285 /* Hive-for-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				CAF40D7725911CE000DCD4E5 /* Hive for iOS.entitlements */,
 				CA7299B12393156400AD1285 /* Info.plist */,
 				CA7299B8239320EF00AD1285 /* Resources */,
 				CA7299B7239320EA00AD1285 /* Source */,
@@ -861,6 +869,17 @@
 			path = LocalPlay;
 			sourceTree = "<group>";
 		};
+		CAF40D822591606F00DCD4E5 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				CAF82557245C6B2B0064359E /* Account.swift */,
+				CAF40D8625917E4800DCD4E5 /* AnyAccount.swift */,
+				CAF40D7B2591604D00DCD4E5 /* AppleAccount.swift */,
+				CAF40D7E2591605B00DCD4E5 /* HiveAccount.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		CAF82561245C77B20064359E /* State */ = {
 			isa = PBXGroup;
 			children = (
@@ -890,8 +909,8 @@
 		CAF82563245C77DD0064359E /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CAF40D822591606F00DCD4E5 /* Account */,
 				CAF82555245C6B030064359E /* AppState.swift */,
-				CAF82557245C6B2B0064359E /* Account.swift */,
 				CA9079A124B41A4000B30CF6 /* Features.swift */,
 				CA286D092471E84B0044BAAE /* Preferences.swift */,
 			);
@@ -1125,6 +1144,7 @@
 				CA0F93A12427DCE600F6E104 /* CoreGraphics+Extensions.swift in Sources */,
 				CAA78AE1257F527000246CCD /* AnimateableEmoji.swift in Sources */,
 				CA0F939A24264DE400F6E104 /* GameState+2D.swift in Sources */,
+				CAF40D7C2591604D00DCD4E5 /* AppleAccount.swift in Sources */,
 				CA0F939824264CB700F6E104 /* SpriteManager.swift in Sources */,
 				CA41ACAC2454A30B00B6F88E /* Toaster.swift in Sources */,
 				CA9079A424B540EC00B30CF6 /* AttributionsList.swift in Sources */,
@@ -1132,6 +1152,7 @@
 				CAC685FE23CCF67300B882D2 /* Assets.swift in Sources */,
 				CAF82568245C7A1D0064359E /* AccountRepository.swift in Sources */,
 				CAA78AD8257F4A9C00246CCD /* Balloon.swift in Sources */,
+				CAF40D7F2591605B00DCD4E5 /* HiveAccount.swift in Sources */,
 				CA45F9C0242E4857007EC94D /* PieceStack.swift in Sources */,
 				CA6CC92F24AE952400E8CB27 /* HiveMindAgent.swift in Sources */,
 				CA797F61246868000011E7D1 /* MatchHistoryList.swift in Sources */,
@@ -1167,6 +1188,7 @@
 				CA0F93A52428AEE200F6E104 /* DebugSprite.swift in Sources */,
 				CA8F46E5245EC35800B136D0 /* MatchInteractor.swift in Sources */,
 				CA286D08247140A80044BAAE /* SettingsListViewModel.swift in Sources */,
+				CAF40D8725917E4800DCD4E5 /* AnyAccount.swift in Sources */,
 				CAC6860623CD228A00B882D2 /* EdgeInsets+Extensions.swift in Sources */,
 				CAA78AD1257DC9D200246CCD /* Tooltip.swift in Sources */,
 				CAF82560245C76EA0064359E /* Interactors.swift in Sources */,
@@ -1247,6 +1269,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAC51C9725253700004C1866 /* App.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Hive-for-iOS/Hive for iOS.entitlements";
 			};
 			name = Debug;
 		};
@@ -1254,6 +1277,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAC51C9725253700004C1866 /* App.xcconfig */;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Hive-for-iOS/Hive for iOS.entitlements";
 			};
 			name = Release;
 		};

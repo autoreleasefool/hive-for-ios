@@ -31,6 +31,7 @@ struct LobbyList: View {
 						.accountChanged,
 						.toggledFeature(.aiOpponents),
 						.toggledFeature(.accounts),
+						.toggledFeature(.signInWithApple),
 						.toggledFeature(.guestMode),
 					]
 				) { reason in
@@ -41,7 +42,7 @@ struct LobbyList: View {
 						)
 					case .toggledFeature(.aiOpponents):
 						viewModel.postViewAction(.aiModeToggled(container.has(feature: .aiOpponents)))
-					case .toggledFeature(.accounts), .toggledFeature(.guestMode):
+					case .toggledFeature(.accounts), .toggledFeature(.signInWithApple), .toggledFeature(.guestMode):
 						viewModel.postViewAction(.featuresChanged)
 					case .toggledFeature:
 						break

@@ -87,6 +87,8 @@ struct ContentView: View {
 				container.appState.value.setNavigation(to: .login)
 			}, onPlayAsGuest: {
 				viewModel.postViewAction(.playAsGuest)
+			}, onSignInWithApple: {
+				viewModel.postViewAction(.handleSignInWithApple($0))
 			}, onPlayOffline: {
 				viewModel.postViewAction(.playOffline)
 			}
@@ -134,7 +136,7 @@ extension ContentView {
 // MARK: - Updates
 
 extension ContentView {
-	private var accountUpdates: AnyPublisher<Loadable<Account>, Never> {
+	private var accountUpdates: AnyPublisher<Loadable<AnyAccount>, Never> {
 		container.appState.updates(for: \.account)
 			.receive(on: RunLoop.main)
 			.eraseToAnyPublisher()
