@@ -195,7 +195,7 @@ extension MatchHistoryList {
 
 private extension User {
 	var hasAnyMatches: Bool {
-		activeMatches.count + pastMatches.count > 0
+		(activeMatches?.count ?? 0) + (pastMatches?.count ?? 0) > 0
 	}
 }
 

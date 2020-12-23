@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import AuthenticationServices
 import Combine
 import Foundation
 
@@ -14,9 +15,11 @@ protocol AccountInteractor {
 	func clearAccount()
 	func login(_ loginData: User.Login.Request, account: LoadableSubject<AnyAccount>)
 	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<AnyAccount>)
+	func signInWithApple(_ appleData: User.SignInWithApple.Request, account: LoadableSubject<AnyAccount>?)
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>)
 	func playOffline(account: LoadableSubject<AnyAccount>?)
 	func createGuestAccount(account: LoadableSubject<AnyAccount>?)
+
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -128,6 +131,26 @@ struct LiveAccountInteractor: AccountInteractor {
 			}
 			.store(in: cancelBag)
 	}
+
+	func signInWithApple(
+		_ appleData: User.SignInWithApple.Request,
+		account: LoadableSubject<AnyAccount>?
+	) {
+		let cancelBag = CancelBag()
+		account?.wrappedValue.setLoading(cancelBag: cancelBag)
+
+		weak var weakState = appState
+		repository.signInWithApple(appleData)
+			.receive(on: RunLoop.main)
+			.sinkToLoadable {
+				if case .loaded = $0, let account = $0.value {
+					repository.saveAccount(account)
+					weakState?[\.account] = $0.eraseToAnyAccount()
+				}
+				account?.wrappedValue = $0.eraseToAnyAccount()
+			}
+			.store(in: cancelBag)
+	}
 }
 
 struct StubAccountInteractor: AccountInteractor {
@@ -138,4 +161,5 @@ struct StubAccountInteractor: AccountInteractor {
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) { }
 	func playOffline(account: LoadableSubject<AnyAccount>?) { }
 	func createGuestAccount(account: LoadableSubject<AnyAccount>?) { }
+	func signInWithApple(_ appleData: User.SignInWithApple.Request, account: LoadableSubject<AnyAccount>?) { }
 }

@@ -23,16 +23,16 @@ enum ContentViewAction: BaseAction {
 	case loadAccount
 	case loadOfflineAccount
 	case createGuestAccount
+	case signInWithApple(User.SignInWithApple.Request)
 	case loggedOut
 	case appVersionUnsupported
 	case showLoaf(LoafState)
 }
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
-	@Published var guestAccount: Loadable<AnyAccount> = .notLoaded {
+	@Published var account: Loadable<AnyAccount> = .notLoaded {
 		didSet {
-			guard guestAccount != oldValue,
-						let error = guestAccount.error else { return }
+			guard account != oldValue, let error = account.error else { return }
 			let errorMessage: String?
 			if let accountError = error as? AccountRepositoryError {
 				switch accountError {
@@ -59,8 +59,8 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 	@Published var isPresentingUnsupportedVersionSheet: Bool = false
 	@Published var guestName: GuestNameAlert?
 
-	init(guestAccount: Loadable<AnyAccount> = .notLoaded) {
-		_guestAccount = .init(initialValue: guestAccount)
+	init(account: Loadable<AnyAccount> = .notLoaded) {
+		_account = .init(initialValue: account)
 		super.init()
 
 		subscribeToUpdates()
@@ -118,17 +118,22 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			return
 		}
 
-		guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential else {
+		guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
+					let identityToken = appleIDCredential.identityToken,
+					let identityTokenString = String(data: identityToken, encoding: .utf8) else {
 			actions.send(.showLoaf(LoafState("Invalid credentials", style: .error())))
 			return
 		}
 
-//		switch result {
-//		case .success(let authorization):
-//			swi
-//		case .failure:
-//			actions.send(.showLoaf(LoafState("Sign in with Apple failed", style: .error())))
-//		}
+		actions.send(
+			.signInWithApple(
+				User.SignInWithApple.Request(
+					appleIdentityToken: identityTokenString,
+					displayName: nil,
+					avatarUrl: nil
+				)
+			)
+		)
 	}
 }
 

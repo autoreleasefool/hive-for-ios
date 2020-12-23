@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import AuthenticationServices
 import SwiftUI
 import Combine
 
@@ -80,7 +81,7 @@ struct ContentView: View {
 
 	private var noAccountView: some View {
 		WelcomeView(
-			guestAccount: $viewModel.guestAccount,
+			guestAccount: $viewModel.account,
 			onShowSettings: {
 				container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: false))
 			}, onLogin: {
@@ -105,6 +106,8 @@ extension ContentView {
 			loadOfflineAccount()
 		case .loadAccount:
 			loadAccount()
+		case .signInWithApple(let credentials):
+			signInWithApple(credentials)
 		case .createGuestAccount:
 			createGuestAccount()
 		case .loggedOut:
@@ -129,7 +132,11 @@ extension ContentView {
 	}
 
 	private func createGuestAccount() {
-		container.interactors.accountInteractor.createGuestAccount(account: $viewModel.guestAccount)
+		container.interactors.accountInteractor.createGuestAccount(account: $viewModel.account)
+	}
+
+	private func signInWithApple(_ credentials: User.SignInWithApple.Request) {
+		container.interactors.accountInteractor.signInWithApple(credentials, account: $viewModel.account)
 	}
 }
 

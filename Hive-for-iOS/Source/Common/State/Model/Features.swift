@@ -62,7 +62,7 @@ enum Feature: String, CaseIterable {
 		case .offlineMode: return .released
 		case .accounts: return .disabled
 		case .signInWithApple: return .inDevelopment
-		case .guestMode: return .released
+		case .guestMode: return .disabled
 		case .matchHistory: return .disabled
 		case .profileList: return .disabled
 		case .spectating: return .released

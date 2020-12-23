@@ -73,8 +73,8 @@ struct ProfileView: View {
 			.listRowBackground(Color(.backgroundLight))
 
 			Section(header: SectionHeader("Most recent matches")) {
-				if !user.pastMatches.isEmpty {
-					ForEach(user.pastMatches.prefix(3)) { match in
+				if let pastMatches = user.pastMatches, !pastMatches.isEmpty {
+					ForEach(pastMatches.prefix(3)) { match in
 						HistoryRow(match: match, withLastMove: false)
 					}
 				} else {

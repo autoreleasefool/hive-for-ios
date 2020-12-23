@@ -13,8 +13,8 @@ struct User: Identifiable, Decodable, Equatable {
 	let displayName: String
 	let elo: Int
 	let avatarUrl: URL?
-	let activeMatches: [Match]
-	let pastMatches: [Match]
+	let activeMatches: [Match]?
+	let pastMatches: [Match]?
 }
 
 #if DEBUG
