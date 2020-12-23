@@ -92,7 +92,7 @@ struct LiveAccountRepository: AccountRepository {
 		api.fetch(.login(loginData))
 			.mapError { .apiError($0) }
 			.map { (token: SessionToken) in
-				HiveAccount(userId: token.userId, token: token.token, isGuest: false)
+				HiveAccount(id: token.userId, token: token.token, isGuest: false)
 					.eraseToAnyAccount()
 			}
 			.eraseToAnyPublisher()
@@ -104,7 +104,7 @@ struct LiveAccountRepository: AccountRepository {
 			.map { (result: User.Signup.Response) in
 				let notificationObject = User.Signup.Success(response: result, isGuest: true)
 				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
-				return HiveAccount(userId: result.token.userId, token: result.token.token, isGuest: false)
+				return HiveAccount(id: result.token.userId, token: result.token.token, isGuest: false)
 					.eraseToAnyAccount()
 			}
 			.eraseToAnyPublisher()
@@ -116,7 +116,7 @@ struct LiveAccountRepository: AccountRepository {
 			.map { (result: User.Signup.Response) in
 				let notificationObject = User.Signup.Success(response: result, isGuest: true)
 				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
-				return HiveAccount(userId: result.token.userId, token: result.token.token, isGuest: true)
+				return HiveAccount(id: result.token.userId, token: result.token.token, isGuest: true)
 					.eraseToAnyAccount()
 			}
 			.eraseToAnyPublisher()
@@ -130,7 +130,7 @@ struct LiveAccountRepository: AccountRepository {
 			.map { (result: User.SignInWithApple.Response) in
 //				let notificationObject = User.Signup.Success(response: result, isGuest: true)
 //				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
-				return AppleAccount(id: result.userId, token: result.token)
+				return AppleAccount(id: result.user.id, token: result.accessToken)
 			}
 			.eraseToAnyPublisher()
 	}

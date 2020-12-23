@@ -26,6 +26,10 @@ struct HiveAccount: Account, Equatable {
 		return id == HiveAccount.offlineId
 	}
 
+	var headers: [String: String] {
+		return ["Authorization": "Bearer \(token)"]
+	}
+
 	func applyAuth(to request: inout URLRequest) {
 		request.addValue("Bearer: \(token)", forHTTPHeaderField: "Authorization")
 	}

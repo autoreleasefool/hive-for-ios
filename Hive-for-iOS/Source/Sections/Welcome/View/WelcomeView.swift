@@ -12,7 +12,7 @@ import SwiftUI
 struct WelcomeView: View {
 	@Environment(\.container) private var container
 
-	let guestAccount: LoadableSubject<Account>
+	let guestAccount: LoadableSubject<AnyAccount>
 	let onShowSettings: () -> Void
 	let onLogin: () -> Void
 	let onPlayAsGuest: () -> Void
@@ -41,7 +41,7 @@ struct WelcomeView: View {
 	private var form: some View {
 		if container.has(feature: .signInWithApple) {
 			SignInWithAppleButton(.signIn) { _ in } onCompletion: { result in
-
+				onSignInWithApple(result)
 			}
 			.signInWithAppleButtonStyle(.white)
 			.cornerRadius(Metrics.CornerRadius.s.rawValue)

@@ -218,6 +218,7 @@ class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
 extension HiveAPI {
 	enum Endpoint {
 		// Auth
+		case login(User.Login.Request)
 		case signInWithApple(User.SignInWithApple.Request)
 		case signup(User.Signup.Request)
 		case createGuestAccount
@@ -287,9 +288,12 @@ extension HiveAPI {
 				let authData = auth.data(using: String.Encoding.utf8)!
 				let base64Auth = authData.base64EncodedString()
 				return ["Authorization": "Basic \(base64Auth)"]
-			case .logout(let account), .checkToken(let account):
+			case
+				.logout(let account),
+				.checkToken(let account):
 				return account.headers
 			case
+				.signInWithApple,
 				.signup,
 				.createGuestAccount,
 				.openMatches,

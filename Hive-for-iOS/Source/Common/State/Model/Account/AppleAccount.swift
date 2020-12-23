@@ -20,6 +20,10 @@ struct AppleAccount: Account, Equatable {
 		false
 	}
 
+	var headers: [String: String] {
+		[:]
+	}
+
 	func applyAuth(to request: inout URLRequest) {
 		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
 	}

@@ -29,7 +29,7 @@ enum ContentViewAction: BaseAction {
 }
 
 class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
-	@Published var guestAccount: Loadable<Account> = .notLoaded {
+	@Published var guestAccount: Loadable<AnyAccount> = .notLoaded {
 		didSet {
 			guard guestAccount != oldValue,
 						let error = guestAccount.error else { return }
@@ -59,7 +59,7 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 	@Published var isPresentingUnsupportedVersionSheet: Bool = false
 	@Published var guestName: GuestNameAlert?
 
-	init(guestAccount: Loadable<Account> = .notLoaded) {
+	init(guestAccount: Loadable<AnyAccount> = .notLoaded) {
 		_guestAccount = .init(initialValue: guestAccount)
 		super.init()
 
@@ -129,5 +129,12 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 //		case .failure:
 //			actions.send(.showLoaf(LoafState("Sign in with Apple failed", style: .error())))
 //		}
+	}
+}
+
+extension ContentViewViewModel {
+	struct GuestNameAlert: Identifiable {
+		var id: String { guestName }
+		let guestName: String
 	}
 }

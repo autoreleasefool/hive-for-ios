@@ -15,6 +15,7 @@ struct AnyAccount: Account, Equatable {
 	var token: String { return wrapped.token }
 	var isGuest: Bool { return wrapped.isGuest }
 	var isOffline: Bool { return wrapped.isOffline }
+	var headers: [String: String] { return wrapped.headers }
 
 	init(_ wrapped: Account) {
 		self.wrapped = wrapped

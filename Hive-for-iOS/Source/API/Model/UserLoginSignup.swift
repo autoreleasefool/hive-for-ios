@@ -69,13 +69,13 @@ extension User {
 }
 
 extension User.SignInWithApple {
-	struct Request: Codable {
+	struct Request: Encodable {
 		let appleIdentityToken: String
 		let displayName: String?
 		let avatarUrl: String?
 	}
 
-	struct Response: Codable {
+	struct Response: Decodable {
 		let accessToken: String
 		let user: User
 	}

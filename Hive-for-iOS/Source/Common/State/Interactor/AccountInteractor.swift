@@ -12,11 +12,11 @@ import Foundation
 protocol AccountInteractor {
 	func loadAccount()
 	func clearAccount()
-	func login(_ loginData: User.Login.Request, account: LoadableSubject<Account>)
-	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>)
+	func login(_ loginData: User.Login.Request, account: LoadableSubject<AnyAccount>)
+	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<AnyAccount>)
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>)
-	func playOffline(account: LoadableSubject<Account>?)
-	func createGuestAccount(account: LoadableSubject<Account>?)
+	func playOffline(account: LoadableSubject<AnyAccount>?)
+	func createGuestAccount(account: LoadableSubject<AnyAccount>?)
 }
 
 struct LiveAccountInteractor: AccountInteractor {
@@ -48,7 +48,7 @@ struct LiveAccountInteractor: AccountInteractor {
 	}
 
 	func updateAccount(to account: Account) {
-		appState[\.account] = .loaded(account)
+		appState[\.account] = .loaded(account.eraseToAnyAccount())
 		repository.saveAccount(account)
 	}
 
@@ -72,7 +72,7 @@ struct LiveAccountInteractor: AccountInteractor {
 			.store(in: cancelBag)
 	}
 
-	func login(_ loginData: User.Login.Request, account: LoadableSubject<Account>) {
+	func login(_ loginData: User.Login.Request, account: LoadableSubject<AnyAccount>) {
 		let cancelBag = CancelBag()
 		account.wrappedValue.setLoading(cancelBag: cancelBag)
 
@@ -84,13 +84,13 @@ struct LiveAccountInteractor: AccountInteractor {
 					repository.saveAccount(account)
 					weakState?[\.account] = $0
 				}
-				account.wrappedValue = $0
+				account.wrappedValue = $0.eraseToAnyAccount()
 			 }
 			.store(in: cancelBag)
 
 	}
 
-	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>) {
+	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<AnyAccount>) {
 		let cancelBag = CancelBag()
 		account.wrappedValue.setLoading(cancelBag: cancelBag)
 
@@ -102,17 +102,17 @@ struct LiveAccountInteractor: AccountInteractor {
 					repository.saveAccount(account)
 					weakState?[\.account] = $0
 				}
-				account.wrappedValue = $0
+				account.wrappedValue = $0.eraseToAnyAccount()
 			}
 			.store(in: cancelBag)
 	}
 
-	func playOffline(account: LoadableSubject<Account>?) {
-		account?.wrappedValue = .loaded(.offline)
-		appState[\.account] = .loaded(.offline)
+	func playOffline(account: LoadableSubject<AnyAccount>?) {
+		account?.wrappedValue = .loaded(HiveAccount.offline.eraseToAnyAccount())
+		appState[\.account] = .loaded(HiveAccount.offline.eraseToAnyAccount())
 	}
 
-	func createGuestAccount(account: LoadableSubject<Account>?) {
+	func createGuestAccount(account: LoadableSubject<AnyAccount>?) {
 		let cancelBag = CancelBag()
 		account?.wrappedValue.setLoading(cancelBag: cancelBag)
 
@@ -124,7 +124,7 @@ struct LiveAccountInteractor: AccountInteractor {
 					repository.saveAccount(account)
 					weakState?[\.account] = $0
 				}
-				account?.wrappedValue = $0
+				account?.wrappedValue = $0.eraseToAnyAccount()
 			}
 			.store(in: cancelBag)
 	}
@@ -133,9 +133,9 @@ struct LiveAccountInteractor: AccountInteractor {
 struct StubAccountInteractor: AccountInteractor {
 	func loadAccount() { }
 	func clearAccount() { }
-	func login(_ loginData: User.Login.Request, account: LoadableSubject<Account>) { }
-	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<Account>) { }
+	func login(_ loginData: User.Login.Request, account: LoadableSubject<AnyAccount>) { }
+	func signup(_ signupData: User.Signup.Request, account: LoadableSubject<AnyAccount>) { }
 	func logout(fromAccount account: Account, result: LoadableSubject<Bool>) { }
-	func playOffline(account: LoadableSubject<Account>?) { }
-	func createGuestAccount(account: LoadableSubject<Account>?) { }
+	func playOffline(account: LoadableSubject<AnyAccount>?) { }
+	func createGuestAccount(account: LoadableSubject<AnyAccount>?) { }
 }

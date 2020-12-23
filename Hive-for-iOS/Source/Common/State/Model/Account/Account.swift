@@ -20,6 +20,7 @@ protocol Account: Codable {
 	var token: String { get }
 	var isGuest: Bool { get }
 	var isOffline: Bool { get }
+	var headers: [String: String] { get }
 
 	func applyAuth(to request: inout URLRequest)
 	func eraseToAnyAccount() -> AnyAccount
