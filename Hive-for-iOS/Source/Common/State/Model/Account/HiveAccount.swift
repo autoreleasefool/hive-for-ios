@@ -27,7 +27,7 @@ struct HiveAccount: Account, Equatable {
 	}
 
 	var headers: [String: String] {
-		return ["Authorization": "Bearer \(token)"]
+		["Authorization": "Bearer \(token)"]
 	}
 
 	func applyAuth(to request: inout URLRequest) {

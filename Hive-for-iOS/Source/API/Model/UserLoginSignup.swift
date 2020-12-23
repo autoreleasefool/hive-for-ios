@@ -80,3 +80,13 @@ extension User.SignInWithApple {
 		let user: User
 	}
 }
+
+// MARK: Validation
+
+extension User {
+	enum Validate {}
+}
+
+extension User.Validate {
+	typealias Response = User.SignInWithApple.Response
+}

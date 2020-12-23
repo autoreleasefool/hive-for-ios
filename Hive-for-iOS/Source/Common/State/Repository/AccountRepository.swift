@@ -64,7 +64,7 @@ struct LiveAccountRepository: AccountRepository {
 		.flatMap { account in
 			api.fetch(.checkToken(account))
 				.mapError { .apiError($0) }
-				.map { (_: SessionToken) in account }
+				.map { (_: User.Validate.Response) in account }
 		}
 		.eraseToAnyPublisher()
 	}

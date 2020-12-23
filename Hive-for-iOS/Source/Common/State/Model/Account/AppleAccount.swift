@@ -21,7 +21,7 @@ struct AppleAccount: Account, Equatable {
 	}
 
 	var headers: [String: String] {
-		[:]
+		["Authorization": "Bearer \(token)"]
 	}
 
 	func applyAuth(to request: inout URLRequest) {
