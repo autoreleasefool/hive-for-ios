@@ -266,7 +266,7 @@
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAEBA7CE24BA01200051100D /* PlayerHandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandView.swift; sourceTree = "<group>"; };
 		CAF155C52536952C00305CBE /* AppStateChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateChangeListener.swift; sourceTree = "<group>"; };
-		CAF40D7725911CE000DCD4E5 /* Hive for iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hive for iOS.entitlements"; sourceTree = "<group>"; };
+		CAF40D7725911CE000DCD4E5 /* Hive-for-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hive-for-iOS.entitlements"; sourceTree = "<group>"; };
 		CAF40D7B2591604D00DCD4E5 /* AppleAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAccount.swift; sourceTree = "<group>"; };
 		CAF40D7E2591605B00DCD4E5 /* HiveAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveAccount.swift; sourceTree = "<group>"; };
 		CAF40D8625917E4800DCD4E5 /* AnyAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnyAccount.swift; sourceTree = "<group>"; };
@@ -434,7 +434,6 @@
 		CA7299A22393156100AD1285 /* Hive-for-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				CAF40D7725911CE000DCD4E5 /* Hive for iOS.entitlements */,
 				CA7299B12393156400AD1285 /* Info.plist */,
 				CA7299B8239320EF00AD1285 /* Resources */,
 				CA7299B7239320EA00AD1285 /* Source */,
@@ -469,6 +468,7 @@
 		CA7299B8239320EF00AD1285 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				CAF40D7725911CE000DCD4E5 /* Hive-for-iOS.entitlements */,
 				CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */,
 				CA75CA75256BFD4700F02928 /* Dependencies.plist */,
 				CA7299A92393156400AD1285 /* Assets.xcassets */,
@@ -1269,7 +1269,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAC51C9725253700004C1866 /* App.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Hive-for-iOS/Hive for iOS.entitlements";
 			};
 			name = Debug;
 		};
@@ -1277,7 +1276,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAC51C9725253700004C1866 /* App.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Hive-for-iOS/Hive for iOS.entitlements";
 			};
 			name = Release;
 		};

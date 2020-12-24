@@ -6,3 +6,4 @@ DEVELOPMENT_ASSET_PATHS = Hive-for-iOS/Preview\ Content
 ENABLE_PREVIEWS = YES
 INFOPLIST_FILE = Hive-for-iOS/Info.plist
 LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks
+CODE_SIGN_ENTITLEMENTS = Hive-for-iOS/Resources/Hive-for-iOS.entitlements
