@@ -13,15 +13,15 @@ struct EventHUD: View {
 	@EnvironmentObject var viewModel: GameViewModel
 	@Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
 
-	private func cancelButton(from config: PopoverSheetConfig) -> PopoverSheetConfig.ButtonConfig? {
+	private func cancelButton(from config: GameEvent.Config) -> GameEvent.ButtonConfig? {
 		config.buttons.first(where: { $0.type == .cancel })
 	}
 
-	private func actionButtons(from config: PopoverSheetConfig) -> [PopoverSheetConfig.ButtonConfig] {
+	private func actionButtons(from config: GameEvent.Config) -> [GameEvent.ButtonConfig] {
 		config.buttons.filter { $0.type != .cancel }
 	}
 
-	private func button(for button: PopoverSheetConfig.ButtonConfig) -> some View {
+	private func button(for button: GameEvent.ButtonConfig) -> some View {
 		Button(action: button.action) {
 			HStack {
 				if button.type == .destructive {
@@ -45,7 +45,7 @@ struct EventHUD: View {
 		}
 	}
 
-	private func prompt(config: PopoverSheetConfig) -> some View {
+	private func prompt(config: GameEvent.Config) -> some View {
 		let actionButtons = self.actionButtons(from: config)
 		return VStack(spacing: 0) {
 			HStack { Spacer() }
@@ -85,7 +85,7 @@ struct EventHUD: View {
 			.padding()
 	}
 
-	private func cancel(config: PopoverSheetConfig) -> some View {
+	private func cancel(config: GameEvent.Config) -> some View {
 		let cancelButton = self.cancelButton(from: config)
 		return Group {
 			if cancelButton != nil {
@@ -148,13 +148,13 @@ struct EventHUDPreview: PreviewProvider {
 				dragGestureEnabled: false,
 				backgroundColor: .clear
 			) {
-				EventHUD().HUD(event: GameEvent(config: PopoverSheetConfig(
+				EventHUD().HUD(event: GameEvent(config: GameEvent.Config(
 					title: "Move Ant?",
 					message: "From in hand to (0, 0, 0)",
 					buttons: [
-						PopoverSheetConfig.ButtonConfig(title: "Move", type: .default) { },
-						PopoverSheetConfig.ButtonConfig(title: "Destroy", type: .destructive) { },
-						PopoverSheetConfig.ButtonConfig(title: "Cancel", type: .cancel) { },
+						GameEvent.ButtonConfig(title: "Move", type: .default) { },
+						GameEvent.ButtonConfig(title: "Destroy", type: .destructive) { },
+						GameEvent.ButtonConfig(title: "Cancel", type: .cancel) { },
 					]
 				), onClose: nil))
 			}

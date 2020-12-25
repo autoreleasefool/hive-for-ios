@@ -225,18 +225,18 @@ class PlayerGameViewModel: GameViewModel {
 
 		let inHand = gameState.position(of: piece) == nil
 
-		let popoverSheet = PopoverSheetConfig(
+		let config = GameEvent.Config(
 			title: "\(inHand ? "Place" : "Move") \(piece.class.description)?",
 			message: description(of: relativeMovement, inHand: inHand),
 			buttons: [
-				PopoverSheetConfig.ButtonConfig(
+				GameEvent.ButtonConfig(
 					title: inHand ? "Place" : "Move",
 					type: .default
 				) { [weak self] in
 					self?.postViewAction(.movementConfirmed(movement))
 					self?.presentedGameEvent = nil
 				},
-				PopoverSheetConfig.ButtonConfig(
+				GameEvent.ButtonConfig(
 					title: "Cancel",
 					type: .cancel
 				) { [weak self] in
@@ -247,7 +247,7 @@ class PlayerGameViewModel: GameViewModel {
 		)
 
 		promptFeedbackGenerator.impactOccurred()
-		presentedGameEvent = GameEvent(config: popoverSheet) { [weak self] in
+		presentedGameEvent = GameEvent(config: config) { [weak self] in
 			self?.postViewAction(.cancelMovement)
 		}
 	}
@@ -268,18 +268,18 @@ class PlayerGameViewModel: GameViewModel {
 	private func promptForfeit() {
 		guard inGame else { return }
 
-		let popoverSheet = PopoverSheetConfig(
+		let config = GameEvent.Config(
 			title: "Forfeit match?",
 			message: "This will count as a loss in your statistics. Are you sure?",
 			buttons: [
-				PopoverSheetConfig.ButtonConfig(
+				GameEvent.ButtonConfig(
 					title: "Forfeit",
 					type: .destructive
 				) { [weak self] in
 					self?.postViewAction(.forfeitConfirmed)
 					self?.presentedGameEvent = nil
 				},
-				PopoverSheetConfig.ButtonConfig(
+				GameEvent.ButtonConfig(
 					title: "Cancel",
 					type: .cancel
 				) { [weak self] in
@@ -289,7 +289,7 @@ class PlayerGameViewModel: GameViewModel {
 		)
 
 		promptFeedbackGenerator.impactOccurred()
-		presentedGameEvent = GameEvent(config: popoverSheet, onClose: nil)
+		presentedGameEvent = GameEvent(config: config, onClose: nil)
 	}
 
 	private func forfeitGame() {

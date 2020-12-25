@@ -56,21 +56,16 @@ struct LobbyList: View {
 						dismissButton: .default(Text("OK"))
 					)
 				}
-				.popoverSheet(isPresented: $viewModel.showCreateMatchPrompt) {
-					PopoverSheetConfig(
-						title: "Create a match?",
-						message: "You can create a new match online, or play locally vs the computer or a friend.",
-						buttons: [
-							PopoverSheetConfig.ButtonConfig(title: "Online", type: .default) {
-								viewModel.postViewAction(.createOnlineMatch)
-							},
-							PopoverSheetConfig.ButtonConfig(title: "Local", type: .default) {
-								viewModel.postViewAction(.createLocalMatch)
-							},
-							PopoverSheetConfig.ButtonConfig(title: "Cancel", type: .cancel) {
-								viewModel.postViewAction(.cancelCreateMatch)
-							},
-						]
+				.alert(isPresented: $viewModel.showCreateMatchPrompt) {
+					Alert(
+						title: Text("Create a match?"),
+						message: Text("You can create a new match online, or play locally vs the computer or a friend."),
+						primaryButton: .default(Text("Online")) {
+							viewModel.postViewAction(.createOnlineMatch)
+						},
+						secondaryButton: .default(Text("Local")) {
+							viewModel.postViewAction(.createLocalMatch)
+						}
 					)
 				}
 

@@ -21,3 +21,11 @@ extension View {
 		)
 	}
 }
+
+extension View {
+	func hideOnRotate(show: Binding<Bool>) -> some View {
+		onReceive(NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)) { _ in
+			show.wrappedValue = false
+		}
+	}
+}

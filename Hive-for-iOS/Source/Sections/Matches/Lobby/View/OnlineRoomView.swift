@@ -33,19 +33,15 @@ struct OnlineRoomView: View {
 			.navigationBarBackButtonHidden(true)
 			.navigationBarItems(leading: exitButton, trailing: startButton)
 			.onReceive(viewModel.actionsPublisher) { handleAction($0) }
-			.popoverSheet(isPresented: $viewModel.exiting) {
-				PopoverSheetConfig(
-					title: "Leave match?",
-					message: "Are you sure you want to leave this match?",
-					buttons: [
-						PopoverSheetConfig.ButtonConfig(title: "Leave", type: .destructive) {
-							viewModel.postViewAction(.exitMatch)
-						},
-						PopoverSheetConfig.ButtonConfig(title: "Stay", type: .cancel) {
-							viewModel.postViewAction(.dismissExit)
-						},
-					]
-				)
+			.alert(isPresented: $viewModel.exiting) {
+				Alert(
+					title: Text("Leave match?"),
+					message: Text("Are you sure you want to leave this match?"),
+					primaryButton: .destructive(Text("Leave")) {
+						viewModel.postViewAction(.exitMatch)
+					}, secondaryButton: .cancel(Text("Stay")) {
+						viewModel.postViewAction(.dismissExit)
+					})
 			}
 	}
 
