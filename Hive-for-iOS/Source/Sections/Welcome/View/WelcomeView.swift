@@ -11,6 +11,7 @@ import SwiftUI
 
 struct WelcomeView: View {
 	@Environment(\.container) private var container
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
 
 	let guestAccount: LoadableSubject<AnyAccount>
 	let onShowSettings: () -> Void
@@ -21,6 +22,8 @@ struct WelcomeView: View {
 
 	var body: some View {
 		VStack {
+			HStack { Spacer() }
+
 			Image(uiImage: ImageAsset.glyph)
 				.foregroundColor(Color(.highlightPrimary))
 				.padding(.top, Metrics.Spacing.xl.rawValue)
@@ -46,6 +49,7 @@ struct WelcomeView: View {
 			.signInWithAppleButtonStyle(.white)
 			.cornerRadius(Metrics.CornerRadius.s.rawValue)
 			.frame(height: 48)
+			.limitWidth(forSizeClass: horizontalSizeClass)
 			.padding(.horizontal)
 			.padding(.bottom)
 		}

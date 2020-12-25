@@ -11,6 +11,8 @@ import SwiftUI
 typealias PrimaryButton = BasicButton<Never>
 
 struct BasicButton<Label>: View where Label: View {
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
+
 	private let label: Label?
 	private let title: String?
 	private let action: () -> Void
@@ -38,8 +40,8 @@ struct BasicButton<Label>: View where Label: View {
 					.font(.body)
 					.foregroundColor(Color(foreground))
 					.padding(.vertical)
-					.frame(minWidth: 0, maxWidth: .infinity)
 					.frame(height: 48)
+					.limitWidth(forSizeClass: horizontalSizeClass)
 					.background(
 						RoundedRectangle(cornerRadius: .s)
 							.fill(Color(background))

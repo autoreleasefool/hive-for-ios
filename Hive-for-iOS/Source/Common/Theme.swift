@@ -6,8 +6,8 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import UIKit
 import SwiftyMarkdown
+import UIKit
 
 enum Theme {
 	static func applyPrimaryTheme() {

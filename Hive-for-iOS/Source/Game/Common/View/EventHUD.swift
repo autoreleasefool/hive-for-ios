@@ -11,6 +11,7 @@ import HiveEngine
 
 struct EventHUD: View {
 	@EnvironmentObject var viewModel: GameViewModel
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
 
 	private func cancelButton(from config: PopoverSheetConfig) -> PopoverSheetConfig.ButtonConfig? {
 		config.buttons.first(where: { $0.type == .cancel })
@@ -107,6 +108,7 @@ struct EventHUD: View {
 			prompt(config: event.config)
 			cancel(config: event.config)
 		}
+		.limitWidth(forSizeClass: horizontalSizeClass)
 	}
 
 	var body: some View {
