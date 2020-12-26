@@ -84,13 +84,13 @@ struct ContentView: View {
 			guestAccount: $viewModel.account,
 			onShowSettings: {
 				container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: false))
-			}, onLogin: {
-				container.appState.value.setNavigation(to: .login)
+			}, onPlayOnline: {
+				container.appState.value.setNavigation(to: .loginSignup(
+					container.has(feature: .signInWithApple) ? .signInWithApple : .login
+				))
 			}, onPlayAsGuest: {
 				viewModel.postViewAction(.playAsGuest)
-			}, onSignInWithApple: {
-				viewModel.postViewAction(.handleSignInWithApple($0))
-			}, onPlayOffline: {
+			}, onPlayLocally: {
 				viewModel.postViewAction(.playOffline)
 			}
 		)
@@ -106,8 +106,6 @@ extension ContentView {
 			loadOfflineAccount()
 		case .loadAccount:
 			loadAccount()
-		case .signInWithApple(let credentials):
-			signInWithApple(credentials)
 		case .createGuestAccount:
 			createGuestAccount()
 		case .loggedOut:
@@ -134,10 +132,6 @@ extension ContentView {
 	private func createGuestAccount() {
 		container.interactors.accountInteractor.createGuestAccount(account: $viewModel.account)
 	}
-
-	private func signInWithApple(_ credentials: User.SignInWithApple.Request) {
-		container.interactors.accountInteractor.signInWithApple(credentials, account: $viewModel.account)
-	}
 }
 
 // MARK: - Updates
@@ -161,13 +155,13 @@ extension ContentView {
 extension ContentView {
 	enum SheetNavigation: Equatable {
 		case appVersionUnsupported
-		case login
+		case loginSignup(LoginSignupFormViewModel.Form)
 		case settings(inGame: Bool, showAccount: Bool)
 
 		static func == (lhs: SheetNavigation, rhs: SheetNavigation) -> Bool {
 			switch (lhs, rhs) {
 			case (.appVersionUnsupported, .appVersionUnsupported),
-					 (.login, .login),
+					 (.loginSignup, .loginSignup),
 					 (.settings, .settings):
 				return true
 			default:
@@ -184,8 +178,8 @@ extension ContentView {
 		case .settings(let inGame, let showAccount):
 			SettingsList(inGame: inGame, showAccount: showAccount)
 				.inject(container)
-		case .login:
-			LoginSignupForm()
+		case .loginSignup(let form):
+			LoginSignupForm(defaultForm: form)
 				.inject(container)
 		case .none:
 			EmptyView()

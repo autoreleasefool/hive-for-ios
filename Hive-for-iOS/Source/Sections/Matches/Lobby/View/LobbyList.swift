@@ -232,14 +232,14 @@ extension LobbyList {
 
 	private var offlineState: some View {
 		let offlineStateAction = viewModel.offlineStateAction(
-			isAccountsEnabled: container.has(feature: .accounts),
+			isAccountsEnabled: container.hasAny(of: [.accounts, .signInWithApple]),
 			isGuestModeEnabled: container.has(feature: .guestMode)
 		)
 
 		return EmptyState(
 			header: "You're offline",
 			message: viewModel.offlineStateMessage(
-				isAccountsEnabled: container.has(feature: .accounts),
+				isAccountsEnabled: container.hasAny(of: [.accounts, .signInWithApple]),
 				isGuestModeEnabled: container.has(feature: .guestMode)
 			),
 			action: offlineStateAction != nil
@@ -266,8 +266,10 @@ extension LobbyList {
 		case .openSettings:
 			container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: true))
 		case .goOnline:
-			if container.has(feature: .accounts) {
-				container.appState.value.setNavigation(to: .login)
+			if container.hasAny(of: [.accounts, .signInWithApple]) {
+				container.appState.value.setNavigation(to: .loginSignup(
+					container.has(feature: .signInWithApple) ? .signInWithApple : .login
+				))
 			} else {
 				container.interactors.accountInteractor.createGuestAccount(account: nil)
 			}

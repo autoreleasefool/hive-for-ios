@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import AuthenticationServices
 import Combine
 import UIKit
 
@@ -14,13 +15,16 @@ enum LoginSignupViewAction: BaseViewAction {
 	case submitForm
 	case dismissForm
 	case playAsGuest
+	case signInWithApple(Result<ASAuthorization, Error>)
 }
 
 enum LoginSignupAction: BaseAction {
 	case login(User.Login.Request)
 	case signup(User.Signup.Request)
+	case signInWithApple(User.SignInWithApple.Request)
 	case createGuestAccount
 	case dismiss
+	case showLoaf(LoafState)
 }
 
 class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
@@ -52,6 +56,8 @@ class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObje
 			actions.send(.dismiss)
 		case .playAsGuest:
 			actions.send(.createGuestAccount)
+		case .signInWithApple(let result):
+			handleSignInWithApple(result)
 		}
 	}
 
@@ -65,11 +71,39 @@ class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObje
 	}
 
 	private func nextField(after id: FieldItem) -> FieldItem? {
-		switch id {
-		case .email: return form == .login ? .password : .displayName
-		case .displayName: return .password
-		case .password: return form == .login ? nil : .confirmPassword
-		case .confirmPassword: return nil
+		switch (id, form) {
+		case (_, .signInWithApple): return nil
+
+		case (.email, .login): return .password
+		case (.email, .signup): return .displayName
+
+		case (.displayName, .login): return .password
+		case (.displayName, .signup): return .password
+
+		case (.password, .login): return nil
+		case (.password, .signup): return .confirmPassword
+
+		case (.confirmPassword, .login): return nil
+		case (.confirmPassword, .signup): return nil
+		}
+	}
+
+	func shouldShow(field: FieldItem) -> Bool {
+		switch (field, form) {
+		case (.displayName, .signInWithApple): return true
+		case (_, .signInWithApple): return false
+
+		case (.email, .login): return true
+		case (.email, .signup): return true
+
+		case (.displayName, .login): return false
+		case (.displayName, .signup): return true
+
+		case (.password, .login): return true
+		case (.password, .signup): return true
+
+		case (.confirmPassword, .login): return false
+		case (.confirmPassword, .signup): return true
 		}
 	}
 
@@ -86,15 +120,58 @@ class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObje
 		)
 	}
 
+	private var signInWithAppleData: User.SignInWithApple.Request {
+		User.SignInWithApple.Request(
+			appleIdentityToken: "",
+			displayName: displayName,
+			avatarUrl: nil
+		)
+	}
+
 	private func toggleForm() {
-		form = form == .login ? .signup : .login
+		switch form {
+		case .login: form = .signup
+		case .signup: form = .login
+		case .signInWithApple: break
+		}
 	}
 
 	private func submitForm() {
 		switch form {
 		case .login: actions.send(.login(loginData))
 		case .signup: actions.send(.signup(signupData))
+		case .signInWithApple: break
 		}
+	}
+
+	private func handleSignInWithApple(_ result: Result<ASAuthorization, Error>) {
+		guard case .success(let authorization) = result else {
+			actions.send(.showLoaf(LoafState("Sign in with Apple failed", style: .error())))
+			return
+		}
+
+		guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
+					let identityToken = appleIDCredential.identityToken,
+					let identityTokenString = String(data: identityToken, encoding: .utf8) else {
+			actions.send(.showLoaf(LoafState("Invalid credentials", style: .error())))
+			return
+		}
+
+		let displayName = self.displayName.trimmingCharacters(in: .whitespaces)
+		guard displayName.count > 3 && displayName.count < 24 else {
+			actions.send(.showLoaf(LoafState("Invalid display name", style: .error())))
+			return
+		}
+
+		actions.send(
+			.signInWithApple(
+				User.SignInWithApple.Request(
+					appleIdentityToken: identityTokenString,
+					displayName: displayName,
+					avatarUrl: nil
+				)
+			)
+		)
 	}
 }
 
@@ -104,6 +181,7 @@ extension LoginSignupFormViewModel {
 	enum Form {
 		case login
 		case signup
+		case signInWithApple
 	}
 }
 
@@ -139,10 +217,19 @@ extension LoginSignupFormViewModel {
 		}
 
 		func returnKeyType(forForm form: Form) -> UIReturnKeyType {
-			switch self {
-			case .email, .displayName: return .next
-			case .confirmPassword: return .done
-			case .password: return form == .login ? .done : .next
+			switch (self, form) {
+			case (_, .signInWithApple): return .done
+
+			case (.email, .login): return .next
+			case (.email, .signup): return .next
+
+			case (.displayName, .login): return .next
+			case (.displayName, .signup): return .next
+
+			case (.password, .login): return .done
+			case (.password, .signup): return .next
+
+			case (.confirmPassword, _): return .done
 			}
 		}
 
@@ -162,20 +249,23 @@ extension LoginSignupFormViewModel {
 		switch form {
 		case .login: return "Log in"
 		case .signup: return "Sign up"
+		case .signInWithApple: return "Sign in"
 		}
 	}
 
-	var toggleSectionHeaderText: String {
+	var toggleSectionHeaderText: String? {
 		switch form {
 		case .login: return "Don't have an account?"
 		case .signup: return "Already have an account?"
+		case .signInWithApple: return nil
 		}
 	}
 
-	var toggleButtonText: String {
+	var toggleButtonText: String? {
 		switch form {
 		case .login: return "Sign up"
 		case .signup: return "Log in"
+		case .signInWithApple: return nil
 		}
 	}
 

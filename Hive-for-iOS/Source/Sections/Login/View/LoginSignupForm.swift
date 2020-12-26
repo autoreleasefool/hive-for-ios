@@ -6,11 +6,14 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import AuthenticationServices
 import Combine
 import SwiftUI
 
 struct LoginSignupForm: View {
 	@Environment(\.container) private var container
+	@Environment(\.toaster) private var toaster
+	@Environment(\.horizontalSizeClass) var horizontalSizeClass: UserInterfaceSizeClass?
 	@Environment(\.presentationMode) private var presentationMode
 	@StateObject private var viewModel: LoginSignupFormViewModel
 
@@ -43,40 +46,55 @@ struct LoginSignupForm: View {
 
 	// MARK: Content
 
+	@ViewBuilder
 	private var formView: some View {
 		Form {
 			Section(footer: noticeFooter) {
-				field(for: .email)
-				if viewModel.form == .signup {
+				if viewModel.shouldShow(field: .email) {
+					field(for: .email)
+				}
+				if viewModel.shouldShow(field: .displayName) {
 					field(for: .displayName)
 				}
-				secureField(for: .password)
-				if viewModel.form == .signup {
+				if viewModel.shouldShow(field: .password) {
+					secureField(for: .password)
+				}
+				if viewModel.shouldShow(field: .confirmPassword) {
 					secureField(for: .confirmPassword)
 				}
 			}
 			.listRowBackground(Color(.backgroundLight))
 
-			Section(header: SectionHeader(viewModel.toggleSectionHeaderText)) {
-				Button {
-					viewModel.postViewAction(.toggleForm)
-				} label: {
-					Text(viewModel.toggleButtonText)
-						.font(.body)
-						.foregroundColor(Color(.highlightRegular))
+			if viewModel.form == .signInWithApple {
+				SignInWithAppleButton(.signIn) { _ in } onCompletion: { result in
+					viewModel.postViewAction(.signInWithApple(result))
 				}
+				.signInWithAppleButtonStyle(.white)
+			}
 
-				if container.has(feature: .guestMode) && viewModel.form == .login {
+			if let header = viewModel.toggleSectionHeaderText,
+				let toggleButton = viewModel.toggleButtonText {
+				Section(header: SectionHeader(header)) {
 					Button {
-						viewModel.postViewAction(.playAsGuest)
+						viewModel.postViewAction(.toggleForm)
 					} label: {
-						Text("Play as guest")
+						Text(toggleButton)
 							.font(.body)
 							.foregroundColor(Color(.highlightRegular))
 					}
+
+					if container.has(feature: .guestMode) && viewModel.form == .login {
+						Button {
+							viewModel.postViewAction(.playAsGuest)
+						} label: {
+							Text("Play as guest")
+								.font(.body)
+								.foregroundColor(Color(.highlightRegular))
+						}
+					}
 				}
+				.listRowBackground(Color(.backgroundLight))
 			}
-			.listRowBackground(Color(.backgroundLight))
 		}
 	}
 
@@ -87,13 +105,27 @@ struct LoginSignupForm: View {
 	// MARK: Form
 
 	private func secureField(for id: LoginSignupFormViewModel.FieldItem) -> some View {
-		SecureField(id.title, text: text(for: id))
-			.modifier(LoginFieldAppearance(id: id))
+		ZStack(alignment: .leading) {
+			if text(for: id).wrappedValue.isEmpty {
+				Text(id.title).foregroundColor(Color(.textSecondary))
+			}
+			SecureField("", text: text(for: id))
+				.foregroundColor(Color(.textRegular))
+				.textContentType(id.textContentType)
+				.keyboardType(id.keyboardType)
+		}
 	}
 
 	private func field(for id: LoginSignupFormViewModel.FieldItem) -> some View {
-		TextField(id.title, text: text(for: id))
-			.modifier(LoginFieldAppearance(id: id))
+		ZStack(alignment: .leading) {
+			if text(for: id).wrappedValue.isEmpty {
+				Text(id.title).foregroundColor(Color(.textSecondary))
+			}
+			TextField("", text: text(for: id))
+				.foregroundColor(Color(.textRegular))
+				.textContentType(id.textContentType)
+				.keyboardType(id.keyboardType)
+		}
 	}
 
 	private func text(for id: LoginSignupFormViewModel.FieldItem) -> Binding<String> {
@@ -112,11 +144,14 @@ struct LoginSignupForm: View {
 		}
 	}
 
+	@ViewBuilder
 	private var submitButton: some View {
-		Button {
-			viewModel.postViewAction(.submitForm)
-		} label: {
-			Text(viewModel.submitButtonText)
+		if viewModel.form != .signInWithApple {
+			Button {
+				viewModel.postViewAction(.submitForm)
+			} label: {
+				Text(viewModel.submitButtonText)
+			}
 		}
 	}
 
@@ -145,8 +180,12 @@ extension LoginSignupForm {
 			login(data)
 		case .signup(let data):
 			signup(data)
+		case .signInWithApple(let data):
+			signInWithApple(data)
 		case .createGuestAccount:
 			createGuestAccount()
+		case .showLoaf(let loaf):
+			toaster.loaf.send(loaf)
 		case .dismiss:
 			presentationMode.wrappedValue.dismiss()
 		}
@@ -162,6 +201,11 @@ extension LoginSignupForm {
 			.signup(data, account: $viewModel.account)
 	}
 
+	private func signInWithApple(_ data: User.SignInWithApple.Request) {
+		container.interactors.accountInteractor
+			.signInWithApple(data, account: $viewModel.account)
+	}
+
 	private func createGuestAccount() {
 		container.interactors.accountInteractor
 			.createGuestAccount(account: $viewModel.account)
@@ -173,21 +217,6 @@ extension LoginSignupForm {
 			viewModel.postViewAction(.dismissForm)
 		case .failed, .loading, .notLoaded:
 			break
-		}
-	}
-}
-
-// MARK: Login Field Modifier
-
-private extension LoginSignupForm {
-	struct LoginFieldAppearance: ViewModifier {
-		let id: LoginSignupFormViewModel.FieldItem
-
-		func body(content: Content) -> some View {
-			content
-				.foregroundColor(Color(.textRegular))
-				.textContentType(id.textContentType)
-				.keyboardType(id.keyboardType)
 		}
 	}
 }

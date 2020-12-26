@@ -16,14 +16,12 @@ enum ContentViewViewAction: BaseViewAction {
 	case playOffline
 	case playAsGuest
 	case accountChanged
-	case handleSignInWithApple(Result<ASAuthorization, Error>)
 }
 
 enum ContentViewAction: BaseAction {
 	case loadAccount
 	case loadOfflineAccount
 	case createGuestAccount
-	case signInWithApple(User.SignInWithApple.Request)
 	case loggedOut
 	case appVersionUnsupported
 	case showLoaf(LoafState)
@@ -81,8 +79,6 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			actions.send(.createGuestAccount)
 		case .accountChanged:
 			objectWillChange.send()
-		case .handleSignInWithApple(let result):
-			handleSignInWithApple(result)
 		}
 	}
 
@@ -110,30 +106,6 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 				self?.guestName = GuestNameAlert(guestName: successResponse.response.displayName)
 			}
 			.store(in: self)
-	}
-
-	private func handleSignInWithApple(_ result: Result<ASAuthorization, Error>) {
-		guard case .success(let authorization) = result else {
-			actions.send(.showLoaf(LoafState("Sign in with Apple failed", style: .error())))
-			return
-		}
-
-		guard let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential,
-					let identityToken = appleIDCredential.identityToken,
-					let identityTokenString = String(data: identityToken, encoding: .utf8) else {
-			actions.send(.showLoaf(LoafState("Invalid credentials", style: .error())))
-			return
-		}
-
-		actions.send(
-			.signInWithApple(
-				User.SignInWithApple.Request(
-					appleIdentityToken: identityTokenString,
-					displayName: nil,
-					avatarUrl: nil
-				)
-			)
-		)
 	}
 }
 
