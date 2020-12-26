@@ -28,13 +28,13 @@ struct LiveUserRepository: UserRepository {
 	}
 
 	func loadDetails(id: User.ID, withAccount account: Account?) -> AnyPublisher<User, UserRepositoryError> {
-		return api.fetch(.userDetails(id), withAccount: account)
+		api.fetch(.userDetails(id), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
 	func loadUsers(filter: String?, withAccount account: Account?) -> AnyPublisher<[User], UserRepositoryError> {
-		return api.fetch(.filterUsers(filter), withAccount: account)
+		api.fetch(.filterUsers(filter), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
