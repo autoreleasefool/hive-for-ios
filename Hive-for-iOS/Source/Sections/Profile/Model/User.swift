@@ -13,6 +13,7 @@ struct User: Identifiable, Decodable, Equatable {
 	let displayName: String
 	let elo: Int
 	let avatarUrl: URL?
+	let isGuest: Bool
 	let activeMatches: [Match]?
 	let pastMatches: [Match]?
 }
@@ -25,6 +26,7 @@ extension User {
 			displayName: "Joseph",
 			elo: 1000,
 			avatarUrl: nil, //URL(string: "https://avatars1.githubusercontent.com/u/6619581?v=4"),
+			isGuest: false,
 			activeMatches: Match.matches,
 			pastMatches: Match.matches
 		),

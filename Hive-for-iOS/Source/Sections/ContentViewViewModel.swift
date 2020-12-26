@@ -100,14 +100,11 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			.store(in: self)
 
 		NotificationCenter.default
-			.publisher(for: NSNotification.Name.Account.SignupSuccess)
+			.publisher(for: NSNotification.Name.Account.Created)
 			.receive(on: RunLoop.main)
 			.sink { [weak self] notification in
-				guard let successResponse = notification.object as? User.Signup.Success,
-					successResponse.isGuest else {
-					return
-				}
-				self?.guestName = GuestNameAlert(guestName: successResponse.response.displayName)
+				guard let user = notification.object as? User, user.isGuest else { return }
+				self?.guestName = GuestNameAlert(guestName: user.displayName)
 			}
 			.store(in: self)
 	}

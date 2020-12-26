@@ -1,5 +1,5 @@
 //
-//  UserLoginSignup.swift
+//  User+LoginSignup.swift
 //  Hive-for-iOS
 //
 //  Created by Joseph Roque on 2020-04-01.
@@ -7,6 +7,17 @@
 //
 
 import Foundation
+
+extension User {
+	enum Authentication {}
+}
+
+extension User.Authentication {
+	struct Response: Decodable {
+		let accessToken: String
+		let user: User
+	}
+}
 
 // MARK: - Signup
 
@@ -20,20 +31,6 @@ extension User.Signup {
 		let displayName: String
 		let password: String
 		let verifyPassword: String
-	}
-
-	struct Response: Decodable {
-		let id: User.ID
-		let email: String
-		let displayName: String
-		let avatarUrl: String?
-		let token: SessionToken
-		let isGuest: Bool?
-	}
-
-	struct Success {
-		let response: Response
-		let isGuest: Bool
 	}
 }
 
@@ -74,19 +71,4 @@ extension User.SignInWithApple {
 		let displayName: String?
 		let avatarUrl: String?
 	}
-
-	struct Response: Decodable {
-		let accessToken: String
-		let user: User
-	}
-}
-
-// MARK: Validation
-
-extension User {
-	enum Validate {}
-}
-
-extension User.Validate {
-	typealias Response = User.SignInWithApple.Response
 }

@@ -64,7 +64,7 @@ struct LiveAccountRepository: AccountRepository {
 		.flatMap { account in
 			api.fetch(.checkToken(account))
 				.mapError { .apiError($0) }
-				.map { (_: User.Validate.Response) in account }
+				.map { (_: User.Authentication.Response) in account }
 		}
 		.eraseToAnyPublisher()
 	}
@@ -101,10 +101,9 @@ struct LiveAccountRepository: AccountRepository {
 	func signup(_ signupData: User.Signup.Request) -> AnyPublisher<AnyAccount, AccountRepositoryError> {
 		api.fetch(.signup(signupData))
 			.mapError { .apiError($0) }
-			.map { (result: User.Signup.Response) in
-				let notificationObject = User.Signup.Success(response: result, isGuest: true)
-				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
-				return HiveAccount(id: result.token.userId, token: result.token.token, isGuest: false)
+			.map { (result: User.Authentication.Response) in
+				NotificationCenter.default.post(name: NSNotification.Name.Account.Created, object: result.user)
+				return HiveAccount(id: result.user.id, token: result.accessToken, isGuest: result.user.isGuest)
 					.eraseToAnyAccount()
 			}
 			.eraseToAnyPublisher()
@@ -113,10 +112,9 @@ struct LiveAccountRepository: AccountRepository {
 	func createGuestAccount() -> AnyPublisher<AnyAccount, AccountRepositoryError> {
 		api.fetch(.createGuestAccount)
 			.mapError { .apiError($0) }
-			.map { (result: User.Signup.Response) in
-				let notificationObject = User.Signup.Success(response: result, isGuest: true)
-				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
-				return HiveAccount(id: result.token.userId, token: result.token.token, isGuest: true)
+			.map { (result: User.Authentication.Response) in
+				NotificationCenter.default.post(name: NSNotification.Name.Account.Created, object: result.user)
+				return HiveAccount(id: result.user.id, token: result.accessToken, isGuest: result.user.isGuest)
 					.eraseToAnyAccount()
 			}
 			.eraseToAnyPublisher()
@@ -127,9 +125,8 @@ struct LiveAccountRepository: AccountRepository {
 	) -> AnyPublisher<AppleAccount, AccountRepositoryError> {
 		api.fetch(.signInWithApple(appleData))
 			.mapError { .apiError($0) }
-			.map { (result: User.SignInWithApple.Response) in
-//				let notificationObject = User.Signup.Success(response: result, isGuest: true)
-//				NotificationCenter.default.post(name: NSNotification.Name.Account.SignupSuccess, object: notificationObject)
+			.map { (result: User.Authentication.Response) in
+				NotificationCenter.default.post(name: NSNotification.Name.Account.Created, object: result.user)
 				return AppleAccount(id: result.user.id, token: result.accessToken)
 			}
 			.eraseToAnyPublisher()

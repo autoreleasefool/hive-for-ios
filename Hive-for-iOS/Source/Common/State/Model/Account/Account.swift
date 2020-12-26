@@ -11,7 +11,7 @@ import Foundation
 extension NSNotification.Name {
 	enum Account {
 		static let Unauthorized = Notification.Name("Account.Unauthorized")
-		static let SignupSuccess = Notification.Name("Account.SignupSuccess")
+		static let Created = Notification.Name("Account.Created")
 	}
 }
 
