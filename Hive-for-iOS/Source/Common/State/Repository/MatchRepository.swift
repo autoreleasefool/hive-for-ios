@@ -31,50 +31,30 @@ struct LiveMatchRepository: MatchRepository {
 	}
 
 	func loadOpenMatches(withAccount account: Account?) -> AnyPublisher<[Match], MatchRepositoryError> {
-		guard account?.isOffline != true else {
-			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
-		}
-
 		return api.fetch(.openMatches, withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
 	func loadActiveMatches(withAccount account: Account?) -> AnyPublisher<[Match], MatchRepositoryError> {
-		guard account?.isOffline != true else {
-			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
-		}
-
 		return api.fetch(.activeMatches, withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
 	func loadMatchDetails(id: Match.ID, withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError> {
-		guard account?.isOffline != true else {
-			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
-		}
-
 		return api.fetch(.matchDetails(id), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
 	func joinMatch(id: Match.ID, withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError> {
-		guard account?.isOffline != true else {
-			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
-		}
-
 		return api.fetch(.joinMatch(id), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}
 
 	func createNewMatch(withAccount account: Account?) -> AnyPublisher<Match, MatchRepositoryError> {
-		guard account?.isOffline != true else {
-			return Fail(error: .usingOfflineAccount).eraseToAnyPublisher()
-		}
-
 		return api.fetch(.createMatch, withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
