@@ -18,6 +18,8 @@ enum UserRepositoryError: Error {
 protocol UserRepository {
 	func loadDetails(id: User.ID, withAccount account: Account?) -> AnyPublisher<User, UserRepositoryError>
 	func loadUsers(filter: String?, withAccount account: Account?) -> AnyPublisher<[User], UserRepositoryError>
+	func updateProfile(_ data: User.Update.Request, withAccount account: Account?)
+		-> AnyPublisher<User, UserRepositoryError>
 }
 
 struct LiveUserRepository: UserRepository {
@@ -35,6 +37,15 @@ struct LiveUserRepository: UserRepository {
 
 	func loadUsers(filter: String?, withAccount account: Account?) -> AnyPublisher<[User], UserRepositoryError> {
 		api.fetch(.filterUsers(filter), withAccount: account)
+			.mapError { .apiError($0) }
+			.eraseToAnyPublisher()
+	}
+
+	func updateProfile(
+		_ data: User.Update.Request,
+		withAccount account: Account?
+	) -> AnyPublisher<User, UserRepositoryError> {
+		api.fetch(.updateAccount(data), withAccount: account)
 			.mapError { .apiError($0) }
 			.eraseToAnyPublisher()
 	}

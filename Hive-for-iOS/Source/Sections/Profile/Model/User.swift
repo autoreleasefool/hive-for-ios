@@ -9,6 +9,8 @@
 import Foundation
 
 struct User: Identifiable, Decodable, Equatable {
+	static let anonymousUserDisplayName = "Anonymous"
+
 	let id: UUID
 	let displayName: String
 	let elo: Int

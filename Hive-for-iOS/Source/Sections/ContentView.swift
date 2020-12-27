@@ -114,6 +114,8 @@ extension ContentView {
 			clearAccount()
 		case .appVersionUnsupported:
 			container.appState.value.setNavigation(to: .appVersionUnsupported)
+		case .accountNeedsInformation:
+			container.appState.value.setNavigation(to: .profileUpdate(state: .newAppleAccount))
 		case .showLoaf(let loaf):
 			toaster.loaf.send(loaf)
 		}
@@ -163,12 +165,14 @@ extension ContentView {
 		case appVersionUnsupported
 		case login
 		case settings(inGame: Bool, showAccount: Bool)
+		case profileUpdate(state: ProfileUpdateFormViewModel.State)
 
 		static func == (lhs: SheetNavigation, rhs: SheetNavigation) -> Bool {
 			switch (lhs, rhs) {
 			case (.appVersionUnsupported, .appVersionUnsupported),
 					 (.login, .login),
-					 (.settings, .settings):
+					 (.settings, .settings),
+					 (.profileUpdate, .profileUpdate):
 				return true
 			default:
 				return false
@@ -186,6 +190,9 @@ extension ContentView {
 				.inject(container)
 		case .login:
 			LoginSignupForm()
+				.inject(container)
+		case .profileUpdate(let state):
+			ProfileUpdateForm(state: state)
 				.inject(container)
 		case .none:
 			EmptyView()

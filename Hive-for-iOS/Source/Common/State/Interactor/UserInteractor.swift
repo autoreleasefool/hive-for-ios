@@ -13,6 +13,7 @@ protocol UserInteractor {
 	func loadProfile(user: LoadableSubject<User>)
 	func loadDetails(id: User.ID, user: LoadableSubject<User>)
 	func loadUsers(filter: String?, users: LoadableSubject<[User]>)
+	func updateProfile(_ data: User.Update.Request, user: LoadableSubject<User>)
 }
 
 struct LiveUserInteractor: UserInteractor {
@@ -47,10 +48,21 @@ struct LiveUserInteractor: UserInteractor {
 			.sinkToLoadable { users.wrappedValue = $0 }
 			.store(in: cancelBag)
 	}
+
+	func updateProfile(_ data: User.Update.Request, user: LoadableSubject<User>) {
+		let cancelBag = CancelBag()
+		user.wrappedValue.setLoading(cancelBag: cancelBag)
+
+		repository.updateProfile(data, withAccount: appState.value.account.value)
+			.receive(on: RunLoop.main)
+			.sinkToLoadable { user.wrappedValue = $0 }
+			.store(in: cancelBag)
+	}
 }
 
 struct StubUserInteractor: UserInteractor {
 	func loadProfile(user: LoadableSubject<User>) { }
 	func loadDetails(id: User.ID, user: LoadableSubject<User>) { }
 	func loadUsers(filter: String?, users: LoadableSubject<[User]>) { }
+	func updateProfile(_ data: User.Update.Request, user: LoadableSubject<User>) { }
 }

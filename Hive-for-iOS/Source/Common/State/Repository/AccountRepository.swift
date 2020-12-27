@@ -64,7 +64,10 @@ struct LiveAccountRepository: AccountRepository {
 		.flatMap { account in
 			api.fetch(.checkToken(account))
 				.mapError { .apiError($0) }
-				.map { (_: User.Authentication.Response) in account }
+				.map { (result: User.Authentication.Response) in
+					NotificationCenter.default.post(name: NSNotification.Name.Account.Loaded, object: result.user)
+					return account
+				}
 		}
 		.eraseToAnyPublisher()
 	}

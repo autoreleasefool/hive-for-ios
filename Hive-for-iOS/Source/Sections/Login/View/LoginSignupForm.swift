@@ -125,7 +125,6 @@ struct LoginSignupForm: View {
 			viewModel.postViewAction(.dismissForm)
 		} label: {
 			Text("Cancel")
-
 		}
 	}
 

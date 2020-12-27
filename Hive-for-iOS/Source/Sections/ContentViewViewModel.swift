@@ -26,6 +26,7 @@ enum ContentViewAction: BaseAction {
 	case signInWithApple(User.SignInWithApple.Request)
 	case loggedOut
 	case appVersionUnsupported
+	case accountNeedsInformation
 	case showLoaf(LoafState)
 }
 
@@ -103,8 +104,21 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 			.publisher(for: NSNotification.Name.Account.Created)
 			.receive(on: RunLoop.main)
 			.sink { [weak self] notification in
-				guard let user = notification.object as? User, user.isGuest else { return }
-				self?.guestName = GuestNameAlert(guestName: user.displayName)
+				guard let user = notification.object as? User else {
+					return
+				}
+				self?.handleAccountUser(user)
+			}
+			.store(in: self)
+
+		NotificationCenter.default
+			.publisher(for: NSNotification.Name.Account.Loaded)
+			.receive(on: RunLoop.main)
+			.sink { [weak self] notification in
+				guard let user = notification.object as? User else {
+					return
+				}
+				self?.handleAccountUser(user)
 			}
 			.store(in: self)
 	}
@@ -131,6 +145,16 @@ class ContentViewViewModel: ViewModel<ContentViewViewAction>, ObservableObject {
 				)
 			)
 		)
+	}
+
+	private func handleAccountUser(_ user: User) {
+		if user.isGuest {
+			self.guestName = GuestNameAlert(guestName: user.displayName)
+		}
+
+		if user.displayName == User.anonymousUserDisplayName {
+			self.actions.send(.accountNeedsInformation)
+		}
 	}
 }
 

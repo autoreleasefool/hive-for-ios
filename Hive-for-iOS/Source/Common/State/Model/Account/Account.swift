@@ -12,6 +12,7 @@ extension NSNotification.Name {
 	enum Account {
 		static let Unauthorized = Notification.Name("Account.Unauthorized")
 		static let Created = Notification.Name("Account.Created")
+		static let Loaded = Notification.Name("Account.Loaded")
 	}
 }
 

@@ -181,6 +181,8 @@ class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
 			return try encoder.encode(data)
 		case .signInWithApple(let data):
 			return try encoder.encode(data)
+		case .updateAccount(let data):
+			return try encoder.encode(data)
 		case
 			.createGuestAccount,
 			.openMatches,
@@ -221,6 +223,7 @@ extension HiveAPI {
 		case login(User.Login.Request)
 		case signInWithApple(User.SignInWithApple.Request)
 		case signup(User.Signup.Request)
+		case updateAccount(User.Update.Request)
 		case createGuestAccount
 		case logout(Account)
 		case checkToken(Account)
@@ -241,9 +244,10 @@ extension HiveAPI {
 			case .login: return "users/login"
 			case .signup: return "users/signup"
 			case .logout: return "users/logout"
+			case .updateAccount: return "users/update"
 			case .checkToken: return "users/validate"
 			case .createGuestAccount: return "users/guestSignup"
-			case .signInWithApple: return "users/siwa"
+			case .signInWithApple: return "siwa/auth"
 
 			case .userDetails(let id): return "users/\(id.uuidString)/details"
 			case .filterUsers: return "users/all"
@@ -270,7 +274,8 @@ extension HiveAPI {
 				.signup,
 				.userDetails,
 				.createGuestAccount,
-				.signInWithApple:
+				.signInWithApple,
+				.updateAccount:
 				return nil
 			case .filterUsers(let filter):
 				if let filter = filter {
@@ -293,6 +298,7 @@ extension HiveAPI {
 				.checkToken(let account):
 				return account.headers
 			case
+				.updateAccount,
 				.signInWithApple,
 				.signup,
 				.createGuestAccount,
@@ -315,6 +321,7 @@ extension HiveAPI {
 				.createGuestAccount,
 				.createMatch,
 				.joinMatch,
+				.updateAccount,
 				.signInWithApple:
 				return .post
 			case
