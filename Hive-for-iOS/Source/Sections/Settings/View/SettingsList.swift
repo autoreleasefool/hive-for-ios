@@ -245,7 +245,7 @@ extension SettingsList {
 		case .logout:
 			logout()
 		case .closeSettings:
-			container.appState.value.clearNavigation(of: .settings(inGame: true, showAccount: true))
+			container.appState[\.contentSheetNavigation] = nil
 		}
 	}
 

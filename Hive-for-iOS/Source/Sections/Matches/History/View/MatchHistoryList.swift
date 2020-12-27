@@ -181,7 +181,7 @@ extension MatchHistoryList {
 		case .loadMatchHistory:
 			loadMatchHistory()
 		case .openSettings:
-			container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: true))
+			container.appState[\.contentSheetNavigation] = .settings(inGame: false, showAccount: true)
 		}
 	}
 

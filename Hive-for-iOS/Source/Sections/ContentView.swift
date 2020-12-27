@@ -22,7 +22,7 @@ struct ContentView: View {
 			sheetNavigation != nil
 		} set: {
 			if !$0 {
-				container.appState.value.clearNavigation(of: sheetNavigation)
+				container.appState[\.contentSheetNavigation] = nil
 			}
 		}
 	}
@@ -83,9 +83,9 @@ struct ContentView: View {
 		WelcomeView(
 			guestAccount: $viewModel.account,
 			onShowSettings: {
-				container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: false))
+				container.appState[\.contentSheetNavigation] = .settings(inGame: false, showAccount: false)
 			}, onLogin: {
-				container.appState.value.setNavigation(to: .login)
+				container.appState[\.contentSheetNavigation] = .login
 			}, onPlayAsGuest: {
 				viewModel.postViewAction(.playAsGuest)
 			}, onSignInWithApple: {
@@ -113,9 +113,9 @@ extension ContentView {
 		case .loggedOut:
 			clearAccount()
 		case .appVersionUnsupported:
-			container.appState.value.setNavigation(to: .appVersionUnsupported)
+			container.appState[\.contentSheetNavigation] = .appVersionUnsupported
 		case .accountNeedsInformation:
-			container.appState.value.setNavigation(to: .profileUpdate(state: .newAppleAccount))
+			container.appState[\.contentSheetNavigation] = .profileUpdate(state: .newAppleAccount)
 		case .showLoaf(let loaf):
 			toaster.loaf.send(loaf)
 		}
@@ -193,6 +193,7 @@ extension ContentView {
 				.inject(container)
 		case .profileUpdate(let state):
 			ProfileUpdateForm(state: state)
+				.allowAutoDismiss(!state.isRequired)
 				.inject(container)
 		case .none:
 			EmptyView()

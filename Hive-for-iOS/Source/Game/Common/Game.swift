@@ -78,7 +78,7 @@ extension Game {
 		case .endGame:
 			container.appState[\.gameSetup] = nil
 		case .showAppSettings:
-			container.appState.value.setNavigation(to: .settings(inGame: true, showAccount: false))
+			container.appState[\.contentSheetNavigation] = .settings(inGame: true, showAccount: false)
 		}
 	}
 }

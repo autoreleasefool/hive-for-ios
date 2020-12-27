@@ -264,10 +264,10 @@ extension LobbyList {
 		case .loadMatches:
 			loadMatches()
 		case .openSettings:
-			container.appState.value.setNavigation(to: .settings(inGame: false, showAccount: true))
+			container.appState[\.contentSheetNavigation] = .settings(inGame: false, showAccount: true)
 		case .goOnline:
 			if container.has(feature: .accounts) {
-				container.appState.value.setNavigation(to: .login)
+				container.appState[\.contentSheetNavigation] = .login
 			} else {
 				container.interactors.accountInteractor.createGuestAccount(account: nil)
 			}
