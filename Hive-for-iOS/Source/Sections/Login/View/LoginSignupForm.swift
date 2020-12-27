@@ -87,13 +87,27 @@ struct LoginSignupForm: View {
 	// MARK: Form
 
 	private func secureField(for id: LoginSignupFormViewModel.FieldItem) -> some View {
-		SecureField(id.title, text: text(for: id))
-			.modifier(LoginFieldAppearance(id: id))
+		ZStack(alignment: .leading) {
+			if text(for: id).wrappedValue.isEmpty {
+				Text(id.title).foregroundColor(Color(.textSecondary))
+			}
+			SecureField("", text: text(for: id))
+				.foregroundColor(Color(.textRegular))
+				.textContentType(id.textContentType)
+				.keyboardType(id.keyboardType)
+		}
 	}
 
 	private func field(for id: LoginSignupFormViewModel.FieldItem) -> some View {
-		TextField(id.title, text: text(for: id))
-			.modifier(LoginFieldAppearance(id: id))
+		ZStack(alignment: .leading) {
+			if text(for: id).wrappedValue.isEmpty {
+				Text(id.title).foregroundColor(Color(.textSecondary))
+			}
+			TextField("", text: text(for: id))
+				.foregroundColor(Color(.textRegular))
+				.textContentType(id.textContentType)
+				.keyboardType(id.keyboardType)
+		}
 	}
 
 	private func text(for id: LoginSignupFormViewModel.FieldItem) -> Binding<String> {
@@ -107,8 +121,8 @@ struct LoginSignupForm: View {
 
 	@ViewBuilder
 	private var noticeFooter: some View {
-		if viewModel.shouldShowNotice {
-			notice(message: "There was an error connecting to the server. Are you connected to the Internet?")
+		if let message = viewModel.noticeMessage {
+			notice(message: message)
 		}
 	}
 

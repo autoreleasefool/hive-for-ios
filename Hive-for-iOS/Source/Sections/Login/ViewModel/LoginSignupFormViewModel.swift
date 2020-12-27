@@ -179,7 +179,7 @@ extension LoginSignupFormViewModel {
 		}
 	}
 
-	var noticeMessage: String {
+	var noticeMessage: String? {
 		switch account {
 		case .failed(let error):
 			if let accountError = error as? AccountRepositoryError {
@@ -190,7 +190,7 @@ extension LoginSignupFormViewModel {
 				}
 			}
 			return error.localizedDescription
-		case .loaded, .loading, .notLoaded: return ""
+		case .loaded, .loading, .notLoaded: return nil
 		}
 	}
 
