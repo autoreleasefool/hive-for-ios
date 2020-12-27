@@ -94,8 +94,9 @@ struct LiveAccountRepository: AccountRepository {
 	func login(_ loginData: User.Login.Request) -> AnyPublisher<AnyAccount, AccountRepositoryError> {
 		api.fetch(.login(loginData))
 			.mapError { .apiError($0) }
-			.map { (token: SessionToken) in
-				HiveAccount(id: token.userId, token: token.token, isGuest: false)
+			.map { (result: User.Authentication.Response) in
+				NotificationCenter.default.post(name: NSNotification.Name.Account.Loaded, object: result.user)
+				return HiveAccount(id: result.user.id, token: result.accessToken, isGuest: result.user.isGuest)
 					.eraseToAnyAccount()
 			}
 			.eraseToAnyPublisher()

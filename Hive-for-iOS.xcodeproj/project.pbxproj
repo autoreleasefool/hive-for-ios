@@ -102,7 +102,6 @@
 		CAC6861823CE4E6800B882D2 /* LobbyRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861723CE4E6800B882D2 /* LobbyRow.swift */; };
 		CAC6861A23CE615800B882D2 /* ImageLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861923CE615800B882D2 /* ImageLoader.swift */; };
 		CAC6861F23CE6BDC00B882D2 /* RemoteImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */; };
-		CAC68CC824327557003CC2E6 /* SessionToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC68CC724327557003CC2E6 /* SessionToken.swift */; };
 		CAC730E924696F1C004DB450 /* HistoryRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730E824696F1C004DB450 /* HistoryRow.swift */; };
 		CAC730EB246979C5004DB450 /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730EA246979C5004DB450 /* Date+Extensions.swift */; };
 		CAC730F7246BDF26004DB450 /* SettingsList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC730F6246BDF26004DB450 /* SettingsList.swift */; };
@@ -251,7 +250,6 @@
 		CAC6861723CE4E6800B882D2 /* LobbyRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobbyRow.swift; sourceTree = "<group>"; };
 		CAC6861923CE615800B882D2 /* ImageLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLoader.swift; sourceTree = "<group>"; };
 		CAC6861E23CE6BDC00B882D2 /* RemoteImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteImage.swift; sourceTree = "<group>"; };
-		CAC68CC724327557003CC2E6 /* SessionToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionToken.swift; sourceTree = "<group>"; };
 		CAC730E824696F1C004DB450 /* HistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRow.swift; sourceTree = "<group>"; };
 		CAC730EA246979C5004DB450 /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		CAC730F6246BDF26004DB450 /* SettingsList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsList.swift; sourceTree = "<group>"; };
@@ -565,7 +563,6 @@
 		CA91C32024350CD3007E7D55 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				CAC68CC724327557003CC2E6 /* SessionToken.swift */,
 				CAC961E2243B105E00B3FC8D /* GameClientMessage.swift */,
 				CAC961E4243B109D00B3FC8D /* GameServerMessage.swift */,
 				CA91C32124350CEA007E7D55 /* User+LoginSignup.swift */,
@@ -1126,7 +1123,6 @@
 				CA90799C24B2931700B30CF6 /* GameSettings.swift in Sources */,
 				CA75CE43242A98D200998719 /* LoafState.swift in Sources */,
 				CAFA469E23DAD254003C38AB /* UIView+Extensions.swift in Sources */,
-				CAC68CC824327557003CC2E6 /* SessionToken.swift in Sources */,
 				CA797F63246892AC0011E7D1 /* EmptyState.swift in Sources */,
 				CAD32BF52493070A00984610 /* RoomDetailsView.swift in Sources */,
 				CA22022C243F800D005367B6 /* LoadingHUD.swift in Sources */,
