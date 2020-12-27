@@ -20,9 +20,15 @@ enum ProfileUpdateAction: BaseAction {
 }
 
 class ProfileUpdateFormViewModel: ViewModel<ProfileUpdateViewAction>, ObservableObject {
+	private static let fieldErrorKeys = [
+		"displayName": "Display name",
+	]
+
 	@Published var user: Loadable<User>
 
 	@Published var displayName: String = ""
+
+	@Published var error: String?
 
 	let state: State
 
@@ -91,11 +97,69 @@ extension ProfileUpdateFormViewModel {
 	}
 }
 
+// MARK: - Errors
+
+extension ProfileUpdateFormViewModel {
+	var fieldError: String? {
+		guard case .failed(let userError as UserRepositoryError) = user,
+					case .apiError(let apiError) = userError,
+					case .invalidHTTPResponse(let code, let apiMessage) = apiError,
+					let message = apiMessage,
+					code == 400 else {
+			return nil
+		}
+
+		for (key, field) in Self.fieldErrorKeys {
+			if message.contains(key) {
+				return message.replacingOccurrences(of: key, with: field)
+			}
+		}
+
+		return nil
+	}
+
+	var errorMessage: String? {
+		guard fieldError == nil else { return nil }
+
+		switch user {
+		case .failed(let error as UserRepositoryError):
+			switch error {
+			case .apiError(let error): return errorMessage(for: error)
+			case .usingOfflineAccount: return "You're currently offline"
+			case .missingID: return nil
+			}
+		case .failed(let error):
+			return error.localizedDescription
+		case .loaded, .loading, .notLoaded: return nil
+		}
+	}
+
+	private func errorMessage(for error: HiveAPIError) -> String {
+		switch error {
+		case .usingOfflineAccount:
+			return "You've chosen to play offline"
+		case .unauthorized:
+			return "You entered an incorrect email or password."
+		case .networkingError:
+			return "There was an error connecting to the server. Are you connected to the Internet?"
+		case
+			.invalidData,
+			.invalidResponse,
+			.invalidHTTPResponse,
+			.missingData,
+			.notImplemented,
+			.invalidURL,
+			.unsupported:
+			return error.errorDescription ?? error.localizedDescription
+		}
+	}
+}
+
 // MARK: - State
 
 extension ProfileUpdateFormViewModel {
 	struct State {
-		let message: String
+		let message: String?
 		let fields: Set<FieldItem>
 		let isRequired: Bool
 

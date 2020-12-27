@@ -46,7 +46,28 @@ struct ProfileUpdateForm: View {
 
 	private var formView: some View {
 		Form {
+			if let message = viewModel.state.message {
+				Section {
+					Text(message)
+						.font(.body)
+						.foregroundColor(Color(.textRegular))
+				}
+				.listRowBackground(Color(.backgroundRegular))
+			}
 
+			Section(footer: errorFooter) {
+				field(for: .displayName)
+			}
+			.listRowBackground(Color(.backgroundLight))
+
+			if let error = viewModel.errorMessage {
+				Section {
+					Text(error)
+						.font(.body)
+						.foregroundColor(Color(.highlightDestructive))
+				}
+				.listRowBackground(Color(.backgroundRegular))
+			}
 		}
 	}
 
@@ -57,15 +78,29 @@ struct ProfileUpdateForm: View {
 	// MARK: Form
 
 	private func field(for id: ProfileUpdateFormViewModel.FieldItem) -> some View {
-		TextField(id.title, text: text(for: id))
-			.foregroundColor(Color(.textRegular))
-			.textContentType(id.textContentType)
-			.keyboardType(id.keyboardType)
+		ZStack(alignment: .leading) {
+			if text(for: id).wrappedValue.isEmpty {
+				Text(id.title).foregroundColor(Color(.textSecondary))
+			}
+			TextField("", text: text(for: id))
+				.foregroundColor(Color(.textRegular))
+				.textContentType(id.textContentType)
+				.keyboardType(id.keyboardType)
+		}
 	}
 
 	private func text(for id: ProfileUpdateFormViewModel.FieldItem) -> Binding<String> {
 		switch id {
 		case .displayName: return $viewModel.displayName
+		}
+	}
+
+	@ViewBuilder
+	private var errorFooter: some View {
+		if let error = viewModel.fieldError {
+			Text(error)
+				.font(.caption)
+				.foregroundColor(Color(.highlightDestructive))
 		}
 	}
 
@@ -113,8 +148,8 @@ extension ProfileUpdateForm {
 	private func handleUserChange(_ user: Loadable<User>) {
 		switch user {
 		case .loaded:
+			presentationMode.wrappedValue.dismiss()
 			toaster.loaf.send(LoafState("Profile updated", style: .success()))
-			viewModel.postViewAction(.dismissForm)
 		case .failed, .loading, .notLoaded:
 			break
 		}
