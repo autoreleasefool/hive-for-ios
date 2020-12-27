@@ -15,12 +15,14 @@ enum SettingsListViewAction: BaseViewAction {
 	case switchPieceColorScheme(current: Preferences.PieceColorScheme)
 	case appStateChanged
 
+	case updateProfile
 	case logout
 	case exit
 }
 
 enum SettingsListAction: BaseAction {
 	case loadProfile
+	case updateProfile
 	case setGameMode(Preferences.GameMode)
 	case setPieceColorScheme(Preferences.PieceColorScheme)
 	case logout
@@ -68,6 +70,8 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 		case .appStateChanged:
 			objectWillChange.send()
 
+		case .updateProfile:
+			actions.send(.updateProfile)
 		case .exit:
 			actions.send(.closeSettings)
 		case .logout:

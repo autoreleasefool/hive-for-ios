@@ -150,5 +150,13 @@ extension ProfileUpdateFormViewModel {
 				isRequired: true
 			)
 		}
+
+		static var `default`: State {
+			State(
+				message: nil,
+				fields: [.displayName],
+				isRequired: false
+			)
+		}
 	}
 }

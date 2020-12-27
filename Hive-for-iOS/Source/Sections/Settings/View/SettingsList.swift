@@ -106,8 +106,18 @@ struct SettingsList: View {
 	@ViewBuilder
 	private var appSettingsSection: some View {
 		if viewModel.showAccount {
-			Section(header: SectionHeader("Account"), footer: logoutButton) {
+			Section(header: SectionHeader("Account")) {
 				UserPreview(viewModel.user.value?.summary)
+
+				Button("Edit profile") {
+					viewModel.postViewAction(.updateProfile)
+				}
+				.foregroundColor(Color(.highlightRegular))
+
+				Button("Logout") {
+					viewModel.postViewAction(.logout)
+				}
+				.foregroundColor(Color(.highlightPrimary))
 			}
 			.listRowBackground(Color(.backgroundLight))
 		}
@@ -156,21 +166,6 @@ struct SettingsList: View {
 	}
 
 	// MARK: Buttons
-
-	@ViewBuilder
-	private var logoutButton: some View {
-		switch viewModel.logoutResult {
-		case .notLoaded, .failed, .loaded:
-			BasicButton {
-				viewModel.postViewAction(.logout)
-			} label: {
-				Text("Logout")
-					.foregroundColor(Color(.textSecondary))
-			}
-		case .loading:
-			LoadingView()
-		}
-	}
 
 	private var doneButton: some View {
 		Button {
@@ -242,6 +237,8 @@ extension SettingsList {
 			preferencesBinding.wrappedValue.gameMode = mode
 		case .setPieceColorScheme(let colorScheme):
 			preferencesBinding.wrappedValue.pieceColorScheme = colorScheme
+		case .updateProfile:
+			container.appState[\.contentSheetNavigation] = .profileUpdate(state: .default)
 		case .logout:
 			logout()
 		case .closeSettings:
