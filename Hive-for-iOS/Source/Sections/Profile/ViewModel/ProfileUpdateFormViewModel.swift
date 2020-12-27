@@ -124,33 +124,13 @@ extension ProfileUpdateFormViewModel {
 		switch user {
 		case .failed(let error as UserRepositoryError):
 			switch error {
-			case .apiError(let error): return errorMessage(for: error)
+			case .apiError(let apiError): return apiError.formError
 			case .usingOfflineAccount: return "You're currently offline"
 			case .missingID: return nil
 			}
 		case .failed(let error):
 			return error.localizedDescription
 		case .loaded, .loading, .notLoaded: return nil
-		}
-	}
-
-	private func errorMessage(for error: HiveAPIError) -> String {
-		switch error {
-		case .usingOfflineAccount:
-			return "You've chosen to play offline"
-		case .unauthorized:
-			return "You entered an incorrect email or password."
-		case .networkingError:
-			return "There was an error connecting to the server. Are you connected to the Internet?"
-		case
-			.invalidData,
-			.invalidResponse,
-			.invalidHTTPResponse,
-			.missingData,
-			.notImplemented,
-			.invalidURL,
-			.unsupported:
-			return error.errorDescription ?? error.localizedDescription
 		}
 	}
 }

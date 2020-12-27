@@ -45,7 +45,7 @@ struct LoginSignupForm: View {
 
 	private var formView: some View {
 		Form {
-			Section(footer: noticeFooter) {
+			Section(footer: errorFooter) {
 				field(for: .email)
 				if viewModel.form == .signup {
 					field(for: .displayName)
@@ -120,9 +120,15 @@ struct LoginSignupForm: View {
 	}
 
 	@ViewBuilder
-	private var noticeFooter: some View {
-		if let message = viewModel.noticeMessage {
-			notice(message: message)
+	private var errorFooter: some View {
+		if let error = viewModel.fieldError {
+			Text(error)
+				.font(.body)
+				.foregroundColor(Color(.highlightDestructive))
+		} else if let message = viewModel.errorMessage {
+			Text(message)
+				.font(.body)
+				.foregroundColor(Color(.highlightPrimary))
 		}
 	}
 
@@ -140,12 +146,6 @@ struct LoginSignupForm: View {
 		} label: {
 			Text("Cancel")
 		}
-	}
-
-	private func notice(message: String) -> some View {
-		Text(message)
-			.font(.body)
-			.foregroundColor(Color(.highlightPrimary))
 	}
 }
 

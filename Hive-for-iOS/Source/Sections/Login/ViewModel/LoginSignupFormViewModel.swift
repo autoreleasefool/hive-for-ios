@@ -24,6 +24,13 @@ enum LoginSignupAction: BaseAction {
 }
 
 class LoginSignupFormViewModel: ViewModel<LoginSignupViewAction>, ObservableObject {
+	private static let fieldErrorKeys = [
+		"displayName": "Display name",
+		"email": "Email",
+		"password": "Password",
+		"verifyPassword": "Password confirmation",
+	]
+
 	@Published var account: Loadable<AnyAccount>
 	@Published var form: Form
 
@@ -179,38 +186,38 @@ extension LoginSignupFormViewModel {
 		}
 	}
 
-	var noticeMessage: String? {
+	var fieldError: String? {
+		guard case .failed(let accountError as AccountRepositoryError) = account,
+					case .apiError(let apiError) = accountError,
+					case .invalidHTTPResponse(let code, let apiMessage) = apiError,
+					let message = apiMessage,
+					code == 400 else {
+			return nil
+		}
+
+		for (key, field) in Self.fieldErrorKeys {
+			if message.contains(key) {
+				return message.replacingOccurrences(of: key, with: field)
+			}
+		}
+
+		return nil
+	}
+
+	var errorMessage: String? {
+		guard fieldError == nil else { return nil }
+
 		switch account {
 		case .failed(let error):
 			if let accountError = error as? AccountRepositoryError {
 				switch accountError {
 				case .loggedOut: return "You've been logged out. Please log in again."
-				case .apiError(let apiError): return noticeMessage(for: apiError)
+				case .apiError(let apiError): return apiError.formError
 				case .notFound, .keychainError: return ""
 				}
 			}
 			return error.localizedDescription
 		case .loaded, .loading, .notLoaded: return nil
-		}
-	}
-
-	func noticeMessage(for error: HiveAPIError) -> String {
-		switch error {
-		case .usingOfflineAccount:
-			return "You've chosen to play offline"
-		case .unauthorized:
-			return "You entered an incorrect email or password."
-		case .networkingError:
-			return "There was an error connecting to the server. Are you connected to the Internet?"
-		case
-			.invalidData,
-			.invalidHTTPResponse,
-			.invalidResponse,
-			.missingData,
-			.notImplemented,
-			.invalidURL,
-			.unsupported:
-			return error.errorDescription ?? error.localizedDescription
 		}
 	}
 }

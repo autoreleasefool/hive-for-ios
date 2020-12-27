@@ -51,6 +51,26 @@ enum HiveAPIError: LocalizedError {
 		}
 	}
 
+	var formError: String {
+		switch self {
+		case .usingOfflineAccount:
+			return "You've chosen to play offline"
+		case .unauthorized:
+			return "You entered an incorrect email or password."
+		case .networkingError:
+			return "There was an error connecting to the server. Are you connected to the Internet?"
+		case
+			.invalidData,
+			.invalidResponse,
+			.invalidHTTPResponse,
+			.missingData,
+			.notImplemented,
+			.invalidURL,
+			.unsupported:
+			return errorDescription ?? localizedDescription
+		}
+	}
+
 	var loaf: LoafState {
 		LoafState(errorDescription ?? "Unknown (API Error)", style: .error())
 	}
