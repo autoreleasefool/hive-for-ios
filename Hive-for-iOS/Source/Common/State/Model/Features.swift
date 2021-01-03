@@ -61,7 +61,7 @@ enum Feature: String, CaseIterable {
 		case .hiveMindAgent: return .disabled
 		case .offlineMode: return .released
 		case .accounts: return .disabled
-		case .signInWithApple: return .inDevelopment
+		case .signInWithApple: return .released
 		case .guestMode: return .disabled
 		case .matchHistory: return .disabled
 		case .profileList: return .disabled
