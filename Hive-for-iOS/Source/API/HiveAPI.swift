@@ -18,7 +18,7 @@ class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
 		let debugURL = URL(string: "https://hive.josephroque.dev")!
 		return debugURL
 		#else
-		let releaseURL = URL(string: "https://hive.josephroque.dev")!
+		let releaseURL = URL(string: "https://hiveapi.josephroque.dev")!
 		return releaseURL
 		#endif
 	}()
