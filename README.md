@@ -6,8 +6,8 @@ Hive for iOS allows you to play a game of Hive against your friends.
 
 Built with SwiftUI, SpriteKit, and ARKit.
 
-- State managed by the [Hive Engine](https://github.com/josephroquedev/hive-engine)
-- Built on the [Hive for Mobile Server](https://github.com/josephroquedev/hive-for-mobile-server)
+- State managed by the [Hive Engine](https://github.com/autoreleasefool/hive-engine)
+- Built on the [Hive for Mobile Server](https://github.com/autoreleasefool/hive-for-mobile-server)
 
 To learn more about Hive, visit [Board Game Geek](https://www.boardgamegeek.com/boardgame/2655/hive)
 
@@ -31,7 +31,7 @@ To learn more about Hive, visit [Board Game Geek](https://www.boardgamegeek.com/
 
 ### Steps
 
-1. You will need to follow the steps to run the [Hive for Mobile Server](https://github.com/josephroquedev/hive-for-mobile-server) locally
+1. You will need to follow the steps to run the [Hive for Mobile Server](https://github.com/autoreleasefool/hive-for-mobile-server) locally
 2. Fork and clone this repo
 3. Write your changes
 4. Run `swiftlint` for styling conformance

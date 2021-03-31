@@ -134,7 +134,7 @@ struct SettingsList: View {
 				}
 			},
 			content: {
-				Link(destination: URL(string: "https://github.com/josephroquedev/hive-for-ios")!) {
+				Link(destination: URL(string: "https://github.com/autoreleasefool/hive-for-ios")!) {
 					Text("View Source")
 						.foregroundColor(Color(.highlightRegular))
 				}

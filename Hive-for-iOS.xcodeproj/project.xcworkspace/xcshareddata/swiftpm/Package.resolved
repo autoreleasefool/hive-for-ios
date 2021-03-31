@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "HiveEngine",
-        "repositoryURL": "https://github.com/josephroquedev/hive-engine.git",
+        "repositoryURL": "https://github.com/autoreleasefool/hive-engine.git",
         "state": {
           "branch": null,
           "revision": "d6b850c3aaacf8820816523de267c5d01de31363",
@@ -21,7 +21,7 @@
       },
       {
         "package": "Loaf",
-        "repositoryURL": "https://github.com/josephroquedev/loaf",
+        "repositoryURL": "https://github.com/autoreleasefool/loaf",
         "state": {
           "branch": "swiftui",
           "revision": "4c5029a298487faacd58e15f2c26bec7fda4a8d4",
