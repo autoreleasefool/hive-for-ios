@@ -7,9 +7,9 @@
   <key>branch</key>
   <string>None</string>
   <key>revision</key>
-  <string>d6b850c3aaacf8820816523de267c5d01de31363</string>
+  <string>0fa54ca24d7881d661119d97fe0867bd3bf72ff6</string>
   <key>version</key>
-  <string>3.1.2</string>
+  <string>3.1.4</string>
 </dict>
 <key>KeychainAccess</key>
 <dict>
@@ -34,9 +34,9 @@
   <key>branch</key>
   <string>None</string>
   <key>revision</key>
-  <string>a819aed0e9555268c29a62500fe6fb781ae7f57d</string>
+  <string>76c2b73d4281d77fc3118391877efd1bf972f515</string>
   <key>version</key>
-  <string>2.1.0</string>
+  <string>2.1.1</string>
 </dict>
 <key>swift-log</key>
 <dict>

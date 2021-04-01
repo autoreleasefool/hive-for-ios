@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/autoreleasefool/hive-engine.git",
         "state": {
           "branch": null,
-          "revision": "d6b850c3aaacf8820816523de267c5d01de31363",
-          "version": "3.1.2"
+          "revision": "0fa54ca24d7881d661119d97fe0867bd3bf72ff6",
+          "version": "3.1.4"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/sharplet/Regex.git",
         "state": {
           "branch": null,
-          "revision": "a819aed0e9555268c29a62500fe6fb781ae7f57d",
-          "version": "2.1.0"
+          "revision": "76c2b73d4281d77fc3118391877efd1bf972f515",
+          "version": "2.1.1"
         }
       },
       {
