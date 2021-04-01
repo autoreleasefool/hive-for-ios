@@ -123,6 +123,7 @@
 		CAD32BFE2495110900984610 /* AIAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BFD2495110900984610 /* AIAgent.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
+		CAEA8B9D2615459A00A115BE /* HiveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEA8B9C2615459A00A115BE /* HiveUITests.swift */; };
 		CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CE24BA01200051100D /* PlayerHandView.swift */; };
 		CAF155C62536952C00305CBE /* AppStateChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF155C52536952C00305CBE /* AppStateChangeListener.swift */; };
 		CAF40D7C2591604D00DCD4E5 /* AppleAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF40D7B2591604D00DCD4E5 /* AppleAccount.swift */; };
@@ -153,6 +154,16 @@
 		CAFC7A62245C527400747E82 /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC7A61245C527400747E82 /* RootTabView.swift */; };
 		CAFC7A65245C54EE00747E82 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFC7A64245C54EE00747E82 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CAEA8B9F2615459A00A115BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA7299982393156100AD1285 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA72999F2393156100AD1285;
+			remoteInfo = "Hive-for-iOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		CA0523EF23E57813008F8A94 /* GameViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewContent.swift; sourceTree = "<group>"; };
@@ -273,6 +284,10 @@
 		CAD32BF82493130000984610 /* LocalRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoomViewModel.swift; sourceTree = "<group>"; };
 		CAD32BFD2495110900984610 /* AIAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIAgent.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
+		CAEA8B9A2615459A00A115BE /* HiveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HiveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CAEA8B9C2615459A00A115BE /* HiveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveUITests.swift; sourceTree = "<group>"; };
+		CAEA8B9E2615459A00A115BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CAEA8BA62615483900A115BE /* AppUITests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppUITests.xcconfig; sourceTree = "<group>"; };
 		CAEBA7CE24BA01200051100D /* PlayerHandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandView.swift; sourceTree = "<group>"; };
 		CAF155C52536952C00305CBE /* AppStateChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateChangeListener.swift; sourceTree = "<group>"; };
 		CAF40D7725911CE000DCD4E5 /* Hive-for-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hive-for-iOS.entitlements"; sourceTree = "<group>"; };
@@ -314,6 +329,13 @@
 				CA40344923932603006C6BE3 /* HiveEngine in Frameworks */,
 				CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */,
 				CA804532254BA68100415DF8 /* Logging in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAEA8B972615459A00A115BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -429,6 +451,7 @@
 			isa = PBXGroup;
 			children = (
 				CA7299A22393156100AD1285 /* Hive-for-iOS */,
+				CAEA8B9B2615459A00A115BE /* HiveUITests */,
 				CA7299A12393156100AD1285 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -437,6 +460,7 @@
 			isa = PBXGroup;
 			children = (
 				CA7299A02393156100AD1285 /* Hive for iOS.app */,
+				CAEA8B9A2615459A00A115BE /* HiveUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -668,6 +692,7 @@
 			isa = PBXGroup;
 			children = (
 				CAC51C9725253700004C1866 /* App.xcconfig */,
+				CAEA8BA62615483900A115BE /* AppUITests.xcconfig */,
 				CAC51C9825254109004C1866 /* Project.xcconfig */,
 				CAC51C9A25254279004C1866 /* Shared.xcconfig */,
 				CAC51C99252541ED004C1866 /* Version.xcconfig */,
@@ -884,6 +909,15 @@
 			path = LocalPlay;
 			sourceTree = "<group>";
 		};
+		CAEA8B9B2615459A00A115BE /* HiveUITests */ = {
+			isa = PBXGroup;
+			children = (
+				CAEA8B9C2615459A00A115BE /* HiveUITests.swift */,
+				CAEA8B9E2615459A00A115BE /* Info.plist */,
+			);
+			path = HiveUITests;
+			sourceTree = "<group>";
+		};
 		CAF40D822591606F00DCD4E5 /* Account */ = {
 			isa = PBXGroup;
 			children = (
@@ -1022,18 +1056,40 @@
 			productReference = CA7299A02393156100AD1285 /* Hive for iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		CAEA8B992615459A00A115BE /* HiveUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CAEA8BA32615459A00A115BE /* Build configuration list for PBXNativeTarget "HiveUITests" */;
+			buildPhases = (
+				CAEA8B962615459A00A115BE /* Sources */,
+				CAEA8B972615459A00A115BE /* Frameworks */,
+				CAEA8B982615459A00A115BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CAEA8BA02615459A00A115BE /* PBXTargetDependency */,
+			);
+			name = HiveUITests;
+			productName = HiveUITests;
+			productReference = CAEA8B9A2615459A00A115BE /* HiveUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		CA7299982393156100AD1285 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1110;
+				LastSwiftUpdateCheck = 1230;
 				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Joseph Roque";
 				TargetAttributes = {
 					CA72999F2393156100AD1285 = {
 						CreatedOnToolsVersion = 11.1;
+					};
+					CAEA8B992615459A00A115BE = {
+						CreatedOnToolsVersion = 12.3;
+						TestTargetID = CA72999F2393156100AD1285;
 					};
 				};
 			};
@@ -1058,6 +1114,7 @@
 			projectRoot = "";
 			targets = (
 				CA72999F2393156100AD1285 /* Hive-for-iOS */,
+				CAEA8B992615459A00A115BE /* HiveUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -1071,6 +1128,13 @@
 				CA7299AD2393156400AD1285 /* Preview Assets.xcassets in Resources */,
 				CA7299AA2393156400AD1285 /* Assets.xcassets in Resources */,
 				CA75CA76256BFD4700F02928 /* Dependencies.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CAEA8B982615459A00A115BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1257,7 +1321,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CAEA8B962615459A00A115BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAEA8B9D2615459A00A115BE /* HiveUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CAEA8BA02615459A00A115BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA72999F2393156100AD1285 /* Hive-for-iOS */;
+			targetProxy = CAEA8B9F2615459A00A115BE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		CA7299AE2393156400AD1285 /* LaunchScreen.storyboard */ = {
@@ -1299,6 +1379,20 @@
 			};
 			name = Release;
 		};
+		CAEA8BA12615459A00A115BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAEA8BA62615483900A115BE /* AppUITests.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		CAEA8BA22615459A00A115BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CAEA8BA62615483900A115BE /* AppUITests.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1316,6 +1410,15 @@
 			buildConfigurations = (
 				CA7299B52393156400AD1285 /* Debug */,
 				CA7299B62393156400AD1285 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CAEA8BA32615459A00A115BE /* Build configuration list for PBXNativeTarget "HiveUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CAEA8BA12615459A00A115BE /* Debug */,
+				CAEA8BA22615459A00A115BE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -1,0 +1,9 @@
+#include "./Version.xcconfig"
+#include "./Shared.xcconfig"
+
+INFOPLIST_FILE = HiveUITests/Info.plist
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @loader_paths/Frameworks
+PRODUCT_BUNDLE_IDENTIFIER = ca.josephroque.hiveapp.HiveUITests
+PRODUCT_NAME = HiveUITests
+TEST_TARGET_NAME = Hive-for-iOS
+TARGET_NAME = HiveUITests
