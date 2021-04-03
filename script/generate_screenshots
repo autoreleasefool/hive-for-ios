@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Generate screenshots
+bundle exec fastlane screenshots
+
+# Apply frames
+pushd fastlane/screenshots
+bundle exec fastlane frameit
+popd
+
+# Move to separate directory
+mkdir -p appstore-screenshots
+mv fastlane/screenshots/en-US/*framed.png appstore-screenshots

@@ -59,6 +59,7 @@ Carthage/Build
 
 fastlane/report.xml
 fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/screenshots/fonts
 fastlane/test_output
-fastlane/README.md
-fastlane/screenshots
+appstore-screenshots/

@@ -1,0 +1,31 @@
+{
+  "device_frame_version": "latest",
+  "default": {
+    "keyword": {
+      "font": "./fonts/Montserrat-Bold.ttf",
+      "color": "#EE5253"
+    },
+    "title": {
+      "font": "./fonts/OpenSans-Italic.ttf",
+      "color": "#FFFFFF"
+    },
+    "padding": 50,
+    "show_complete_frame": false,
+    "stack_title": true,
+    "use_platform": "IOS",
+    "background": "./background.jpg"
+  },
+  "data": [{
+      "filter": "Welcome"
+    },
+    {
+      "filter": "InGame"
+    },
+    {
+      "filter": "LocalMatch"
+    },
+    {
+      "filter": "PlayAgainst"
+    }
+  ]
+}
