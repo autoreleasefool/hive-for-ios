@@ -61,5 +61,6 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/screenshots/fonts
+fastlane/screenshots/screenshots.html
 fastlane/test_output
 appstore-screenshots/
