@@ -70,6 +70,7 @@ struct WelcomeView: View {
 			.buttonBackground(.backgroundLight)
 			.padding(.horizontal)
 			.padding(.bottom)
+			.accessibility(identifier: "playOffline")
 		}
 
 		PrimaryButton("Settings") {

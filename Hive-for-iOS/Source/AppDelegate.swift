@@ -19,6 +19,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
 	) -> Bool {
 
+		if ProcessInfo.processInfo.environment["disableAnimations"] == "1" {
+			UIView.setAnimationsEnabled(false)
+		}
+
 		Theme.applyPrimaryTheme()
 
 		let environment = AppEnvironment.bootstrap()

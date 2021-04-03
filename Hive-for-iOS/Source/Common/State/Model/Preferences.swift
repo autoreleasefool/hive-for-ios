@@ -43,6 +43,11 @@ struct Preferences: Equatable {
 		set { UserDefaults.standard.set(newValue, forKey: Key.hasDismissedReplayTooltip.rawValue) }
 	}
 
+	var isMoveToCenterOnRotateEnabled: Bool {
+		get { bool(for: Key.isMoveToCenterOnRotateEnabled, defaultValue: true) }
+		set { UserDefaults.standard.set(newValue, forKey: Key.isMoveToCenterOnRotateEnabled.rawValue) }
+	}
+
 	private func bool(for key: Key, defaultValue: Bool) -> Bool {
 		guard UserDefaults.standard.object(forKey: key.rawValue) != nil else {
 			return defaultValue
@@ -87,7 +92,7 @@ extension Preferences {
 
 // MARK: - Keys
 
-private extension Preferences {
+extension Preferences {
 	enum Key: String {
 		case gameMode
 		case isEmotesEnabled
@@ -95,5 +100,6 @@ private extension Preferences {
 		case hasDismissedReplayTooltip
 		case isSpectatorEmotesEnabled
 		case isSpectatorNotificationsEnabled
+		case isMoveToCenterOnRotateEnabled
 	}
 }

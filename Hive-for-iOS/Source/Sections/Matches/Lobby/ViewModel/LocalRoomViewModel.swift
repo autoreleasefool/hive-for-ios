@@ -49,6 +49,14 @@ class LocalRoomViewModel: ViewModel<LocalRoomViewAction>, ObservableObject {
 		matchOptions.contains(.hostIsWhite) ? .white : .black
 	}
 
+	var initialGameState: GameState {
+		if let envGameString = ProcessInfo.processInfo.environment["LocalGameString"],
+			 let gameString = GameString(from: envGameString) {
+			return gameString.state
+		}
+		return GameState(options: gameOptions)
+	}
+
 	init(opponent: LocalOpponent) {
 		self.opponent = opponent
 	}

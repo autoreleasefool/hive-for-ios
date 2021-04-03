@@ -172,6 +172,7 @@ struct LobbyList: View {
 				Image(systemName: "plus")
 					.imageScale(.large)
 					.accessibility(label: Text("Create Match"))
+					.accessibility(identifier: "createMatch")
 			}
 		}
 	}

@@ -71,6 +71,7 @@ struct LocalRoomView: View {
 		} label: {
 			Text("Start")
 		}
+		.accessibility(identifier: "startMatch")
 	}
 }
 
@@ -90,7 +91,7 @@ extension LocalRoomView {
 	}
 
 	private func startGame() {
-		let gameState = GameState(options: viewModel.gameOptions)
+		let gameState = viewModel.initialGameState
 
 		switch viewModel.opponent {
 		case .human:

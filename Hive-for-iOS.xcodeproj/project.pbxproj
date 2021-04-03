@@ -123,7 +123,8 @@
 		CAD32BFE2495110900984610 /* AIAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BFD2495110900984610 /* AIAgent.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
-		CAEA8B9D2615459A00A115BE /* HiveUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEA8B9C2615459A00A115BE /* HiveUITests.swift */; };
+		CAEA8B9D2615459A00A115BE /* AppStoreSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEA8B9C2615459A00A115BE /* AppStoreSnapshotTests.swift */; };
+		CAEA8BC72615556200A115BE /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEA8BC62615556200A115BE /* SnapshotHelper.swift */; };
 		CAEBA7CF24BA01200051100D /* PlayerHandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEBA7CE24BA01200051100D /* PlayerHandView.swift */; };
 		CAF155C62536952C00305CBE /* AppStateChangeListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF155C52536952C00305CBE /* AppStateChangeListener.swift */; };
 		CAF40D7C2591604D00DCD4E5 /* AppleAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAF40D7B2591604D00DCD4E5 /* AppleAccount.swift */; };
@@ -285,9 +286,10 @@
 		CAD32BFD2495110900984610 /* AIAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIAgent.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAEA8B9A2615459A00A115BE /* HiveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HiveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CAEA8B9C2615459A00A115BE /* HiveUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveUITests.swift; sourceTree = "<group>"; };
+		CAEA8B9C2615459A00A115BE /* AppStoreSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSnapshotTests.swift; sourceTree = "<group>"; };
 		CAEA8B9E2615459A00A115BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CAEA8BA62615483900A115BE /* AppUITests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AppUITests.xcconfig; sourceTree = "<group>"; };
+		CAEA8BC62615556200A115BE /* SnapshotHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SnapshotHelper.swift; path = HiveUITests/Source/SnapshotHelper.swift; sourceTree = SOURCE_ROOT; };
 		CAEBA7CE24BA01200051100D /* PlayerHandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHandView.swift; sourceTree = "<group>"; };
 		CAF155C52536952C00305CBE /* AppStateChangeListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStateChangeListener.swift; sourceTree = "<group>"; };
 		CAF40D7725911CE000DCD4E5 /* Hive-for-iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hive-for-iOS.entitlements"; sourceTree = "<group>"; };
@@ -912,10 +914,19 @@
 		CAEA8B9B2615459A00A115BE /* HiveUITests */ = {
 			isa = PBXGroup;
 			children = (
-				CAEA8B9C2615459A00A115BE /* HiveUITests.swift */,
 				CAEA8B9E2615459A00A115BE /* Info.plist */,
+				CAEA8BCA2615557100A115BE /* Source */,
 			);
 			path = HiveUITests;
+			sourceTree = "<group>";
+		};
+		CAEA8BCA2615557100A115BE /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CAEA8BC62615556200A115BE /* SnapshotHelper.swift */,
+				CAEA8B9C2615459A00A115BE /* AppStoreSnapshotTests.swift */,
+			);
+			path = Source;
 			sourceTree = "<group>";
 		};
 		CAF40D822591606F00DCD4E5 /* Account */ = {
@@ -1081,7 +1092,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1230;
-				LastUpgradeCheck = 1220;
+				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "Joseph Roque";
 				TargetAttributes = {
 					CA72999F2393156100AD1285 = {
@@ -1325,7 +1336,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CAEA8B9D2615459A00A115BE /* HiveUITests.swift in Sources */,
+				CAEA8B9D2615459A00A115BE /* AppStoreSnapshotTests.swift in Sources */,
+				CAEA8BC72615556200A115BE /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

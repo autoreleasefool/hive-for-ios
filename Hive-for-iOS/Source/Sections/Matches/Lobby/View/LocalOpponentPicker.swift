@@ -21,6 +21,7 @@ struct LocalOpponentPicker: View {
 						.foregroundColor(Color(.textRegular))
 						.padding(.vertical)
 				}
+				.accessibility(identifier: "playAgainstFriend")
 			}
 			.listRowBackground(Color(.backgroundLight))
 
