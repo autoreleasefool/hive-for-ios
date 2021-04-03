@@ -72,6 +72,9 @@ struct SettingsList: View {
 					.disabled(!container.preferences.isEmotesEnabled)
 			}
 
+			Toggle("Move to center on device rotation", isOn: binding(for: \.isMoveToCenterOnRotateEnabled))
+				.foregroundColor(Color(.textRegular))
+
 			Toggle("Announce spectators", isOn: binding(for: \.isSpectatorNotificationsEnabled))
 				.foregroundColor(Color(.textRegular))
 

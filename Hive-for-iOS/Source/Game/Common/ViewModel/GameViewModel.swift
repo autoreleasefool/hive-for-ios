@@ -90,6 +90,8 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 	private var reconnectAttempts = 0
 	private var reconnecting = false
 
+	private var isLastOrientationPortrait: Bool = false
+
 	let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
 	let actionFeedbackGenerator = UIImpactFeedbackGenerator(style: .light)
 	let promptFeedbackGenerator = UIImpactFeedbackGenerator(style: .medium)
@@ -161,6 +163,7 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 			self.clientInteractor = clientInteractor
 			self.preferences = preferences
 			openConnection()
+			setupNotifications()
 		case .viewContentDidLoad(let content):
 			setupView(content: content)
 		case .viewContentReady:
@@ -267,6 +270,26 @@ class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
 					self?.handleGameClientEvent($0)
 				}
 			)
+			.store(in: self)
+	}
+
+	private func setupNotifications() {
+		isLastOrientationPortrait = UIDevice.current.orientation.isPortrait
+		NotificationCenter.default.publisher(for: UIDevice.orientationDidChangeNotification)
+			.sink { [weak self] _ in
+				guard self?.preferences.isMoveToCenterOnRotateEnabled == true else {
+					return
+				}
+				let isNewOrientationPortrait = UIDevice.current.orientation.isPortrait
+				guard self?.isLastOrientationPortrait != isNewOrientationPortrait else {
+					return
+				}
+
+				self?.isLastOrientationPortrait = isNewOrientationPortrait
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+					self?.postViewAction(.returnToGameBounds)
+				}
+			}
 			.store(in: self)
 	}
 
