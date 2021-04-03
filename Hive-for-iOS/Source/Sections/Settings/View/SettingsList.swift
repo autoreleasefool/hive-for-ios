@@ -127,14 +127,21 @@ struct SettingsList: View {
 
 		Section(
 			header: SectionHeader("About"),
-			footer: HStack {
-				Spacer()
-				VStack(alignment: .trailing) {
-					Text(AppInfo.name)
-						.foregroundColor(Color(.textSecondary))
-					Text(AppInfo.fullSemanticVersion)
-						.foregroundColor(Color(.textSecondary))
+			footer: VStack {
+				HStack {
+					Spacer()
+					VStack(alignment: .trailing) {
+						Text(AppInfo.name)
+							.foregroundColor(Color(.textSecondary))
+						Text(AppInfo.fullSemanticVersion)
+							.foregroundColor(Color(.textSecondary))
+					}
 				}
+				Text("Hive is copyright of Gen42 Games. Hive for iOS and its associated elements are not " +
+							"produced by, endorsed by, nor affiliated in any way with Gen42 Games.")
+					.font(.caption)
+					.foregroundColor(Color(.textSecondary))
+					.padding(.top, Metrics.Spacing.m.rawValue)
 			},
 			content: {
 				Link(destination: URL(string: "https://github.com/autoreleasefool/hive-for-ios")!) {
