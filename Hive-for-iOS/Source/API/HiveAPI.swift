@@ -15,7 +15,7 @@ typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise
 class HiveAPI: NSObject, ObservableObject, URLSessionTaskDelegate {
 	static let baseURL: URL = {
 		#if DEBUG
-		let debugURL = URL(string: "https://hive.josephroque.dev")!
+		let debugURL = URL(string: "https://hiveapi.josephroque.dev")!
 		return debugURL
 		#else
 		let releaseURL = URL(string: "https://hiveapi.josephroque.dev")!
