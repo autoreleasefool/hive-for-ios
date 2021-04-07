@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "CA72999F2393156100AD1285"
-               BuildableName = "Hive for iOS.app"
+               BuildableName = "Hive Mobile.app"
                BlueprintName = "Hive-for-iOS"
                ReferencedContainer = "container:Hive-for-iOS.xcodeproj">
             </BuildableReference>
@@ -55,7 +55,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CA72999F2393156100AD1285"
-            BuildableName = "Hive for iOS.app"
+            BuildableName = "Hive Mobile.app"
             BlueprintName = "Hive-for-iOS"
             ReferencedContainer = "container:Hive-for-iOS.xcodeproj">
          </BuildableReference>
@@ -72,7 +72,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "CA72999F2393156100AD1285"
-            BuildableName = "Hive for iOS.app"
+            BuildableName = "Hive Mobile.app"
             BlueprintName = "Hive-for-iOS"
             ReferencedContainer = "container:Hive-for-iOS.xcodeproj">
          </BuildableReference>
