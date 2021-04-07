@@ -149,6 +149,11 @@ struct SettingsList: View {
 						.foregroundColor(Color(.highlightRegular))
 				}
 
+				Link(destination: URL(string: "https://hive.josephroque.dev/privacy")!) {
+					Text("Privacy Policy")
+						.foregroundColor(Color(.highlightRegular))
+				}
+
 				ThemeNavigationLink("Attributions", destination: { AttributionsList() })
 			}
 		)
