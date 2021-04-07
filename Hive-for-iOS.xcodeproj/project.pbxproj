@@ -207,7 +207,7 @@
 		CA6CC92E24AE952400E8CB27 /* HiveMindAgent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveMindAgent.swift; sourceTree = "<group>"; };
 		CA6CC93024AF6BC300E8CB27 /* LocalGameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalGameClient.swift; sourceTree = "<group>"; };
 		CA6CC93324AF6BDE00E8CB27 /* OnlineGameClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnlineGameClient.swift; sourceTree = "<group>"; };
-		CA7299A02393156100AD1285 /* Hive for iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive for iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA7299A02393156100AD1285 /* Hive Mobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive Mobile.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7299A32393156100AD1285 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CA7299A92393156400AD1285 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA7299AC2393156400AD1285 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -461,7 +461,7 @@
 		CA7299A12393156100AD1285 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CA7299A02393156100AD1285 /* Hive for iOS.app */,
+				CA7299A02393156100AD1285 /* Hive Mobile.app */,
 				CAEA8B9A2615459A00A115BE /* HiveUITests.xctest */,
 			);
 			name = Products;
@@ -1064,7 +1064,7 @@
 				CA804531254BA68100415DF8 /* Logging */,
 			);
 			productName = "Hive for iOS";
-			productReference = CA7299A02393156100AD1285 /* Hive for iOS.app */;
+			productReference = CA7299A02393156100AD1285 /* Hive Mobile.app */;
 			productType = "com.apple.product-type.application";
 		};
 		CAEA8B992615459A00A115BE /* HiveUITests */ = {

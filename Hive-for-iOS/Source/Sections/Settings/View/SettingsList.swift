@@ -137,7 +137,7 @@ struct SettingsList: View {
 							.foregroundColor(Color(.textSecondary))
 					}
 				}
-				Text("Hive is copyright of Gen42 Games. Hive for iOS and its associated elements are not " +
+				Text("Hive is copyright of Gen42 Games. Hive Mobile and its associated elements are not " +
 							"produced by, endorsed by, nor affiliated in any way with Gen42 Games.")
 					.font(.caption)
 					.foregroundColor(Color(.textSecondary))
