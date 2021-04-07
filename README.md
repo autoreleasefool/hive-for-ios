@@ -13,6 +13,8 @@ To learn more about Hive, visit [Board Game Geek](https://www.boardgamegeek.com/
 
 ## Screenshots
 
+![Promotional](media/promotional.png)
+
 | Home                    | Lobby                     | Game Details                           |
 | ----------------------- | ------------------------- | -------------------------------------- |
 | ![Home](media/home.png) | ![Lobby](media/lobby.png) | ![Game details](media/gamedetails.png) |
