@@ -1,0 +1,14 @@
+#include "./Version.xcconfig"
+#include "./Shared.xcconfig"
+
+ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication
+DEVELOPMENT_ASSET_PATHS = Hive-for-watchOS-Extension/Preview\ Content
+ENABLE_PREVIEWS = YES
+INFOPLIST_FILE = Hive-for-watchOS-Extension/Info.plist
+LD_RUNPATH_SEARCH_PATHS = $(inherited) @executable_path/Frameworks @executable_path/../../Frameworks
+PRODUCT_BUNDLE_IDENTIFIER = $(BASE_BUNDLE_IDENTIFIER).watchkitapp.watchkitextension
+PRODUCT_NAME = $(TARGET_NAME)
+SDKROOT = watchos
+SKIP_INSTALL = YES
+TARGETED_DEVICE_FAMILY = 4
+WATCHOS_DEPLOYMENT_TARGET = 7.2

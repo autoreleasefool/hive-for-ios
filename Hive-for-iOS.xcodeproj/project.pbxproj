@@ -37,6 +37,14 @@
 		CA45F9C2242E6119007EC94D /* PieceClassDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */; };
 		CA45F9C4242E758C007EC94D /* GameRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C3242E758C007EC94D /* GameRule.swift */; };
 		CA45F9C6242E9F7A007EC94D /* Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9C5242E9F7A007EC94D /* Markdown.swift */; };
+		CA4F1B4F262B287D002C4DC1 /* Hive-for-watchOS-Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = CA4F1B4E262B287D002C4DC1 /* Hive-for-watchOS-Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CA4F1B54262B287D002C4DC1 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4F1B53262B287D002C4DC1 /* ContentView.swift */; };
+		CA4F1B56262B287D002C4DC1 /* HiveWatchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4F1B55262B287D002C4DC1 /* HiveWatchApp.swift */; };
+		CA4F1B58262B287D002C4DC1 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA4F1B57262B287D002C4DC1 /* ComplicationController.swift */; };
+		CA4F1B5D262B287F002C4DC1 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA4F1B5C262B287F002C4DC1 /* Preview Assets.xcassets */; };
+		CA4F1B61262B287F002C4DC1 /* Hive-for-watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = CA4F1B45262B287B002C4DC1 /* Hive-for-watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		CA4F1B81262B2A7E002C4DC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA4F1B59262B287F002C4DC1 /* Assets.xcassets */; };
+		CA4F1B93262B2B84002C4DC1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CA4F1B92262B2B84002C4DC1 /* Assets.xcassets */; };
 		CA5C82E6253E715E008D47B5 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5C82E5253E715E008D47B5 /* SearchBar.swift */; };
 		CA5C82E9254053D9008D47B5 /* ProfileListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5C82E8254053D9008D47B5 /* ProfileListView.swift */; };
 		CA5C82ED254053FD008D47B5 /* ProfileListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA5C82EC254053FD008D47B5 /* ProfileListViewModel.swift */; };
@@ -157,6 +165,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CA4F1B50262B287D002C4DC1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA7299982393156100AD1285 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA4F1B4D262B287D002C4DC1;
+			remoteInfo = "Hive Mobile Mini Extension";
+		};
+		CA4F1B5F262B287F002C4DC1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CA7299982393156100AD1285 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CA4F1B44262B287B002C4DC1;
+			remoteInfo = "Hive Mobile Mini";
+		};
 		CAEA8B9F2615459A00A115BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = CA7299982393156100AD1285 /* Project object */;
@@ -165,6 +187,31 @@
 			remoteInfo = "Hive-for-iOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CA4F1B62262B287F002C4DC1 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				CA4F1B61262B287F002C4DC1 /* Hive-for-watchOS.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA4F1B65262B287F002C4DC1 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				CA4F1B4F262B287D002C4DC1 /* Hive-for-watchOS-Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		CA0523EF23E57813008F8A94 /* GameViewContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewContent.swift; sourceTree = "<group>"; };
@@ -196,6 +243,18 @@
 		CA45F9C1242E6119007EC94D /* PieceClassDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceClassDetails.swift; sourceTree = "<group>"; };
 		CA45F9C3242E758C007EC94D /* GameRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameRule.swift; sourceTree = "<group>"; };
 		CA45F9C5242E9F7A007EC94D /* Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Markdown.swift; sourceTree = "<group>"; };
+		CA4F1B45262B287B002C4DC1 /* Hive-for-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hive-for-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA4F1B49262B287D002C4DC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA4F1B4E262B287D002C4DC1 /* Hive-for-watchOS-Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Hive-for-watchOS-Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA4F1B53262B287D002C4DC1 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		CA4F1B55262B287D002C4DC1 /* HiveWatchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveWatchApp.swift; sourceTree = "<group>"; };
+		CA4F1B57262B287D002C4DC1 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
+		CA4F1B59262B287F002C4DC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		CA4F1B5C262B287F002C4DC1 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CA4F1B5E262B287F002C4DC1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		CA4F1B6E262B289B002C4DC1 /* Watch.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Watch.xcconfig; sourceTree = "<group>"; };
+		CA4F1B6F262B289B002C4DC1 /* WatchExtension.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = WatchExtension.xcconfig; sourceTree = "<group>"; };
+		CA4F1B92262B2B84002C4DC1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CA5C82E5253E715E008D47B5 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
 		CA5C82E8254053D9008D47B5 /* ProfileListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileListView.swift; sourceTree = "<group>"; };
 		CA5C82EC254053FD008D47B5 /* ProfileListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileListViewModel.swift; sourceTree = "<group>"; };
@@ -322,6 +381,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		CA4F1B4B262B287D002C4DC1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CA72999D2393156100AD1285 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -414,6 +480,44 @@
 			path = ViewModifier;
 			sourceTree = "<group>";
 		};
+		CA4F1B46262B287B002C4DC1 /* Hive-for-watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				CA4F1B92262B2B84002C4DC1 /* Assets.xcassets */,
+				CA4F1B49262B287D002C4DC1 /* Info.plist */,
+			);
+			path = "Hive-for-watchOS";
+			sourceTree = "<group>";
+		};
+		CA4F1B52262B287D002C4DC1 /* Hive-for-watchOS-Extension */ = {
+			isa = PBXGroup;
+			children = (
+				CA4F1B78262B2907002C4DC1 /* Source */,
+				CA4F1B59262B287F002C4DC1 /* Assets.xcassets */,
+				CA4F1B5E262B287F002C4DC1 /* Info.plist */,
+				CA4F1B5B262B287F002C4DC1 /* Preview Content */,
+			);
+			path = "Hive-for-watchOS-Extension";
+			sourceTree = "<group>";
+		};
+		CA4F1B5B262B287F002C4DC1 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				CA4F1B5C262B287F002C4DC1 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		CA4F1B78262B2907002C4DC1 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				CA4F1B57262B287D002C4DC1 /* ComplicationController.swift */,
+				CA4F1B53262B287D002C4DC1 /* ContentView.swift */,
+				CA4F1B55262B287D002C4DC1 /* HiveWatchApp.swift */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		CA6C952624EF484D00F58289 /* Spectating */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +558,8 @@
 			children = (
 				CA7299A22393156100AD1285 /* Hive-for-iOS */,
 				CAEA8B9B2615459A00A115BE /* HiveUITests */,
+				CA4F1B46262B287B002C4DC1 /* Hive-for-watchOS */,
+				CA4F1B52262B287D002C4DC1 /* Hive-for-watchOS-Extension */,
 				CA7299A12393156100AD1285 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -463,6 +569,8 @@
 			children = (
 				CA7299A02393156100AD1285 /* Hive Mobile.app */,
 				CAEA8B9A2615459A00A115BE /* HiveUITests.xctest */,
+				CA4F1B45262B287B002C4DC1 /* Hive-for-watchOS.app */,
+				CA4F1B4E262B287D002C4DC1 /* Hive-for-watchOS-Extension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -698,6 +806,8 @@
 				CAC51C9825254109004C1866 /* Project.xcconfig */,
 				CAC51C9A25254279004C1866 /* Shared.xcconfig */,
 				CAC51C99252541ED004C1866 /* Version.xcconfig */,
+				CA4F1B6E262B289B002C4DC1 /* Watch.xcconfig */,
+				CA4F1B6F262B289B002C4DC1 /* WatchExtension.xcconfig */,
 			);
 			path = xcconfigs;
 			sourceTree = "<group>";
@@ -1041,6 +1151,40 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		CA4F1B44262B287B002C4DC1 /* Hive-for-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA4F1B69262B287F002C4DC1 /* Build configuration list for PBXNativeTarget "Hive-for-watchOS" */;
+			buildPhases = (
+				CA4F1B43262B287B002C4DC1 /* Resources */,
+				CA4F1B65262B287F002C4DC1 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CA4F1B51262B287D002C4DC1 /* PBXTargetDependency */,
+			);
+			name = "Hive-for-watchOS";
+			productName = "Hive Mobile Mini";
+			productReference = CA4F1B45262B287B002C4DC1 /* Hive-for-watchOS.app */;
+			productType = "com.apple.product-type.application.watchapp2";
+		};
+		CA4F1B4D262B287D002C4DC1 /* Hive-for-watchOS-Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CA4F1B68262B287F002C4DC1 /* Build configuration list for PBXNativeTarget "Hive-for-watchOS-Extension" */;
+			buildPhases = (
+				CA4F1B4A262B287D002C4DC1 /* Sources */,
+				CA4F1B4B262B287D002C4DC1 /* Frameworks */,
+				CA4F1B4C262B287D002C4DC1 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Hive-for-watchOS-Extension";
+			productName = "Hive Mobile Mini Extension";
+			productReference = CA4F1B4E262B287D002C4DC1 /* Hive-for-watchOS-Extension.appex */;
+			productType = "com.apple.product-type.watchkit2-extension";
+		};
 		CA72999F2393156100AD1285 /* Hive-for-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CA7299B42393156400AD1285 /* Build configuration list for PBXNativeTarget "Hive-for-iOS" */;
@@ -1050,10 +1194,12 @@
 				CA72999C2393156100AD1285 /* Sources */,
 				CA72999D2393156100AD1285 /* Frameworks */,
 				CA72999E2393156100AD1285 /* Resources */,
+				CA4F1B62262B287F002C4DC1 /* Embed Watch Content */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				CA4F1B60262B287F002C4DC1 /* PBXTargetDependency */,
 			);
 			name = "Hive-for-iOS";
 			packageProductDependencies = (
@@ -1095,6 +1241,12 @@
 				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "Joseph Roque";
 				TargetAttributes = {
+					CA4F1B44262B287B002C4DC1 = {
+						CreatedOnToolsVersion = 12.3;
+					};
+					CA4F1B4D262B287D002C4DC1 = {
+						CreatedOnToolsVersion = 12.3;
+					};
 					CA72999F2393156100AD1285 = {
 						CreatedOnToolsVersion = 11.1;
 					};
@@ -1126,11 +1278,30 @@
 			targets = (
 				CA72999F2393156100AD1285 /* Hive-for-iOS */,
 				CAEA8B992615459A00A115BE /* HiveUITests */,
+				CA4F1B44262B287B002C4DC1 /* Hive-for-watchOS */,
+				CA4F1B4D262B287D002C4DC1 /* Hive-for-watchOS-Extension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		CA4F1B43262B287B002C4DC1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA4F1B93262B2B84002C4DC1 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CA4F1B4C262B287D002C4DC1 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA4F1B81262B2A7E002C4DC1 /* Assets.xcassets in Resources */,
+				CA4F1B5D262B287F002C4DC1 /* Preview Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CA72999E2393156100AD1285 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1189,6 +1360,16 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		CA4F1B4A262B287D002C4DC1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CA4F1B54262B287D002C4DC1 /* ContentView.swift in Sources */,
+				CA4F1B56262B287D002C4DC1 /* HiveWatchApp.swift in Sources */,
+				CA4F1B58262B287D002C4DC1 /* ComplicationController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CA72999C2393156100AD1285 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1344,6 +1525,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		CA4F1B51262B287D002C4DC1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA4F1B4D262B287D002C4DC1 /* Hive-for-watchOS-Extension */;
+			targetProxy = CA4F1B50262B287D002C4DC1 /* PBXContainerItemProxy */;
+		};
+		CA4F1B60262B287F002C4DC1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CA4F1B44262B287B002C4DC1 /* Hive-for-watchOS */;
+			targetProxy = CA4F1B5F262B287F002C4DC1 /* PBXContainerItemProxy */;
+		};
 		CAEA8BA02615459A00A115BE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = CA72999F2393156100AD1285 /* Hive-for-iOS */;
@@ -1363,6 +1554,34 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		CA4F1B63262B287F002C4DC1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA4F1B6E262B289B002C4DC1 /* Watch.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		CA4F1B64262B287F002C4DC1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA4F1B6E262B289B002C4DC1 /* Watch.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		CA4F1B66262B287F002C4DC1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA4F1B6F262B289B002C4DC1 /* WatchExtension.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		CA4F1B67262B287F002C4DC1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CA4F1B6F262B289B002C4DC1 /* WatchExtension.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
 		CA7299B22393156400AD1285 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CAC51C9825254109004C1866 /* Project.xcconfig */;
@@ -1408,6 +1627,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CA4F1B68262B287F002C4DC1 /* Build configuration list for PBXNativeTarget "Hive-for-watchOS-Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA4F1B66262B287F002C4DC1 /* Debug */,
+				CA4F1B67262B287F002C4DC1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CA4F1B69262B287F002C4DC1 /* Build configuration list for PBXNativeTarget "Hive-for-watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CA4F1B63262B287F002C4DC1 /* Debug */,
+				CA4F1B64262B287F002C4DC1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		CA72999B2393156100AD1285 /* Build configuration list for PBXProject "Hive-for-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
