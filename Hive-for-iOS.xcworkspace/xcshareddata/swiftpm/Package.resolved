@@ -1,0 +1,61 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "HiveEngine",
+        "repositoryURL": "https://github.com/autoreleasefool/hive-engine.git",
+        "state": {
+          "branch": null,
+          "revision": "0fa54ca24d7881d661119d97fe0867bd3bf72ff6",
+          "version": "3.1.4"
+        }
+      },
+      {
+        "package": "KeychainAccess",
+        "repositoryURL": "https://github.com/kishikawakatsumi/KeychainAccess",
+        "state": {
+          "branch": null,
+          "revision": "84e546727d66f1adc5439debad16270d0fdd04e7",
+          "version": "4.2.2"
+        }
+      },
+      {
+        "package": "Loaf",
+        "repositoryURL": "https://github.com/autoreleasefool/loaf",
+        "state": {
+          "branch": "swiftui",
+          "revision": "4c5029a298487faacd58e15f2c26bec7fda4a8d4",
+          "version": null
+        }
+      },
+      {
+        "package": "Regex",
+        "repositoryURL": "https://github.com/sharplet/Regex.git",
+        "state": {
+          "branch": null,
+          "revision": "76c2b73d4281d77fc3118391877efd1bf972f515",
+          "version": "2.1.1"
+        }
+      },
+      {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log",
+        "state": {
+          "branch": null,
+          "revision": "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
+          "version": "1.4.2"
+        }
+      },
+      {
+        "package": "SwiftyMarkdown",
+        "repositoryURL": "https://github.com/SimonFairbairn/SwiftyMarkdown.git",
+        "state": {
+          "branch": null,
+          "revision": "5b0a1e76332a633726f9f9a00b4bbd840166bccf",
+          "version": "1.2.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

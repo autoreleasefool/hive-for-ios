@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import HiveFoundation
 
 protocol ClientInteractor {
 	func prepare(_ configuration: ClientInteractorConfiguration, clientConfiguration: GameClientConfiguration)

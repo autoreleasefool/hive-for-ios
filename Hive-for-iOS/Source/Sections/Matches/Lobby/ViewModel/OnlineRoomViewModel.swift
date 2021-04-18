@@ -8,8 +8,9 @@
 
 import Combine
 import Foundation
-import SwiftUI
 import HiveEngine
+import HiveFoundation
+import SwiftUI
 
 enum OnlineRoomViewAction: BaseViewAction {
 	case onAppear(User.ID?)
@@ -162,7 +163,7 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 			set: { [weak self] newValue in
 				guard let self = self, self.userIsHost else { return }
 				self.matchOptions.set(option, to: newValue)
-				self.actions.send(.sendMessage(.setOption(.matchOption(option), newValue)))
+				self.actions.send(.sendMessage(.setOption(.customOption(option.rawValue), newValue)))
 			}
 		)
 	}
@@ -206,7 +207,10 @@ class OnlineRoomViewModel: ExtendedViewModel<OnlineRoomViewAction, OnlineRoomCan
 	private func setOption(_ option: GameServerMessage.Option, to value: Bool) {
 		switch option {
 		case .gameOption(let option): gameOptions.set(option, to: value)
-		case .matchOption(let option): matchOptions.set(option, to: value)
+		case .customOption(let string):
+			if let matchOption = Match.Option(rawValue: string) {
+				matchOptions.set(matchOption, to: value)
+			}
 		}
 	}
 }
@@ -332,5 +336,11 @@ extension OnlineRoomViewModel {
 		case .usingOfflineAccount: return "You're offline"
 		case .apiError(let apiError): return apiError.errorDescription ?? apiError.localizedDescription
 		}
+	}
+}
+
+extension GameServerError {
+	var loaf: LoafState {
+		return LoafState("\(description) (\(code))", style: .error())
 	}
 }

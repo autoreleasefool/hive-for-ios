@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import HiveFoundation
 
 enum UserRepositoryError: Error {
 	case usingOfflineAccount

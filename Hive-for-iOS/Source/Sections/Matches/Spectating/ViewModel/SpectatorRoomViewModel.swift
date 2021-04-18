@@ -9,6 +9,7 @@
 import Combine
 import Foundation
 import HiveEngine
+import HiveFoundation
 
 enum SpectatorRoomViewAction: BaseViewAction {
 	case onAppear
@@ -58,6 +59,7 @@ class SpectatorRoomViewModel: ExtendedViewModel<SpectatorRoomViewAction, Spectat
 	init(matchId: Match.ID?, match: Loadable<Match>) {
 		self.matchId = matchId
 		self.match = match
+		super.init()
 	}
 
 	override func postViewAction(_ viewAction: SpectatorRoomViewAction) {

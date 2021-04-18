@@ -6,6 +6,8 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import HiveFoundation
+
 extension HiveAPI {
 	enum Endpoint {
 		// Auth

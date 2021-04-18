@@ -6,8 +6,9 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
+import HiveFoundation
 import KeychainAccess
 
 struct AppEnvironment {

@@ -7,6 +7,7 @@
 //
 
 import Combine
+import HiveFoundation
 
 enum ProfileViewAction: BaseViewAction {
 	case onAppear

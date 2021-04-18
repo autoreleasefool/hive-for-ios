@@ -1,6 +1,6 @@
 //
 //  AIAgent.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-06-13.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -9,49 +9,45 @@
 import Foundation
 import HiveEngine
 
-protocol AIAgent {
+public protocol AIAgent {
 	func playMove(in state: GameState) -> Movement
 }
 
 // MARK: - Configuration
 
-enum AgentConfiguration: CaseIterable, Identifiable {
+public enum AgentConfiguration: CaseIterable, Identifiable {
 	case random
 	case hiveMind
 
-	var name: String {
+	public var name: String {
 		switch self {
 		case .random: return "Random"
 		case .hiveMind: return "Hive Mind"
 		}
 	}
 
-	var id: UUID {
+	public var id: UUID {
 		switch self {
 		case .random: return UUID(uuidString: "d00a0d1c-eaf6-4d4f-8cf5-8f8840fe495d")!
 		case .hiveMind: return UUID(uuidString: "c354b191-3f26-4d3e-bea5-d5e00bbc3eb4")!
 		}
 	}
 
-	var user: Match.User {
-		Match.User(id: id, displayName: name, elo: 0, avatarUrl: nil)
-	}
-
-	func agent() -> AIAgent {
+	public func agent() -> AIAgent {
 		switch self {
 		case .random: return RandomAgent()
 		case .hiveMind: return HiveMindAgent()
 		}
 	}
 
-	func isEnabled(in features: Features) -> Bool {
+	public func isEnabled(in features: Features) -> Bool {
 		switch self {
 		case .random: return true
 		case .hiveMind: return features.has(.hiveMindAgent)
 		}
 	}
 
-	static func exists(withId id: UUID) -> Bool {
+	public static func exists(withId id: UUID) -> Bool {
 		AgentConfiguration.allCases.contains { $0.id == id }
 	}
 }

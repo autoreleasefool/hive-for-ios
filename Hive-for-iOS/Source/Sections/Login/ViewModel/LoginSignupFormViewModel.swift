@@ -7,6 +7,7 @@
 //
 
 import Combine
+import HiveFoundation
 import UIKit
 
 enum LoginSignupViewAction: BaseViewAction {

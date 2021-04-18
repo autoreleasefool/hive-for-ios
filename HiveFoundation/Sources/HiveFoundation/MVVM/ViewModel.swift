@@ -1,6 +1,6 @@
 //
 //  ViewModel.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-01-17.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -8,19 +8,21 @@
 
 import Combine
 
-protocol BaseViewAction { }
+public protocol BaseViewAction { }
 
-protocol BaseAction { }
+public protocol BaseAction { }
 
-class ViewModel<ViewAction> where ViewAction: BaseViewAction {
+open class ViewModel<ViewAction> where ViewAction: BaseViewAction {
 
 	private var cancellables: [AnyCancellable] = []
 
-	func postViewAction(_ viewAction: ViewAction) {
+	public init() {}
+
+	open func postViewAction(_ viewAction: ViewAction) {
 		fatalError("Classes extending ViewModel must override postViewAction(_:)")
 	}
 
-	func cancelAll() {
+	public func cancelAll() {
 		cancellables.removeAll()
 	}
 
@@ -29,18 +31,22 @@ class ViewModel<ViewAction> where ViewAction: BaseViewAction {
 	}
 }
 
-class ExtendedViewModel<ViewAction, CancelIdentifiable>: ViewModel<ViewAction> where
+open class ExtendedViewModel<ViewAction, CancelIdentifiable>: ViewModel<ViewAction> where
 	CancelIdentifiable: Identifiable,
 	ViewAction: BaseViewAction {
 
 	private var idenfitiedCancellables: [CancelIdentifiable.ID: AnyCancellable] = [:]
 
-	override func cancelAll() {
+	override public init() {
+		super.init()
+	}
+
+	override public func cancelAll() {
 		super.cancelAll()
 		idenfitiedCancellables.removeAll()
 	}
 
-	func cancel(withId id: CancelIdentifiable) {
+	public func cancel(withId id: CancelIdentifiable) {
 		guard let cancellable = idenfitiedCancellables[id.id] else { return }
 		cancellable.cancel()
 		idenfitiedCancellables[id.id] = nil
@@ -56,11 +62,11 @@ class ExtendedViewModel<ViewAction, CancelIdentifiable>: ViewModel<ViewAction> w
 }
 
 extension AnyCancellable {
-	func store<V>(in model: ViewModel<V>) {
+	public func store<V>(in model: ViewModel<V>) {
 		model.store(self)
 	}
 
-	func store<V, I>(in model: ExtendedViewModel<V, I>, withId id: I? = nil) where I: Identifiable {
+	public func store<V, I>(in model: ExtendedViewModel<V, I>, withId id: I? = nil) where I: Identifiable {
 		model.store(self, id)
 	}
 }

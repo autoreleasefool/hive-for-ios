@@ -1,6 +1,6 @@
 //
 //  LocalOpponent.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-12-05.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum LocalOpponent: Identifiable {
+public enum LocalOpponent: Identifiable {
 	case human
 	case agent(AgentConfiguration)
 
-	var name: String {
+	public var name: String {
 		switch self {
 		case .human:
 			return "Second player"
@@ -21,16 +21,12 @@ enum LocalOpponent: Identifiable {
 		}
 	}
 
-	var id: UUID {
+	public var id: UUID {
 		switch self {
 		case .human:
 			return UUID(uuidString: "154b7a56-4520-405c-a44d-1257e20cae1a")!
 		case .agent(let agent):
 			return agent.id
 		}
-	}
-
-	var user: Match.User {
-		Match.User(id: id, displayName: name, elo: 0, avatarUrl: nil)
 	}
 }

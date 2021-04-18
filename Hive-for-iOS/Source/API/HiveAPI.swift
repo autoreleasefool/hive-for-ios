@@ -6,8 +6,9 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import Foundation
 import Combine
+import Foundation
+import HiveFoundation
 import Loaf
 
 typealias HiveAPIPromise<Success> = Future<Success, HiveAPIError>.Promise

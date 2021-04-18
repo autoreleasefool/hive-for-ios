@@ -7,6 +7,7 @@
 //
 
 import Combine
+import HiveFoundation
 import SwiftUI
 
 enum AppStateChange: Hashable, Equatable {

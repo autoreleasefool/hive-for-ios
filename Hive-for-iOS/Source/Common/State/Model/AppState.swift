@@ -6,6 +6,8 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import HiveFoundation
+
 struct AppState: Equatable {
 	var account: Loadable<AnyAccount> = .notLoaded
 	var gameSetup: Game.Setup?

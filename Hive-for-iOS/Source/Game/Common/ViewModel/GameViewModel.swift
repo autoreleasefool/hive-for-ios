@@ -9,6 +9,7 @@
 import SwiftUI
 import Combine
 import HiveEngine
+import HiveFoundation
 import Loaf
 
 enum GameViewAction: BaseViewAction {

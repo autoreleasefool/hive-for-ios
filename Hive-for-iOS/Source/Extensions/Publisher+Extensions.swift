@@ -7,6 +7,7 @@
 //
 
 import Combine
+import HiveFoundation
 
 extension Publisher {
 	func sinkToLoadable(_ completion: @escaping (Loadable<Output>) -> Void) -> AnyCancellable {

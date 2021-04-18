@@ -1,13 +1,13 @@
 //
 //  OptionSet.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-04-26.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-enum OptionSet {
-	static func parse<T>(_ string: String) -> Set<T> where T: Hashable, T: RawRepresentable, T.RawValue == String {
+public enum OptionSet {
+	public static func parse<T>(_ string: String) -> Set<T> where T: Hashable, T: RawRepresentable, T.RawValue == String {
 		var options: Set<T> = []
 		string.split(separator: ";").forEach {
 			let optionAndValue = $0.split(separator: ":")
@@ -20,7 +20,7 @@ enum OptionSet {
 		return options
 	}
 
-	static func encode<T>(_ options: Set<T>) -> String
+	public static func encode<T>(_ options: Set<T>) -> String
 		where T: Hashable,
 		T: RawRepresentable,
 		T: CaseIterable,

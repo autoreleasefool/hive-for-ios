@@ -1,6 +1,6 @@
 //
 //  GameClient.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-01-24.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -10,13 +10,13 @@ import Combine
 import Foundation
 import HiveEngine
 
-enum GameClientEvent {
+public enum GameClientEvent {
 	case message(GameServerMessage)
 	case connected
 	case alreadyConnected
 }
 
-enum GameClientError: LocalizedError {
+public enum GameClientError: LocalizedError {
 	case usingOfflineAccount
 	case notPrepared
 	case failedToConnect
@@ -24,13 +24,13 @@ enum GameClientError: LocalizedError {
 	case webSocketError(Error?)
 }
 
-enum GameClientConfiguration {
+public enum GameClientConfiguration {
 	case online(URL, Account?)
 	case local(GameState, whitePlayer: UUID, blackPlayer: UUID)
 	case agent(GameState, Player, AgentConfiguration)
 }
 
-protocol GameClient {
+public protocol GameClient {
 	var subject: PassthroughSubject<GameClientEvent, GameClientError>? { get }
 	var isPrepared: Bool { get }
 

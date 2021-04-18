@@ -1,6 +1,6 @@
 //
 //  GameServerMessage.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-04-06.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -9,10 +9,10 @@
 import Foundation
 import HiveEngine
 
-enum GameServerMessage {
-	enum Option {
+public enum GameServerMessage {
+	public enum Option {
 		case gameOption(GameState.Option)
-		case matchOption(Match.Option)
+		case customOption(String)
 	}
 
 	case gameState(GameState)
@@ -27,7 +27,7 @@ enum GameServerMessage {
 	case gameOver(UUID?)
 	case error(GameServerError)
 
-	init?(_ message: String) {
+	public init?(_ message: String) {
 		if message.hasPrefix("STATE") {
 			guard let state = GameServerMessage.extractState(from: message) else { return nil }
 			self = .gameState(state)
@@ -35,7 +35,7 @@ enum GameServerMessage {
 			guard let value = GameServerMessage.extractBoolean(from: message) else { return nil }
 
 			if let option = GameServerMessage.extractOption(from: message) {
-				self = .setOption(.matchOption(option), value)
+				self = .setOption(.customOption(option), value)
 			} else if let gameOption = GameServerMessage.extractGameOption(from: message) {
 				self = .setOption(.gameOption(gameOption), value)
 			} else {
@@ -81,23 +81,20 @@ enum GameServerMessage {
 
 extension GameServerMessage {
 	static func extractState(from message: String) -> GameState? {
-		GameString(from: String(message.substring(from: 6)))?.state
+		GameString(from: String(message[message.index(message.startIndex, offsetBy: 6)...]))?.state
 	}
 }
 
 // MARK: - GameState.Option
 
 extension GameServerMessage {
-	static func extractOption(from message: String) -> Match.Option? {
+	static func extractOption(from message: String) -> String? {
 		guard let optionStart = message.firstIndex(of: " "),
-			let optionEnd = message.lastIndex(of: " "),
-			let option = Match.Option(
-				rawValue: String(message[optionStart..<optionEnd]).trimmingCharacters(in: .whitespaces)
-			) else {
+			let optionEnd = message.lastIndex(of: " ") else {
 			return nil
 		}
 
-		return option
+		return String(message[optionStart..<optionEnd]).trimmingCharacters(in: .whitespacesAndNewlines)
 	}
 
 	static func extractGameOption(from message: String) -> GameState.Option? {
@@ -149,12 +146,12 @@ extension GameServerMessage {
 
 // MARK: - GameServerError
 
-struct GameServerError {
+public struct GameServerError {
 	fileprivate static var UNKNOWN: GameServerError {
 		GameServerError("ERR null 999 Unknown error")!
 	}
 
-	enum Code: Int {
+	public enum Code: Int {
 		case invalidMovement = 101
 		case notPlayerTurn = 102
 		case optionNonModifiable = 103
@@ -165,11 +162,11 @@ struct GameServerError {
 		case unknownError = 999
 	}
 
-	let user: UUID?
-	let code: Code
-	let description: String
+	public let user: UUID?
+	public let code: Code
+	public let description: String
 
-	init?(_ message: String) {
+	public init?(_ message: String) {
 		let components = message.split(separator: " ")
 		guard components.count >= 4 else { return nil }
 		user = UUID(uuidString: String(components[1]))
@@ -177,14 +174,10 @@ struct GameServerError {
 		description = components[3...].joined(separator: " ")
 	}
 
-	init(user: UUID? = nil, code: Code, description: String) {
+	public init(user: UUID? = nil, code: Code, description: String) {
 		self.user = user
 		self.code = code
 		self.description = description
-	}
-
-	var loaf: LoafState {
-		return LoafState("\(description) (\(code))", style: .error())
 	}
 }
 

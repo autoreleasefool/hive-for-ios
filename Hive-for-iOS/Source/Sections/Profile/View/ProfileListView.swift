@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import HiveFoundation
 import SwiftUI
 
 struct ProfileListView: View {

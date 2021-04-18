@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import HiveFoundation
 
 protocol MatchInteractor {
 	func loadOpenMatches(matches: LoadableSubject<[Match]>)

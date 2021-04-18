@@ -7,6 +7,7 @@
 //
 
 import AuthenticationServices
+import HiveFoundation
 import SwiftUI
 
 struct WelcomeView: View {

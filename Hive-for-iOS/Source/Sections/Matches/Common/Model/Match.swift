@@ -8,6 +8,7 @@
 
 import Foundation
 import HiveEngine
+import HiveFoundation
 
 typealias CreateMatchResponse = Match
 typealias JoinMatchResponse = Match
@@ -89,6 +90,18 @@ extension Match {
 				avatarUrl: nil
 			)
 		}
+	}
+}
+
+extension LocalOpponent {
+	var user: Match.User {
+		Match.User(id: id, displayName: name, elo: 0, avatarUrl: nil)
+	}
+}
+
+extension AgentConfiguration {
+	var user: Match.User {
+		Match.User(id: id, displayName: name, elo: 0, avatarUrl: nil)
 	}
 }
 

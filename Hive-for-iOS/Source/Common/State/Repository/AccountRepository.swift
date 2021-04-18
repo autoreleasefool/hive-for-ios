@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import HiveFoundation
 import KeychainAccess
 
 enum AccountRepositoryError: Error {

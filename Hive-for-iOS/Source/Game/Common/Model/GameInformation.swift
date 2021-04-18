@@ -6,8 +6,9 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import SwiftUI
 import HiveEngine
+import HiveFoundation
+import SwiftUI
 
 enum GameInformation {
 	case playerHand(PlayerHand)

@@ -7,8 +7,9 @@
 //
 
 import AuthenticationServices
-import Foundation
 import Combine
+import Foundation
+import HiveFoundation
 import SwiftUI
 
 enum ContentViewViewAction: BaseViewAction {

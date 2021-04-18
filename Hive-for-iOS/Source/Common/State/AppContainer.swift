@@ -6,6 +6,7 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
+import HiveFoundation
 import SwiftUI
 
 struct AppContainer: EnvironmentKey {
@@ -50,5 +51,25 @@ extension View {
 	func inject(_ appContainer: AppContainer) -> some View {
 		return self
 			.environment(\.container, appContainer)
+	}
+}
+
+// MARK: - Features
+
+extension AppContainer {
+	var features: Features {
+		appState.value.features
+	}
+
+	func has(feature: Feature) -> Bool {
+		features.has(feature)
+	}
+
+	func hasAny(of features: Set<Feature>) -> Bool {
+		self.features.hasAny(of: features)
+	}
+
+	func hasAll(of features: Set<Feature>) -> Bool {
+		self.features.hasAll(of: features)
 	}
 }

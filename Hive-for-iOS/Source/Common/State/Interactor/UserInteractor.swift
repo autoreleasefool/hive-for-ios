@@ -8,6 +8,7 @@
 
 import Combine
 import Foundation
+import HiveFoundation
 
 protocol UserInteractor {
 	func loadProfile(user: LoadableSubject<User>)

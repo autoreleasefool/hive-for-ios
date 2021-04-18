@@ -7,6 +7,7 @@
 //
 
 import Combine
+import HiveFoundation
 
 enum MatchHistoryListViewAction: BaseViewAction {
 	case onAppear

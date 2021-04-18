@@ -1,6 +1,6 @@
 //
 //  OnlineGameClient.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-07-03.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -10,8 +10,8 @@ import Combine
 import Foundation
 import HiveEngine
 
-class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
-	static let maxReconnectAttempts = 5
+public class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
+	public static let maxReconnectAttempts = 5
 
 	private var url: URL?
 	private var account: Account?
@@ -22,15 +22,15 @@ class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 	private let requestQueue: DispatchQueue
 	private let operationQueue = OperationQueue()
 
-	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
+	public private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
-	var isPrepared: Bool {
+	public var isPrepared: Bool {
 		url != nil
 	}
 
-	init(
+	public init(
 		configuration: URLSessionConfiguration = .default,
-		queue: DispatchQueue = DispatchQueue(label: "ca.josephroque.hiveapp.gameClient.requestQueue")
+		queue: DispatchQueue = DispatchQueue(label: "ca.josephroque.HiveFoundation.gameClient.requestQueue")
 	) {
 		self.requestQueue = queue
 		self.operationQueue.underlyingQueue = requestQueue
@@ -43,7 +43,7 @@ class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 		)
 	}
 
-	func prepare(configuration: GameClientConfiguration) {
+	public func prepare(configuration: GameClientConfiguration) {
 		guard case let .online(url, account) = configuration else { return }
 
 		if self.url != nil, self.url != url {
@@ -54,7 +54,7 @@ class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 		self.account = account
 	}
 
-	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
+	public func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
 		guard isPrepared, let url = url else {
 			return Fail(error: .notPrepared).eraseToAnyPublisher()
 		}
@@ -76,7 +76,7 @@ class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 		return openConnection(to: url, withAccount: account)
 	}
 
-	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
+	public func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
 		guard isPrepared, let url = url else {
 			return Fail(error: .notPrepared).eraseToAnyPublisher()
 		}
@@ -142,7 +142,7 @@ class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 		}
 	}
 
-	func close() {
+	public func close() {
 		guard let subject = self.subject else { return }
 		self.subject = nil
 		cancelPingTimer()
@@ -150,7 +150,7 @@ class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 		subject.send(completion: .finished)
 	}
 
-	func send(_ message: GameClientMessage, completionHandler: ((Error?) -> Void)?) {
+	public func send(_ message: GameClientMessage, completionHandler: ((Error?) -> Void)?) {
 		webSocket?.send(message: message) { error in completionHandler?(error) }
 	}
 
@@ -169,7 +169,7 @@ class OnlineGameClient: NSObject, GameClient, URLSessionWebSocketDelegate {
 // MARK: URLSessionDelegate
 
 extension OnlineGameClient {
-	func urlSession(
+	public func urlSession(
 		_ session: URLSession,
 		webSocketTask: URLSessionWebSocketTask,
 		didOpenWithProtocol protocol: String?
@@ -177,7 +177,7 @@ extension OnlineGameClient {
 		self.subject?.send(.connected)
 	}
 
-	func urlSession(
+	public func urlSession(
 		_ session: URLSession,
 		webSocketTask: URLSessionWebSocketTask,
 		didCloseWith closeCode: URLSessionWebSocketTask.CloseCode,

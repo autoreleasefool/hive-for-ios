@@ -9,6 +9,7 @@
 import AuthenticationServices
 import Combine
 import Foundation
+import HiveFoundation
 
 protocol AccountInteractor {
 	func loadAccount()

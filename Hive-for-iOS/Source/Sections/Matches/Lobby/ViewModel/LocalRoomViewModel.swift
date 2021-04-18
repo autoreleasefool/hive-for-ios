@@ -7,8 +7,9 @@
 //
 
 import Combine
-import SwiftUI
 import HiveEngine
+import HiveFoundation
+import SwiftUI
 
 enum LocalRoomViewAction: BaseViewAction {
 	case startGame

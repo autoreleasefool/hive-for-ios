@@ -1,6 +1,6 @@
 //
 //  Account.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-05-01.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -8,16 +8,16 @@
 
 import Foundation
 
-extension NSNotification.Name {
+public extension NSNotification.Name {
 	enum Account {
-		static let Unauthorized = Notification.Name("Account.Unauthorized")
-		static let Created = Notification.Name("Account.Created")
-		static let Loaded = Notification.Name("Account.Loaded")
+		public static let Unauthorized = Notification.Name("Account.Unauthorized")
+		public static let Created = Notification.Name("Account.Created")
+		public static let Loaded = Notification.Name("Account.Loaded")
 	}
 }
 
-protocol Account: Codable {
-	var id: User.ID { get }
+public protocol Account: Codable {
+	var id: UUID { get }
 	var token: String { get }
 	var isGuest: Bool { get }
 	var isOffline: Bool { get }
@@ -28,7 +28,7 @@ protocol Account: Codable {
 }
 
 extension Account {
-	func eraseToAnyAccount() -> AnyAccount {
+	public func eraseToAnyAccount() -> AnyAccount {
 		return AnyAccount(self)
 	}
 }

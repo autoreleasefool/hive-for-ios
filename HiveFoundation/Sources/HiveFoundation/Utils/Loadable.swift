@@ -1,38 +1,38 @@
 //
 //  Loadable.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-05-01.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
 import Combine
-import SwiftUI
+//import SwiftUI
 
-final class CancelBag {
-	var subscriptions: Set<AnyCancellable> = []
+public final class CancelBag {
+	public var subscriptions: Set<AnyCancellable> = []
 
-	func cancel() {
+	public init() {}
+
+	public func cancel() {
 		subscriptions.forEach { $0.cancel() }
 		subscriptions.removeAll()
 	}
 }
 
 extension AnyCancellable {
-	func store(in cancelBag: CancelBag) {
+	public func store(in cancelBag: CancelBag) {
 		cancelBag.subscriptions.insert(self)
 	}
 }
 
-typealias LoadableSubject<T> = Binding<Loadable<T>>
-
-enum Loadable<T> {
+public enum Loadable<T> {
 	case notLoaded
 	case loading(cached: T?, cancelBag: CancelBag)
 	case loaded(T)
 	case failed(Error)
 
-	var value: T? {
+	public var value: T? {
 		switch self {
 		case .notLoaded, .failed: return nil
 		case .loading(let v, _): return v
@@ -40,7 +40,7 @@ enum Loadable<T> {
 		}
 	}
 
-	var error: Error? {
+	public var error: Error? {
 		switch self {
 		case .notLoaded, .loading, .loaded: return nil
 		case .failed(let error): return error
@@ -49,13 +49,13 @@ enum Loadable<T> {
 }
 
 extension Loadable {
-	mutating func setLoading(cancelBag: CancelBag) {
+	public mutating func setLoading(cancelBag: CancelBag) {
 		self = .loading(cached: value, cancelBag: cancelBag)
 	}
 }
 
 extension Loadable: Equatable where T: Equatable {
-	static func == (lhs: Loadable<T>, rhs: Loadable<T>) -> Bool {
+	public static func == (lhs: Loadable<T>, rhs: Loadable<T>) -> Bool {
 		switch (lhs, rhs) {
 		case (.notLoaded, .notLoaded): return true
 		case (.loading(let lhs, _), .loading(let rhs, _)): return lhs == rhs

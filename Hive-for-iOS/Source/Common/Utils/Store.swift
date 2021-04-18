@@ -6,8 +6,8 @@
 //  Copyright © 2020 Joseph Roque. All rights reserved.
 //
 
-import SwiftUI
 import Combine
+import SwiftUI
 
 typealias Store<Value> = CurrentValueSubject<Value, Never>
 

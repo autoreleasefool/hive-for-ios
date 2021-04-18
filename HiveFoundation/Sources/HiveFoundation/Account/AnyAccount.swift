@@ -1,6 +1,6 @@
 //
 //  AnyAccount.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-12-21.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -8,24 +8,24 @@
 
 import Foundation
 
-struct AnyAccount: Account, Equatable {
-	let wrapped: Account
+public struct AnyAccount: Account, Equatable {
+	public let wrapped: Account
 
-	var id: User.ID { return wrapped.id }
-	var token: String { return wrapped.token }
-	var isGuest: Bool { return wrapped.isGuest }
-	var isOffline: Bool { return wrapped.isOffline }
-	var headers: [String: String] { return wrapped.headers }
+	public var id: UUID { return wrapped.id }
+	public var token: String { return wrapped.token }
+	public var isGuest: Bool { return wrapped.isGuest }
+	public var isOffline: Bool { return wrapped.isOffline }
+	public var headers: [String: String] { return wrapped.headers }
 
-	init(_ wrapped: Account) {
+	public init(_ wrapped: Account) {
 		self.wrapped = wrapped
 	}
 
-	func applyAuth(to request: inout URLRequest) {
+	public func applyAuth(to request: inout URLRequest) {
 		wrapped.applyAuth(to: &request)
 	}
 
-	static func == (lhs: AnyAccount, rhs: AnyAccount) -> Bool {
+	public static func == (lhs: AnyAccount, rhs: AnyAccount) -> Bool {
 		if let hiveAccount = lhs.wrapped as? HiveAccount,
 			let otherHiveAccount = rhs.wrapped as? HiveAccount {
 			return hiveAccount == otherHiveAccount
@@ -44,7 +44,7 @@ extension AnyAccount: Codable {
 		case wrappedValue
 	}
 
-	init(from decoder: Decoder) throws {
+	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: Key.self)
 		let type = try container.decode(String.self, forKey: .type)
 		switch type {
@@ -57,7 +57,7 @@ extension AnyAccount: Codable {
 		}
 	}
 
-	func encode(to encoder: Encoder) throws {
+	public func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: Key.self)
 		if let hiveAccount = wrapped as? HiveAccount {
 			try container.encode("HiveAccount", forKey: .type)
@@ -70,7 +70,7 @@ extension AnyAccount: Codable {
 }
 
 extension Loadable where T: Account {
-	func eraseToAnyAccount() -> Loadable<AnyAccount> {
+	public func eraseToAnyAccount() -> Loadable<AnyAccount> {
 		switch self {
 		case .failed(let error):
 			return .failed(error)

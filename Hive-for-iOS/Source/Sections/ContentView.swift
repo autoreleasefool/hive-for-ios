@@ -7,8 +7,9 @@
 //
 
 import AuthenticationServices
-import SwiftUI
 import Combine
+import HiveFoundation
+import SwiftUI
 
 struct ContentView: View {
 	@Environment(\.container) private var container

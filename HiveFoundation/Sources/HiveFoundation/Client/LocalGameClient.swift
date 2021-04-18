@@ -1,6 +1,6 @@
 //
 //  LocalGameClient.swift
-//  Hive-for-iOS
+//  HiveFoundation
 //
 //  Created by Joseph Roque on 2020-07-03.
 //  Copyright © 2020 Joseph Roque. All rights reserved.
@@ -10,16 +10,18 @@ import Combine
 import Foundation
 import HiveEngine
 
-class LocalGameClient: GameClient {
+public class LocalGameClient: GameClient {
 	private var state: LocalGameState?
 
-	private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
+	public private(set) var subject: PassthroughSubject<GameClientEvent, GameClientError>?
 
-	var isPrepared: Bool {
+	public var isPrepared: Bool {
 		state != nil
 	}
 
-	func prepare(configuration: GameClientConfiguration) {
+	public init() {}
+
+	public func prepare(configuration: GameClientConfiguration) {
 		switch configuration {
 		case .local(let gameState, let whitePlayer, let blackPlayer):
 			prepareLocalConfiguration(gameState, whitePlayer, blackPlayer)
@@ -55,7 +57,7 @@ class LocalGameClient: GameClient {
 		)
 	}
 
-	func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
+	public func openConnection() -> AnyPublisher<GameClientEvent, GameClientError> {
 		guard isPrepared else {
 			return Fail(error: .notPrepared).eraseToAnyPublisher()
 		}
@@ -68,7 +70,7 @@ class LocalGameClient: GameClient {
 		return createPublisher()
 	}
 
-	func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
+	public func reconnect() -> AnyPublisher<GameClientEvent, GameClientError> {
 		guard isPrepared else {
 			return Fail(error: .notPrepared).eraseToAnyPublisher()
 		}
@@ -94,12 +96,12 @@ class LocalGameClient: GameClient {
 		return publisher.eraseToAnyPublisher()
 	}
 
-	func close() {
+	public func close() {
 		subject?.send(completion: .finished)
 		resetState()
 	}
 
-	func send(_ message: GameClientMessage, completionHandler: ((Error?) -> Void)?) {
+	public func send(_ message: GameClientMessage, completionHandler: ((Error?) -> Void)?) {
 		switch message {
 		case .forfeit:
 			playerForfeit()
