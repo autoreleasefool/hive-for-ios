@@ -56,6 +56,7 @@
 		CA7525F3262CC392006317A5 /* HiveFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CA7525F2262CC392006317A5 /* HiveFoundation */; };
 		CA752601262CD7A7006317A5 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA752600262CD7A7006317A5 /* Logger.swift */; };
 		CA75261B262CDEAF006317A5 /* LoadableSubject.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75261A262CDEAF006317A5 /* LoadableSubject.swift */; };
+		CA752625262CE2F8006317A5 /* HiveFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CA752624262CE2F8006317A5 /* HiveFoundation */; };
 		CA75CA72256B852900F02928 /* AppVersionUnsupportedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CA71256B852900F02928 /* AppVersionUnsupportedView.swift */; };
 		CA75CA76256BFD4700F02928 /* Dependencies.plist in Resources */ = {isa = PBXBuildFile; fileRef = CA75CA75256BFD4700F02928 /* Dependencies.plist */; };
 		CA75CE43242A98D200998719 /* LoafState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA75CE42242A98D200998719 /* LoafState.swift */; };
@@ -65,7 +66,6 @@
 		CA797F65246930BB0011E7D1 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F64246930BB0011E7D1 /* UserRepository.swift */; };
 		CA797F67246930C80011E7D1 /* UserInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA797F66246930C80011E7D1 /* UserInteractor.swift */; };
 		CA7D5E4C2433FDBF00D12A8C /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */; };
-		CA804532254BA68100415DF8 /* Logging in Frameworks */ = {isa = PBXBuildFile; productRef = CA804531254BA68100415DF8 /* Logging */; };
 		CA82FA3725968CAB003DA809 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA82FA3625968CAB003DA809 /* View+Extensions.swift */; };
 		CA82FA3B2597A814003DA809 /* User+Update.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA82FA3A2597A813003DA809 /* User+Update.swift */; };
 		CA88B80C244D89B600C4A276 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
@@ -352,6 +352,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA752625262CE2F8006317A5 /* HiveFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,7 +364,6 @@
 				CAFA466D23D24BE7003C38AB /* Loaf in Frameworks */,
 				CA7525F3262CC392006317A5 /* HiveFoundation in Frameworks */,
 				CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */,
-				CA804532254BA68100415DF8 /* Logging in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1108,6 +1108,9 @@
 			dependencies = (
 			);
 			name = "Hive-for-watchOS-Extension";
+			packageProductDependencies = (
+				CA752624262CE2F8006317A5 /* HiveFoundation */,
+			);
 			productName = "Hive Mobile Mini Extension";
 			productReference = CA4F1B4E262B287D002C4DC1 /* Hive-for-watchOS-Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
@@ -1133,7 +1136,6 @@
 				CAFA466C23D24BE7003C38AB /* Loaf */,
 				CAD75154242F5ECA0054B164 /* SwiftyMarkdown */,
 				CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */,
-				CA804531254BA68100415DF8 /* Logging */,
 				CA7525F2262CC392006317A5 /* HiveFoundation */,
 			);
 			productName = "Hive Mobile";
@@ -1196,7 +1198,6 @@
 				CAFA466B23D24BE7003C38AB /* XCRemoteSwiftPackageReference "loaf" */,
 				CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */,
 				CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */,
-				CA804530254BA68100415DF8 /* XCRemoteSwiftPackageReference "swift-log" */,
 			);
 			productRefGroup = CA7299A12393156100AD1285 /* Products */;
 			projectDirPath = "";
@@ -1592,14 +1593,6 @@
 				minimumVersion = 4.1.0;
 			};
 		};
-		CA804530254BA68100415DF8 /* XCRemoteSwiftPackageReference "swift-log" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/apple/swift-log";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.4.0;
-			};
-		};
 		CAD75153242F5ECA0054B164 /* XCRemoteSwiftPackageReference "SwiftyMarkdown" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimonFairbairn/SwiftyMarkdown.git";
@@ -1623,15 +1616,14 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = HiveFoundation;
 		};
+		CA752624262CE2F8006317A5 /* HiveFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = HiveFoundation;
+		};
 		CA7D5E4B2433FDBF00D12A8C /* KeychainAccess */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CA7D5E4A2433FDBF00D12A8C /* XCRemoteSwiftPackageReference "KeychainAccess" */;
 			productName = KeychainAccess;
-		};
-		CA804531254BA68100415DF8 /* Logging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CA804530254BA68100415DF8 /* XCRemoteSwiftPackageReference "swift-log" */;
-			productName = Logging;
 		};
 		CAD75154242F5ECA0054B164 /* SwiftyMarkdown */ = {
 			isa = XCSwiftPackageProductDependency;

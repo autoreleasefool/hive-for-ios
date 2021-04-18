@@ -17,12 +17,14 @@ let package = Package(
 	],
 	dependencies: [
 		.package(name: "HiveEngine", url: "https://github.com/autoreleasefool/hive-engine.git", from: "3.1.2"),
+		.package(url: "https://github.com/apple/swift-log.git", from: "1.4.0"),
 	],
 	targets: [
 		.target(
 			name: "HiveFoundation",
 			dependencies: [
 				.product(name: "HiveEngine", package: "HiveEngine"),
+				.product(name: "Logging", package: "swift-log"),
 			]
 		),
 	]
