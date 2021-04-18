@@ -12,10 +12,13 @@ import UIKit
 // MARK: - Images
 
 enum ImageAsset {
+	#if os(iOS)
 	static let glyph = UIImage(named: "Glyph")!
 	static let joseph = UIImage(named: "Joseph")!
 	static let borderlessGlyph = UIImage(named: "Icons/BorderlessGlyph")!
+	#endif
 
+	#if os(iOS)
 	enum Icon {
 		static let handFilled = UIImage(named: "Icons/Hand.Filled")!
 		static let handOutlined = UIImage(named: "Icons/Hand.Outlined")!
@@ -23,6 +26,7 @@ enum ImageAsset {
 		static let info = UIImage(named: "Icons/Info")!
 		static let smiley = UIImage(named: "Icons/Smiley")!
 	}
+	#endif
 
 	enum Movement {
 		static let move = UIImage(named: "Movement/Move")!
@@ -79,7 +83,9 @@ enum ImageAsset {
 		}
 	}
 
+	#if os(iOS)
 	enum EmptyState { }
+	#endif
 }
 
 // MARK: - Colors

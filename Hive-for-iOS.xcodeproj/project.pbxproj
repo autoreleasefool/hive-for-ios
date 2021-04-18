@@ -118,6 +118,13 @@
 		CAD32BF52493070A00984610 /* RoomDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF42493070A00984610 /* RoomDetailsView.swift */; };
 		CAD32BF72493103200984610 /* LocalRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF62493103200984610 /* LocalRoomView.swift */; };
 		CAD32BF92493130000984610 /* LocalRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD32BF82493130000984610 /* LocalRoomViewModel.swift */; };
+		CAD5198E262CEA4300162098 /* OpponentPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD5198D262CEA4300162098 /* OpponentPicker.swift */; };
+		CAD5199C262CEAC900162098 /* WatchContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD5199B262CEAC900162098 /* WatchContainer.swift */; };
+		CAD519A1262CEB4B00162098 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88B80B244D89B600C4A276 /* Store.swift */; };
+		CAD519A8262CEB6B00162098 /* WatchState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD519A7262CEB6B00162098 /* WatchState.swift */; };
+		CAD519AD262CEE0C00162098 /* Assets.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FD23CCF67300B882D2 /* Assets.swift */; };
+		CAD519B2262CEECA00162098 /* Metrics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAC685FF23CD18C100B882D2 /* Metrics.swift */; };
+		CAD519C3262CEF2D00162098 /* RoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD519C2262CEF2D00162098 /* RoomView.swift */; };
 		CAD75155242F5ECA0054B164 /* SwiftyMarkdown in Frameworks */ = {isa = PBXBuildFile; productRef = CAD75154242F5ECA0054B164 /* SwiftyMarkdown */; };
 		CAD7515924301A390054B164 /* RuleList.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD7515824301A390054B164 /* RuleList.swift */; };
 		CAEA8B9D2615459A00A115BE /* AppStoreSnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEA8B9C2615459A00A115BE /* AppStoreSnapshotTests.swift */; };
@@ -316,6 +323,10 @@
 		CAD32BF42493070A00984610 /* RoomDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailsView.swift; sourceTree = "<group>"; };
 		CAD32BF62493103200984610 /* LocalRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoomView.swift; sourceTree = "<group>"; };
 		CAD32BF82493130000984610 /* LocalRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRoomViewModel.swift; sourceTree = "<group>"; };
+		CAD5198D262CEA4300162098 /* OpponentPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpponentPicker.swift; sourceTree = "<group>"; };
+		CAD5199B262CEAC900162098 /* WatchContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchContainer.swift; sourceTree = "<group>"; };
+		CAD519A7262CEB6B00162098 /* WatchState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchState.swift; sourceTree = "<group>"; };
+		CAD519C2262CEF2D00162098 /* RoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomView.swift; sourceTree = "<group>"; };
 		CAD7515824301A390054B164 /* RuleList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleList.swift; sourceTree = "<group>"; };
 		CAEA8B9A2615459A00A115BE /* HiveUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HiveUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CAEA8B9C2615459A00A115BE /* AppStoreSnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSnapshotTests.swift; sourceTree = "<group>"; };
@@ -479,8 +490,9 @@
 			isa = PBXGroup;
 			children = (
 				CA4F1B57262B287D002C4DC1 /* ComplicationController.swift */,
-				CA4F1B53262B287D002C4DC1 /* ContentView.swift */,
 				CA4F1B55262B287D002C4DC1 /* HiveWatchApp.swift */,
+				CAD51999262CEAAC00162098 /* Common */,
+				CAD5198B262CEA1700162098 /* Sections */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -969,6 +981,65 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		CAD5198B262CEA1700162098 /* Sections */ = {
+			isa = PBXGroup;
+			children = (
+				CAD519B7262CEEE400162098 /* Lobby */,
+				CA4F1B53262B287D002C4DC1 /* ContentView.swift */,
+			);
+			path = Sections;
+			sourceTree = "<group>";
+		};
+		CAD51999262CEAAC00162098 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				CAD5199A262CEABA00162098 /* State */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		CAD5199A262CEABA00162098 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				CAD519A6262CEB5D00162098 /* Model */,
+				CAD5199B262CEAC900162098 /* WatchContainer.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		CAD519A6262CEB5D00162098 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CAD519A7262CEB6B00162098 /* WatchState.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CAD519B7262CEEE400162098 /* Lobby */ = {
+			isa = PBXGroup;
+			children = (
+				CAD519B8262CEEF100162098 /* View */,
+				CAD519B9262CEEF600162098 /* ViewModel */,
+			);
+			path = Lobby;
+			sourceTree = "<group>";
+		};
+		CAD519B8262CEEF100162098 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAD5198D262CEA4300162098 /* OpponentPicker.swift */,
+				CAD519C2262CEF2D00162098 /* RoomView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAD519B9262CEEF600162098 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		CAEA8B9B2615459A00A115BE /* HiveUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -1291,9 +1362,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CAD519A1262CEB4B00162098 /* Store.swift in Sources */,
+				CAD5198E262CEA4300162098 /* OpponentPicker.swift in Sources */,
+				CAD5199C262CEAC900162098 /* WatchContainer.swift in Sources */,
+				CAD519A8262CEB6B00162098 /* WatchState.swift in Sources */,
 				CA4F1B54262B287D002C4DC1 /* ContentView.swift in Sources */,
 				CA4F1B56262B287D002C4DC1 /* HiveWatchApp.swift in Sources */,
 				CA4F1B58262B287D002C4DC1 /* ComplicationController.swift in Sources */,
+				CAD519C3262CEF2D00162098 /* RoomView.swift in Sources */,
+				CAD519B2262CEECA00162098 /* Metrics.swift in Sources */,
+				CAD519AD262CEE0C00162098 /* Assets.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

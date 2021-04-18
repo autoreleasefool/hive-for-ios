@@ -14,6 +14,7 @@ struct HiveWatchApp: App {
 		WindowGroup {
 			NavigationView {
 				ContentView()
+					.inject(WatchContainer(watchState: Store(WatchState())))
 			}
 		}
 	}
