@@ -58,7 +58,7 @@ enum GameAction: BaseAction {
 }
 
 class GameViewModel: ViewModel<GameViewAction>, ObservableObject {
-	private(set) var preferences = Preferences() // TODO: use passed in value
+	private(set) var preferences = Preferences.shared
 	private(set) var clientInteractor: ClientInteractor!
 	private(set) var userId: User.ID?
 	private var match: Match

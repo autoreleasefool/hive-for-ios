@@ -13,6 +13,6 @@ struct AppState: Equatable {
 	var gameSetup: Game.Setup?
 
 	var contentSheetNavigation: ContentView.SheetNavigation?
-	var preferences = Preferences()
+	var preferences = Preferences.shared
 	var features = Features()
 }

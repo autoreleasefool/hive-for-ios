@@ -8,6 +8,7 @@
 
 import SpriteKit
 import HiveEngine
+import HiveFoundation
 
 extension SKSpriteNode {
 	convenience init(from piece: Piece, colorScheme: Preferences.PieceColorScheme) {

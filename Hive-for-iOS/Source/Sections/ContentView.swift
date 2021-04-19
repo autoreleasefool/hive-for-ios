@@ -215,7 +215,7 @@ struct ContentViewPreview: PreviewProvider {
 							account: .failed(AccountRepositoryError.loggedOut),
 							gameSetup: nil,
 							contentSheetNavigation: nil,
-							preferences: Preferences(),
+							preferences: Preferences.shared,
 							features: Features()
 						)
 					),

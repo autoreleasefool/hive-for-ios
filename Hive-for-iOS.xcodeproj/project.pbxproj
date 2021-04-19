@@ -26,7 +26,6 @@
 		CA238A622598F72300EFD721 /* HiveAPI+Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA238A612598F72300EFD721 /* HiveAPI+Endpoint.swift */; };
 		CA238A662598F90F00EFD721 /* HiveAPI+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA238A652598F90F00EFD721 /* HiveAPI+Error.swift */; };
 		CA286D08247140A80044BAAE /* SettingsListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA286D07247140A80044BAAE /* SettingsListViewModel.swift */; };
-		CA286D0A2471E84B0044BAAE /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA286D092471E84B0044BAAE /* Preferences.swift */; };
 		CA41ACAC2454A30B00B6F88E /* Toaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA41ACAB2454A30B00B6F88E /* Toaster.swift */; };
 		CA45F9BA242B7C4C007EC94D /* EventHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9B9242B7C4C007EC94D /* EventHUD.swift */; };
 		CA45F9BC242B85C2007EC94D /* GameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA45F9BB242B85C2007EC94D /* GameEvent.swift */; };
@@ -223,7 +222,6 @@
 		CA238A612598F72300EFD721 /* HiveAPI+Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HiveAPI+Endpoint.swift"; sourceTree = "<group>"; };
 		CA238A652598F90F00EFD721 /* HiveAPI+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HiveAPI+Error.swift"; sourceTree = "<group>"; };
 		CA286D07247140A80044BAAE /* SettingsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsListViewModel.swift; sourceTree = "<group>"; };
-		CA286D092471E84B0044BAAE /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		CA41ACAB2454A30B00B6F88E /* Toaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
 		CA45F9B9242B7C4C007EC94D /* EventHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHUD.swift; sourceTree = "<group>"; };
 		CA45F9BB242B85C2007EC94D /* GameEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEvent.swift; sourceTree = "<group>"; };
@@ -1088,7 +1086,6 @@
 			isa = PBXGroup;
 			children = (
 				CAF82555245C6B030064359E /* AppState.swift */,
-				CA286D092471E84B0044BAAE /* Preferences.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1472,7 +1469,6 @@
 				CAA78AD4257F3DC400246CCD /* Confetti.swift in Sources */,
 				CAC730FC246DCE5B004DB450 /* LoginSignupFormViewModel.swift in Sources */,
 				CABDFD0A23DDAB4C00C697AD /* GameState+Extensions.swift in Sources */,
-				CA286D0A2471E84B0044BAAE /* Preferences.swift in Sources */,
 				CABDFD0823DD9FE300C697AD /* UserPreview.swift in Sources */,
 				CAF8256E245CD14D0064359E /* ContentView.swift in Sources */,
 				CA238A622598F72300EFD721 /* HiveAPI+Endpoint.swift in Sources */,

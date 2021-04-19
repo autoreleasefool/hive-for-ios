@@ -45,7 +45,7 @@ class SettingsListViewModel: ViewModel<SettingsListViewAction>, ObservableObject
 	@Published var user: Loadable<User>
 	@Published var showAttributions: Bool = false
 	@Published var showAccount: Bool
-	@Published var preferences = Preferences()
+	@Published var preferences = Preferences.shared
 	let inGame: Bool
 
 	private let actions = PassthroughSubject<SettingsListAction, Never>()

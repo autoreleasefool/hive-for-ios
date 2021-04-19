@@ -8,6 +8,7 @@
 
 import UIKit
 import HiveEngine
+import HiveFoundation
 
 // MARK: - Pieces
 

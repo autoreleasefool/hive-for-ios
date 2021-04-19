@@ -8,6 +8,7 @@
 
 import SpriteKit
 import HiveEngine
+import HiveFoundation
 
 class SpriteManager {
 	private var pieceSprites: [Piece: SKSpriteNode] = [:]
