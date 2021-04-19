@@ -14,50 +14,50 @@ public struct Preferences: Equatable {
 
 	#if os(iOS)
 	public var gameMode: GameMode {
-		get { GameMode(rawValue: UserDefaults.standard.string(forKey: Key.gameMode.rawValue) ?? "") ?? .sprite }
-		set { UserDefaults.standard.set(newValue.rawValue, forKey: Key.gameMode.rawValue) }
+		get { GameMode(rawValue: UserDefaults.group.string(forKey: Key.gameMode.rawValue) ?? "") ?? .sprite }
+		set { UserDefaults.group.set(newValue.rawValue, forKey: Key.gameMode.rawValue) }
 	}
 
 	public var isEmotesEnabled: Bool {
 		get { bool(for: Key.isEmotesEnabled, defaultValue: true) }
-		set { UserDefaults.standard.set(newValue, forKey: Key.isEmotesEnabled.rawValue) }
+		set { UserDefaults.group.set(newValue, forKey: Key.isEmotesEnabled.rawValue) }
 	}
 
 	public var isSpectatorEmotesEnabled: Bool {
 		get { bool(for: Key.isSpectatorEmotesEnabled, defaultValue: true) }
-		set { UserDefaults.standard.set(newValue, forKey: Key.isSpectatorEmotesEnabled.rawValue) }
+		set { UserDefaults.group.set(newValue, forKey: Key.isSpectatorEmotesEnabled.rawValue) }
 	}
 
 	public var isSpectatorNotificationsEnabled: Bool {
 		get { bool(for: Key.isSpectatorNotificationsEnabled, defaultValue: true) }
-		set { UserDefaults.standard.set(newValue, forKey: Key.isSpectatorNotificationsEnabled.rawValue) }
+		set { UserDefaults.group.set(newValue, forKey: Key.isSpectatorNotificationsEnabled.rawValue) }
 	}
 
 	public var hasDismissedReplayTooltip: Bool {
 		get { bool(for: Key.hasDismissedReplayTooltip, defaultValue: false) }
-		set { UserDefaults.standard.set(newValue, forKey: Key.hasDismissedReplayTooltip.rawValue) }
+		set { UserDefaults.group.set(newValue, forKey: Key.hasDismissedReplayTooltip.rawValue) }
 	}
 
 	public var isMoveToCenterOnRotateEnabled: Bool {
 		get { bool(for: Key.isMoveToCenterOnRotateEnabled, defaultValue: true) }
-		set { UserDefaults.standard.set(newValue, forKey: Key.isMoveToCenterOnRotateEnabled.rawValue) }
+		set { UserDefaults.group.set(newValue, forKey: Key.isMoveToCenterOnRotateEnabled.rawValue) }
 	}
 	#endif
 
 	public var pieceColorScheme: PieceColorScheme {
 		get {
 			PieceColorScheme(
-				rawValue: UserDefaults.standard.string(forKey: Key.pieceColorScheme.rawValue) ?? ""
+				rawValue: UserDefaults.group.string(forKey: Key.pieceColorScheme.rawValue) ?? ""
 			) ?? .outlined
 		}
-		set { UserDefaults.standard.set(newValue.rawValue, forKey: Key.pieceColorScheme.rawValue) }
+		set { UserDefaults.group.set(newValue.rawValue, forKey: Key.pieceColorScheme.rawValue) }
 	}
 
 	private func bool(for key: Key, defaultValue: Bool) -> Bool {
-		guard UserDefaults.standard.object(forKey: key.rawValue) != nil else {
+		guard UserDefaults.group.object(forKey: key.rawValue) != nil else {
 			return defaultValue
 		}
-		return UserDefaults.standard.bool(forKey: key.rawValue)
+		return UserDefaults.group.bool(forKey: key.rawValue)
 	}
 }
 

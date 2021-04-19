@@ -2,6 +2,7 @@
 #include "./Shared.xcconfig"
 
 ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication
+CODE_SIGN_ENTITLEMENTS = Hive-for-watchOS-Extension/Hive-for-watchOS-Extension.entitlements
 DEVELOPMENT_ASSET_PATHS = Hive-for-watchOS-Extension/Preview\ Content
 ENABLE_PREVIEWS = YES
 INFOPLIST_FILE = Hive-for-watchOS-Extension/Info.plist

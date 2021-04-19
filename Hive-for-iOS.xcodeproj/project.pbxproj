@@ -222,6 +222,7 @@
 		CA238A612598F72300EFD721 /* HiveAPI+Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HiveAPI+Endpoint.swift"; sourceTree = "<group>"; };
 		CA238A652598F90F00EFD721 /* HiveAPI+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HiveAPI+Error.swift"; sourceTree = "<group>"; };
 		CA286D07247140A80044BAAE /* SettingsListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsListViewModel.swift; sourceTree = "<group>"; };
+		CA2891C3262DC2480018179D /* Hive-for-watchOS-Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Hive-for-watchOS-Extension.entitlements"; sourceTree = "<group>"; };
 		CA41ACAB2454A30B00B6F88E /* Toaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toaster.swift; sourceTree = "<group>"; };
 		CA45F9B9242B7C4C007EC94D /* EventHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventHUD.swift; sourceTree = "<group>"; };
 		CA45F9BB242B85C2007EC94D /* GameEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEvent.swift; sourceTree = "<group>"; };
@@ -470,6 +471,7 @@
 			children = (
 				CA4F1B78262B2907002C4DC1 /* Source */,
 				CA4F1B59262B287F002C4DC1 /* Assets.xcassets */,
+				CA2891C3262DC2480018179D /* Hive-for-watchOS-Extension.entitlements */,
 				CA4F1B5E262B287F002C4DC1 /* Info.plist */,
 				CA4F1B5B262B287F002C4DC1 /* Preview Content */,
 			);
